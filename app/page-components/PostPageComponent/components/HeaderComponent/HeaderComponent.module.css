@@ -1,0 +1,109 @@
+.postHeader {
+  width: 100%;
+  display: flex;
+  margin-top: 2em;
+
+  .imageAndAuthor {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 2em;
+    width: 280px;
+  }
+  .author {
+    width: 100%;
+    display: flex;
+    margin-top: 0.5em;
+    align-items: center;
+  }
+  .detailsColumn {
+    flex-grow: 1;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
+.displayName textarea {
+  height: 50px!important;
+  overflow: hidden;
+  resize: none;
+  border-radius: var(--p-border-radius-tag);
+}
+
+.recommandations {
+  border-top: 1px solid #d9d9d9;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+  width: 100%;
+}
+
+.imageAndButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 2em;
+  margin-bottom: 1em;
+  flex-shrink: 0;
+}
+
+.genericTextArea {
+  /* Overwrite default styles for textarea */
+  max-width: 100%;
+  border: none;
+  outline: none;
+  resize: none; /* Disable manual resizing by the user */
+  overflow: hidden;
+  line-height: 1em;
+}
+
+/* TODO: Movo all header component css in one file */
+.textPostTitleEdit {
+  font-size: var(--w-font-size-xxl);
+  font-weight: var(--w-font-weight-book);
+  transform: translateY(0.15em);
+  line-height: var(--w-line-height-heading);
+  background: var(--primary-white);
+  box-shadow: inset 0px 0px 0px 4px var(--color-background-brand-tag);
+  border-radius: var(--p-border-radius-tag);
+  margin-bottom: 8px;
+}
+
+.InputRequired {
+  border-bottom: 2px solid var(--color-background-required) !important;
+}
+
+.textPostSubtitle {
+  font-size: var(--w-font-size-tag);
+  font-style: italic;
+  transform: translateY(0.55em);
+  background: var(--primary-white);
+  box-shadow: inset 0px 0px 0px 4px var(--color-background-brand-tag);
+  border-radius: var(--p-border-radius-tag);
+  margin-bottom: 8px;
+}
+
+.textPostTitleEdit:focus,
+.textPostSubtitle:focus {
+  background: var(--primary-white);
+  box-shadow: inset 0px 0px 0px 4px var(--color-background-brand-tag);
+  border-radius: var(--p-border-radius-tag);
+}
+
+.website {
+  background: var(--primary-brand);
+  border-radius: var(--p-border-radius-full);
+}
+
+.socialIcons svg {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+  .postHeader {
+    flex-direction: column;
+  }
+}

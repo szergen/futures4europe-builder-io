@@ -1,0 +1,11 @@
+.testPageContainer {
+  .labelStyle {
+    color: green;
+    display: block;
+    width: 400px;
+  }
+
+  .buttonStyle {
+    background-color: yellow;
+  }
+}

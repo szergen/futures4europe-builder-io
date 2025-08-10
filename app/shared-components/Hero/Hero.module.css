@@ -1,0 +1,40 @@
+.heroContainer {
+  background-color: transparent;
+  padding: 2rem; /* Padding */
+  text-align: center; /* Center text */
+  
+    position: absolute;
+    top: 11rem;
+    margin: 0 auto;
+    width: 100%;
+    z-index: 0;
+}
+
+.heroTitle {
+  font-size: 2.5rem; /* Large font size */
+  font-weight: bold; /* Bold text */
+  margin-bottom: 1rem; /* Margin below the title */
+  color: var(--primary-white);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem; /* Medium font size */
+  color: var(--primary-white); /* Gray text color */
+}
+
+@media only screen and (max-width: 960px) {
+  .heroContainer {
+   
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .heroContainer {
+    top: 17rem;
+  }
+  .heroTitle { 
+    color: var(--primary-white);
+    font-size: var(--w-font-size-display-heading);
+    margin: 0px;
+  }
+}

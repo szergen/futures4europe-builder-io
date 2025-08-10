@@ -1,0 +1,130 @@
+.suggestionsContainer {
+  position: absolute;
+  top: 0px;
+  /* max-width: 640px; */
+  width: 100%;
+  z-index: 999999999;
+  box-shadow: 0px 10px 14px 4px #80808024;
+  border: 1px solid #e0e0e0b0;
+  padding-top: var(--w-space-m);
+  padding-bottom: var(--w-space-m);
+  margin: var(--w-space-none);
+  border-radius: var(--p-border-radius-400);
+  background-color: var(--primary-white);
+  padding-left: 12px;
+}
+
+.tagContainerForSuggestions {
+  display: flex;
+  align-items: center;
+}
+
+.tagLine {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 400;
+  padding-right: 12px;
+  padding-left: 12px;
+  max-height: 32px;
+  overflow: hidden;
+}
+
+/* .tagContainerForSuggestions:hover {
+  cursor: pointer;
+} */
+
+.tagSuggestionsLabel {
+  font-weight: var(--w-font-weight-heading);
+  color: rgb(62, 59, 68);
+  border-bottom: 1px solid #e0e0e0b0;
+}
+
+.suggestionsContainer ul li {
+  padding: var(--w-space-s);
+  font-size: var(--w-font-size-sub-section-heading);
+  font-weight: var(--w-font-weight-body);
+}
+
+.searchTagImage {
+  border-radius: var(--p-border-radius-tag);
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.quickResultsContent {
+  max-height: 35px;
+  overflow: hidden;
+  font-weight: normal;
+}
+
+.pageImageContainer {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+
+.pageTitle {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: var(--w-font-weight-heading);
+  color: black;
+  font-weight: bold;
+}
+
+.quickResults {
+  margin-right: 12px;
+}
+
+.titleAndTag {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.selectedSuggestion::after {
+  /* background-color: #3a1717; */
+  /* content: 'Press Enter to select'; */
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  right: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .tagContainerForSuggestions{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+  .suggestionsContainer {
+    width: 90vw!important;
+    flex-direction: column!important;
+    align-items: flex-start!important;
+    margin-top: 20px;
+    padding: 0px;
+  }
+  .suggestionsContainer li {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .tagLine {
+    padding-left: 0px;
+  }
+  .capitalize{
+    display: none!important;
+  }
+  .quickResultsItem {
+    display: flex;
+    flex-direction: column;
+  }
+  .lists li{
+    padding-bottom: 32px;
+    border-bottom: 1px solid #eee;
+  }
+
+}

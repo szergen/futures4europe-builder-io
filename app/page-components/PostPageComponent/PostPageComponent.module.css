@@ -1,0 +1,53 @@
+.postContainer {
+  max-width: 860px!important;
+}
+.postContainer {
+  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1em;
+
+  .preHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+  }
+
+  .foresight,
+  .domains,
+  .projects,
+  .posts,
+  .projectResults,
+  .events,
+  .affiliations {
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+    flex-wrap: wrap;
+    margin-bottom: 1em;
+  }
+
+  .foresightTitle,
+  .domainTitle,
+  .projectsTitle,
+  .affiliationsTitle {
+    font-weight: bold;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 12px;
+    margin-bottom: 1em;
+  }
+
+  .domains {
+    margin-bottom: 2em;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .preHeader {
+    flex-direction: column;
+  }
+  .postContainer {
+    padding: 0px var(--w-space-m);
+  }
+}

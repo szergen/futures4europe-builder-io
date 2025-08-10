@@ -1,0 +1,9 @@
+.searchTagSelected {
+  /* border: 0.5px solid #aaa; */
+  background-color: #eee;
+  border-radius: var(--p-border-radius-200);
+}
+
+.searchTagSelected > span {
+  opacity: 1!important;
+}

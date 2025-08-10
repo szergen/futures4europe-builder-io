@@ -1,0 +1,12 @@
+.tagListContainer {
+  display: flex;
+  align-items: center;
+}
+.tagListTitle {
+  font-weight: var(--w-font-weight-book);
+  border-bottom: var(--p-border-width-025) solid
+    var(--color-border-brand-separator);
+  padding-bottom: var(--w-space-s);
+  margin-top: 2em;
+  width: 100%;
+}

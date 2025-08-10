@@ -1,0 +1,151 @@
+.tagLabel {
+  display: inline-block;
+  position: relative;
+  left: +30px;
+}
+.tagContainer {
+  display: flex;
+  cursor: pointer;
+  line-height: 1;
+  text-transform: capitalize;
+  letter-spacing: -0.01em;
+  position: relative;
+  z-index: 0;
+
+  .tagPicture {
+    border-radius: 0.45em;
+    position: relative;
+    max-height: 38px;
+  }
+
+  .tagCounterBody {
+    border-radius: 0.01em;
+    position: absolute;
+    top: -2px;
+    right: 2px;
+  }
+  .tagCounterBody:hover {
+    cursor: pointer;
+  }
+  .tagCounterBody:hover .popularity {
+    background: #9c8af1 !important;
+    color: var(--primary-white);
+    text-decoration-color: var(--primary-white);
+    border-radius: var(--p-border-radius-100);
+  }
+  .popularity {
+    border-radius: var(--p-border-radius-100);
+    background-color: white;
+    font-size: 10px;
+    font-weight: 500;
+    height: 24px;
+    line-height: 10px;
+    padding: 4px;
+  }
+
+  .tagBody {
+    position: relative;
+    cursor: default;
+    /* display: flex; */
+    display: inline-flex !important;
+    align-items: center;
+    background-color: var(--color-background-brand-tag);
+    border-radius: var(--p-border-radius-200);
+    height: calc(var(--w-space-xxxl));
+    margin-right: calc(var(--w-space-s));
+  }
+  /* :not(.tagLink) {
+    cursor: pointer;
+  } */
+
+  .tagLink .tagBody:hover {
+    background-color: #9c8af1;
+    cursor: pointer;
+  }
+
+  .tagBodyText {
+    height: calc(var(--w-space-xxl));
+    background: white;
+    margin: 4px;
+    border-radius: var(--p-border-radius-tag);
+    line-height: calc(var(--w-space-xxl));
+    vertical-align: middle;
+    position: relative;
+    padding-right: var(--w-space-s);
+  }
+  .name {
+    display: flex;
+    text-wrap: nowrap;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--w-font-size-tag);
+    line-height: 2;
+    letter-spacing: var(--p-font-letter-spacing-tag);
+  }
+  .tagBodyText img {
+    width: var(--w-space-xxl);
+    padding: var(--w-space-xxs);
+    margin-left: var(--w-space-xs);
+    margin-right: var(--w-space-xxl);
+  }
+
+  .tagTrend {
+    height: 24px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 10px;
+    padding: 7px;
+  }
+
+  .tagCloseButton {
+    position: absolute;
+    right: 4px;
+    top: 11px;
+  }
+
+  .tagLink {
+    cursor: pointer !important;
+    position: relative;
+  }
+  .tagLink .tagNameBody {
+    text-decoration: underline;
+  }
+  .tagLink.disableUnderline .tagNameBody {
+    text-decoration: none;
+  }
+  .tagLink .tagNameBody:before {
+  }
+  .tagThumbnail {
+    margin-left: 0px;
+    width: var(--w-space-xxl);
+    height: var(--w-space-xxl);
+  }
+  .tagThumbnail img {
+    color: transparent;
+    /* // fill sau cover */
+    /* // FIXME @catalin */
+    object-fit: contain;
+    margin-left: 0px;
+  }
+  .tagNameBody {
+    margin-left: var(--w-space-s);
+    color: var(--color-text-brand-tag);
+    text-overflow: ellipsis;
+    max-width: 14em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .detailsColumn textarea {
+    all: unset;
+    font-size: var(--w-font-size-xxl);
+    font-weight: var(--w-font-weight-book);
+    padding: var(--w-space-none);
+    line-height: var(--w-line-height-normal);
+    height: var(--w-space-xxl);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+}

@@ -1,0 +1,39 @@
+.ogImagePreview {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.ogImagePreview h3 {
+  margin-top: 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+.previewContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.imageWrapper {
+  flex: 1;
+  min-width: 200px;
+}
+
+.imageWrapper h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.previewImage {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

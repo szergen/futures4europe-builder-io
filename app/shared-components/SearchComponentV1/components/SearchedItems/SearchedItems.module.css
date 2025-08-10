@@ -1,0 +1,5 @@
+.searchedItems {
+  width: auto;
+  display: inline-flex;
+  flex-wrap: wrap;
+}

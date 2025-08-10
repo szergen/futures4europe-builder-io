@@ -1,0 +1,8 @@
+.videoImage {
+  width: 247px;
+  height: 368px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid lightgray;
+  background-color: black;
+}

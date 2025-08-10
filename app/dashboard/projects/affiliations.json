@@ -1,0 +1,664 @@
+[
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "Meteo Romania",
+        "_id": "392e06b2-50cb-491a-b22c-06ac081facf8",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-09T23:34:08.963Z"
+        },
+        "tagLine": "",
+        "_updatedDate": {
+          "$date": "2024-11-09T23:34:08.963Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "Lead",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- Meteo Romania"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "UNIPD",
+        "_id": "561db958-09b0-4ce3-b0f9-55da32ecf8b2",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:54:57.558Z"
+        },
+        "tagLine": "UNIVERSITA DEGLI STUDI DI PADOVA",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:54:57.558Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- UNIPD"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "K&I srls",
+        "_id": "6e9b05c1-8fef-4712-8257-d696cbf82119",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:55:37.489Z"
+        },
+        "tagLine": "CONOSCENZA E INNOVAZIONE SOCIETA A RESPONSABILITA LIMITATA SEMPLIFICATA",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:55:37.489Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- K&I srls"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "HEREON",
+        "_id": "7fd6624f-ddbb-4078-8142-d795b1e05f6a",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:56:04.052Z"
+        },
+        "tagLine": "HELMHOLTZ-ZENTRUM HEREON GMBH",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:56:04.052Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- HEREON"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "LGI,",
+        "_id": "2295c0c7-1c4e-45a1-abd4-1a613dc62628",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:56:30.222Z"
+        },
+        "tagLine": "LGI SUSTAINABLE INNOVATION",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:56:30.222Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- LGI,"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "EDF",
+        "_id": "9e717507-f86d-4d54-bc45-bb0ba29bb3b5",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:56:55.621Z"
+        },
+        "tagLine": "ELECTRICITE DE FRANCE",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:56:55.621Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- EDF"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "BOKU",
+        "_id": "bc4720fa-f659-4566-b3a1-89fd581416ab",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:57:19.174Z"
+        },
+        "tagLine": "UNIVERSITAET FUER BODENKULTUR WIEN",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:57:19.174Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- BOKU"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "DTU",
+        "_id": "432d1457-97dc-4db5-9750-fc345bc98692",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:57:44.764Z"
+        },
+        "tagLine": "DANMARKS TEKNISKE UNIVERSITET",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:57:44.764Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- DTU"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "UB",
+        "_id": "4dc46d95-73a1-42a7-97e6-4b37d08e58da",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:59:56.897Z"
+        },
+        "tagLine": "UNIVERSITATEA DIN BUCURESTI",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:59:56.897Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- UB"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "CZU",
+        "_id": "ea02ef27-2c17-4d02-8e7d-c20dda9f0ec4",
+        "_owner": "d3268e01-e2ba-455a-81c4-d86515cf97f8",
+        "_createdDate": {
+          "$date": "2024-10-30T14:50:27.764Z"
+        },
+        "tagLine": "Czech University of Life Sciences Prague",
+        "_updatedDate": {
+          "$date": "2024-10-30T14:50:27.764Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- CZU"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "UEA",
+        "_id": "62e808e4-7420-46c2-93c8-8e5ae594157c",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T15:00:43.225Z"
+        },
+        "tagLine": "UNIVERSITY OF EAST ANGLIA",
+        "_updatedDate": {
+          "$date": "2024-11-10T15:00:43.225Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- UEA"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "WMO",
+        "_id": "bddc51d0-1d5e-482a-b9f1-557d14650913",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T15:00:59.980Z"
+        },
+        "tagLine": "WORLD METEOROLOGICAL ORGANIZATION",
+        "_updatedDate": {
+          "$date": "2024-11-10T15:00:59.980Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- WMO"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "UNIVERSITY COLLEGE LONDON",
+        "_id": "99676a88-45a0-4641-9888-af8710dde551",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T15:01:15.789Z"
+        },
+        "tagLine": "",
+        "_updatedDate": {
+          "$date": "2024-11-10T15:01:15.789Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- UNIVERSITY COLLEGE LONDON"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "WEMC",
+        "_id": "4d92fdb3-60b8-4ae4-965b-82cae4f0570b",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T15:01:36.399Z"
+        },
+        "tagLine": "WORLD ENERGY & METEOROLOGY COUNCIL",
+        "_updatedDate": {
+          "$date": "2024-11-10T15:01:36.399Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- WEMC"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "CROSSEU",
+        "_id": "34f5eda7-b8a6-405b-ba3d-73bc9f07112e",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T14:11:00.720Z"
+        },
+        "tagLine": "Cross-sectoral Framework for Socio-Economic Resilience to Climate Change and Extreme Events in Europe",
+        "_updatedDate": {
+          "$date": "2024-11-10T14:17:29.346Z"
+        },
+        "picture": "https://static.wixstatic.com/media/471908_30ba14e6de524489a249b2087147469c~mv2.jpeg",
+        "tagType": "project",
+        "tagPageLink": "/project/crosseu-xxvkg"
+      },
+      "organisationTag": {
+        "name": "UKRI",
+        "_id": "0f15b4df-ab81-472a-b665-122df6424725",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T15:01:57.558Z"
+        },
+        "tagLine": "UNITED KINGDOM RESEARCH AND INNOVATION",
+        "_updatedDate": {
+          "$date": "2024-11-10T15:01:57.558Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "CROSSEU -to- UKRI"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "Identifying Future Critical Technologies for Space, Defence and Related Civil Industries",
+        "_id": "de29aed6-1863-43bb-899a-30036f52ab3f",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-10T00:22:36.103Z"
+        },
+        "tagLine": "",
+        "_updatedDate": {
+          "$date": "2024-11-10T00:26:58.243Z"
+        },
+        "tagType": "project",
+        "tagPageLink": "/project/identifying-future-critical-technologies-for-space-defence-and-related-civil-industries-wwu9u"
+      },
+      "organisationTag": {
+        "popularity": 50,
+        "name": "Joint Research Center",
+        "_id": "f85b3c01-69e8-4688-8766-14c3910bea1b",
+        "_createdDate": {
+          "$date": "2024-08-27T09:48:24.871Z"
+        },
+        "_updatedDate": {
+          "$date": "2024-08-27T09:48:24.871Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "Lead",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "Identifying Future Critical Technologies for Space, Defence and Related Civil Industries -to- Joint Research Center"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "Futures Consciousness Scale",
+        "_id": "02e8f099-f22e-4b9f-9282-2f3f4ae4b357",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-09T23:06:01.045Z"
+        },
+        "tagLine": "",
+        "_updatedDate": {
+          "$date": "2024-11-09T23:25:18.616Z"
+        },
+        "tagType": "project",
+        "tagPageLink": "/project/futures-consciousness-scale-dmghg"
+      },
+      "organisationTag": {
+        "name": "Finland Futures Research Centre",
+        "_id": "4a24fbff-eab7-4ad8-b686-dbc8bfd0a495",
+        "_owner": "d3268e01-e2ba-455a-81c4-d86515cf97f8",
+        "_createdDate": {
+          "$date": "2024-10-30T15:14:58.367Z"
+        },
+        "tagLine": "",
+        "_updatedDate": {
+          "$date": "2024-11-04T15:18:55.106Z"
+        },
+        "mentions": 1,
+        "picture": "https://static.wixstatic.com/media/471908_52d3aa7f3b4c4c30a5724c4284914023~mv2.png",
+        "tagType": "organisation",
+        "tagPageLink": "/organisation/finland-futures-research-centre-phf8h"
+      },
+      "role": "Lead",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "Futures Consciousness Scale -to- Finland Futures Research Centre"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "Futures Consciousness Scale",
+        "_id": "02e8f099-f22e-4b9f-9282-2f3f4ae4b357",
+        "_owner": "89c27159-d0d6-4d08-bdc0-ea92984d69a8",
+        "_createdDate": {
+          "$date": "2024-11-09T23:06:01.045Z"
+        },
+        "tagLine": "",
+        "_updatedDate": {
+          "$date": "2024-11-09T23:25:18.616Z"
+        },
+        "tagType": "project",
+        "tagPageLink": "/project/futures-consciousness-scale-dmghg"
+      },
+      "organisationTag": {
+        "popularity": 54,
+        "name": "Teach the Future",
+        "_id": "e0b39024-785a-4e1a-8832-93c24e96970e",
+        "_createdDate": {
+          "$date": "2024-08-27T09:48:24.802Z"
+        },
+        "_updatedDate": {
+          "$date": "2024-08-27T09:48:24.802Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "Futures Consciousness Scale -to- Teach the Future"
+    }
+  },
+  {
+    "data": {
+      "projectTag": {
+        "name": "FUTURINNOV",
+        "_id": "5a19fea5-da86-4f30-a88a-ff990cf57fcd",
+        "_owner": "d3268e01-e2ba-455a-81c4-d86515cf97f8",
+        "_createdDate": {
+          "$date": "2024-10-31T11:53:37.739Z"
+        },
+        "tagLine": "",
+        "_updatedDate": {
+          "$date": "2024-11-08T15:20:40.706Z"
+        },
+        "mentions": 0,
+        "tagType": "project",
+        "tagPageLink": "/project/futurinnov-c35sm"
+      },
+      "organisationTag": {
+        "popularity": 50,
+        "name": "Joint Research Center",
+        "_id": "f85b3c01-69e8-4688-8766-14c3910bea1b",
+        "_createdDate": {
+          "$date": "2024-08-27T09:48:24.871Z"
+        },
+        "_updatedDate": {
+          "$date": "2024-08-27T09:48:24.871Z"
+        },
+        "tagType": "organisation"
+      },
+      "role": "Lead",
+      "extraIdentifier": "projectOrganisationRole",
+      "title": "FUTURINNOV -to- Joint Research Center"
+    }
+  }
+]

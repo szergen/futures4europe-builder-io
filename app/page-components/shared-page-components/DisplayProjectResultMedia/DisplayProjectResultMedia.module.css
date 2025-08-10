@@ -1,0 +1,16 @@
+.projectResultImage {
+  outline: lightGray solid 1px;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+.projectResultImage:hover {
+  cursor: pointer;
+  box-shadow: rgb(75, 145, 243) 0px 0px 5px;
+}
+
+.videoImage {
+  width: 247px;
+  height: 368px;
+  object-fit: contain;
+  background-color: black;
+}

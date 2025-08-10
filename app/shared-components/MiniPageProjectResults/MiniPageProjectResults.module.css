@@ -1,0 +1,28 @@
+.projectResultItem {
+  margin: 0.5em 0;
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.projectResultImage {
+  flex-shrink: 0;
+  height: 180px;
+  width: 180px;
+}
+
+.projectResultContent {
+  margin-left: 2em;
+  display: flex;
+  flex-direction: column;
+}
+
+.project {
+  position: relative;
+}
+
+.projectResultRecommandations {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5em;
+}

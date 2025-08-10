@@ -1,0 +1,81 @@
+.UserDashboardWrapper {
+  width: 100%;
+}
+.UserDashboardNavItem {
+  font-size: var(--w-font-size-sub-section-heading);
+  text-align: center;
+  padding: 0px var(--w-space-xl);
+  padding: calc(var(--w-space-s) * 1.4);
+  height: 85px;
+  position: relative;
+  background: var(--primary-blue);
+}
+/* .UserDashboardNavItem::before {
+  content: "";
+  border-bottom: 1px solid var(--color-border-brand-separator);
+  position: absolute;
+  width: 100vw;
+  height: 1px;
+  bottom: calc(var(--w-space-s) * (-3));
+} */
+.UserDashboardNavItem a:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: calc(var(--w-space-s) * -1);
+  transform: translateY(-50%);
+  height: 30px;
+  border-right: 1px solid var(--primary-white-20);
+}
+.UserDashboardNavItem a {
+  font-size: var(--w-font-size-menu);
+  text-align: center;
+  min-width: 130px;
+  padding: 0px var(--w-space-xl);
+  padding: calc(var(--w-space-s) * 1.4);
+  margin-left: calc(var(--w-space-s) * 1);
+  margin-right: calc(var(--w-space-s) * 1);
+  border-radius: var(--p-border-radius-400);
+  height: 68px;
+  position: relative;
+}
+.UserDashboardNavItem a:hover,
+.UserDashboardNavItem a.active {
+  background: var(--primary-white-20);
+  color: var(--primary-white);
+  cursor: pointer;
+}
+.subnavDashboard {
+  border-top: 1px solid var(--primary-color);
+  border-bottom: 1px solid var(--primary-color);
+}
+.subnavDashboard li a {
+  padding: var(--w-space-s);
+  max-width: 140px;
+  width: 100vw;
+  display: block;
+  text-align: center;
+}
+.subnavDashboard li a:hover {
+  padding: var(--w-space-s);
+  border-bottom: 1px solid var(--primary-secondary);
+  color: var(--primary-secondary);
+}
+.subnavDashboard .active {
+  color: var(--primary-secondary);
+  font-weight: var(--w-font-weight-heading);
+  border-bottom: 1px solid var(--primary-secondary);
+}
+
+/* media query */
+
+@media (max-width: 860px) {
+  .UserDashboardWrapper {
+    overflow: scroll;
+    max-width: 100%;
+    width: 100vw;
+  }
+  .UserDashboardNavItem {
+    height: 120px;
+  }
+}

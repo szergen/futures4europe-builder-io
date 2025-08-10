@@ -1,0 +1,10 @@
+.listContainer {
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.listContainer .postItem {
+  border-bottom: 1px solid var(--primary-brand);
+}

@@ -1,0 +1,27 @@
+.title {
+  font-weight: bold;
+  border-bottom: 2px solid var(--primary-secondary);
+  padding-bottom: 12px;
+  margin-bottom: 1em;
+  font-size: var(--w-font-size-post);
+  margin: 1em 1em;
+  position: relative;
+}
+
+.title:before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--primary-secondary);
+  position: absolute;
+  left: 0;
+  top: 32px;
+  border-radius: 20px;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .title:before {
+    top: 29px;
+  }
+}

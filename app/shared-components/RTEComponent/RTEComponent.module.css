@@ -1,0 +1,18 @@
+.rdw-option-wrapper {
+  border-radius: var(--p-border-radius-150);
+}
+.rdw-option-wrapper:hover {
+  background-color: var(--color-background-strong);
+  box-shadow: none;
+}
+.linkPopup {
+  width: 300px;
+  height: auto;
+  label {
+    position: unset !important;
+    transform: unset !important;
+    max-width: unset !important;
+    margin: unset !important;
+    color: gray;
+  }
+}

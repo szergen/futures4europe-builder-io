@@ -1,0 +1,125 @@
+.postItem {
+  margin: 2em 0;
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.postImageAndTagContainer {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  min-width: 180px;
+}
+
+.postImage {
+  flex-shrink: 0;
+  height: 124px;
+  width: 124px;
+  border-radius: var(--p-border-radius-800);
+  object-fit: contain;
+  padding: var(--w-space-s);
+  background: var(--primary-white);
+  border: 1px solid var(--color-background-brand-tag);
+}
+
+.postContent {
+  margin-left: 2em;
+  display: flex;
+  flex-direction: column;
+  padding-top: 35px;
+  width: 100%;
+}
+.postRecommandations {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  margin-top: 0.5em;
+}
+.postInnerText {
+  height: 40px;
+}
+.MiniPagePostTitle {
+  font-size: var(--w-font-size-display-heading);
+  font-weight: var(--w-font-weight-book);
+  color: var(--color-text-primary-strongest);
+}
+.MiniPagePostSubtitle {
+  font-size: var(--w-font-size-sub-section-heading);
+  font-weight: var(--w-font-weight-emphasis);
+  font-style: italic;
+  letter-spacing: var(--p-font-letter-spacing-dense);
+}
+.MiniPagePostTagline {
+  font-size: var(--w-font-size-sub-section-heading);
+  font-weight: var(--w-font-weight-emphasis);
+  font-style: italic;
+  letter-spacing: var(--p-font-letter-spacing-dense);
+}
+.MiniPagePostDescription {
+  font-size: var(--w-font-size-sub-section-heading);
+  font-weight: var(--w-font-weight-body);
+  color: var(--color-text-brand-light);
+  line-height: var(--w-line-height-body);
+}
+.postItem:hover .MiniPagePostTitle {
+  /* text-decoration: underline; */
+  cursor: pointer;
+}
+.postItem {
+  margin: var(--w-space-s);
+  padding: var(--w-space-l);
+  border-radius: var(--p-border-radius-800);
+  color: var(--primary-black);
+}
+.postItem:hover {
+  background-color: var(--color-background-decorative-10-weakest);
+}
+.popularity {
+  font-size: var(--w-font-size-body);
+  position: relative;
+  top: -10px;
+}
+.projectDates {
+  font-size: var(--w-font-size-tag);
+  font-weight: var(--w-font-weight-body);
+  color: var(--color-background-offline);
+  margin-top: var(--w-space-s);
+  margin-left: 0.5em;
+}
+.MiniPagePostDate {
+  font-size: var(--w-font-size-body);
+  font-weight: var(--w-font-weight-body);
+  color: var(--color-background-offline);
+  margin-top: var(--w-space-s);
+}
+.MiniPagePostEdit {
+  align-self: flex-end;
+}
+
+.event_TypeTagImage img,
+.post_TypeTagImage img,
+.projectresult_TypeTagImage img, 
+.personinfo_TypeTagImage img {
+  object-fit: cover;
+}
+
+@media (max-width: 480px) {
+  .postItem {
+    margin: var(--w-space-s) 0;
+    padding: var(--w-space-m);
+    flex-direction: column;
+
+    border-bottom: 1px solid #8181817d;
+    border-radius: 0px;
+    align-self: flex-start;
+  }
+  .postContent {
+    text-align: left;
+    margin: 0px;
+  }
+  .MiniPagePostEdit {
+    align-self: flex-start;
+  }
+}

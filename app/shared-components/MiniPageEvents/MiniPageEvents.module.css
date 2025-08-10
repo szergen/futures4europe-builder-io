@@ -1,0 +1,28 @@
+.eventItem {
+  margin: 0.5em 0;
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.eventImage {
+  flex-shrink: 0;
+  height: 180px;
+  width: 180px;
+}
+
+.eventContent {
+  margin-left: 2em;
+  display: flex;
+  flex-direction: column;
+}
+
+.project {
+  margin-left: 0.5em;
+}
+
+.eventRecommandations {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5em;
+}

@@ -1,0 +1,147 @@
+/* Base styles for search box wrapper */
+.searchBoxWrapper {
+  border: 1px solid rgba(47, 43, 67, 0.1);
+  margin-top: 20px;
+  /* Default border radius that will be overridden for multi-row */
+  border-radius: var(--p-border-radius-full);
+  z-index: 2;
+  transition: border-radius 0.2s ease-in-out;
+}
+
+/* Apply 10px border radius when content wraps to multiple rows */
+.multiRowWrapper {
+  border-radius: 10px !important;
+}
+
+/* Apply to searchBox when there are multiple rows */
+.multiRowSearchBox {
+  padding: 6px 10px; /* Add padding when multiple rows */
+}
+
+/* Style for the search input button with dynamic border radius */
+.searchInputButton {
+  /* Default when in single row mode */
+  border-radius: var(--p-border-radius-full);
+  /* Add transition for smooth changes */
+  transition: border-radius 0.2s ease-in-out;
+}
+
+/* Button style when in multi-row mode */
+.multiRowWrapper .searchInputButton {
+  border-radius: 10px !important;
+}
+
+/* You can also apply directly to buttons if the above selector doesn't work */
+.multiRowSearchButton {
+  border-radius: 10px !important;
+}
+
+/* Apply consistent styles to all interactive elements within search */
+.multiRowWrapper input,
+.multiRowWrapper button,
+.multiRowWrapper .searchTag,
+.multiRowWrapper .tagItem {
+  border-radius: 8px !important;
+}
+
+.innerPageSearchBox {
+  padding: 10px;
+  width: 100%;
+}
+
+.searchBox {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 0;
+  position: relative;
+  /* padding: 4px; */
+  /* border: 1px solid rgba(47, 43, 67, 0.1);
+  border-radius: 12px;
+  padding: 8px; */
+  min-height: 48px;
+  height: 100%;
+}
+
+/* New class for search box with multiple rows */
+.multiRowSearchBox {
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.keySuggestionsContainer {
+  display: flex;
+  width: 933px;
+  height: 40px;
+  margin-top: 4px;
+  background: #ecd9ff38;
+}
+
+.keySuggestionsLeft {
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  width: 50%;
+}
+
+.leftText,
+.rightText {
+  padding-left: 8px;
+}
+
+.keySuggestionsRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  width: 50%;
+}
+
+.enterIcon {
+  color: #222;
+  border-radius: 4px;
+  border: 1px solid darkgray;
+  padding: 4px;
+  box-shadow: 0 3px 6px 0px #80808024;
+  background: #ddd;
+}
+
+.arrowKeys {
+  color: #222;
+  border-radius: 4px;
+  border: 1px solid darkgray;
+  padding: 2px;
+  box-shadow: 0 3px 6px 0px #80808024;
+  background: #ddd;
+}
+
+.arrowKeys:first-child {
+  margin-right: 12px;
+}
+
+.escIcon {
+  color: #222;
+  border-radius: 4px;
+  border: 1px solid darkgray;
+  padding: 4px;
+  margin-left: 12px;
+  box-shadow: 0 3px 6px 0px #80808024;
+  background: #ddd;
+}
+
+.homePageSearchBox {
+  /* Add any specific styling for the home page search box */
+}
+
+
+
+@media only screen and (max-width: 768px) {
+  .searchBoxWrapper {
+    width: 100%;
+    min-width: 80vw;
+    border-radius: var(--p-border-radius-tag);
+  }
+}

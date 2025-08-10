@@ -1,0 +1,56 @@
+.helpDropdownContainer {
+  position: absolute;
+  top: 0px;
+  padding: 15px 20px;
+  background-color: #fbfeff;
+  font-size: var(--w-font-size-body);
+  font-weight: var(--w-font-weight-heading);
+  color: var(--color-background-stronger);
+  border-top: none;
+  z-index: 1;
+  top: 10px;
+  margin: 0 auto;
+  width: 45vw!important;
+  border-radius: 14px;
+  box-shadow: 0px 10px 14px 4px #80808024;
+  border: 1px solid #e0e0e0b0;
+}
+
+.textSearchTips {
+  border-bottom: 0.76px solid var(--color-background-primary-weaker);
+  padding-bottom: var(--w-space-s);
+  padding-top: var(--w-space-s);
+  font-size: var(--w-font-size-body);
+  font-weight: var(--w-font-weight-body);
+}
+
+.textSearchTips:last-child {
+  border: none;
+}
+
+.helpDropdownContainer svg {
+  width: 18px;
+  height: 18px;
+}
+
+.fieldType {
+  font-size: 18px;
+}
+
+.fieldDescription {
+  font-size: 14px;
+  color: #000;
+  font-weight: 400;
+}
+
+@media only screen and (max-width: 768px) {
+  .helpDropdownContainer {
+    width: 93vw!important;
+    z-index: 999;
+  }
+  .textSearchTips {
+    flex-flow: column;
+    align-items: start;
+  }
+
+}

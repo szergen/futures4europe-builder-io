@@ -1,0 +1,95 @@
+.existingImageSpinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.AvatarImagine img {
+  width: 147px;
+  height: 147px;
+  box-shadow: inset 0px 0px 0px 1px var(--color-background-brand-tag);
+}
+
+.avatarUpload {
+  position: absolute;
+  transform: translate(0px, 0px);
+  z-index: var(--w-z-index-modal);
+  width: var(--c-avatar-size-150);
+  height: var(--c-avatar-size-150);
+  border-radius: var(--p-border-radius-full);
+  text-align: center;
+  vertical-align: middle;
+  opacity: 0;
+}
+
+.avatarUploadEpty {
+  position: relative;
+  background: var(--color-background-brand-tag);
+  opacity: 1;
+}
+
+.avatarUploadEpty:hover {
+  cursor: pointer;
+  background: var(--color-background-offline);
+  transition: 1.3s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.avatarUploadEpty svg:hover path {
+  cursor: pointer;
+  background-color: var(--primary-brand);
+  fill: var(--primary-white);
+}
+
+.avatarUpload:hover {
+  cursor: pointer;
+  /* background: var(--color-background-brand-tag); */
+  backdrop-filter: blur(3px);
+  transition: 1.3s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 1;
+}
+
+.avatarUpload svg {
+  text-align: center;
+  position: relative;
+  display: block;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  padding: var(--w-space-s);
+  background-color: var(--color-background-brand-tag);
+  border-radius: var(--p-border-radius-300);
+  z-index: 1;
+  transition: 1.3s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.avatarUpload svg:hover {
+  cursor: pointer;
+  background-color: var(--primary-brand);
+  stroke: var(--primary-white);
+}
+
+@keyframes fade-in-left {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fadeInLeft {
+  animation: fade-in-left 0.6s ease-in-out;
+}
+
+.cropperWrapper {
+  background: rgba(0, 0, 0, 0.85) !important;
+}
+
+.cropperFade {
+  border-radius: var(--p-border-radius-300);
+}
+
+.cropperFadeVisible {
+  border-radius: var(--p-border-radius-300);
+}

@@ -1,0 +1,73 @@
+.socialIcons {
+  width: 90%;
+  display: flex;
+  margin-top: 0.5em;
+  justify-content: center;
+  position: relative;
+}
+
+.socialIcons .socialIcon:hover::after {
+  opacity: 0;
+}
+.socialIcons .socialIcon.editIcon:hover::after {
+  content: '';
+  position: absolute;
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20focusable%3D%22false%22%20class%3D%22chakra-icon%20css-8nzjqw%22%20aria-hidden%3D%22true%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M14.87%204.576a1.966%201.966%200%200%201%202.78%200l1.774%201.773a1.966%201.966%200%200%201%200%202.78l-9.611%209.612a1%201%200%200%201-.478.266l-4.106.966a1%201%200%200%201-1.202-1.202l.966-4.106a1%201%200%200%201%20.266-.478l9.611-9.611Zm1.39%201.438L6.875%2015.4l-.53%202.257%202.256-.531%209.386-9.387-1.726-1.725Z%22%20clip-rule%3D%22evenodd%22/%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M13.493%206.509a.75.75%200%200%201%201.06%200l3%203a.75.75%200%200%201-1.06%201.06l-3-3a.75.75%200%200%201%200-1.06Z%22%20clip-rule%3D%22evenodd%22/%3E%3C/svg%3E');
+  background-size: 14px;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+  cursor: pointer;
+  opacity: 0.9;
+  background-color: var(--color-background-brand-tag);
+  border-radius: var(--p-border-radius-full);
+  transition: 1s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.socialIcons svg {
+  cursor: pointer;
+}
+
+.socialIcon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+.socialIcons .socialIcon:hover::after {
+  opacity: 0;
+}
+.socialIcons .socialIcon.editIcon:hover::after {
+  content: '';
+  position: absolute;
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20focusable%3D%22false%22%20class%3D%22chakra-icon%20css-8nzjqw%22%20aria-hidden%3D%22true%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M14.87%204.576a1.966%201.966%200%200%201%202.78%200l1.774%201.773a1.966%201.966%200%200%201%200%202.78l-9.611%209.612a1%201%200%200%201-.478.266l-4.106.966a1%201%200%200%201-1.202-1.202l.966-4.106a1%201%200%200%201%20.266-.478l9.611-9.611Zm1.39%201.438L6.875%2015.4l-.53%202.257%202.256-.531%209.386-9.387-1.726-1.725Z%22%20clip-rule%3D%22evenodd%22/%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M13.493%206.509a.75.75%200%200%201%201.06%200l3%203a.75.75%200%200%201-1.06%201.06l-3-3a.75.75%200%200%201%200-1.06Z%22%20clip-rule%3D%22evenodd%22/%3E%3C/svg%3E');
+  background-size: 14px;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+  cursor: pointer;
+  opacity: 0.9;
+  background-color: var(--color-background-brand-tag);
+  border-radius: var(--p-border-radius-full);
+  transition: 1s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.socialIcon {
+  margin: 0px var(--w-space-m);
+}
+
+.socialIcon.extended {
+  margin: 0px var(--w-space-xs);
+}
+
+.website {
+  background: var(--primary-brand);
+  border-radius: var(--p-border-radius-full);
+}

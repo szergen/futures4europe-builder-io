@@ -1,0 +1,130 @@
+.personContainer {
+  margin: 0 auto;
+  max-width: 850px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1em;
+
+  .preHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+  }
+
+  .personHeader {
+    display: flex;
+    margin-top: 2em;
+
+    .imageAndSocialColumn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 1em;
+    }
+    .socialIcons {
+      width: 90%;
+      display: flex;
+      margin-top: 0.5em;
+      justify-content: center;
+
+      svg {
+        margin-left: 10px;
+      }
+    }
+    .detailsColumn {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .personWorkplace {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+
+    .personWorkplaceItem {
+      position: relative;
+      margin: 0.5em 0;
+    }
+  }
+
+  .recommandations {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    margin-top: 0.5em;
+  }
+
+  .foresight,
+  .domains,
+  .coordinators,
+  .posts,
+  .projectResults,
+  .events,
+  .affiliations,
+  .team,
+  .organisations {
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+    flex-wrap: wrap;
+    margin-bottom: 1em;
+  }
+
+  .coordinatorsContent,
+  .teamContent,
+  .organisationsContent {
+    position: relative;
+  }
+
+  .organisationsContent {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+  .organisationContentItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .foresightTitle,
+  .domainTitle,
+  .projectsTitle,
+  .affiliationsTitle {
+    font-weight: bold;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 12px;
+    margin-bottom: 1em;
+  }
+
+  .affiliationsContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+  }
+  .affiliationsItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .react-select__placeholder {
+    z-index: 3;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .personHeader { 
+    flex-direction: column;
+    padding: 0px var(--w-space-s);
+  }
+  .preHeader {
+    flex-direction: column;
+  }
+  .personContainer {
+    padding: 0 var(--w-space-l);
+  }
+}

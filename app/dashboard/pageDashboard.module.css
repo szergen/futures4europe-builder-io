@@ -1,0 +1,86 @@
+.UserDashboardWrapper {
+  max-width: var(--p-breakpoints-base);
+}
+.headingDashboardh3 {
+  font-size: var(--w-font-size-heading);
+  font-weight: var(--w-font-size-section-heading);
+  color: var(--color-text-primary-strongest);
+}
+.headingDashboardh2 {
+  font-size: var(--w-font-size-heading);
+  font-weight: var(--w-font-size-section-heading);
+  color: var(--color-text-primary-strongest);
+}
+.headingDashboardh1 {
+  font-size: var(--w-font-size-display-heading);
+  font-weight: var(--w-font-weight-heading);
+  color: var(--color-text-primary-strongest);
+}
+.dashboardBox {
+  border: 1px solid var(--color-border-brand-separator);
+  border-radius: var(--p-border-radius-200);
+}
+.boxTextDashboard {
+  color: var(--color-text-icon-offline);
+  font-size: var(--w-font-size-sub-section-heading);
+}
+.listDashboard > div {
+  border-bottom: 1px solid var(--color-border-brand-separator);
+}
+.listDashboard div:last-child {
+  border-bottom: none;
+}
+.listItemDashboard {
+  border-top: 1px solid var(--color-border-brand-separator);
+  border-bottom: 1px solid var(--color-border-brand-separator);
+}
+
+/* Add dashbaord box*/
+.dashboardBoxAdd {
+  .headingDashboardh3 {
+    color: var(--primary-white);
+  }
+  .headingDashboardh2 {
+    color: var(--primary-white);
+  }
+  .headingDashboardh1 {
+    font-size: var(--w-font-size-display-large);
+    color: var(--primary-white);
+  }
+  .boxTextDashboard {
+    font-size: var(--w-font-size-section-heading);
+    color: var(--primary-white);
+  }
+}
+
+/* Alert dashboard box */
+
+.dashboardBoxAlert {
+  .headingDashboardh3 {
+    color: var(--color-text-primary-strongest);
+  }
+  .headingDashboardh2 {
+    color: var(--color-text-primary-strongest);
+  }
+  .headingDashboardh1 {
+    font-size: var(--w-font-size-display-large);
+    margin-bottom: var(--w-space-s);
+    color: var(--color-text-primary-strongest);
+  }
+  .boxTextDashboard {
+    font-size: var(--w-font-size-section-heading);
+    color: var(--color-text-primary-strongest);
+  }
+}
+
+.dashboardBoxAddWrap {
+  border-radius: var(--p-border-radius-800);
+  border-width: 0px;
+  position: relative;
+}
+
+/* List Items table  */
+.listItemDashboard {
+  border-top: 1px solid var(--color-border-brand-separator);
+  border-bottom: 1px solid var(--color-border-brand-separator);
+}
