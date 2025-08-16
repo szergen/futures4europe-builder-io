@@ -14,13 +14,14 @@ export const metadata: Metadata = {
 export default async function BuilderTestPage() {
   // Fetch content from Builder.io on the server side
   // This is for the "section" model - you can change this to "page" or "data-model"
-  const sectionContent = await getBuilderContent("section", {
+  const sectionContent = await getBuilderContent("admin-section", {
     query: {
       // You can add specific queries here, for now we'll get any content
-      "data.published": true,
+      // "data.published": true,
     },
     limit: 1,
   });
+  console.log("debug1---->sectionContent", sectionContent);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -52,7 +53,7 @@ export default async function BuilderTestPage() {
 
           {sectionContent ? (
             <BuilderContent
-              model="section"
+              model="admin-section"
               content={sectionContent}
               loading={
                 <div className="animate-pulse">

@@ -9,8 +9,8 @@ export default function ClientBuilderExample() {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedModel, setSelectedModel] = useState<
-    "page" | "section" | "blog-post-test" | "tag"
-  >("section");
+    "page" | "admin-section" | "blog-post-test" | "tag"
+  >("admin-section");
 
   useEffect(() => {
     if (!builderConfig.apiKey) {
@@ -55,12 +55,16 @@ export default function ClientBuilderExample() {
           value={selectedModel}
           onChange={(e) =>
             setSelectedModel(
-              e.target.value as "page" | "section" | "blog-post-test" | "tag"
+              e.target.value as
+                | "page"
+                | "admin-section"
+                | "blog-post-test"
+                | "tag"
             )
           }
           className="border border-gray-300 rounded-md px-3 py-2 bg-white"
         >
-          <option value="section">Section</option>
+          <option value="admin-section">Admin Section</option>
           <option value="page">Page</option>
           <option value="blog-post-test">Blog Post Test</option>
           <option value="tag">Tag</option>
@@ -84,7 +88,7 @@ export default function ClientBuilderExample() {
       ) : content ? (
         <div>
           <p className="text-green-600 mb-4">
-            ✅ Content loaded from Builder.io {selectedModel} model
+            ✅ Content loaded from Builder.io {selectedModel} model <br />
             {JSON.stringify(content)}
           </p>
           <BuilderContent model={selectedModel} content={content} />

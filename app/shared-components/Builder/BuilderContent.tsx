@@ -4,7 +4,7 @@ import { BuilderComponent, useIsPreviewing } from "@builder.io/react";
 import { builderConfig } from "../../../builder.config";
 
 interface BuilderContentProps {
-  model: "page" | "section" | "blog-post-test" | "tag";
+  model: "page" | "admin-section" | "blog-post-test" | "tag";
   content?: any;
   data?: any;
   loading?: React.ReactNode;
