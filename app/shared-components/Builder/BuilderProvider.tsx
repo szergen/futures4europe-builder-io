@@ -4,6 +4,9 @@ import { builder } from "@builder.io/react";
 import { builderConfig } from "../../../builder.config";
 import { ReactNode, useEffect } from "react";
 
+// Import component registrations
+import "./components/TagComponent";
+
 // Initialize Builder.io
 if (builderConfig.apiKey) {
   builder.init(builderConfig.apiKey);
@@ -22,6 +25,7 @@ export default function BuilderProvider({ children }: BuilderProviderProps) {
     // Any additional Builder.io setup can go here
     if (builderConfig.apiKey) {
       console.log("Builder.io initialized successfully");
+      console.log("Custom components registered: Tag");
     }
   }, []);
 
