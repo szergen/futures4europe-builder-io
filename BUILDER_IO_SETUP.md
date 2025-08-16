@@ -51,6 +51,21 @@ Builder.io offers three main content model types:
 
 ## 🛠 Implementation Examples
 
+### Dynamic Pages with Builder.io Content
+
+The `/info/[slug]` route automatically renders Builder.io content based on the URL slug:
+
+```typescript
+// Automatically available at /info/your-page-slug
+// Content is fetched from Builder.io using the slug
+```
+
+**How it works:**
+
+1. Creates content in Builder.io with a URL path like `/info/your-slug`
+2. Visit `/info/your-slug` on your site
+3. The page automatically fetches and renders the content
+
 ### Server-Side Content Fetching
 
 ```typescript
@@ -138,6 +153,20 @@ export default function MyComponent() {
 1. Create a new **Section Model** called "hero-section"
 2. Use the visual editor to design your hero section
 3. Add dynamic fields for title, subtitle, CTA button, etc.
+
+### Example: Creating Dynamic Info Pages
+
+1. Create a new **Page Model** in Builder.io
+2. Set the URL to `/info/your-page-slug` (replace with your desired slug)
+3. Design your page content using the visual editor
+4. Publish the content
+5. Visit `/info/your-page-slug` on your Next.js site
+
+**Important Notes:**
+
+- The URL path in Builder.io should match the slug you want
+- Make sure to publish the content (not leave it as draft)
+- The page will automatically handle metadata based on your content
 
 ## 🎨 Custom Components
 
