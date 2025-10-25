@@ -72,7 +72,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         (owner: any) => owner?._id === userDetails?.userTag?._id
       );
 
-    console.log('debug1->permissionCondition', permissionCondition);
+    // console.log('debug1->permissionCondition', permissionCondition);
 
     if (permissionCondition) {
       setIsPageOwnedByUser(true);

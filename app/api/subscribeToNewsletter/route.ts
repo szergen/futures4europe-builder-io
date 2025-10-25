@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient, ApiKeyStrategy } from '@wix/sdk';
-import { marketingConsent } from '@wix/marketing';
-import { submissions } from '@wix/forms'; // Add this import
+import { NextRequest, NextResponse } from "next/server";
+import { createClient, ApiKeyStrategy } from "@wix/sdk";
+import { marketingConsent } from "@wix/marketing";
+import { submissions } from "@wix/forms"; // Add this import
 
 export const POST = async (req: NextRequest) => {
   const { email } = await req.json();
@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
       await wixClient.marketingConsent.upsertMarketingConsent({
         details: {
           email,
-          type: 'EMAIL',
+          type: "EMAIL",
         },
       });
 
@@ -33,18 +33,18 @@ export const POST = async (req: NextRequest) => {
 
     try {
       const response = await fetch(
-        'https://www.wixapis.com/email-marketing/v1/email-subscriptions',
+        "https://www.wixapis.com/email-marketing/v1/email-subscriptions",
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${NEXT_PUBLIC_WIX_API_KEY}`,
-            'wix-site-id': NEXT_PUBLIC_WIX_SITE_ID,
+            "wix-site-id": NEXT_PUBLIC_WIX_SITE_ID,
           },
           body: JSON.stringify({
             subscription: {
               email: email,
-              subscriptionStatus: 'SUBSCRIBED',
+              subscriptionStatus: "SUBSCRIBED",
             },
           }),
         }
@@ -59,7 +59,7 @@ export const POST = async (req: NextRequest) => {
         try {
           // Create form submission using your actual form ID and field key
           const formSubmission = {
-            formId: '70c1f23b-9a16-4b3d-a1ee-7db9fb52b0b3', // Your actual form ID
+            formId: "70c1f23b-9a16-4b3d-a1ee-7db9fb52b0b3", // Your actual form ID
             submissions: {
               email_d45f: email, // Use your actual field key
             },
@@ -68,22 +68,22 @@ export const POST = async (req: NextRequest) => {
           const submissionResult = await wixClient.submissions.createSubmission(
             formSubmission
           );
-          console.log('Form submission created:', submissionResult);
+          // console.log('Form submission created:', submissionResult);
 
           // If the submission status is PENDING, confirm it to ensure automations trigger
-          if (submissionResult.status === 'PENDING' && submissionResult._id) {
+          if (submissionResult.status === "PENDING" && submissionResult._id) {
             const confirmedSubmission =
               await wixClient.submissions.confirmSubmission(
                 submissionResult._id
               );
-            console.log('Submission confirmed:', confirmedSubmission);
+            // console.log("Submission confirmed:", confirmedSubmission);
           }
         } catch (formError) {
-          console.error('Error submitting form:', formError);
+          console.error("Error submitting form:", formError);
         }
       }
     } catch (apiError) {
-      console.error('API error:', apiError);
+      console.error("API error:", apiError);
     }
 
     return NextResponse.json(
@@ -91,7 +91,7 @@ export const POST = async (req: NextRequest) => {
         marketingConsent: consentResult,
         subscriptionUpdated,
         subscriptionResponse,
-        message: 'Subscription processed successfully',
+        message: "Subscription processed successfully",
       },
       { status: 200 }
     );
@@ -99,7 +99,7 @@ export const POST = async (req: NextRequest) => {
     console.error(`Error subscribing to newsletter for email ${email}:`, error);
 
     return NextResponse.json(
-      { message: 'Internal server error', error: error.message },
+      { message: "Internal server error", error: error.message },
       { status: 500 }
     );
   }
@@ -107,7 +107,7 @@ export const POST = async (req: NextRequest) => {
 
 export const GET = () => {
   return NextResponse.json(
-    { message: 'Method not allowed for getCollectionItemByTitle' },
+    { message: "Method not allowed for getCollectionItemByTitle" },
     { status: 405 }
   );
 };

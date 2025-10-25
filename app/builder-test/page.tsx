@@ -14,6 +14,12 @@ export const metadata: Metadata = {
 export default async function BuilderTestPage() {
   // Fetch content from Builder.io on the server side
   // This is for the "section" model - you can change this to "page" or "data-model"
+  console.log("\n===== Builder.io Test Page - Debug Info =====");
+  console.log(
+    "Environment API Key:",
+    process.env.NEXT_PUBLIC_BUILDER_API_KEY ? "Set" : "NOT SET"
+  );
+
   const sectionContent = await getBuilderContent("admin-section", {
     query: {
       // You can add specific queries here, for now we'll get any content
@@ -22,6 +28,7 @@ export default async function BuilderTestPage() {
     limit: 1,
   });
   console.log("debug1---->sectionContent", sectionContent);
+  console.log("===== End Debug Info =====\n");
 
   return (
     <div className="container mx-auto px-4 py-8">

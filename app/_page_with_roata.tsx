@@ -1,15 +1,15 @@
-'use client';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
-import { items } from '@wix/data';
-import { useWixModules } from '@wix/sdk-react';
+"use client";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
+import { items } from "@wix/data";
+import { useWixModules } from "@wix/sdk-react";
 // import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import gsap from 'gsap';
+import { useEffect, useState } from "react";
+import gsap from "gsap";
 // import InertiaPlugin from 'gsap/InertiaPlugin';
-import MotionPathPlugin from 'gsap/MotionPathPlugin';
-import Draggable from 'gsap/Draggable';
-import MiniPagesListItemPost from './page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost';
-import { getCollectionItemByTitle } from './wixUtils/client-side';
+import MotionPathPlugin from "gsap/MotionPathPlugin";
+import Draggable from "gsap/Draggable";
+import MiniPagesListItemPost from "./page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost";
+import { getCollectionItemByTitle } from "./wixUtils/client-side";
 
 // Helper function to get motion path length and spacing
 function getPathProperties(pathSelector: any, itemCount: any) {
@@ -45,7 +45,7 @@ function animateListIn(
         end: (spacing * (index + 1)) / pathLength,
       },
       opacity: 1, // Fade the item in
-      ease: 'power2.inOut',
+      ease: "power2.inOut",
     });
   });
 }
@@ -72,7 +72,7 @@ function makeListDraggable(listSelector: any, pathSelector: any) {
 
   // Draggable functionality along the path
   Draggable.create(items, {
-    type: 'x', // Drag along the x direction
+    type: "x", // Drag along the x direction
     onDrag: function () {
       const delta = this.deltaX * dragMultiplier;
       currentOffset += delta;
@@ -192,7 +192,7 @@ export const Home = () => {
     const featuredIds = homepageConfig.data?.[featuredKey]?.map(
       (project: any) => project._id
     );
-    console.log('featuredIds', featuredIds);
+    // console.log('featuredIds', featuredIds);
     return pages.filter((page: any) => featuredIds.includes(page.data._id));
   };
 
@@ -200,8 +200,8 @@ export const Home = () => {
     // #region get homepage config
     const fetchHomepageConfig = async () => {
       const config = await getCollectionItemByTitle(
-        'HomePageConfig',
-        'Homepage Config'
+        "HomePageConfig",
+        "Homepage Config"
       );
 
       setHomepageConfig(config);
@@ -223,40 +223,40 @@ export const Home = () => {
         featuredPosts: getFeaturedPages(
           homepageConfig,
           postPages,
-          'featuredPosts'
+          "featuredPosts"
         ),
         featuredProjects: getFeaturedPages(
           homepageConfig,
           infoPages,
-          'featuredProjects'
+          "featuredProjects"
         ),
         featuredProjectResults: getFeaturedPages(
           homepageConfig,
           postPages,
-          'featuredProjectResults'
+          "featuredProjectResults"
         ),
         featuredEvents: getFeaturedPages(
           homepageConfig,
           postPages,
-          'featuredEvents'
+          "featuredEvents"
         ),
         featuredOrganisations: getFeaturedPages(
           homepageConfig,
           infoPages,
-          'featuredOrganisations'
+          "featuredOrganisations"
         ),
         featuredPeople: getFeaturedPages(
           homepageConfig,
           infoPages,
-          'featuredPeople'
+          "featuredPeople"
         ),
       });
     }
   }, [homepageConfig, postPages, infoPages]);
 
   useEffect(() => {
-    console.log('homepageConfig', homepageConfig);
-    console.log('featuredPages', featuredPages);
+    // console.log('homepageConfig', homepageConfig);
+    // console.log('featuredPages', featuredPages);
   }, [homepageConfig, featuredPages]);
 
   return (
@@ -284,22 +284,22 @@ export const Home = () => {
             <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop
                 offset="0%"
-                style={{ stopColor: '#ffff', stopOpacity: 1 }}
+                style={{ stopColor: "#ffff", stopOpacity: 1 }}
               />
               <stop
                 offset="100%"
-                style={{ stopColor: '#4267f4', stopOpacity: 1 }}
+                style={{ stopColor: "#4267f4", stopOpacity: 1 }}
               />
             </linearGradient>
 
             <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop
                 offset="0%"
-                style={{ stopColor: '#ffff', stopOpacity: 1 }}
+                style={{ stopColor: "#ffff", stopOpacity: 1 }}
               />
               <stop
                 offset="100%"
-                style={{ stopColor: '#4267f4', stopOpacity: 1 }}
+                style={{ stopColor: "#4267f4", stopOpacity: 1 }}
               />
             </linearGradient>
           </defs>
@@ -422,7 +422,7 @@ export const Home = () => {
                 fontWeight="500"
               >
                 <tspan x="0" y="0">
-                  {' '}
+                  {" "}
                 </tspan>
               </text>
               <text

@@ -1,7 +1,7 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from "react";
 
-import { sortTags } from './SearchContext.utils';
-import { useAuth } from '../AuthContext/AuthContext';
+import { sortTags } from "./SearchContext.utils";
+import { useAuth } from "../AuthContext/AuthContext";
 
 export interface SearchState {
   initialData: any;
@@ -20,13 +20,13 @@ export interface SearchState {
   clickedTag: string;
   searchedItems: {
     searchItem: string;
-    searchItemType: 'text' | 'tag' | 'field-tag' | 'sortby' | '';
+    searchItemType: "text" | "tag" | "field-tag" | "sortby" | "";
   }[];
   selectedSuggestionIndex: number;
   selectedSuggestionTag: string;
   selectedSearchedItemIndex: number;
-  activeSelection: 'field' | 'tag' | 'field-tag' | '' | 'sortby';
-  sortBy: 'relevance' | 'byBeginDate' | 'byEstablishedDate';
+  activeSelection: "field" | "tag" | "field-tag" | "" | "sortby";
+  sortBy: "relevance" | "byBeginDate" | "byEstablishedDate";
   inputText: string;
   sortTags: typeof sortTags;
   selectedSortTag: string;
@@ -43,18 +43,18 @@ const initialState: SearchState = {
   showHelp: false,
   showSuggestions: false,
   showResults: false,
-  clickedSuggestion: '',
-  clickedField: '',
-  clickedTag: '',
+  clickedSuggestion: "",
+  clickedField: "",
+  clickedTag: "",
   searchedItems: [],
   selectedSuggestionIndex: 0,
-  selectedSuggestionTag: '',
+  selectedSuggestionTag: "",
   selectedSearchedItemIndex: -1,
-  activeSelection: '',
-  sortBy: 'relevance',
-  inputText: '',
+  activeSelection: "",
+  sortBy: "relevance",
+  inputText: "",
   sortTags: sortTags,
-  selectedSortTag: '',
+  selectedSortTag: "",
   sortTagsSuggestions: [],
 };
 
@@ -177,7 +177,7 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
       postPagesFetched &&
       affiliationsFetched
     ) {
-      console.log('Data fetched, example of tags:', authTags[0]);
+      // console.log('Data fetched, example of tags:', authTags[0]);
       setTags(authTags.filter((tag: any) => !tag?.masterTag));
       setInfoPages(authInfoPages.map((page: any) => page.data));
       setPostPages(authPostPages.map((page: any) => page.data));
@@ -191,10 +191,10 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
   // Update search state when data is loaded or tags change
   useEffect(() => {
     if (!loading) {
-      console.log('SearchContext: Updating search state with fetched data');
-      console.log(
-        `SearchContext: Using ${tags.length} tags, ${infoPages.length} info pages, ${postPages.length} post pages, and ${affiliations.length} affiliations`
-      );
+      // console.log("SearchContext: Updating search state with fetched data");
+      // console.log(
+      //   `SearchContext: Using ${tags.length} tags, ${infoPages.length} info pages, ${postPages.length} post pages, and ${affiliations.length} affiliations`
+      // );
 
       const initialData = {
         ...searchState,
@@ -210,7 +210,7 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
       initialData.initialData = { ...initialData };
       setSearchState(initialData);
 
-      console.log('SearchContext: Search state updated');
+      // console.log("SearchContext: Search state updated");
     }
   }, [loading, tags, infoPages, postPages, affiliations]);
 

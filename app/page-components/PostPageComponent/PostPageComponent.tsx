@@ -78,7 +78,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         (owner: any) => owner?._id === userDetails?.userTag?._id
       );
 
-    console.log('debug1->permissionCondition', permissionCondition);
+    // console.log('debug1->permissionCondition', permissionCondition);
 
     if (permissionCondition) {
       setIsPageOwnedByUser(true);
@@ -719,7 +719,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   useEffect(() => {
     if (isLoggedIn && postData && isNewPost && pageType) {
       const postTag = tags.find((tag) => tag.name === pageType);
-      console.log('debug1->personTag', postTag);
+      // console.log('debug1->personTag', postTag);
       if (postTag) {
         updatePostDataBasedOnKeyValue('pageType', [postTag]);
       }

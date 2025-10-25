@@ -331,7 +331,7 @@ const TagInput: React.FC<TagInputProps> = ({
         ['name']
       );
       console.log(
-        'debug1->sortTagsSuggestionsSearch',
+        // 'debug1->sortTagsSuggestionsSearch',
         sortTagsSuggestionsSearch
       );
       // }

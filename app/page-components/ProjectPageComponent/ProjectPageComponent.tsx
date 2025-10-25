@@ -73,7 +73,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         (owner: any) => owner?._id === userDetails?.userTag?._id
       );
 
-    console.log('debug1->permissionCondition', permissionCondition);
+    // console.log('debug1->permissionCondition', permissionCondition);
 
     if (permissionCondition) {
       setIsPageOwnedByUser(true);
@@ -944,7 +944,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       //   updatePersonDataOnKeyValue('personTag', personTag);
       // }
       const projectInfoTag = tags.find((tag) => tag.name === 'project info');
-      console.log('debug1->projectInfoTag', projectInfoTag);
+      // console.log('debug1->projectInfoTag', projectInfoTag);
       if (projectInfoTag) {
         updateProjectDataOnKeyValue('pageType', projectInfoTag);
       }

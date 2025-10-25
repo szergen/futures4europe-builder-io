@@ -1,8 +1,8 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 // import { useRouter } from 'next/navigation';
 // import { getWixClientMember } from '@app/hooks/useWixClientServer';
-import LoadingSpinner from '@app/shared-components/LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
 import {
   Button,
   Card,
@@ -11,21 +11,21 @@ import {
   TextInput,
   Alert,
   Modal,
-} from 'flowbite-react';
-import { HiMail, HiInformationCircle } from 'react-icons/hi';
-import ReCAPTCHA from 'react-google-recaptcha';
-import Link from 'next/link';
-import { triggerForgotPasswordMail } from '@app/wixUtils/client-side';
+} from "flowbite-react";
+import { HiMail, HiInformationCircle } from "react-icons/hi";
+import ReCAPTCHA from "react-google-recaptcha";
+import Link from "next/link";
+import { triggerForgotPasswordMail } from "@app/wixUtils/client-side";
 
 // import { IOAuthStrategy, useWixAuth } from '@wix/sdk-react';
 
 export default function ForgotPassword() {
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   // const router = useRouter();
   // const { sendSetPasswordEmail,  } = useWixModules(authentication);
   // const { insertDataItem } = useWixModules(items);
 
-  const [captchaToken, setCaptchaToken] = useState('');
+  const [captchaToken, setCaptchaToken] = useState("");
   const [isMailSent, setIsMailSent] = useState(false);
   const [showAccountCreatedModal, setShowAccountCreatedModal] = useState(false);
 
@@ -38,18 +38,18 @@ export default function ForgotPassword() {
     try {
       setShowAccountCreatedModal(true);
       const email = event?.target?.email?.value;
-      const redirectUrl = window.location.origin + '/login';
-      console.log('redirectUrl', redirectUrl);
+      const redirectUrl = window.location.origin + "/login";
+      // console.log('redirectUrl', redirectUrl);
 
-      console.log('email', email);
+      // console.log('email', email);
 
-      console.log('captchaToken', captchaToken);
+      // console.log('captchaToken', captchaToken);
       const response = await triggerForgotPasswordMail(email, redirectUrl);
-      console.log('response', response);
+      // console.log('response', response);
       setIsMailSent(true);
     } catch (err) {
-      setError('Error sending email');
-      console.error('Error:', err);
+      setError("Error sending email");
+      console.error("Error:", err);
       setShowAccountCreatedModal(false);
     }
   };
@@ -127,7 +127,7 @@ export default function ForgotPassword() {
                     Reset password
                   </Button>
                   <p className="text-sm leading-relaxed text-grey-900">
-                    Are you allready a memebr?{' '}
+                    Are you allready a memebr?{" "}
                     <a className="font-bold text-grey-700" href="/login">
                       Log in
                     </a>

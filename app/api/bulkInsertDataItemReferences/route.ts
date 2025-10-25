@@ -3,7 +3,7 @@ import { getWixClientServerData } from '@app/hooks/useWixClientServer';
 
 export const POST = async (req: NextRequest) => {
   const { collectionName, dataItemReferences } = await req.json();
-  console.log('dataItems->', dataItemReferences);
+  // console.log('dataItems->', dataItemReferences);
 
   try {
     const wixClientServer = await getWixClientServerData();

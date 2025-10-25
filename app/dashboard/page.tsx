@@ -1,18 +1,18 @@
-'use client';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
-import { items } from '@wix/data';
-import { useWixModules } from '@wix/sdk-react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import LoadingSpinner from '@app/shared-components/LoadingSpinner/LoadingSpinner';
-import Link from 'next/link';
-import classNames from 'classnames';
-import NavDashboard from '@app/shared-components/Layout/NavDashboard/NavDashboard';
-import SubNavDashboard from '@app/shared-components/Layout/NavDashboard/SubNavDashboard';
-import style from './pageDashboard.module.css';
-import { Button } from 'flowbite-react';
-import SpriteSvg from '@app/shared-components/SpriteSvg/SpriteSvg';
-import Typography from '@app/shared-components/Typography/Typography';
+"use client";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
+import { items } from "@wix/data";
+import { useWixModules } from "@wix/sdk-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
+import Link from "next/link";
+import classNames from "classnames";
+import NavDashboard from "@app/shared-components/Layout/NavDashboard/NavDashboard";
+import SubNavDashboard from "@app/shared-components/Layout/NavDashboard/SubNavDashboard";
+import style from "./pageDashboard.module.css";
+import { Button } from "flowbite-react";
+import SpriteSvg from "@app/shared-components/SpriteSvg/SpriteSvg";
+import Typography from "@app/shared-components/Typography/Typography";
 
 const DashboardSkeleton = () => {
   return (
@@ -45,9 +45,9 @@ const DashboardSkeleton = () => {
 };
 
 export default function Dashboard() {
-  const [userInfoPage, setUserInfoPage] = useState('');
+  const [userInfoPage, setUserInfoPage] = useState("");
   const [isPersonInfoPageReady, setIsPersonInfoPageReady] = useState(false);
-  const [personInfoPageLink, setPersonInfoPageLink] = useState('');
+  const [personInfoPageLink, setPersonInfoPageLink] = useState("");
   const [isLoadingPersonInfo, setIsLoadingPersonInfo] = useState(true);
 
   const { isLoggedIn, loading, userDetails, logout } = useAuth();
@@ -57,11 +57,11 @@ export default function Dashboard() {
 
   // Combine all loading states
   const isFullyLoaded =
-    !loading && isLoggedIn && userDetails && 'userTag' in userDetails;
+    !loading && isLoggedIn && userDetails && "userTag" in userDetails;
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
-      router.push('/login');
+      router.push("/login");
       return;
     }
 
@@ -69,18 +69,18 @@ export default function Dashboard() {
       try {
         if (userDetails?.userTag?.name) {
           setIsPersonInfoPageReady(true);
-          setPersonInfoPageLink(userDetails.userTag.tagPageLink || '');
+          setPersonInfoPageLink(userDetails.userTag.tagPageLink || "");
           setIsLoadingPersonInfo(false);
         }
       } catch (error) {
-        console.error('Error initializing person info:', error);
+        console.error("Error initializing person info:", error);
         setIsLoadingPersonInfo(false);
       }
     };
 
     if (!userDetails?.userTag) {
       setIsLoadingPersonInfo(true);
-      console.log('User details:', userDetails?.userTag);
+      // console.log('User details:', userDetails?.userTag);
     }
 
     if (userDetails) {
@@ -101,17 +101,17 @@ export default function Dashboard() {
 
   const handleLogOut = async () => {
     logout();
-    router.push('/login');
+    router.push("/login");
   };
 
-  const subNavItems = [{ href: '/dashboard', text: 'Account', isActive: true }];
+  const subNavItems = [{ href: "/dashboard", text: "Account", isActive: true }];
 
   return (
     <div
       className={classNames(
         style.UserDashboard,
         style.UserDashboardProjects,
-        'flex flex-col'
+        "flex flex-col"
       )}
     >
       <NavDashboard
@@ -130,22 +130,22 @@ export default function Dashboard() {
         <div
           className={classNames(
             style.UserDashboardWrapper,
-            'w-full flex flex-col relative m-auto mt-10 mb-6'
+            "w-full flex flex-col relative m-auto mt-10 mb-6"
           )}
         >
           <div
             className={classNames(
               style.dashboardBox,
               style.dashboardBoxAddWrap,
-              'mt-14',
-              'mb-10',
-              'p-8',
-              'bg-alertLight-site',
-              personInfoPageLink && 'bg-gray-200'
+              "mt-14",
+              "mb-10",
+              "p-8",
+              "bg-alertLight-site",
+              personInfoPageLink && "bg-gray-200"
             )}
           >
             <div
-              className={classNames(style.dashboardBoxAlert, 'flex flex-col')}
+              className={classNames(style.dashboardBoxAlert, "flex flex-col")}
             >
               <div className="flex items-center mb-4">
                 {!personInfoPageLink ? (
@@ -153,8 +153,8 @@ export default function Dashboard() {
                     className="text-site-black text-[var(--color-text-icon-error)]"
                     sizeW={24}
                     sizeH={24}
-                    viewBox={'0 0 32 32'}
-                    fill={'currentColor'}
+                    viewBox={"0 0 32 32"}
+                    fill={"currentColor"}
                     strokeWidth={0}
                     inline={false}
                   />
@@ -163,15 +163,15 @@ export default function Dashboard() {
                     className="text-site-black text-[var(--color-text-icon-error)]"
                     sizeW={24}
                     sizeH={24}
-                    viewBox={'0 0 32 32'}
-                    fill={'var(--p-border-radius-800)'}
+                    viewBox={"0 0 32 32"}
+                    fill={"var(--p-border-radius-800)"}
                     strokeWidth={0}
                     inline={false}
                   />
                 )}
                 <Typography
                   tag="h2"
-                  className={classNames(style.headingDashboardh1, 'ml-2')}
+                  className={classNames(style.headingDashboardh1, "ml-2")}
                 >
                   Person Info
                 </Typography>
@@ -182,42 +182,42 @@ export default function Dashboard() {
                   tag="p"
                   className={classNames(
                     style.boxTextDashboard,
-                    'text-black-site mb-8'
+                    "text-black-site mb-8"
                   )}
                 >
                   {!personInfoPageLink
-                    ? 'You dont have a Person Info page or you did not claim it. Create now a Person Info page to be visible to all members of futures4europe platform.'
-                    : 'Edit your Person Info page to be visible to all members of futures4europe platform.'}
+                    ? "You dont have a Person Info page or you did not claim it. Create now a Person Info page to be visible to all members of futures4europe platform."
+                    : "Edit your Person Info page to be visible to all members of futures4europe platform."}
                 </Typography>
               </div>
 
-              <div className={classNames(style.listDashboard, 'block')}>
+              <div className={classNames(style.listDashboard, "block")}>
                 <Link
                   href={
                     !personInfoPageLink
-                      ? '/person/New_Info_Page'
+                      ? "/person/New_Info_Page"
                       : personInfoPageLink
                   }
                 >
                   <Button
-                    size={'md'}
-                    color={'light'}
+                    size={"md"}
+                    color={"light"}
                     className={classNames(
                       style.buttonAddDashboard,
-                      'block border-0 mr-4 hover:bg-gray-300 focus:ring-purple-300'
+                      "block border-0 mr-4 hover:bg-gray-300 focus:ring-purple-300"
                     )}
                     pill
                   >
                     <SpriteSvg.AccountHumanIcon
                       sizeH={24}
                       sizeW={24}
-                      viewBox={'0 -1 32 32'}
+                      viewBox={"0 -1 32 32"}
                       strokeWidth={1}
                     />
                     <span className="text-lg">
                       {personInfoPageLink
-                        ? 'Edit My Person Info page'
-                        : 'Create My Person Info page'}
+                        ? "Edit My Person Info page"
+                        : "Create My Person Info page"}
                     </span>
                   </Button>
                 </Link>

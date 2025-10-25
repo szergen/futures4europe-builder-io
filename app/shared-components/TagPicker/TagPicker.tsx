@@ -1,17 +1,17 @@
-import React, { use, useEffect, useState } from 'react';
-import { items } from '@wix/data';
-import CreatableSelect from 'react-select/creatable';
-import { components } from 'react-select';
-import classNames from 'classnames';
-import Tag, { TagProps } from '../Tag/Tag';
-import { Modal, Button, TextInput, Label } from 'flowbite-react';
-import { useWixModules } from '@wix/sdk-react';
-import styles from './TagPicker.module.css';
-import { motion } from 'framer-motion';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
-import SpriteSvg from '../SpriteSvg/SpriteSvg';
-import { refetchTags } from '@app/utils/refetch-utils';
-import { Typography } from '@mui/material';
+import React, { use, useEffect, useState } from "react";
+import { items } from "@wix/data";
+import CreatableSelect from "react-select/creatable";
+import { components } from "react-select";
+import classNames from "classnames";
+import Tag, { TagProps } from "../Tag/Tag";
+import { Modal, Button, TextInput, Label } from "flowbite-react";
+import { useWixModules } from "@wix/sdk-react";
+import styles from "./TagPicker.module.css";
+import { motion } from "framer-motion";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
+import SpriteSvg from "../SpriteSvg/SpriteSvg";
+import { refetchTags } from "@app/utils/refetch-utils";
+import { Typography } from "@mui/material";
 // import Option from 'react-select/dist/declarations/src/components/Option';
 
 export type TagPickerProps = {
@@ -42,13 +42,13 @@ interface Option {
 
 const createOption = (label: string) => ({
   label,
-  value: label?.toLowerCase()?.replace(/\W/g, ''),
+  value: label?.toLowerCase()?.replace(/\W/g, ""),
 });
 
 let defaultOptions = [
-  createOption('One'),
-  createOption('Two'),
-  createOption('Three'),
+  createOption("One"),
+  createOption("Two"),
+  createOption("Three"),
 ];
 
 // Custom ClearIndicator component for single-value selects
@@ -63,7 +63,7 @@ export const TagPicker: React.FC<TagPickerProps> = ({
   tags,
   updatePostData,
   selectedValues,
-  tagType = 'Unassigned',
+  tagType = "Unassigned",
   onTagCreated,
   tagTypeLabel,
   placeholder,
@@ -78,8 +78,8 @@ export const TagPicker: React.FC<TagPickerProps> = ({
 }) => {
   // #region Tag creation form state
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [tagName, setTagName] = useState('');
-  const [tagTagline, setTagTagline] = useState('');
+  const [tagName, setTagName] = useState("");
+  const [tagTagline, setTagTagline] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { tags: allTags } = useAuth();
   // #endregion
@@ -99,9 +99,9 @@ export const TagPicker: React.FC<TagPickerProps> = ({
   // #region extra filtering logic
   useEffect(() => {
     if (extraFilterTags) {
-      console.log('filteredTags 1st value', selectedValues);
+      console.log("filteredTags 1st value", selectedValues);
       const filteredTags = extraFilterTags(tags, selectedValues?.[0]); // TODO: Check if this is the correct value @ALEX - am adugat ?. (TypeError: Cannot read properties of undefined (reading '0'))
-      console.log('filteredTags', filteredTags);
+      console.log("filteredTags", filteredTags);
       setOptions(filteredTags?.map((tag) => createOption(tag.name)));
     }
   }, [tags]);
@@ -112,7 +112,7 @@ export const TagPicker: React.FC<TagPickerProps> = ({
   const uploadTag = async (tagName: string, tagTagline: string) => {
     try {
       const result = await insertDataItem({
-        dataCollectionId: 'Tags',
+        dataCollectionId: "Tags",
         dataItem: {
           data: {
             name: tagName,
@@ -123,7 +123,7 @@ export const TagPicker: React.FC<TagPickerProps> = ({
       });
       return result;
     } catch (error) {
-      console.error('Error uploading tag:', error);
+      console.error("Error uploading tag:", error);
     }
   };
   // #endregion
@@ -143,7 +143,7 @@ export const TagPicker: React.FC<TagPickerProps> = ({
       // #region tags should be refetched here
 
       // #endregion
-      console.log('uploadedTag', uploadedTag);
+      console.log("uploadedTag", uploadedTag);
       // #endregion
 
       // #region Logic for updating the tag picker options
@@ -174,11 +174,11 @@ export const TagPicker: React.FC<TagPickerProps> = ({
       // #region Resetting the form state
       setIsLoading(false);
       setShowCreateForm(false);
-      setTagName('');
-      setTagTagline('');
+      setTagName("");
+      setTagTagline("");
       // #endregion
     } catch (error) {
-      console.error('Error uploading tag in formSubmit:', error);
+      console.error("Error uploading tag in formSubmit:", error);
       setIsLoading(false);
     }
   };
@@ -201,12 +201,12 @@ export const TagPicker: React.FC<TagPickerProps> = ({
   }, [selectedValue, selectedValues]);
 
   const handleUpdateData = (newValue: Option) => {
-    console.log('value changing');
+    console.log("value changing");
     updatePostData &&
       !isMulti &&
       updatePostData(tags?.find((tag) => tag?.name === newValue?.label));
     console.log(
-      'debug1->tag found',
+      // 'debug1->tag found',
       tags?.find((tag) => tag?.name === newValue?.label)
     );
     updatePostData &&
@@ -221,28 +221,28 @@ export const TagPicker: React.FC<TagPickerProps> = ({
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      border: 'none',
-      boxShadow: 'none',
-      '&:hover': {
-        border: 'none',
+      border: "none",
+      boxShadow: "none",
+      "&:hover": {
+        border: "none",
       },
-      minHeight: '5 0px',
-      margin: '0px 0px 0px 0px',
+      minHeight: "5 0px",
+      margin: "0px 0px 0px 0px",
     }),
     input: (provided, state) => ({
       ...provided,
-      color: 'var(--primary-brand-color)',
-      fontSize: 'var(--w-fontSize-tag)',
-      paddingLeft: 'var(--w-space-s)',
-      height: 'var(--w-space-xxxl)',
+      color: "var(--primary-brand-color)",
+      fontSize: "var(--w-fontSize-tag)",
+      paddingLeft: "var(--w-space-s)",
+      height: "var(--w-space-xxxl)",
       // minHeight: state.isFocused ? null : 'var(--w-space-xxl)',
-      transition: '',
+      transition: "",
       //border: 'none',
-      outline: 'none',
+      outline: "none",
       backgroundColor: state.selectProps.inputValue
-        ? 'var(--primary-white)'
-        : 'var(--color-background-brand-tag)',
-      borderRadius: 'var(--p-border-radius-tag)!important',
+        ? "var(--primary-white)"
+        : "var(--color-background-brand-tag)",
+      borderRadius: "var(--p-border-radius-tag)!important",
       // "&:after": {
       //   content: state.hasValue ? '"Add more"' : '""',
       //   position: 'absolute',
@@ -252,19 +252,19 @@ export const TagPicker: React.FC<TagPickerProps> = ({
       //   borderRadius: 'var(--p-border-radius-tag)!important'
       // },
       border: state.selectProps.inputValue
-        ? '4px solid var(--color-background-brand-tag)'
-        : '4px solid var(--color-background-brand-tag)',
+        ? "4px solid var(--color-background-brand-tag)"
+        : "4px solid var(--color-background-brand-tag)",
     }),
     menu: (provided) => ({
       ...provided,
-      width: '100%',
-      position: 'absolute',
+      width: "100%",
+      position: "absolute",
       zIndex: 9999,
     }),
     menuList: (provided) => ({
       ...provided,
-      maxHeight: '200px',
-      padding: '10px',
+      maxHeight: "200px",
+      padding: "10px",
     }),
     valueContainer: (provided) => ({
       ...provided,
@@ -272,22 +272,22 @@ export const TagPicker: React.FC<TagPickerProps> = ({
     }),
     singleValue: (provided) => ({
       ...provided,
-      position: 'relative',
+      position: "relative",
     }),
     option: (provided) => ({
       ...provided,
-      margin: '0 4px',
+      margin: "0 4px",
     }),
     placeholder: (provided, state) => ({
       ...provided,
-      padding: '0px var(--w-space-s)',
-      margin: '0px 4px',
-      backgroundColor: 'var(--primary-white)',
-      ':hover': {
+      padding: "0px var(--w-space-s)",
+      margin: "0px 4px",
+      backgroundColor: "var(--primary-white)",
+      ":hover": {
         // Add this :hover selector
-        boxShadow: '0px 0px 0px 4px #cfcfcf;', // Change the background color on hover
+        boxShadow: "0px 0px 0px 4px #cfcfcf;", // Change the background color on hover
       },
-      borderRadius: 'var(--p-border-radius-tag)!important',
+      borderRadius: "var(--p-border-radius-tag)!important",
     }),
     // indicatorSeparator: state => ({
     //   display: 'none',
@@ -313,7 +313,7 @@ export const TagPicker: React.FC<TagPickerProps> = ({
             <div
               className={classNames(
                 styles.tagPickerTagline,
-                'p-1 ml-2 flex flex-row items-center items-left'
+                "p-1 ml-2 flex flex-row items-center items-left"
               )}
             >
               <Tag
@@ -334,24 +334,24 @@ export const TagPicker: React.FC<TagPickerProps> = ({
           <button
             className={classNames(
               styles.tagPickerCreateButton,
-              'flex justify-center w-full'
+              "flex justify-center w-full"
             )}
             onClick={() => {
-              console.log('debug1->props', props);
+              // console.log('debug1->props', props);
               handleCreate(props.value);
             }}
           >
             <SpriteSvg.AccountAddIcon
               sizeH={24}
               sizeW={24}
-              viewBox={'-6 -6 24 24'}
+              viewBox={"-6 -6 24 24"}
               strokeWidth={1}
             />
             Create
             <span
               className={classNames(
                 styles.tagPickerCreateButtonText,
-                'font-bold'
+                "font-bold"
               )}
             >
               {props.value}
@@ -378,7 +378,7 @@ export const TagPicker: React.FC<TagPickerProps> = ({
           />
         </components.MultiValue>
       ) : (
-        ''
+        ""
       );
     },
     // Control: ({ children, ...props }: ControlProps<any>) => {
@@ -411,35 +411,35 @@ export const TagPicker: React.FC<TagPickerProps> = ({
   const validationFunctionForTitle = (tagName: string | undefined) => {
     if (!tagName) {
       setIsTagNameValid(false);
-      return 'Tag Name is required';
+      return "Tag Name is required";
     }
     if (tagName?.length < 2) {
       setIsTagNameValid(false);
-      return 'Tag Name should be at least 2 characters long';
+      return "Tag Name should be at least 2 characters long";
     }
     if (tagName?.length > 100) {
       setIsTagNameValid(false);
-      return 'Tag Name should be at most 100 characters long';
+      return "Tag Name should be at most 100 characters long";
     }
 
     if (validationForTagName(tagName)) {
       setIsTagNameValid(false);
-      return 'Tag Name already exists in a different tag type';
+      return "Tag Name already exists in a different tag type";
     }
 
     // Check for URL patterns
     if (/[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/.test(tagName)) {
       setIsTagNameValid(false);
-      return 'Tag Name cannot contain website addresses';
+      return "Tag Name cannot contain website addresses";
     }
 
     setIsTagNameValid(true);
 
-    return '';
+    return "";
   };
 
   const [isTagNameValid, setIsTagNameValid] = useState(true);
-  const [validationMessage, setValidationMessage] = useState('');
+  const [validationMessage, setValidationMessage] = useState("");
 
   useEffect(() => {
     setValidationMessage(validationFunctionForTitle(tagName));
@@ -450,7 +450,7 @@ export const TagPicker: React.FC<TagPickerProps> = ({
       <div
         className={classNames(
           styles.tagPickerWrapper,
-          'w-full relative cursor-pointer'
+          "w-full relative cursor-pointer"
         )}
         // onClick={(e: any) => {
         //   console.log('eeeee onClick', e);
@@ -490,43 +490,43 @@ export const TagPicker: React.FC<TagPickerProps> = ({
           options={options}
           value={value}
           isMulti={isMulti}
-          placeholder={placeholder || 'Add one or more post type tags'}
+          placeholder={placeholder || "Add one or more post type tags"}
           styles={customStyles}
-          className={classNames('', className)}
+          className={classNames("", className)}
           classNames={{
             control: (state) =>
               classNames(
-                state.isFocused ? styles.TagCursor : 'text-gray-site' // Proper ternary expression
+                state.isFocused ? styles.TagCursor : "text-gray-site" // Proper ternary expression
               ),
             multiValue: () =>
               classNames(
                 // styles.tagPickerPill,
-                'tagPickerPill tagPickerPillRemove cursor-pointer'
+                "tagPickerPill tagPickerPillRemove cursor-pointer"
                 // styles.tagPickerPillMultiModule
               ),
             singleValue: () =>
               classNames(
-                'tagPickerPillSingle cursor-pointer',
+                "tagPickerPillSingle cursor-pointer",
                 styles.tagPickerPillSingleModule
               ),
-            menu: () => classNames('', styles.tagPickerMenu),
-            menuList: () => classNames('', styles.tagPickerMenuList),
+            menu: () => classNames("", styles.tagPickerMenu),
+            menuList: () => classNames("", styles.tagPickerMenuList),
             // option: () => classNames('', styles.option),
             valueContainer: () =>
               classNames(
-                'text-gray-400', // bg-slate-100
+                "text-gray-400", // bg-slate-100
                 styles.tagPickerValueContainer
               ),
           }}
         />
         {showCreateForm && (
           <Modal show={showCreateForm} onClose={() => setShowCreateForm(false)}>
-            <Modal.Header>{newTagHeader || 'Add new Tag'}</Modal.Header>
+            <Modal.Header>{newTagHeader || "Add new Tag"}</Modal.Header>
             <Modal.Body>
               <form onSubmit={handleFormSubmit}>
                 <div className="mb-4">
                   <Label htmlFor="tagName" className="relative">
-                    {newTagType || 'Tag Name'}
+                    {newTagType || "Tag Name"}
                   </Label>
                   <TextInput
                     id="tagName"
@@ -540,8 +540,8 @@ export const TagPicker: React.FC<TagPickerProps> = ({
                             className="text-site-black text-[var(--color-text-icon-error)]"
                             sizeW={24}
                             sizeH={24}
-                            viewBox={'0 0 32 32'}
-                            fill={'currentColor'}
+                            viewBox={"0 0 32 32"}
+                            fill={"currentColor"}
                             strokeWidth={0}
                             inline={false}
                           />
@@ -554,15 +554,15 @@ export const TagPicker: React.FC<TagPickerProps> = ({
                 <div className="mb-4">
                   <Label
                     htmlFor="tagTagline"
-                    style={{ display: showTagTagline ? 'block' : 'none' }}
+                    style={{ display: showTagTagline ? "block" : "none" }}
                   >
-                    {newTagTagline || 'Tagline'}
+                    {newTagTagline || "Tagline"}
                   </Label>
                   <TextInput
                     id="tagTagline"
                     value={tagTagline}
                     onChange={(e) => setTagTagline(e.target.value)}
-                    style={{ display: showTagTagline ? 'block' : 'none' }}
+                    style={{ display: showTagTagline ? "block" : "none" }}
                   />
                 </div>
                 <Button

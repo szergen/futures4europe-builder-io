@@ -32,7 +32,7 @@ function CustomPostHogProvider({ children }: { children: React.ReactNode }) {
         });
       } else {
         // Optional: For development visibility
-        console.log("PostHog tracking disabled on localhost");
+        // console.log("PostHog tracking disabled on localhost");
       }
     }
   }, []);

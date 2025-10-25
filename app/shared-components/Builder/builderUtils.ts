@@ -18,6 +18,12 @@ export async function getBuilderContent(
   options: BuilderContentOptions = {}
 ) {
   try {
+    console.log(`[Builder.io] Fetching content for model: "${model}"`);
+    console.log(
+      `[Builder.io] API Key configured: ${builderConfig.apiKey ? "Yes" : "No"}`
+    );
+    console.log(`[Builder.io] Options:`, options);
+
     const content = await builder
       .get(model, {
         userAttributes: options.userAttributes,
@@ -27,10 +33,19 @@ export async function getBuilderContent(
       })
       .toPromise();
 
+    console.log(
+      `[Builder.io] Content fetched for "${model}":`,
+      content ? "Found" : "Not found"
+    );
+    if (content) {
+      console.log(`[Builder.io] Content ID:`, content.id);
+      console.log(`[Builder.io] Content name:`, content.name);
+    }
+
     return content;
   } catch (error) {
     console.error(
-      `Error fetching Builder.io content for model "${model}":`,
+      `[Builder.io] Error fetching content for model "${model}":`,
       error
     );
     return null;
