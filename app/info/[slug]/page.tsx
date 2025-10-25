@@ -46,21 +46,27 @@ export async function generateMetadata({
 export default async function InfoPage({ params }: InfoPageProps) {
   const { slug } = params;
 
+  console.log("[builder.io] slug", slug);
   // First, try to get content by URL (recommended approach for pages)
   let content = await getBuilderContentByUrl("page", `/info/${slug}`);
-
+  console.log("[builder.io] content", content);
   // If no content found by URL, try by slug query (fallback)
   if (!content) {
+    console.log("[builder.io] no content found by URL, trying by slug query");
     content = await getBuilderContent("page", {
       query: {
         "data.slug": slug,
       },
       limit: 1,
     });
+    console.log("[builder.io] content", content);
   }
 
   // If still no content, try other content models as fallback
   if (!content) {
+    console.log(
+      "[builder.io] no content found by slug query, trying section model"
+    );
     // Try section model
     content = await getBuilderContent("section", {
       query: {

@@ -21,16 +21,14 @@ export default function ClientBuilderExample() {
     const fetchContent = async () => {
       setLoading(true);
       try {
-        const result = await builder
-          .get(selectedModel, {
-            // query: {
-            //   "data.published": true,
-            // },
-            limit: 1,
-          })
-          .toPromise();
+        const result = await builder.getAll(selectedModel, {
+          // query: {
+          //   "data.published": true,
+          // },
+          // limit: 1,
+        });
         console.log("DEBUG1---RESULT: ", result);
-        setContent(result);
+        setContent(result?.[0]);
       } catch (error) {
         console.error("Error fetching content:", error);
         setContent(null);

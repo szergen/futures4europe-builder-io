@@ -67,6 +67,7 @@ https
         }
 
         if (response.results) {
+          console.log("response", response);
           console.log("   Found entries:", response.results.length);
 
           if (response.results.length === 0) {

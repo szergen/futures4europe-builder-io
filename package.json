@@ -15,7 +15,7 @@
     "clean:cache": "rm -rf ./cache/*"
   },
   "dependencies": {
-    "@builder.io/react": "^8.2.6",
+    "@builder.io/react": "^8.2.8",
     "@builder.io/sdk": "^6.1.2",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",

@@ -1861,9 +1861,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/react@npm:^8.2.6":
-  version: 8.2.6
-  resolution: "@builder.io/react@npm:8.2.6"
+"@builder.io/react@npm:^8.2.8":
+  version: 8.2.8
+  resolution: "@builder.io/react@npm:8.2.8"
   dependencies:
     "@builder.io/sdk": 6.1.2
     "@emotion/core": ^10.0.17
@@ -1880,7 +1880,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: a4e015962c37b413e4df2d6bf710e93c239b0320b1995105b30c22475e7af2e562ae06e6237854e052c69d860367df9818a6236f2a82eacc6c12326527f7f34e
+  checksum: a2fc058603ff2b1da735fd3addf0783b0e9d2534ba31179f7c4cec4ac75187c1a7482f1bcfe54666252b2009e68d828d486ffaf54e1f57d70da9b2159231c2b6
   languageName: node
   linkType: hard
 
@@ -21076,7 +21076,7 @@ __metadata:
     "@babel/cli": ^7.24.1
     "@babel/core": ^7.24.3
     "@babel/preset-env": ^7.24.3
-    "@builder.io/react": ^8.2.6
+    "@builder.io/react": ^8.2.8
     "@builder.io/sdk": ^6.1.2
     "@chromatic-com/storybook": ^1.2.25
     "@emotion/react": ^11.13.3
