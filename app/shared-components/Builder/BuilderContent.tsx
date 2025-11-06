@@ -3,7 +3,13 @@
 import { BuilderComponent, useIsPreviewing } from "@builder.io/react";
 
 interface BuilderContentProps {
-  model: "page" | "admin-section" | "blog-post-test" | "tag" | "post-page";
+  model:
+    | "page"
+    | "admin-section"
+    | "blog-post-test"
+    | "tag"
+    | "post-page"
+    | "info-page";
   content?: any;
   data?: any;
   loading?: React.ReactNode;
