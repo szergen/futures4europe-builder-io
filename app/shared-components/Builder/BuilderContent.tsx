@@ -1,7 +1,6 @@
 "use client";
 
 import { BuilderComponent, useIsPreviewing } from "@builder.io/react";
-import { builderConfig } from "../../../builder.config";
 
 interface BuilderContentProps {
   model: "page" | "admin-section" | "blog-post-test" | "tag";

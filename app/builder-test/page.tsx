@@ -27,8 +27,6 @@ export default async function BuilderTestPage() {
     },
     limit: 1,
   });
-  console.log("debug1---->sectionContent", sectionContent);
-  console.log("===== End Debug Info =====\n");
 
   return (
     <div className="container mx-auto px-4 py-8">

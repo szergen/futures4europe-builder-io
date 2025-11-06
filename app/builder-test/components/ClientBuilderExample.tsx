@@ -6,10 +6,10 @@ import { BuilderContent } from "@app/shared-components/Builder";
 import { builderConfig } from "../../../builder.config";
 
 export default function ClientBuilderExample() {
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState(null as any);
   const [loading, setLoading] = useState(true);
   const [selectedModel, setSelectedModel] = useState<
-    "page" | "admin-section" | "blog-post-test" | "tag"
+    "page" | "admin-section" | "post-page" | "tag"
   >("admin-section");
 
   useEffect(() => {
@@ -26,6 +26,7 @@ export default function ClientBuilderExample() {
           //   "data.published": true,
           // },
           // limit: 1,
+          options: { enrich: true },
         });
         console.log("DEBUG1---RESULT: ", result);
         setContent(result?.[0]);
@@ -51,20 +52,12 @@ export default function ClientBuilderExample() {
         </label>
         <select
           value={selectedModel}
-          onChange={(e) =>
-            setSelectedModel(
-              e.target.value as
-                | "page"
-                | "admin-section"
-                | "blog-post-test"
-                | "tag"
-            )
-          }
+          onChange={(e) => setSelectedModel(e.target.value as any)}
           className="border border-gray-300 rounded-md px-3 py-2 bg-white"
         >
           <option value="admin-section">Admin Section</option>
           <option value="page">Page</option>
-          <option value="blog-post-test">Blog Post Test</option>
+          <option value="post-page">Post Page</option>
           <option value="tag">Tag</option>
         </select>
       </div>
