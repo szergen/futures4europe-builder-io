@@ -132,11 +132,15 @@ export function transformBuilderPostToWixFormat(builderPost: any) {
       subtitle: data.subtitle,
       slug: data.slug,
 
-      // Dates
-      _createdDate: { $date: builderPost.createdDate },
-      _updatedDate: { $date: builderPost.lastUpdated },
+      // Dates - Builder.io timestamps (milliseconds) are compatible with JavaScript Date
+      // PostPageComponent uses: new Date(timestamp) and dayjs(timestamp)
+      // Both accept millisecond timestamps directly
+      _createdDate: { $date: builderPost.createdDate }, // Timestamp for component's postDate
+      _updatedDate: { $date: builderPost.lastUpdated }, // Timestamp for component's updatedDate
       postPublicationDate:
-        data.postPublicationDate || builderPost.firstPublished,
+        builderPost.createdDate ||
+        builderPost.firstPublished ||
+        builderPost.lastUpdated, // Timestamp
 
       // Page type
       pageTypes: transformReferenceArray(data.pageTypes, "pageTypeItem"),
