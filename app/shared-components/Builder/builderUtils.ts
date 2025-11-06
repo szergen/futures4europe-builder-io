@@ -30,6 +30,7 @@ export async function getBuilderContent(
         query: options.query,
         limit: options.limit,
         offset: options.offset,
+        enrich: true,
       })
       .toPromise();
 

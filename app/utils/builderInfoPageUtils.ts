@@ -87,7 +87,11 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
       pageOwner: transformReferenceArray(data.pageOwner, "pageOwnerItem"),
       pageTypes: transformReferenceArray(data.pageTypes, "pageTypeItem"),
       person: transformReferenceArray(data.person, "personItem"),
-      project: transformReferenceArray(data.project, "projectItem"),
+      Project: transformReferenceArray(data.project, "projectItem"),
+      projectFunded: transformReferenceArray(
+        data.projectFunded,
+        "projectFundedItem"
+      ),
 
       // Content images (if any)
       contentImages: data.contentImages || [],
@@ -211,6 +215,56 @@ export async function getBuilderAffiliationsByPersonTag(personTagId: string) {
   console.log(
     "[Builder.io] Affiliations query not yet implemented for:",
     personTagId
+  );
+  return [];
+}
+
+/**
+ * Get a single project info-page by slug from Builder.io
+ */
+export async function getBuilderProjectPageBySlug(slug: string) {
+  // The slug in Builder.io includes the path prefix (e.g., "/project/slug")
+  // Try with the full path first
+  let content = await getBuilderContent("info-page", {
+    query: { "data.slug": `/project/${slug}` },
+    limit: 1,
+  });
+
+  // If not found, try with just the slug
+  if (!content) {
+    content = await getBuilderContent("info-page", {
+      query: { "data.slug": slug },
+      limit: 1,
+    });
+  }
+
+  return content;
+}
+
+/**
+ * Get all project info-pages from Builder.io
+ * Filters for pages that have a project tag
+ */
+export async function getAllBuilderProjectPages() {
+  const content = await getAllBuilderContent("info-page", {
+    query: {
+      "data.slug": { $exists: true },
+      "data.project": { $exists: true },
+    },
+  });
+  return content;
+}
+
+/**
+ * Get affiliations by project tag ID
+ * This would need to query the affiliations model in Builder.io
+ */
+export async function getBuilderAffiliationsByProjectTag(projectTagId: string) {
+  // TODO: Implement when affiliations are migrated to Builder.io
+  // For now, return empty array
+  console.log(
+    "[Builder.io] Affiliations query not yet implemented for:",
+    projectTagId
   );
   return [];
 }
