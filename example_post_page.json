@@ -1,0 +1,242 @@
+{
+  "createdBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+  "createdDate": 1762281528446,
+  "data": {
+    "author": [
+      {
+        "authorItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "7bd5fea3806e41658aea9be4af47612d",
+          "model": "tag",
+          "value": {
+            "createdDate": 1754820865490,
+            "id": "7bd5fea3806e41658aea9be4af47612d",
+            "name": "Alex Ciobanasu tag 1",
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "published": "published",
+            "meta": {
+              "lastPreviewUrl": "",
+              "kind": "data"
+            },
+            "query": [],
+            "data": {
+              "tagLine": "Alex Ciobanasu test tagLine",
+              "tagType": "person",
+              "name": "Alex Ciobanasu tag 1",
+              "tagPageLink": "/test",
+              "picture": "https://cdn.builder.io/api/v1/image/assets%2Fce6805b35ef6492b9ee6ea58094970dc%2F533d187f66484bafb9ac4e73bbc582c5"
+            },
+            "variations": {},
+            "lastUpdated": 1761411287465,
+            "firstPublished": 1754820934830,
+            "testRatio": 1,
+            "createdBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "lastUpdatedBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "folders": [],
+            "rev": "o99gi966lof"
+          }
+        }
+      }
+    ],
+    "domains": [
+      {
+        "domainsItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "89aa990c8fee4c1e8553ede4c211d8ce",
+          "model": "tag",
+          "value": {
+            "createdDate": 1754820954706,
+            "id": "89aa990c8fee4c1e8553ede4c211d8ce",
+            "name": "Web Developer 1",
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "published": "published",
+            "meta": {
+              "kind": "data",
+              "lastPreviewUrl": ""
+            },
+            "query": [],
+            "data": {
+              "name": "Web Developer 1",
+              "tagType": "activity"
+            },
+            "variations": {},
+            "lastUpdated": 1761411383495,
+            "firstPublished": 1754820976457,
+            "testRatio": 1,
+            "createdBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "lastUpdatedBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "folders": [],
+            "rev": "xpgdfbgz57"
+          }
+        }
+      }
+    ],
+    "methods": [{}],
+    "organisations": [{}],
+    "pageOwner": [
+      {
+        "pageOwnerItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "7bd5fea3806e41658aea9be4af47612d",
+          "model": "tag",
+          "value": {
+            "createdDate": 1754820865490,
+            "id": "7bd5fea3806e41658aea9be4af47612d",
+            "name": "Alex Ciobanasu tag 1",
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "published": "published",
+            "meta": {
+              "lastPreviewUrl": "",
+              "kind": "data"
+            },
+            "query": [],
+            "data": {
+              "tagLine": "Alex Ciobanasu test tagLine",
+              "tagType": "person",
+              "name": "Alex Ciobanasu tag 1",
+              "tagPageLink": "/test",
+              "picture": "https://cdn.builder.io/api/v1/image/assets%2Fce6805b35ef6492b9ee6ea58094970dc%2F533d187f66484bafb9ac4e73bbc582c5"
+            },
+            "variations": {},
+            "lastUpdated": 1761411287465,
+            "firstPublished": 1754820934830,
+            "testRatio": 1,
+            "createdBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "lastUpdatedBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "folders": [],
+            "rev": "o99gi966lof"
+          }
+        }
+      }
+    ],
+    "pageTypes": [
+      {
+        "pageTypeItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "b44e94d874c8476fa0417160241f9fd7",
+          "model": "tag",
+          "value": {
+            "createdDate": 1761471972229,
+            "id": "b44e94d874c8476fa0417160241f9fd7",
+            "name": "post",
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "published": "published",
+            "meta": {
+              "kind": "data",
+              "lastPreviewUrl": ""
+            },
+            "query": [],
+            "data": {
+              "name": "post",
+              "tagType": "page type"
+            },
+            "variations": {},
+            "lastUpdated": 1761472656626,
+            "firstPublished": 1761472656612,
+            "testRatio": 1,
+            "createdBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "lastUpdatedBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "folders": [],
+            "rev": "ypwr6ote3j"
+          }
+        }
+      }
+    ],
+    "people": [
+      {
+        "peopleItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "7bd5fea3806e41658aea9be4af47612d",
+          "model": "tag",
+          "value": {
+            "createdDate": 1754820865490,
+            "id": "7bd5fea3806e41658aea9be4af47612d",
+            "name": "Alex Ciobanasu tag 1",
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "published": "published",
+            "meta": {
+              "lastPreviewUrl": "",
+              "kind": "data"
+            },
+            "query": [],
+            "data": {
+              "tagLine": "Alex Ciobanasu test tagLine",
+              "tagType": "person",
+              "name": "Alex Ciobanasu tag 1",
+              "tagPageLink": "/test",
+              "picture": "https://cdn.builder.io/api/v1/image/assets%2Fce6805b35ef6492b9ee6ea58094970dc%2F533d187f66484bafb9ac4e73bbc582c5"
+            },
+            "variations": {},
+            "lastUpdated": 1761411287465,
+            "firstPublished": 1754820934830,
+            "testRatio": 1,
+            "createdBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "lastUpdatedBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "folders": [],
+            "rev": "o99gi966lof"
+          }
+        }
+      }
+    ],
+    "postContentRIch1": "<p>This is the first paragraph</p>",
+    "postContentRIch2": "<p>This is the second paragraph</p>",
+    "postContentRIch3": "<p>This is the 3rd</p>",
+    "postImage1": {},
+    "projectResultMedia": {
+      "@type": "@builder.io/core:LocalizedValue"
+    },
+    "projects": [
+      {
+        "projectsItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "241cb9fdbe894c609282105130ac0b83",
+          "model": "tag",
+          "value": {
+            "createdDate": 1754820990784,
+            "id": "241cb9fdbe894c609282105130ac0b83",
+            "name": "Futures4Europe",
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "published": "published",
+            "meta": {
+              "kind": "data",
+              "lastPreviewUrl": ""
+            },
+            "query": [],
+            "data": {
+              "name": "Futures4Europe",
+              "tagType": "project",
+              "tagLine": "Futures4Europe Project Tagline"
+            },
+            "variations": {},
+            "lastUpdated": 1754821024391,
+            "firstPublished": 1754821024373,
+            "testRatio": 1,
+            "createdBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "lastUpdatedBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "folders": [],
+            "rev": "6exytv1qgat"
+          }
+        }
+      }
+    ],
+    "slug": "/post/post-page-test",
+    "title": "Post Page Test"
+  },
+  "folders": [],
+  "id": "f612f65ea35643ed87397760da98181e",
+  "lastUpdated": 1762281998354,
+  "lastUpdatedBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+  "meta": {
+    "kind": "data",
+    "lastPreviewUrl": ""
+  },
+  "modelId": "28136524d8144db48218fa049145ca48",
+  "name": "Post Page test",
+  "published": "published",
+  "query": [],
+  "testRatio": 1,
+  "variations": {},
+  "firstPublished": 1762281998332,
+  "rev": "im1s34a96g9",
+  "variationId": "f612f65ea35643ed87397760da98181e"
+}
