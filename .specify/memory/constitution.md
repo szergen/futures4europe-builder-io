@@ -1,27 +1,20 @@
 <!--
   SYNC IMPACT REPORT
 
-  Version Change: NEW CONSTITUTION → 1.0.0
+  Version Change: 1.0.0 → 1.0.1
 
-  Modified Principles:
-  - [NEW] I. Migration-First Development
-  - [NEW] II. Content Type Parity
-  - [NEW] III. Backward Compatibility
-  - [NEW] IV. Data Integrity & Validation
-  - [NEW] V. Documentation & Migration Tracking
-  - [NEW] VI. Performance & Caching
-  - [NEW] VII. Testing & Quality Assurance
+  Modified Sections:
+  - [UPDATED] V. Documentation & Migration Tracking - Updated file paths to reflect new docs/ folder structure
 
-  Added Sections:
-  - Core Principles (7 principles)
-  - CMS Integration Standards
-  - Development Workflow
-  - Governance
+  Changes:
+  - Documentation now organized in docs/ folder with subfolders
+  - Updated references: docs/migration/[content-type]/ structure
+  - Added documentation organization requirements
 
   Templates Requiring Updates:
-  ✅ plan-template.md - Constitution Check section ready
-  ✅ spec-template.md - Requirements alignment ready
-  ✅ tasks-template.md - Task categorization ready
+  ✅ plan-template.md - No changes needed
+  ✅ spec-template.md - No changes needed
+  ✅ tasks-template.md - No changes needed
 
   Follow-up TODOs: None
 -->
@@ -83,14 +76,23 @@
 
 **All migration work MUST be documented with current status and remaining tasks.**
 
-- Each content type MUST have a migration status document (e.g., `POST_PAGE_MIGRATION.md`)
-- README.md MUST reflect current migration state with checkboxes
+- All documentation MUST be organized in the `docs/` folder with logical grouping
+- Migration documentation MUST be organized by content type: `docs/migration/[content-type]/`
+- Each content type MUST have migration status documents in their respective folders:
+  - Posts: `docs/migration/posts/`
+  - Projects: `docs/migration/projects/`
+  - Persons: `docs/migration/persons/`
+  - Organisations: `docs/migration/organisations/`
+  - Tags: `docs/migration/tags/`
+  - Info Pages: `docs/migration/info-pages/`
+- Builder.io setup documentation MUST be in `docs/builder-io/`
+- README.md MUST reflect current migration state with checkboxes and updated doc links
 - New features MUST update relevant migration documentation
 - Breaking changes MUST be documented in migration guides
 - Scripts MUST include inline documentation explaining transformation logic
 - Quick-start guides MUST be created for each migrated content type
 
-**Rationale**: The project involves complex, multi-phase migration work. Without comprehensive documentation, team members cannot understand current state, make informed decisions, or coordinate effectively.
+**Rationale**: The project involves complex, multi-phase migration work. Without comprehensive, well-organized documentation, team members cannot understand current state, make informed decisions, or coordinate effectively. Organized documentation structure improves discoverability and maintainability.
 
 ### VI. Performance & Caching
 
@@ -230,4 +232,4 @@
 
 ---
 
-**Version**: 1.0.0 | **Ratified**: 2025-11-29 | **Last Amended**: 2025-11-29
+**Version**: 1.0.1 | **Ratified**: 2025-11-29 | **Last Amended**: 2025-11-29
