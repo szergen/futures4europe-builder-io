@@ -236,17 +236,32 @@ User authentication remains with Wix:
 
 ## 📖 Documentation
 
-Additional documentation is available in the project:
+All documentation is organized in the `docs/` folder:
 
-- `BUILDER_IO_SETUP.md` - Builder.io setup guide
-- `BUILDER_IO_ONLY_UPDATE.md` - Builder.io-only updates
-- `BUILDER_IO_TROUBLESHOOTING.md` - Troubleshooting guide
-- `MIGRATION_SUMMARY.md` - Overall migration summary
-- `TAG_MIGRATION_GUIDE.md` - Tag migration specifics
-- `POST_PAGE_MIGRATION.md` - Post page migration details
-- `PROJECT_PAGE_MIGRATION_SUMMARY.md` - Project page details
-- `PERSON_PAGE_MIGRATION.md` - Person page details
-- `ORGANISATION_PAGE_MIGRATION.md` - Organisation page details
+### Builder.io Setup & Configuration
+
+- `docs/builder-io/BUILDER_IO_SETUP.md` - Complete setup guide
+- `docs/builder-io/BUILDER_IO_TROUBLESHOOTING.md` - Common issues and solutions
+- `docs/builder-io/BUILDER_IO_ONLY_UPDATE.md` - Builder.io-only updates
+- `docs/builder-io/QUICK_FIX_BUILDER.md` - Quick fixes and tips
+- `docs/builder-io/GET_PRIVATE_API_KEY.md` - API key setup
+
+### Migration Guides
+
+- `docs/migration/MIGRATION_SUMMARY.md` - Overall migration summary and status
+- `docs/migration/MIGRATION_SCRIPT_UPDATE.md` - Migration script updates
+
+#### Content Type Migrations
+
+- **Posts**: `docs/migration/posts/BUILDER_POST_MIGRATION_GUIDE.md`, `docs/migration/posts/QUICK_START_BUILDER_POSTS.md`
+- **Projects**: `docs/migration/projects/PROJECT_PAGE_MIGRATION_SUMMARY.md`
+- **Persons**: `docs/migration/persons/PERSON_PAGE_MIGRATION.md`, `docs/migration/persons/PERSON_PAGE_SUMMARY.md`
+- **Organisations**: `docs/migration/organisations/ORGANISATION_PAGE_MIGRATION.md`, `docs/migration/organisations/ORGANISATION_MIGRATION_SUMMARY.md`, `docs/migration/organisations/ORGANISATION_PAGE_QUICK_START.md`
+- **Tags**: `docs/migration/tags/TAG_MIGRATION_GUIDE.md`, `docs/migration/tags/TAG_MIGRATION_SUMMARY.md`, `docs/migration/tags/MIGRATE_TAGS_QUICK_REF.md`
+- **Info Pages**: `docs/migration/info-pages/INFO_PAGES_MIGRATION_COMPLETE.md`
+
+### Other Documentation
+
 - `docs/integration-guide.md` - Integration documentation
 
 ## 🛠️ Development Guidelines
