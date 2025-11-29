@@ -1,24 +1,24 @@
-'use client';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
-import { items } from '@wix/data';
-import { useWixModules } from '@wix/sdk-react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { extractInfoPageTypeBasedOnTag } from '@app/utils/parse-utils';
-import classNames from 'classnames';
-import { members } from '@wix/members';
-import NavDashboard from '@app/shared-components/Layout/NavDashboard/NavDashboard';
-import SubNavDashboard from '@app/shared-components/Layout/NavDashboard/SubNavDashboard';
-import Icon from '@app/shared-components/Icon/Icon';
-import style from '../pageDashboard.module.css';
-import stylefile from './pageDashboardChangePassword.module.css';
-import SpriteSvg from '@app/shared-components/SpriteSvg/SpriteSvg';
-import { Button, Label, TextInput } from 'flowbite-react';
-import { HiLockOpen } from 'react-icons/hi';
+"use client";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
+import { items } from "@wix/data";
+import { useWixModules } from "@wix/sdk-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { extractInfoPageTypeBasedOnTag } from "@app/utils/parse-utils";
+import classNames from "classnames";
+import { members } from "@wix/members";
+import NavDashboard from "@app/shared-components/Layout/NavDashboard/NavDashboard";
+import SubNavDashboard from "@app/shared-components/Layout/NavDashboard/SubNavDashboard";
+import Icon from "@app/shared-components/Icon/Icon";
+import style from "../pageDashboard.module.css";
+import stylefile from "./pageDashboardChangePassword.module.css";
+import SpriteSvg from "@app/shared-components/SpriteSvg/SpriteSvg";
+import { Button, Label, TextInput } from "flowbite-react";
+import { HiLockOpen } from "react-icons/hi";
 
 export default function DashboardChangePassword() {
-  const [userInfoPage, setUserInfoPage] = useState('');
+  const [userInfoPage, setUserInfoPage] = useState("");
 
   const { isLoggedIn, loading, userDetails, logout, tags } = useAuth();
 
@@ -27,14 +27,14 @@ export default function DashboardChangePassword() {
   useEffect(() => {
     // console.log('debug1 -> isLoggedIn:', isLoggedIn); // Debugging line
     if (!loading && !isLoggedIn) {
-      router.push('/login');
+      router.push("/login");
     }
     // Get the user's tag page link
     if (isLoggedIn && tags) {
       const userTag = tags.find(
         (tag: any) => tag.name === userDetails.userName && tag.tagPageLink
       );
-      console.log('userTag', userTag);
+      // console.log('userTag', userTag);
       if (userTag) {
         setUserInfoPage(userTag?.tagPageLink);
       }
@@ -43,7 +43,7 @@ export default function DashboardChangePassword() {
 
   const handleLogOut = async () => {
     logout();
-    router.push('/login');
+    router.push("/login");
   };
 
   const handleCreateOrNavigateToPersonInfoPage = () => {
@@ -55,14 +55,14 @@ export default function DashboardChangePassword() {
 
   const subNavItems = [
     {
-      href: '/dashboard/change-password',
-      text: 'Account security',
+      href: "/dashboard/change-password",
+      text: "Account security",
       isActive: true,
     },
   ];
 
   return (
-    <div className={classNames(style.UserDashboard, 'flex flex-col')}>
+    <div className={classNames(style.UserDashboard, "flex flex-col")}>
       <NavDashboard
         userInfoPage={true}
         handleCreateOrNavigateToPersonInfoPage={
@@ -70,16 +70,16 @@ export default function DashboardChangePassword() {
         }
         handleLogOut={handleLogOut}
         SubNav={<SubNavDashboard items={subNavItems} style={style} />}
-        activeItem={'/dashboard'}
+        activeItem={"/dashboard"}
       />
 
       <div
         className={classNames(
           style.UserDashboardWrapper,
-          'flex flex-col relative m-auto mt-10 mb-6'
+          "flex flex-col relative m-auto mt-10 mb-6"
         )}
       >
-        <h1 className={classNames(style.headingDashboardh1, 'mt-2 mb-4 p-0')}>
+        <h1 className={classNames(style.headingDashboardh1, "mt-2 mb-4 p-0")}>
           Change Password
         </h1>
         <p className="text-base text-[#606b85]">
@@ -88,20 +88,20 @@ export default function DashboardChangePassword() {
           of all devices.
         </p>
 
-        <div className={classNames(style.dashboardBox, 'mt-14 mb-10 p-8')}>
+        <div className={classNames(style.dashboardBox, "mt-14 mb-10 p-8")}>
           <div className="flex flex-col">
             <div className="flex justify-between">
               <h3
                 className={classNames(
                   style.headingDashboardh3,
-                  'mr-4 flex flex-row items-center'
+                  "mr-4 flex flex-row items-center"
                 )}
               >
                 <SpriteSvg.AccountLockIcon
                   className="mb-0"
                   sizeW={38}
                   sizeH={38}
-                  fill={'currentColor'}
+                  fill={"currentColor"}
                   strokeWidth={0}
                   inline={true}
                 />
@@ -112,12 +112,12 @@ export default function DashboardChangePassword() {
               <h2
                 className={classNames(
                   style.headingDashboardh1,
-                  'mt-8 mb-0 flex flex-row items-center'
+                  "mt-8 mb-0 flex flex-row items-center"
                 )}
               >
                 Password strength
               </h2>
-              <p className={classNames(style.boxTextDashboard, 'mb-8')}>
+              <p className={classNames(style.boxTextDashboard, "mb-8")}>
                 Use at least 8 characters. Don’t use a password from another
                 site, or something too obvious like your pet’s name.
               </p>
@@ -171,7 +171,7 @@ export default function DashboardChangePassword() {
           </div>
         </div>
 
-        <h1 className={classNames(style.headingDashboardh1, 'mt-2 mb-4 p-0')}>
+        <h1 className={classNames(style.headingDashboardh1, "mt-2 mb-4 p-0")}>
           Keep account safe
         </h1>
         <p className="text-base text-[#606b85]">
@@ -180,20 +180,20 @@ export default function DashboardChangePassword() {
           account secure.
         </p>
 
-        <div className={classNames(style.dashboardBox, 'mt-14 mb-10 p-8')}>
+        <div className={classNames(style.dashboardBox, "mt-14 mb-10 p-8")}>
           <div className="flex flex-col">
             <div className="flex justify-between">
               <h3
                 className={classNames(
                   style.headingDashboardh3,
-                  'mr-4 flex flex-row items-center'
+                  "mr-4 flex flex-row items-center"
                 )}
               >
                 <SpriteSvg.AccountLockIcon
                   className="mb-0"
                   sizeW={38}
                   sizeH={38}
-                  fill={'currentColor'}
+                  fill={"currentColor"}
                   strokeWidth={0}
                   inline={true}
                 />
@@ -204,12 +204,12 @@ export default function DashboardChangePassword() {
               <h2
                 className={classNames(
                   style.headingDashboardh1,
-                  'mt-8 mb-0 flex flex-row items-center'
+                  "mt-8 mb-0 flex flex-row items-center"
                 )}
               >
                 Basic security information
               </h2>
-              <p className={classNames(style.boxTextDashboard, 'mb-8')}>
+              <p className={classNames(style.boxTextDashboard, "mb-8")}>
                 Make sure you can always access your Account by keeping this
                 information up to date.
               </p>
@@ -218,27 +218,27 @@ export default function DashboardChangePassword() {
             <div
               className={classNames(
                 style.listDashboard,
-                'flex flex-col text-base text-[#606b85]'
+                "flex flex-col text-base text-[#606b85]"
               )}
             >
               {/* // TODO BUTTON CHANGE EMAIL @alex */}
               <div
                 className={
-                  'pt-2 pb-2 flex flex-row items-center justify-between'
+                  "pt-2 pb-2 flex flex-row items-center justify-between"
                 }
               >
                 <Link
                   href={`/change-password`}
                   className={classNames(
                     style.active,
-                    'pt-2 pb-2 flex flex-row grow items-center justify-between'
+                    "pt-2 pb-2 flex flex-row grow items-center justify-between"
                   )}
                 >
                   <span className="">Recovery email</span>
                   <span className="ml-1">
                     <SpriteSvg.AccountLockedIcon
                       strokeWidth={0}
-                      viewBox={'0 -4 38 38'}
+                      viewBox={"0 -4 38 38"}
                     />
                     <span className="ml-1">{userDetails?.email}</span>
                   </span>
@@ -247,7 +247,7 @@ export default function DashboardChangePassword() {
 
               <div
                 className={
-                  'pt-2 pb-2 flex flex-row items-center justify-between'
+                  "pt-2 pb-2 flex flex-row items-center justify-between"
                 }
               >
                 <span className="">Last login</span>
@@ -272,20 +272,20 @@ export default function DashboardChangePassword() {
           </div>
         </div>
 
-        <div className={classNames(style.dashboardBox, 'mt-14 mb-10 p-8')}>
+        <div className={classNames(style.dashboardBox, "mt-14 mb-10 p-8")}>
           <div className="flex flex-col">
             <div className="flex justify-between">
               <h3
                 className={classNames(
                   style.headingDashboardh3,
-                  'mr-4 flex flex-row items-center'
+                  "mr-4 flex flex-row items-center"
                 )}
               >
                 <SpriteSvg.AccountHumanIcon
                   className="mb-0"
                   sizeW={38}
                   sizeH={38}
-                  fill={'currentColor'}
+                  fill={"currentColor"}
                   strokeWidth={0}
                   inline={true}
                 />
@@ -296,12 +296,12 @@ export default function DashboardChangePassword() {
               <h2
                 className={classNames(
                   style.headingDashboardh1,
-                  'mt-8 mb-0 flex flex-row items-center'
+                  "mt-8 mb-0 flex flex-row items-center"
                 )}
               >
                 Contact information
               </h2>
-              <p className={classNames(style.boxTextDashboard, 'mb-8')}>
+              <p className={classNames(style.boxTextDashboard, "mb-8")}>
                 Your contact information is important for reaching to you. It
                 includes details like your email addres and account status.
               </p>
@@ -310,12 +310,12 @@ export default function DashboardChangePassword() {
             <div
               className={classNames(
                 style.listDashboard,
-                'flex flex-col text-base text-[#606b85]'
+                "flex flex-col text-base text-[#606b85]"
               )}
             >
               <div
                 className={
-                  'pt-2 pb-2 flex flex-row items-center justify-between'
+                  "pt-2 pb-2 flex flex-row items-center justify-between"
                 }
               >
                 <span className="">Contact email</span>
@@ -324,7 +324,7 @@ export default function DashboardChangePassword() {
 
               <div
                 className={
-                  'pt-2 pb-2 flex flex-row items-center justify-between'
+                  "pt-2 pb-2 flex flex-row items-center justify-between"
                 }
               >
                 <span className="">Account status</span>

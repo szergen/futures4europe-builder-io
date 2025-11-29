@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { calculatePopularity } from '@app/utils/tags.utls';
-import { RedisCacheService } from '@app/services/redisCache';
+import { NextRequest, NextResponse } from "next/server";
+import { calculatePopularity } from "@app/utils/tags.utls";
+import { RedisCacheService } from "@app/services/redisCache";
 
 // Keep the revalidate setting
 export const revalidate = 0; // 5 minutes
 
 export const GET = async (req: NextRequest) => {
-  const cacheKey = 'tags-with-popularity.json';
+  const cacheKey = "tags-with-popularity.json";
 
   try {
     const cachedData = await RedisCacheService.getFromCache(cacheKey);
@@ -15,14 +15,14 @@ export const GET = async (req: NextRequest) => {
     }
 
     // Determine the base URL for API calls
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
     // Try to get data from cache first, if not found fetch from API
-    let tags = await RedisCacheService.getFromCache('tags.json');
-    let infoPages = await RedisCacheService.getFromCache('infoPages.json');
-    let postPages = await RedisCacheService.getFromCache('postPages.json');
+    let tags = await RedisCacheService.getFromCache("tags.json");
+    let infoPages = await RedisCacheService.getFromCache("infoPages.json");
+    let postPages = await RedisCacheService.getFromCache("postPages.json");
     let affiliations = await RedisCacheService.getFromCache(
-      'affiliations.json'
+      "affiliations.json"
     );
 
     // Fetch any missing data from API
@@ -77,9 +77,9 @@ export const GET = async (req: NextRequest) => {
     const sortedTags = popularTags.sort(
       (a: any, b: any) => b.mentions - a.mentions
     );
-    console.log(
-      `tags-with-popularity->Calculated popularity for ${sortedTags.length} tags`
-    );
+    // console.log(
+    //   `tags-with-popularity->Calculated popularity for ${sortedTags.length} tags`
+    // );
 
     await RedisCacheService.saveToCache(
       cacheKey,
@@ -89,9 +89,9 @@ export const GET = async (req: NextRequest) => {
 
     return NextResponse.json(sortedTags);
   } catch (error) {
-    console.error('Error calculating tag popularity:', error);
+    console.error("Error calculating tag popularity:", error);
     return NextResponse.json(
-      { message: 'Error calculating tag popularity', error: String(error) },
+      { message: "Error calculating tag popularity", error: String(error) },
       { status: 500 }
     );
   }

@@ -1,12 +1,12 @@
-'use client';
-import Link from 'next/link';
-import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import style from './Tag.module.css';
-import { TagCategories } from './Tag.utils';
-import TagContainer from './components/TagContainer/TagContainer';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
-import { getTagById } from '@app/utils/tags.utls';
+"use client";
+import Link from "next/link";
+import classNames from "classnames";
+import React, { useEffect, useState } from "react";
+import style from "./Tag.module.css";
+import { TagCategories } from "./Tag.utils";
+import TagContainer from "./components/TagContainer/TagContainer";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
+import { getTagById } from "@app/utils/tags.utls";
 
 export type TagProps = {
   name: string;
@@ -69,7 +69,8 @@ export const Tag: React.FC<TagProps> = ({
     : null;
 
   const shouldDisableUnderLine =
-    !['person', 'organisation', 'project'].includes(tagType) || !tagPageLink;
+    !["person", "organisation", "project"].includes(tagType || "") ||
+    !tagPageLink;
 
   useEffect(() => {
     if (!tagsFetched || currentPopularity) return;
@@ -96,7 +97,7 @@ export const Tag: React.FC<TagProps> = ({
       {enableLabel && tagCategory && (
         <span className={style.tagLabel}>{TagCategories?.[tagCategory]}: </span>
       )}
-      <div className={classNames('my-1', style.tagContainer, className)}>
+      <div className={classNames("my-1", style.tagContainer, className)}>
         {tagPageLinkOrMentionsLink && !disableLink ? (
           <Link
             href={tagPageLinkOrMentionsLink}

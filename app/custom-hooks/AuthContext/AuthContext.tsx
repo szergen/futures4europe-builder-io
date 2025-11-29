@@ -4,19 +4,19 @@ import {
   useState,
   ReactNode,
   useEffect,
-} from 'react';
-import { getContactsItem } from '@app/wixUtils/client-side';
-import { IOAuthStrategy, useWixAuth, useWixModules } from '@wix/sdk-react';
-import { members } from '@wix/members';
-import useFetchUserData from '@app/custom-hooks/useFetchUserData';
-import fetchTagsWithPopularity from '../useFetchTags';
-import { TagProps } from '@app/shared-components/Tag/Tag';
-import useFetchPostPages from '../useFetchPostPages';
-import useFetchInfoPages from '../useFetchInfoPages';
-import { items } from '@wix/data';
-import { refetchTags } from '@app/utils/refetch-utils';
-import { invalidateAllCache } from '@app/utils/cache-utils';
-import useFetchAffiliations from '../useFetchAffiliations';
+} from "react";
+import { getContactsItem } from "@app/wixUtils/client-side";
+import { IOAuthStrategy, useWixAuth, useWixModules } from "@wix/sdk-react";
+import { members } from "@wix/members";
+import useFetchUserData from "@app/custom-hooks/useFetchUserData";
+import fetchTagsWithPopularity from "../useFetchTags";
+import { TagProps } from "@app/shared-components/Tag/Tag";
+import useFetchPostPages from "../useFetchPostPages";
+import useFetchInfoPages from "../useFetchInfoPages";
+import { items } from "@wix/data";
+import { refetchTags } from "@app/utils/refetch-utils";
+import { invalidateAllCache } from "@app/utils/cache-utils";
+import useFetchAffiliations from "../useFetchAffiliations";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -68,19 +68,19 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const initialState = {
-  contactId: '',
-  accountId: '',
+  contactId: "",
+  accountId: "",
   isAdmin: false,
-  userName: '',
-  slug: '',
-  email: '',
-  createdDate: '',
-  updatedDate: '',
-  privacyStatus: '',
-  accountStatus: '',
-  activityStatus: '',
-  lastLoginDate: '',
-  avatarUrl: '',
+  userName: "",
+  slug: "",
+  email: "",
+  createdDate: "",
+  updatedDate: "",
+  privacyStatus: "",
+  accountStatus: "",
+  activityStatus: "",
+  lastLoginDate: "",
+  avatarUrl: "",
   userTag: {} as TagProps,
 };
 
@@ -187,24 +187,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const uploadTag = async (tagName: string) => {
     try {
       const result = await insertDataItem({
-        dataCollectionId: 'Tags',
+        dataCollectionId: "Tags",
         dataItem: {
           data: {
             name: tagName,
-            tagType: 'person',
+            tagType: "person",
           },
         },
       });
       return result;
     } catch (error) {
-      console.error('Error uploading tag:', error);
+      console.error("Error uploading tag:", error);
     }
   };
 
   const getUserTag = async (userName: string) => {
     const userTag = tags?.find((tag) => tag.name === userName);
     if (!userTag) {
-      console.log('User tag not found for', userName);
+      // console.log('User tag not found for', userName);
       const tagResult = await uploadTag(userName);
       const newTag = await tagResult?.dataItem?.data;
       // console.log('deb123->newTag', newTag);
@@ -267,37 +267,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const sessionToken = localStorage.getItem('f4e_wix_sessionToken');
+      const sessionToken = localStorage.getItem("f4e_wix_sessionToken");
       const accessTokenAndRefreshToken = localStorage.getItem(
-        'f4e_wix_accessTokenAndRefreshToken'
+        "f4e_wix_accessTokenAndRefreshToken"
       );
       if (sessionToken && accessTokenAndRefreshToken) {
-        console.log('Auth token found. Logging in...');
+        // console.log('Auth token found. Logging in...');
         await wixSetTokens(JSON.parse(accessTokenAndRefreshToken));
         const isUserLoggedIn = await wixLoggedIn();
 
-        console.log(
-          'isUserLoggedIn from WixProvider AUTH CONTEXT',
-          isUserLoggedIn
-        );
+        // console.log(
+        //   'isUserLoggedIn from WixProvider AUTH CONTEXT',
+        //   isUserLoggedIn
+        // );
         const currentMember = await wixGetCurrentMember({
-          fieldsets: ['FULL' as any],
+          fieldsets: ["FULL" as any],
         });
         const contactData = await getContactsItem(
-          currentMember?.member?.contactId || ''
+          currentMember?.member?.contactId || ""
         );
         // if (contactData) {
         //   console.log('contactData', contactData);
         // }
-        console.log('Logged in as:', currentMember?.member?.profile?.nickname);
-        console.log('currentMember', currentMember);
+        // console.log("Logged in as:", currentMember?.member?.profile?.nickname);
+        // console.log("currentMember", currentMember);
 
         updateUserDetails({
           contactId: currentMember?.member?.contactId,
           accountId:
-            contactData?.info?.extendedFields?.items?.['custom.accountid'],
+            contactData?.info?.extendedFields?.items?.["custom.accountid"],
           isAdmin: contactData?.info?.extendedFields?.items?.[
-            'custom.accountid'
+            "custom.accountid"
           ]
             ? true
             : false,
@@ -339,8 +339,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = () => setIsLoggedIn(true);
   const logout = () => {
-    localStorage.removeItem('f4e_wix_sessionToken');
-    localStorage.removeItem('f4e_wix_accessTokenAndRefreshToken');
+    localStorage.removeItem("f4e_wix_sessionToken");
+    localStorage.removeItem("f4e_wix_accessTokenAndRefreshToken");
     setUserDetails(initialState);
     setIsLoggedIn(false);
     setIsUserTagAssociated(false);
@@ -395,7 +395,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     ];
 
     const uniquePages = removeDuplicatePosts(allOwnedPages);
-    console.log('uniquePages', uniquePages);
+    // console.log("uniquePages", uniquePages);
     setAllOwnedPages(uniquePages);
   }, [infoPages, postPages, userDetails.userTag]);
 
@@ -441,7 +441,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

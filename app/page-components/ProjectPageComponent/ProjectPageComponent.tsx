@@ -1,49 +1,50 @@
-'use client';
-import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import style from './ProjectPageComponent.module.css';
-import Tag, { TagProps } from '@app/shared-components/Tag/Tag';
-import Typography from '@app/shared-components/Typography/Typography';
-import HeaderComponent from './components/HeaderComponent/HeaderComponent';
-import TagListComponent from '../shared-page-components/TagListComponent/TagListComponent';
-import AffiliationsComponent from '../PersonPageComponent/components/AffiliationsComponent/AffiliationsComponent';
-import FilesComponent from '../shared-page-components/FilesComponent/FilesComponent';
-import { mockProject } from '../../mocks/pagesMocks';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
-import OgImage from '@app/shared-components/OgImage';
+"use client";
+import classNames from "classnames";
+import React, { useEffect, useState } from "react";
+import style from "./ProjectPageComponent.module.css";
+import Tag, { TagProps } from "@app/shared-components/Tag/Tag";
+import Typography from "@app/shared-components/Typography/Typography";
+import HeaderComponent from "./components/HeaderComponent/HeaderComponent";
+import TagListComponent from "../shared-page-components/TagListComponent/TagListComponent";
+import AffiliationsComponent from "../PersonPageComponent/components/AffiliationsComponent/AffiliationsComponent";
+import FilesComponent from "../shared-page-components/FilesComponent/FilesComponent";
+import { mockProject } from "../../mocks/pagesMocks";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
+import OgImage from "@app/shared-components/OgImage";
 import {
   arraysEqual,
   deepEqual,
   sanitizeTitleForSlug,
-} from '../PageComponents.utils';
+} from "../PageComponents.utils";
 import {
   bulkInsertItems,
   bulkRemoveItems,
   replaceDataItemReferences,
   revalidateDataItem,
   updateDataItem,
-} from '@app/wixUtils/client-side';
+} from "@app/wixUtils/client-side";
 import {
   checkIfArrayNeedsUpdateForStrings,
   checkIfArrayNeedsUpdateForTags,
   generateUniqueHash,
-} from '../PostPageComponent/PostPageComponent.utils';
-import MiniPagesListComponentPost from '../shared-page-components/MiniPagesListComponentPost/MiniPagesListComponentPost';
-import { Modal } from 'flowbite-react';
-import LoadingSpinner from '@app/shared-components/LoadingSpinner/LoadingSpinner';
-import { useWixModules } from '@wix/sdk-react';
-import { items } from '@wix/data';
-import ContentComponent from '../PostPageComponent/components/ContentComponent/ContentComponent';
+} from "../PostPageComponent/PostPageComponent.utils";
+import MiniPagesListComponentPost from "../shared-page-components/MiniPagesListComponentPost/MiniPagesListComponentPost";
+import { Modal } from "flowbite-react";
+import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
+import { useWixModules } from "@wix/sdk-react";
+import { items } from "@wix/data";
+import ContentComponent from "../PostPageComponent/components/ContentComponent/ContentComponent";
 import {
   refetchAffiliations,
   refetchInfoPages,
   refetchTags,
-} from '@app/utils/refetch-utils';
-import { invalidateProjectPageCache } from '@app/utils/cache-utils';
+} from "@app/utils/refetch-utils";
+import { invalidateProjectPageCache } from "@app/utils/cache-utils";
 
 function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
   project = { ...mockProject(pageTitle), ...project };
+  console.log("debug2->project", project);
 
   const router = useRouter();
 
@@ -73,7 +74,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         (owner: any) => owner?._id === userDetails?.userTag?._id
       );
 
-    console.log('debug1->permissionCondition', permissionCondition);
+    // console.log('debug1->permissionCondition', permissionCondition);
 
     if (permissionCondition) {
       setIsPageOwnedByUser(true);
@@ -100,7 +101,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
   // console.log('debug111->project', project?.data);
 
   const projectsCoordindation = project?.affiliationsItems
-    ?.filter((item: any) => item?.extraIdentifier === 'coordination')
+    ?.filter((item: any) => item?.extraIdentifier === "coordination")
     .map((item: any) => item?.personTag)
     .filter(
       (projectTag: any, index: number, self: any[]) =>
@@ -108,16 +109,16 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     );
 
   const projectsParticipation = project?.affiliationsItems
-    ?.filter((item: any) => item?.extraIdentifier === 'participation')
+    ?.filter((item: any) => item?.extraIdentifier === "participation")
     .map((item: any) => item?.personTag)
     .filter(
       (projectTag: any, index: number, self: any[]) =>
         index === self.findIndex((pt) => pt.name === projectTag.name)
     );
-  console.log('debug111->projectsParticipation', projectsParticipation);
+  console.log("debug111->projectsParticipation", projectsParticipation);
 
   const organisations = project?.affiliationsItems
-    ?.filter((item: any) => item?.extraIdentifier === 'projectOrganisationRole')
+    ?.filter((item: any) => item?.extraIdentifier === "projectOrganisationRole")
     .map((item: any) => {
       return {
         ...item?.organisationTag,
@@ -190,7 +191,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     //   }; //done
     // }), //done
     organisations: organisations,
-    registrationDate: project?.data?._createdDate['$date'], //done-system field
+    registrationDate: project?.data?._createdDate["$date"], //done-system field
     mediaFiles: project?.data?.mediaFiles, //done
     linkedinLink: project?.data?.linkedinLink,
     websiteLink: project?.data?.websiteLink,
@@ -216,8 +217,8 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
 
   // #region validation state
   const [validationState, setValidationState] = useState({
-    title: '',
-    subtitle: '',
+    title: "",
+    subtitle: "",
   });
 
   const updateValidationState = (newData: any) => {
@@ -235,7 +236,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
 
   const updateDataToServer = async () => {
     console.log(
-      'Updating Page from',
+      "Updating Page from",
       projectData.dataCollectionId,
       projectData._id
     );
@@ -244,16 +245,16 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     // #region Update Person Tag
     // Check if object personTag has changed
     if (!deepEqual(projectData.projectTag, defaultProjectData.projectTag)) {
-      console.log('personTag has not changed');
+      console.log("personTag has not changed");
       const updatedProjectTag = await updateDataItem(
-        'Tags',
+        "Tags",
         projectData.projectTag._id,
         {
           _id: projectData.projectTag._id,
           ...projectData.projectTag,
         }
       );
-      console.log('updatedProjectTag', updatedProjectTag);
+      console.log("updatedProjectTag", updatedProjectTag);
     }
     // #endregion
 
@@ -334,7 +335,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
           websiteLink: projectData?.websiteLink,
         }
       );
-      console.log('updatedItem', updatedItem);
+      console.log("updatedItem", updatedItem);
     }
 
     // Update projectOrganisation
@@ -353,17 +354,17 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       //   projectData._id
       // );
       // console.log('updatedOrganisations', updatedOrganisations);
-      console.log('debug111-> updating organisations roles');
+      console.log("debug111-> updating organisations roles");
       const oldAffiliations = project?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'projectOrganisationRole'
+        (item: any) => item?.extraIdentifier === "projectOrganisationRole"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (projectData.organisations?.length > 0) {
@@ -374,21 +375,21 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
                 projectTag: projectData.projectTag,
                 organisationTag: item,
                 role: item.arole,
-                extraIdentifier: 'projectOrganisationRole',
+                extraIdentifier: "projectOrganisationRole",
                 title: `${projectData?.projectTag?.name} -to- ${item?.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.organisationTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.organisationTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedOrganisationsCurrent = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedOrganisationsCurrent',
+            "debug111->updatedOrganisationsCurrent",
             updatedOrganisationsCurrent
           );
         }
@@ -400,23 +401,23 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       projectData.projectFunded?._id !== defaultProjectData.projectFunded?._id
     ) {
       const updatedProjectFunded = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         projectData.projectFunded?._id ? [projectData.projectFunded?._id] : [],
-        'projectFunded',
+        "projectFunded",
         projectData._id
       );
-      console.log('updatedProjectFunded', updatedProjectFunded);
+      console.log("updatedProjectFunded", updatedProjectFunded);
     }
 
     // Update Country Tag
     if (projectData.countryTag?._id !== defaultProjectData.countryTag?._id) {
       const updatedCountryTag = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [projectData.countryTag?._id],
-        'countryTag',
+        "countryTag",
         projectData._id
       );
-      console.log('updatedCountryTag', updatedCountryTag);
+      console.log("updatedCountryTag", updatedCountryTag);
     }
 
     // Update Foresight Methods
@@ -430,12 +431,12 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         (method: any) => method._id
       );
       const updatedMethods = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         validMethods?.map((method: any) => method._id),
-        'methods',
+        "methods",
         projectData._id
       );
-      console.log('updatedMethods', updatedMethods);
+      console.log("updatedMethods", updatedMethods);
     }
     // Update Domains
     if (
@@ -448,12 +449,12 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         (domain: any) => domain._id
       );
       const updatedDomains = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         validDomains?.map((domain: any) => domain._id),
-        'domains',
+        "domains",
         projectData._id
       );
-      console.log('updatedDomains', updatedDomains);
+      console.log("updatedDomains", updatedDomains);
     }
 
     // Update Coordinators
@@ -470,17 +471,17 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       //   projectData._id
       // );
       // console.log('updatedCoordinators', updatedCoordinators);
-      console.log('debug111-> updating project Coordination');
+      console.log("debug111-> updating project Coordination");
       const oldAffiliations = project?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'coordination'
+        (item: any) => item?.extraIdentifier === "coordination"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (projectData.coordinators?.length > 0) {
@@ -490,20 +491,20 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
               data: {
                 projectTag: projectData.projectTag,
                 personTag: item,
-                extraIdentifier: 'coordination',
+                extraIdentifier: "coordination",
                 title: `${projectData?.projectTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.projectTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.projectTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedProjectsCoordonation = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
           console.log(
-            'debug111->updatedProjectsCoordonation',
+            "debug111->updatedProjectsCoordonation",
             updatedProjectsCoordonation
           );
         }
@@ -524,17 +525,17 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       //   projectData._id
       // );
       // console.log('updatedParticipants', updatedParticipants);
-      console.log('debug111-> updating project participation');
+      console.log("debug111-> updating project participation");
       const oldAffiliations = project?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'participation'
+        (item: any) => item?.extraIdentifier === "participation"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (projectData.participants?.length > 0) {
@@ -544,21 +545,21 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
               data: {
                 projectTag: projectData.projectTag,
                 personTag: item,
-                extraIdentifier: 'participation',
+                extraIdentifier: "participation",
                 title: `${projectData.projectTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.projectTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.projectTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedProjectsParticipation = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedProjectsParticipation',
+            "debug111->updatedProjectsParticipation",
             updatedProjectsParticipation
           );
         }
@@ -587,19 +588,19 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       );
     })
     ?.map((link) => link?.data);
-  console.log('internalLinks', internalLinks);
+  console.log("internalLinks", internalLinks);
   // #endregion
 
   // #region handle save or create new page
   const { insertDataItem } = useWixModules(items);
 
   const createNewProjectPage = async () => {
-    console.log('Creating New Person Info Page');
+    console.log("Creating New Person Info Page");
     setIsSaveInProgress(true);
 
     // Create new project info page
     const newProjectInfo = await insertDataItem({
-      dataCollectionId: 'InfoPages',
+      dataCollectionId: "InfoPages",
       dataItem: {
         data: {
           title: projectData?.projectTag?.name,
@@ -639,7 +640,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
           websiteLink: projectData?.websiteLink,
           slug:
             sanitizeTitleForSlug(projectData?.projectTag?.name) +
-            '-' +
+            "-" +
             generateUniqueHash(),
         },
       },
@@ -655,64 +656,64 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
 
     if (newProjectInfoId && projectTag && userTag && userTag?._id) {
       const updatedAuthor = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [userTag._id],
-        'Author',
+        "Author",
         newProjectInfoId
       );
-      console.log('updatedProjectTag', updatedAuthor);
+      console.log("updatedProjectTag", updatedAuthor);
 
       const updatedProjectTag = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [projectTag._id],
-        'Project',
+        "Project",
         newProjectInfoId
       );
-      console.log('updatedProjectTag', updatedProjectTag);
+      console.log("updatedProjectTag", updatedProjectTag);
 
       const updatedPageOwner = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [userTag?._id],
-        'pageOwner',
+        "pageOwner",
         newProjectInfoId
       );
-      console.log('updatedPageOwner', updatedPageOwner);
+      console.log("updatedPageOwner", updatedPageOwner);
     }
     // #endregion
 
     // #region Update Page Type Tag
     if (projectData.pageType?._id && newProjectInfoId) {
       const updatedPageTypes = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [projectData.pageType?._id],
-        'pageTypes',
+        "pageTypes",
         newProjectInfoId
       );
-      console.log('updatedPageTypes', updatedPageTypes);
+      console.log("updatedPageTypes", updatedPageTypes);
     }
     // #endregion
 
     // #region Update Country Tag
     if (projectData.countryTag?._id && newProjectInfoId) {
       const updatedCountryTag = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [projectData.countryTag?._id],
-        'countryTag',
+        "countryTag",
         newProjectInfoId
       );
-      console.log('updatedCountryTag', updatedCountryTag);
+      console.log("updatedCountryTag", updatedCountryTag);
     }
     // #endregion
 
     // #region Update Project Funded
     if (projectData.projectFunded?._id && newProjectInfoId) {
       const updatedProjectFunded = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [projectData.projectFunded?._id],
-        'projectFunded',
+        "projectFunded",
         newProjectInfoId
       );
-      console.log('updatedProjectFunded', updatedProjectFunded);
+      console.log("updatedProjectFunded", updatedProjectFunded);
     }
     // #endregion
 
@@ -720,12 +721,12 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     if (projectData.methods && newProjectInfoId) {
       const validMethods = projectData.methods?.filter((method: any) => method);
       const updatedMethods = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         validMethods?.map((method: any) => method._id),
-        'methods',
+        "methods",
         newProjectInfoId
       );
-      console.log('updatedMethods', updatedMethods);
+      console.log("updatedMethods", updatedMethods);
     }
     // #endregion
 
@@ -734,12 +735,12 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       const validDomains = projectData.domains?.filter((domain: any) => domain);
 
       const updatedDomains = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         validDomains?.map((domain: any) => domain._id),
-        'domains',
+        "domains",
         newProjectInfoId
       );
-      console.log('updatedDomains', updatedDomains);
+      console.log("updatedDomains", updatedDomains);
     }
     // #endregion
 
@@ -752,17 +753,17 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       //   newProjectInfoId
       // );
       // console.log('updatedCoordinators', updatedCoordinators);
-      console.log('debug111-> updating project Coordination');
+      console.log("debug111-> updating project Coordination");
       const oldAffiliations = project?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'coordination'
+        (item: any) => item?.extraIdentifier === "coordination"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (projectData.coordinators?.length > 0) {
@@ -772,21 +773,21 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
               data: {
                 projectTag: projectData.projectTag,
                 personTag: item,
-                extraIdentifier: 'coordination',
+                extraIdentifier: "coordination",
                 title: `${projectData.projectTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.projectTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.projectTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedProjectsCoordonation = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedProjectsCoordonation',
+            "debug111->updatedProjectsCoordonation",
             updatedProjectsCoordonation
           );
         }
@@ -803,17 +804,17 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       //   newProjectInfoId
       // );
       // console.log('updatedParticipants', updatedParticipants);
-      console.log('debug111-> updating project participation');
+      console.log("debug111-> updating project participation");
       const oldAffiliations = project?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'participation'
+        (item: any) => item?.extraIdentifier === "participation"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
       if (projectData.participants?.length > 0) {
         const newAffiliationsObject = projectData.participants
@@ -822,21 +823,21 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
               data: {
                 projectTag: projectData.projectTag,
                 personTag: item,
-                extraIdentifier: 'participation',
+                extraIdentifier: "participation",
                 title: `${projectData.projectTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.projectTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.projectTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedProjectsParticipation = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedProjectsParticipation',
+            "debug111->updatedProjectsParticipation",
             updatedProjectsParticipation
           );
         }
@@ -855,17 +856,17 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       //   newProjectInfoId
       // );
       // console.log('updatedOrganisations', updatedOrganisations);
-      console.log('debug111-> updating organisations roles');
+      console.log("debug111-> updating organisations roles");
       const oldAffiliations = project?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'projectOrganisationRole'
+        (item: any) => item?.extraIdentifier === "projectOrganisationRole"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (projectData.organisations?.length > 0) {
@@ -876,21 +877,21 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
                 projectTag: projectData.projectTag,
                 organisationTag: item,
                 role: item.arole,
-                extraIdentifier: 'projectOrganisationRole',
+                extraIdentifier: "projectOrganisationRole",
                 title: `${projectData?.projectTag?.name} -to- ${item?.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.organisationTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.organisationTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedOrganisationsCurrent = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedOrganisationsCurrent',
+            "debug111->updatedOrganisationsCurrent",
             updatedOrganisationsCurrent
           );
         }
@@ -901,17 +902,17 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     // #region Update Person Tag
     // Check if object projectTag has changed
     if (!deepEqual(projectData?.projectTag, defaultProjectData?.projectTag)) {
-      console.log('projectTag has changed');
+      console.log("projectTag has changed");
       const updatedProjectTag = await updateDataItem(
-        'Tags',
+        "Tags",
         projectData?.projectTag?._id,
         {
           _id: projectData.projectTag._id,
           ...projectData.projectTag,
-          tagPageLink: '/project/' + newProjectInfoSlug,
+          tagPageLink: "/project/" + newProjectInfoSlug,
         }
       );
-      console.log('updatedProjectTag', updatedProjectTag);
+      console.log("updatedProjectTag", updatedProjectTag);
     }
     // #endregion
 
@@ -943,10 +944,10 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       // if (personTag) {
       //   updatePersonDataOnKeyValue('personTag', personTag);
       // }
-      const projectInfoTag = tags.find((tag) => tag.name === 'project info');
-      console.log('debug1->projectInfoTag', projectInfoTag);
+      const projectInfoTag = tags.find((tag) => tag.name === "project info");
+      // console.log('debug1->projectInfoTag', projectInfoTag);
       if (projectInfoTag) {
-        updateProjectDataOnKeyValue('pageType', projectInfoTag);
+        updateProjectDataOnKeyValue("pageType", projectInfoTag);
       }
     }
   }, [userDetails, tags]);
@@ -961,9 +962,9 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         <OgImage
           primaryImage={projectData.projectTag?.picture}
           secondaryImage={
-            projectData.contentImages?.[0]?.url !== ' '
+            projectData.contentImages?.[0]?.url !== " "
               ? projectData.contentImages?.[0]?.url
-              : 'https://futures4europe.eu/images/placeholder.webp'
+              : "https://futures4europe.eu/images/placeholder.webp"
           }
           title={projectData.title}
           description={projectData.subtitle}
@@ -981,15 +982,15 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
             }}
             disabled={isEditModeOn && checkValidationErrors()}
             className={classNames(
-              'btn btn-save',
-              isEditModeOn && checkValidationErrors() && 'bg-gray-400'
+              "btn btn-save",
+              isEditModeOn && checkValidationErrors() && "bg-gray-400"
             )}
           >
             {!isEditModeOn
-              ? 'Edit'
+              ? "Edit"
               : isNewPage
-              ? 'Publish'
-              : 'Save & publish changes'}
+              ? "Publish"
+              : "Save & publish changes"}
           </button>
           {isEditModeOn && (
             <button
@@ -1018,12 +1019,12 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         </div>
       )}
       {/* Page Type Tag */}
-      <div className={classNames('py-3', style.preHeader)}>
+      <div className={classNames("py-3", style.preHeader)}>
         <Tag {...projectData?.pageType} />
         {/* Timestamp */}
         <section className="post-meta">
           <Typography tag="p" className="text-sm text-gray-400">
-            Page creation date:{' '}
+            Page creation date:{" "}
             {new Date(project?.registrationDate)?.toLocaleString()}
           </Typography>
         </section>
@@ -1075,10 +1076,10 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         tagList={projectData.methods}
         tagListTitle="Foresight Methods"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'foresight method')}
+        tags={tags?.filter((tag) => tag?.tagType === "foresight method")}
         selectedValues={projectData.methods?.map((method: any) => method?.name)}
         updatePostData={(value) =>
-          updateProjectDataOnKeyValue('methods', value)
+          updateProjectDataOnKeyValue("methods", value)
         }
         tagType="foresight method"
         handleTagCreated={handleTagCreated}
@@ -1089,10 +1090,10 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         tagList={projectData.domains}
         tagListTitle="Domains"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'domain')}
+        tags={tags?.filter((tag) => tag?.tagType === "domain")}
         selectedValues={projectData.domains?.map((domain: any) => domain?.name)}
         updatePostData={(value) =>
-          updateProjectDataOnKeyValue('domains', value)
+          updateProjectDataOnKeyValue("domains", value)
         }
         tagType="domain"
         handleTagCreated={handleTagCreated}
@@ -1103,12 +1104,12 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         tagList={projectData.coordinators}
         tagListTitle="Coordinators"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'person')}
+        tags={tags?.filter((tag) => tag?.tagType === "person")}
         selectedValues={projectData.coordinators?.map(
           (coordinator: any) => coordinator?.name
         )}
         updatePostData={(value) =>
-          updateProjectDataOnKeyValue('coordinators', value)
+          updateProjectDataOnKeyValue("coordinators", value)
         }
         tagType="person"
         handleTagCreated={handleTagCreated}
@@ -1119,12 +1120,12 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         tagList={projectData.participants}
         tagListTitle="Participants"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'person')}
+        tags={tags?.filter((tag) => tag?.tagType === "person")}
         selectedValues={projectData.participants?.map(
           (participant: any) => participant?.name
         )}
         updatePostData={(value) =>
-          updateProjectDataOnKeyValue('participants', value)
+          updateProjectDataOnKeyValue("participants", value)
         }
         tagType="person"
         handleTagCreated={handleTagCreated}
@@ -1137,9 +1138,9 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         tagListTitle="Organisations"
         isEditModeOn={isEditModeOn}
         updatePersonDataAffiliations={(value) =>
-          updateProjectDataOnKeyValue('organisations', value)
+          updateProjectDataOnKeyValue("organisations", value)
         }
-        tags={tags?.filter((tag) => tag?.tagType === 'organisation')}
+        tags={tags?.filter((tag) => tag?.tagType === "organisation")}
         handleTagCreated={handleTagCreated}
         tagType="organisation"
       />
@@ -1148,7 +1149,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         isEditModeOn={isEditModeOn}
         internalLinks={internalLinks}
         handleUpdatePostData={(value) =>
-          updateProjectDataOnKeyValue('internalLinks', value)
+          updateProjectDataOnKeyValue("internalLinks", value)
         }
         title="Content related to this Project"
       />

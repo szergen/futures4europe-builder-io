@@ -1,39 +1,39 @@
-'use client';
-import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import style from './PostPageComponent.module.css';
-import Tag, { TagProps } from '@app/shared-components/Tag/Tag';
-import Typography from '@app/shared-components/Typography/Typography';
-import HeaderComponent from './components/HeaderComponent/HeaderComponent';
-import ContentComponent from './components/ContentComponent/ContentComponent';
-import TagListComponent from '../shared-page-components/TagListComponent/TagListComponent';
+"use client";
+import classNames from "classnames";
+import React, { useEffect, useState } from "react";
+import style from "./PostPageComponent.module.css";
+import Tag, { TagProps } from "@app/shared-components/Tag/Tag";
+import Typography from "@app/shared-components/Typography/Typography";
+import HeaderComponent from "./components/HeaderComponent/HeaderComponent";
+import ContentComponent from "./components/ContentComponent/ContentComponent";
+import TagListComponent from "../shared-page-components/TagListComponent/TagListComponent";
 // import ExternalLinksComponent from '../shared-page-components/ExternalLinksComponent/ExternalLinksComponent';
 // import AuthorComponent from './components/AuthorComponent/AuthorComponent';
-import FilesComponent from '../shared-page-components/FilesComponent/FilesComponent';
-import { mockPost } from '../../mocks/pagesMocks';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
-import OgImage from '@app/shared-components/OgImage';
+import FilesComponent from "../shared-page-components/FilesComponent/FilesComponent";
+import { mockPost } from "../../mocks/pagesMocks";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
+import OgImage from "@app/shared-components/OgImage";
 import {
   updateDataItem,
   replaceDataItemReferences,
   revalidateDataItem,
-} from '@app/wixUtils/client-side';
-import TagPicker from '@app/shared-components/TagPicker/TagPicker';
-import { useWixModules } from '@wix/sdk-react';
-import { items } from '@wix/data';
+} from "@app/wixUtils/client-side";
+import TagPicker from "@app/shared-components/TagPicker/TagPicker";
+import { useWixModules } from "@wix/sdk-react";
+import { items } from "@wix/data";
 import {
   formatDate,
   checkIfArrayNeedsUpdateForTags,
   generateUniqueHash,
   checkIfArrayNeedsUpdateForStrings,
   areArraysEqualForMediaFiles,
-} from './PostPageComponent.utils';
-import MiniPagesListComponentPost from '../shared-page-components/MiniPagesListComponentPost/MiniPagesListComponentPost';
-import { useRouter } from 'next/navigation';
-import { Modal } from 'flowbite-react';
-import LoadingSpinner from '@app/shared-components/LoadingSpinner/LoadingSpinner';
-import { sanitizeTitleForSlug } from '../PageComponents.utils';
-import { invalidatePostPageCache } from '@app/utils/cache-utils';
+} from "./PostPageComponent.utils";
+import MiniPagesListComponentPost from "../shared-page-components/MiniPagesListComponentPost/MiniPagesListComponentPost";
+import { useRouter } from "next/navigation";
+import { Modal } from "flowbite-react";
+import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
+import { sanitizeTitleForSlug } from "../PageComponents.utils";
+import { invalidatePostPageCache } from "@app/utils/cache-utils";
 
 export type PostPageComponentProps = {
   pageTitle: string;
@@ -48,7 +48,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   const router = useRouter();
 
   // Get the current URL for OG metadata
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   // #region useAuth hook for grabbing user details and tags needed for editing
   // state for if the page is owned by the user
@@ -78,7 +78,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         (owner: any) => owner?._id === userDetails?.userTag?._id
       );
 
-    console.log('debug1->permissionCondition', permissionCondition);
+    // console.log('debug1->permissionCondition', permissionCondition);
 
     if (permissionCondition) {
       setIsPageOwnedByUser(true);
@@ -105,9 +105,9 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
     pageType: post?.data?.pageTypes,
     subtitle: post?.data?.subtitle,
     updatedDate:
-      post?.data?.postPublicationDate || post?.data?._updatedDate?.['$date'],
+      post?.data?.postPublicationDate || post?.data?._updatedDate?.["$date"],
     postDate:
-      post?.data?.postPublicationDate || post?.data?._createdDate?.['$date'],
+      post?.data?.postPublicationDate || post?.data?._createdDate?.["$date"],
     countryTag: post?.data?.countryTag[0],
     recommendations: {
       number: post?.data?.recomendations,
@@ -157,7 +157,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
     pageOwner: post?.data?.pageOwner,
     slug: post?.data?.slug,
   };
-  console.log('debug1-post', post);
+  console.log("debug1-post", post);
   // set default post data and data for editing
   const [defaultPostData, setDefaultPostData] = useState(post);
   const [postData, setPostData] = useState(post);
@@ -179,11 +179,11 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   };
 
   const [validationState, setValidationState] = useState({
-    title: '',
-    subtitle: '',
+    title: "",
+    subtitle: "",
   });
   useEffect(() => {
-    console.log('validationState', validationState);
+    console.log("validationState", validationState);
   }, [validationState]);
   // Helper function for seeing if any validation errors exist
   const checkValidationErrors = () => {
@@ -196,7 +196,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   const [isSaveInProgress, setIsSaveInProgress] = useState(false);
 
   const updateDataToServer = async () => {
-    console.log('Updating Page from', postData.dataCollectionId, postData._id);
+    console.log("Updating Page from", postData.dataCollectionId, postData._id);
     setIsSaveInProgress(true);
     const hasDifferentMedia = postData?.mediaFiles?.some(
       (file: any, index: number) =>
@@ -236,7 +236,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       postData.projectResultMedia?.displayName !==
         defaultPostData.projectResultMedia?.displayName
     ) {
-      console.log('debug5->Updating Data');
+      console.log("debug5->Updating Data");
       const updatedItem = await updateDataItem(
         postData.dataCollectionId,
         postData._id,
@@ -274,7 +274,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           // pageTypes: postData?.pageType,
         }
       );
-      console.log('updatedItem', updatedItem);
+      console.log("updatedItem", updatedItem);
     }
     // Update Project Authors
     if (
@@ -284,12 +284,12 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       )
     ) {
       const updatedAuthors = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.projectAuthors?.map((author: any) => author._id),
-        'projectResultAuthor',
+        "projectResultAuthor",
         postData._id
       );
-      console.log('updatedAuthors', updatedAuthors);
+      console.log("updatedAuthors", updatedAuthors);
     }
 
     // Update Page Type
@@ -300,34 +300,34 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       )
     ) {
       const updatedPageTypes = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData?.pageType.map((pageType: any) => pageType._id),
-        'pageTypes',
+        "pageTypes",
         postData._id
       );
-      console.log('updatedPageTypes', updatedPageTypes);
+      console.log("updatedPageTypes", updatedPageTypes);
     }
     // Update Country Tag
     if (postData.countryTag?._id !== defaultPostData.countryTag?._id) {
       const updatedCountryTag = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         [postData.countryTag?._id],
-        'countryTag',
+        "countryTag",
         postData._id
       );
-      console.log('updatedCountryTag', updatedCountryTag);
+      console.log("updatedCountryTag", updatedCountryTag);
     }
     // Update People Tags
     if (
       checkIfArrayNeedsUpdateForTags(postData.people, defaultPostData.people)
     ) {
       const updatedPeople = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData?.people.map((person: any) => person._id),
-        'people',
+        "people",
         postData?._id
       );
-      console.log('updatedPeople', updatedPeople);
+      console.log("updatedPeople", updatedPeople);
     }
     // Update Foresight Methods
     if (
@@ -337,36 +337,36 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       )
     ) {
       const updatedMethods = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.foreSightMethods?.map((method: any) => method._id),
-        'methods',
+        "methods",
         postData._id
       );
-      console.log('updatedMethods', updatedMethods);
+      console.log("updatedMethods", updatedMethods);
     }
     // Update Domains
     if (
       checkIfArrayNeedsUpdateForTags(postData.domains, defaultPostData.domains)
     ) {
       const updatedDomains = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.domains?.map((domain: any) => domain._id),
-        'domains',
+        "domains",
         postData._id
       );
-      console.log('updatedDomains', updatedDomains);
+      console.log("updatedDomains", updatedDomains);
     }
     // Update Projects
     if (
       checkIfArrayNeedsUpdateForTags(postData.project, defaultPostData.project)
     ) {
       const updatedProjects = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.project?.map((project: any) => project._id),
-        'projects',
+        "projects",
         postData._id
       );
-      console.log('updatedProjects', updatedProjects);
+      console.log("updatedProjects", updatedProjects);
     }
     // Update Organisation
     if (
@@ -376,12 +376,12 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       )
     ) {
       const updatedOrganisations = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.organisation?.map((organisation: any) => organisation._id),
-        'organisations',
+        "organisations",
         postData._id
       );
-      console.log('updatedOrganisations', updatedOrganisations);
+      console.log("updatedOrganisations", updatedOrganisations);
     }
     // Update Internal Links
     if (
@@ -391,12 +391,12 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       )
     ) {
       const updatedInternalLinks = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.internalLinks?.map((link: any) => link._id),
-        'internalLinks',
+        "internalLinks",
         postData._id
       );
-      console.log('updatedInternalLinks', updatedInternalLinks);
+      console.log("updatedInternalLinks", updatedInternalLinks);
     }
     // Update Moderators
     if (
@@ -406,12 +406,12 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       )
     ) {
       const updatedModerators = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.eventModerators?.map((moderator: any) => moderator._id),
-        'moderators',
+        "moderators",
         postData._id
       );
-      console.log('updatedModerators', updatedModerators);
+      console.log("updatedModerators", updatedModerators);
     }
 
     // Update Speakers
@@ -422,21 +422,21 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       )
     ) {
       const updatedSpeakers = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.eventSpeakers?.map((speaker: any) => speaker._id),
-        'speakers',
+        "speakers",
         postData._id
       );
-      console.log('updatedSpeakers', updatedSpeakers);
+      console.log("updatedSpeakers", updatedSpeakers);
     }
 
     // Check if the page was newly created
-    if (defaultPostData.title === 'New Post') {
+    if (defaultPostData.title === "New Post") {
       handleUserDataRefresh();
       setIsSaveInProgress(false);
       await revalidateDataItem(`/post`);
       // await revalidateDataItem(`/post/New_Post`);
-      router.push(`/post/${postData.title.replace(/ /g, '_')}`);
+      router.push(`/post/${postData.title.replace(/ /g, "_")}`);
       return;
     }
     // Revalidate the cache for the page
@@ -458,11 +458,11 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   const { insertDataItem } = useWixModules(items);
 
   const createNewPost = async () => {
-    console.log('Creating New Post');
+    console.log("Creating New Post");
     setIsSaveInProgress(true);
     // Create New Post
     const newPost = await insertDataItem({
-      dataCollectionId: 'PostPages',
+      dataCollectionId: "PostPages",
       dataItem: {
         data: {
           title: postData?.title,
@@ -494,163 +494,163 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           mediaFiles: postData?.mediaFiles,
           projectResultPublicationDate: postData?.projectResultPublicationDate,
           slug:
-            sanitizeTitleForSlug(postData?.title) + '-' + generateUniqueHash(),
+            sanitizeTitleForSlug(postData?.title) + "-" + generateUniqueHash(),
         },
       },
     });
-    console.log('newPost', newPost);
+    console.log("newPost", newPost);
 
-    const newPostTitlePath = newPost?.dataItem?.data?.title?.replace(/ /g, '_');
+    const newPostTitlePath = newPost?.dataItem?.data?.title?.replace(/ /g, "_");
     const newPostSlug = newPost?.dataItem?.data?.slug;
     const newPostID = newPost?.dataItem?._id;
 
     // Update Author based on the user
     const userTag = tags.find(
-      (tag) => tag?.tagType === 'person' && tag?.name === userDetails.userName
+      (tag) => tag?.tagType === "person" && tag?.name === userDetails.userName
     );
 
     // Check if both newPostID and userTag._id exist and are strings
-    if (newPostID && userTag && typeof userTag._id === 'string') {
+    if (newPostID && userTag && typeof userTag._id === "string") {
       const userTagId = userTag._id; // This ensures TS treats it as a string
 
       const updatedAuthor = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         [userTagId],
-        'author',
+        "author",
         newPostID
       );
-      console.log('updatedAuthor', updatedAuthor);
+      console.log("updatedAuthor", updatedAuthor);
 
       const updatedPageOwner = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         [userTagId],
-        'pageOwner',
+        "pageOwner",
         newPostID
       );
-      console.log('updatedPageOwner', updatedPageOwner);
+      console.log("updatedPageOwner", updatedPageOwner);
     }
 
     // Update Project Authors
     if (postData.projectAuthors?.length && newPostID) {
       const updatedAuthors = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.projectAuthors
           ?.map((author: any) => author?._id)
           ?.filter(Boolean),
-        'projectResultAuthor',
+        "projectResultAuthor",
         newPostID
       );
-      console.log('updatedAuthors', updatedAuthors);
+      console.log("updatedAuthors", updatedAuthors);
     }
 
     // Update Page Type
     if (postData.pageType?.length && newPostID) {
       const updatedPageTypes = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData?.pageType.map((pageType: any) => pageType._id),
-        'pageTypes',
+        "pageTypes",
         newPostID
       );
-      console.log('updatedPageTypes', updatedPageTypes);
+      console.log("updatedPageTypes", updatedPageTypes);
     }
 
     // Update Country Tag
     if (postData.countryTag?._id && newPostID) {
       const updatedCountryTag = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         [postData.countryTag?._id],
-        'countryTag',
+        "countryTag",
         newPostID
       );
-      console.log('updatedCountryTag', updatedCountryTag);
+      console.log("updatedCountryTag", updatedCountryTag);
     }
 
     // Update People Tags
     if (postData.people?.length && newPostID) {
       const updatedPeople = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData?.people.map((person: any) => person._id),
-        'people',
+        "people",
         newPostID
       );
-      console.log('updatedPeople', updatedPeople);
+      console.log("updatedPeople", updatedPeople);
     }
 
     // Update Foresight Methods
     if (postData.foreSightMethods?.length && newPostID) {
       const updatedMethods = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.foreSightMethods?.map((method: any) => method._id),
-        'methods',
+        "methods",
         newPostID
       );
-      console.log('updatedMethods', updatedMethods);
+      console.log("updatedMethods", updatedMethods);
     }
 
     // Update Domains
     if (postData.domains?.length && newPostID) {
       const updatedDomains = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.domains?.map((domain: any) => domain._id),
-        'domains',
+        "domains",
         newPostID
       );
-      console.log('updatedDomains', updatedDomains);
+      console.log("updatedDomains", updatedDomains);
     }
 
     // Update Projects
     if (postData.project?.length && newPostID) {
       const updatedProjects = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.project?.map((project: any) => project._id),
-        'projects',
+        "projects",
         newPostID
       );
-      console.log('updatedProjects', updatedProjects);
+      console.log("updatedProjects", updatedProjects);
     }
 
     // Update Organisation
     if (postData.organisation?.length && newPostID) {
       const updatedOrganisations = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.organisation?.map((organisation: any) => organisation._id),
-        'organisations',
+        "organisations",
         newPostID
       );
-      console.log('updatedOrganisations', updatedOrganisations);
+      console.log("updatedOrganisations", updatedOrganisations);
     }
 
     // Update Internal Links
     if (postData.internalLinks?.length && newPostID) {
       const updatedInternalLinks = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.internalLinks?.map((link: any) => link._id),
-        'internalLinks',
+        "internalLinks",
         newPostID
       );
-      console.log('updatedInternalLinks', updatedInternalLinks);
+      console.log("updatedInternalLinks", updatedInternalLinks);
     }
 
     // Update Moderators
     if (postData.eventModerators?.length && newPostID) {
       const updatedModerators = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.eventModerators?.map((moderator: any) => moderator._id),
-        'moderators',
+        "moderators",
         newPostID
       );
-      console.log('updatedModerators', updatedModerators);
+      console.log("updatedModerators", updatedModerators);
     }
 
     // Update Speakers
     if (postData?.eventSpeakers?.length && newPostID) {
       const updatedSpeakers = await replaceDataItemReferences(
-        'PostPages',
+        "PostPages",
         postData.eventSpeakers?.map((speaker: any) => speaker._id),
-        'speakers',
+        "speakers",
         newPostID
       );
-      console.log('updatedSpeakers', updatedSpeakers);
+      console.log("updatedSpeakers", updatedSpeakers);
     }
 
     // Revalidate the cache for the page
@@ -669,31 +669,31 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
 
   // #region Filter pageType Tags based on the first tag
   const extraFilterTags = (tags: Array<TagProps>, firstTagName: string) => {
-    if (firstTagName === 'project result') {
+    if (firstTagName === "project result") {
       return tags?.filter(
         (tag) =>
-          tag?.tagType === 'page type' &&
-          !tag?.name?.includes('info') &&
-          tag?.name !== 'event' &&
-          tag?.name !== 'post'
+          tag?.tagType === "page type" &&
+          !tag?.name?.includes("info") &&
+          tag?.name !== "event" &&
+          tag?.name !== "post"
       );
     }
-    if (firstTagName === 'event') {
+    if (firstTagName === "event") {
       return tags?.filter(
         (tag) =>
-          tag?.tagType === 'page type' &&
-          !tag?.name?.includes('info') &&
-          tag?.name !== 'project result' &&
-          tag?.name !== 'post'
+          tag?.tagType === "page type" &&
+          !tag?.name?.includes("info") &&
+          tag?.name !== "project result" &&
+          tag?.name !== "post"
       );
     }
-    if (firstTagName === 'post') {
+    if (firstTagName === "post") {
       return tags?.filter(
         (tag) =>
-          tag?.tagType === 'page type' &&
-          !tag?.name?.includes('info') &&
-          tag?.name !== 'project result' &&
-          tag?.name !== 'event'
+          tag?.tagType === "page type" &&
+          !tag?.name?.includes("info") &&
+          tag?.name !== "project result" &&
+          tag?.name !== "event"
       );
     }
     // ...rest of conditions
@@ -719,15 +719,15 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   useEffect(() => {
     if (isLoggedIn && postData && isNewPost && pageType) {
       const postTag = tags.find((tag) => tag.name === pageType);
-      console.log('debug1->personTag', postTag);
+      // console.log('debug1->personTag', postTag);
       if (postTag) {
-        updatePostDataBasedOnKeyValue('pageType', [postTag]);
+        updatePostDataBasedOnKeyValue("pageType", [postTag]);
       }
       const defaultAuthorTag = tags.find(
         (tag) => tag.name === userDetails?.userTag?.name
       );
       if (defaultAuthorTag) {
-        updatePostDataBasedOnKeyValue('authors', [defaultAuthorTag]);
+        updatePostDataBasedOnKeyValue("authors", [defaultAuthorTag]);
         // updatePostDataBasedOnKeyValue('projectAuthors', [defaultAuthorTag]);
       }
       // console.log('debug1->personInfoTag', personInfoTag);
@@ -742,28 +742,28 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   }, []);
 
   const saveOrCreateHandler = isNewPost ? createNewPost : updateDataToServer;
-  console.log('postdatadata', postData);
+  console.log("postdatadata", postData);
 
   return (
-    <div className={classNames('m-auto mb-20', style.postContainer)}>
+    <div className={classNames("m-auto mb-20", style.postContainer)}>
       {/* Add OG Image component for client-side fallback */}
-      {!isNewPost && postData?.pageType?.[0].name !== 'project result' && (
+      {!isNewPost && postData?.pageType?.[0].name !== "project result" && (
         <OgImage
           primaryImage={postData.contentImages?.[0]?.url}
           secondaryImage={
-            postData.contentImages?.[1]?.url !== ' '
+            postData.contentImages?.[1]?.url !== " "
               ? postData.contentImages?.[1]?.url
-              : 'https://futures4europe.eu/images/placeholder.webp'
+              : "https://futures4europe.eu/images/placeholder.webp"
           }
           title={postData.title}
           description={postData.subtitle}
           url={currentUrl}
         />
       )}
-      {!isNewPost && postData?.pageType?.[0].name === 'project result' && (
+      {!isNewPost && postData?.pageType?.[0].name === "project result" && (
         <OgImage
           primaryImage={postData.projectResultMedia?.thumbnail}
-          secondaryImage={'https://futures4europe.eu/images/placeholder.webp'}
+          secondaryImage={"https://futures4europe.eu/images/placeholder.webp"}
           title={postData.title}
           description={postData.subtitle}
           url={currentUrl}
@@ -781,11 +781,11 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
             }}
             disabled={isEditModeOn && checkValidationErrors()}
             className={classNames(
-              'btn btn-save',
-              isEditModeOn && checkValidationErrors() && 'bg-gray-400'
+              "btn btn-save",
+              isEditModeOn && checkValidationErrors() && "bg-gray-400"
             )}
           >
-            {!isEditModeOn ? 'Edit Page' : 'Publish Page'}
+            {!isEditModeOn ? "Edit Page" : "Publish Page"}
           </button>
           {isEditModeOn && (
             <button
@@ -814,7 +814,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         </div>
       )}
       {/* Page Type Tag */}
-      <div className={classNames('py-3 justify-start', style.preHeader)}>
+      <div className={classNames("py-3 justify-start", style.preHeader)}>
         <div>
           {!isEditModeOn ? (
             <>{postData.pageType?.[0] && <Tag {...postData.pageType?.[0]} />}</>
@@ -822,8 +822,8 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
             <TagPicker
               tags={tags?.filter(
                 (tag) =>
-                  tag?.tagType === 'page type' &&
-                  !tag?.name?.includes('info') &&
+                  tag?.tagType === "page type" &&
+                  !tag?.name?.includes("info") &&
                   !tag?.masterTag
               )}
               className="relative"
@@ -831,7 +831,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
                 (pageType: any) => pageType?.name
               )}
               updatePostData={(value) =>
-                updatePostDataBasedOnKeyValue('pageType', value)
+                updatePostDataBasedOnKeyValue("pageType", value)
               }
               tagType="page type"
               onTagCreated={handleTagCreated}
@@ -848,8 +848,8 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         {!isEditModeOn && (
           <section className="post-meta">
             <Typography tag="p" className="text-sm text-gray-400">
-              Page creation date:{' '}
-              {formatDate(postData?.postDate?.toLocaleString())}
+              Page creation date:{" "}
+              {postData?.postDate && formatDate(postData.postDate)}
             </Typography>
           </section>
         )}
@@ -872,24 +872,24 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         )} */}
       {/* Project Result Authors */}
       {/* {postData.pageType?.[0]?.name?.toLowerCase() === 'project result' && ( */}
-      {postData?.pageType?.[0]?.name?.toLowerCase() !== 'event' ? (
+      {postData?.pageType?.[0]?.name?.toLowerCase() !== "event" ? (
         <TagListComponent
           placeholder="Add one or more person tags"
           tagList={postData.projectAuthors}
           tagListTitle="Authors"
           isEditModeOn={isEditModeOn}
-          tags={tags?.filter((tag) => tag?.tagType === 'person')}
+          tags={tags?.filter((tag) => tag?.tagType === "person")}
           selectedValues={postData.projectAuthors?.map(
             (author: any) => author?.name
           )}
           updatePostData={(value) =>
-            updatePostDataBasedOnKeyValue('projectAuthors', value)
+            updatePostDataBasedOnKeyValue("projectAuthors", value)
           }
           tagType="person"
           handleTagCreated={handleTagCreated}
         />
       ) : (
-        ''
+        ""
       )}
       {/* )} */}
       {/* Post Content */}
@@ -914,7 +914,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       />
       {/* <div>{post.data.postContent}</div> */}
       {/* EVENT SPECIFIC*/}
-      {postData?.pageType?.[0]?.name?.toLowerCase() === 'event' && (
+      {postData?.pageType?.[0]?.name?.toLowerCase() === "event" && (
         <>
           {/* Moderators */}
           <TagListComponent
@@ -922,12 +922,12 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
             tagListTitle="Moderators"
             placeholder="Add one or more person tags"
             isEditModeOn={isEditModeOn}
-            tags={tags?.filter((tag) => tag?.tagType === 'person')}
+            tags={tags?.filter((tag) => tag?.tagType === "person")}
             selectedValues={postData.eventModerators?.map(
               (speaker: any) => speaker?.name
             )}
             updatePostData={(value) =>
-              updatePostDataBasedOnKeyValue('eventModerators', value)
+              updatePostDataBasedOnKeyValue("eventModerators", value)
             }
             tagType="person"
             handleTagCreated={handleTagCreated}
@@ -938,12 +938,12 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
             tagListTitle="Speakers"
             placeholder="Add one or more person tags"
             isEditModeOn={isEditModeOn}
-            tags={tags?.filter((tag) => tag?.tagType === 'person')}
+            tags={tags?.filter((tag) => tag?.tagType === "person")}
             selectedValues={postData.eventSpeakers?.map(
               (speaker: any) => speaker?.name
             )}
             updatePostData={(value) =>
-              updatePostDataBasedOnKeyValue('eventSpeakers', value)
+              updatePostDataBasedOnKeyValue("eventSpeakers", value)
             }
             tagType="person"
             handleTagCreated={handleTagCreated}
@@ -951,26 +951,26 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         </>
       )}
       {/* Post People */}
-      {postData?.pageType?.[0]?.name?.toLowerCase() !== 'post' ? (
+      {postData?.pageType?.[0]?.name?.toLowerCase() !== "post" ? (
         <TagListComponent
           tagList={postData.people}
           tagListTitle={
-            postData?.pageType?.[0]?.name?.toLowerCase() !== 'event'
-              ? 'People'
-              : 'Participants'
+            postData?.pageType?.[0]?.name?.toLowerCase() !== "event"
+              ? "People"
+              : "Participants"
           }
           placeholder="Add one or more person tags relevant to your post"
           isEditModeOn={isEditModeOn}
-          tags={tags?.filter((tag) => tag?.tagType === 'person')}
+          tags={tags?.filter((tag) => tag?.tagType === "person")}
           selectedValues={postData.people?.map((person: any) => person?.name)}
           updatePostData={(value) =>
-            updatePostDataBasedOnKeyValue('people', value)
+            updatePostDataBasedOnKeyValue("people", value)
           }
           tagType="person"
           handleTagCreated={handleTagCreated}
         />
       ) : (
-        ''
+        ""
       )}
       {/* Foresight Methods */}
       <TagListComponent
@@ -978,12 +978,12 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         tagListTitle="Foresight Methods"
         placeholder="Add one or more foresight method tags relevant to your post"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'foresight method')}
+        tags={tags?.filter((tag) => tag?.tagType === "foresight method")}
         selectedValues={postData.foreSightMethods?.map(
           (method: any) => method?.name
         )}
         updatePostData={(value) =>
-          updatePostDataBasedOnKeyValue('foreSightMethods', value)
+          updatePostDataBasedOnKeyValue("foreSightMethods", value)
         }
         tagType="foresight method"
         handleTagCreated={handleTagCreated}
@@ -994,10 +994,10 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         tagListTitle="Domains"
         placeholder="Add one or more domain tags relevant to your post"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'domain')}
+        tags={tags?.filter((tag) => tag?.tagType === "domain")}
         selectedValues={postData.domains?.map((domain: any) => domain?.name)}
         updatePostData={(value) =>
-          updatePostDataBasedOnKeyValue('domains', value)
+          updatePostDataBasedOnKeyValue("domains", value)
         }
         tagType="domain"
         handleTagCreated={handleTagCreated}
@@ -1008,10 +1008,10 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         tagListTitle="Project"
         placeholder="Add one or more project tags relevant to your post"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'project')}
+        tags={tags?.filter((tag) => tag?.tagType === "project")}
         selectedValues={postData.project?.map((project: any) => project?.name)}
         updatePostData={(value) =>
-          updatePostDataBasedOnKeyValue('project', value)
+          updatePostDataBasedOnKeyValue("project", value)
         }
         tagType="project"
         handleTagCreated={handleTagCreated}
@@ -1020,18 +1020,18 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       <TagListComponent
         tagList={postData.organisation}
         tagListTitle={
-          postData?.pageType?.[0]?.name?.toLowerCase() !== 'event'
-            ? 'Organisation'
-            : 'Host Organisations'
+          postData?.pageType?.[0]?.name?.toLowerCase() !== "event"
+            ? "Organisation"
+            : "Host Organisations"
         }
         placeholder="Add one or more organisation tags relevant to your post"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'organisation')}
+        tags={tags?.filter((tag) => tag?.tagType === "organisation")}
         selectedValues={postData.organisation?.map(
           (organisation: any) => organisation?.name
         )}
         updatePostData={(value) =>
-          updatePostDataBasedOnKeyValue('organisation', value)
+          updatePostDataBasedOnKeyValue("organisation", value)
         }
         tagType="organisation"
         handleTagCreated={handleTagCreated}
@@ -1041,7 +1041,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         isEditModeOn={isEditModeOn}
         internalLinks={postData.internalLinks}
         handleUpdatePostData={(value) =>
-          updatePostDataBasedOnKeyValue('internalLinks', value)
+          updatePostDataBasedOnKeyValue("internalLinks", value)
         }
         title="Content related to this Page"
       />

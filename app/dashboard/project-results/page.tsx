@@ -1,22 +1,22 @@
-'use client';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import LoadingSpinner from '@app/shared-components/LoadingSpinner/LoadingSpinner';
-import Link from 'next/link';
-import classNames from 'classnames';
-import NavDashboard from '@app/shared-components/Layout/NavDashboard/NavDashboard';
-import SubNavDashboard from '@app/shared-components/Layout/NavDashboard/SubNavDashboard';
-import style from '../pageDashboard.module.css';
-import { Button } from 'flowbite-react';
-import Typography from '@app/shared-components/Typography/Typography';
-import SpriteSvg from '@app/shared-components/SpriteSvg/SpriteSvg';
-import MiniPagePost from '@app/shared-components/MiniPagePost/MiniPagePost';
-import { PLACEHOLDER_IMAGE } from '../../constants'; // Adjust the path as needed
+"use client";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
+import Link from "next/link";
+import classNames from "classnames";
+import NavDashboard from "@app/shared-components/Layout/NavDashboard/NavDashboard";
+import SubNavDashboard from "@app/shared-components/Layout/NavDashboard/SubNavDashboard";
+import style from "../pageDashboard.module.css";
+import { Button } from "flowbite-react";
+import Typography from "@app/shared-components/Typography/Typography";
+import SpriteSvg from "@app/shared-components/SpriteSvg/SpriteSvg";
+import MiniPagePost from "@app/shared-components/MiniPagePost/MiniPagePost";
+import { PLACEHOLDER_IMAGE } from "../../constants"; // Adjust the path as needed
 
 export default function DashboardProjects() {
-  const [isLoadingDeletePostPage, setIsLoadingDeletePostPage] = useState('');
-  const [userInfoPage, setUserInfoPage] = useState('');
+  const [isLoadingDeletePostPage, setIsLoadingDeletePostPage] = useState("");
+  const [userInfoPage, setUserInfoPage] = useState("");
 
   const {
     isLoggedIn,
@@ -34,14 +34,14 @@ export default function DashboardProjects() {
   useEffect(() => {
     // console.log('debug1 -> isLoggedIn:', isLoggedIn); // Debugging line
     if (!loading && !isLoggedIn) {
-      router.push('/login');
+      router.push("/login");
     }
     // Get the user's tag page link
     if (isLoggedIn && tags) {
       const userTag = tags.find(
         (tag: any) => tag.name === userDetails.userName && tag.tagPageLink
       );
-      console.log('userTag', userTag);
+      // console.log('userTag', userTag);
       if (userTag) {
         setUserInfoPage(userTag?.tagPageLink);
       }
@@ -55,7 +55,7 @@ export default function DashboardProjects() {
 
   const handleLogOut = async () => {
     logout();
-    router.push('/login');
+    router.push("/login");
   };
 
   const handleCreateOrNavigateToPersonInfoPage = () => {
@@ -67,8 +67,8 @@ export default function DashboardProjects() {
 
   const subNavItems = [
     {
-      href: '/dashboard/project-results',
-      text: 'All Project results',
+      href: "/dashboard/project-results",
+      text: "All Project results",
       isActive: true,
     },
   ];
@@ -78,7 +78,7 @@ export default function DashboardProjects() {
       className={classNames(
         style.UserDashboard,
         style.UserDashboardProjects,
-        'flex flex-col'
+        "flex flex-col"
       )}
     >
       <NavDashboard
@@ -94,7 +94,7 @@ export default function DashboardProjects() {
       <div
         className={classNames(
           style.UserDashboardWrapper,
-          'flex flex-col relative m-auto mt-10 mb-6'
+          "flex flex-col relative m-auto mt-10 mb-6"
         )}
       >
         {/* <h1 className={classNames(style.headingDashboardh1, 'mt-2 mb-4 p-0')}>
@@ -110,54 +110,54 @@ export default function DashboardProjects() {
           className={classNames(
             style.dashboardBox,
             style.dashboardBoxAddWrap,
-            'mt-14',
-            'mb-10',
-            'p-8',
-            'bg-primary-site'
+            "mt-14",
+            "mb-10",
+            "p-8",
+            "bg-primary-site"
           )}
         >
-          <div className={classNames(style.dashboardBoxAdd, 'flex flex-col')}>
+          <div className={classNames(style.dashboardBoxAdd, "flex flex-col")}>
             <div className="flex items-center mb-4">
               <SpriteSvg.AccountResultsIcon
                 className="text-color-white"
                 sizeW={24}
                 sizeH={24}
-                viewBox={'0 -2 20 20'}
-                fill={'#fff'}
+                viewBox={"0 -2 20 20"}
+                fill={"#fff"}
                 strokeWidth={0}
                 inline={false}
               />
               <Typography
                 tag="h2"
-                className={classNames(style.headingDashboardh1, 'ml-2')}
+                className={classNames(style.headingDashboardh1, "ml-2")}
               >
                 Project results section
               </Typography>
             </div>
 
             <div className="flex flex-col justify-between">
-              <p className={classNames(style.boxTextDashboard, 'mb-8')}>
+              <p className={classNames(style.boxTextDashboard, "mb-8")}>
                 Add a detailed overview of your project result. Include the
                 delivrable, description, authors, and any significant
                 information of the project result.
               </p>
             </div>
 
-            <div className={classNames(style.listDashboard, 'flex')}>
+            <div className={classNames(style.listDashboard, "flex")}>
               <Link href="/post/New_Post?pageType=projectResult">
                 <Button
-                  size={'md'}
-                  color={'light'}
+                  size={"md"}
+                  color={"light"}
                   className={classNames(
                     style.buttonAddDashboard,
-                    'block border-0 mr-4 focus:ring-purple-300'
+                    "block border-0 mr-4 focus:ring-purple-300"
                   )}
                   pill
                 >
                   <SpriteSvg.AccountAddIcon
                     sizeH={24}
                     sizeW={24}
-                    viewBox={'0 -1 14 14'}
+                    viewBox={"0 -1 14 14"}
                     strokeWidth={1}
                   />
                   <span className="text-lg">Add project result</span>
@@ -167,18 +167,18 @@ export default function DashboardProjects() {
           </div>
         </div>
 
-        <div className={classNames(style.dashboardBox, 'mt-14 mb-10 p-8')}>
+        <div className={classNames(style.dashboardBox, "mt-14 mb-10 p-8")}>
           <div className="flex flex-col">
             <div className="flex flex-col justify-between">
               <h2
                 className={classNames(
                   style.headingDashboardh1,
-                  'mt-0 mb-0 flex flex-row items-center'
+                  "mt-0 mb-0 flex flex-row items-center"
                 )}
               >
                 Project results list
               </h2>
-              <p className={classNames(style.boxTextDashboard, 'mb-8')}>
+              <p className={classNames(style.boxTextDashboard, "mb-8")}>
                 In this section of your account you can manage your list.
               </p>
             </div>
@@ -186,7 +186,7 @@ export default function DashboardProjects() {
             <div
               className={classNames(
                 style.listDashboard,
-                'flex flex-col text-base text-[#606b85]'
+                "flex flex-col text-base text-[#606b85]"
               )}
             >
               {allOwnedPages.length || allOwnedPages.length ? (
@@ -196,7 +196,7 @@ export default function DashboardProjects() {
                       .filter(
                         (postPage) =>
                           postPage?.data?.pageTypes[0]?.name ===
-                          'project result'
+                          "project result"
                       )
                       .map((postPage, index) => (
                         <div
@@ -218,7 +218,7 @@ export default function DashboardProjects() {
                                 subtitle={postPage?.data?.subtitle}
                                 date={
                                   postPage?.data?.postPublicationDate ||
-                                  postPage?.data?._createdDate?.['$date']
+                                  postPage?.data?._createdDate?.["$date"]
                                 }
                                 editDate={postPage?.data?._updatedDate?.$date}
                                 image={

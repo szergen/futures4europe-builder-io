@@ -1,0 +1,410 @@
+{
+  "createdBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+  "createdDate": 1762424514281,
+  "data": {
+    "activity": [
+      {
+        "activityItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "89aa990c8fee4c1e8553ede4c211d8ce",
+          "model": "tag",
+          "value": {
+            "createdDate": 1754820954706,
+            "id": "89aa990c8fee4c1e8553ede4c211d8ce",
+            "name": "Web Developer 1",
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "published": "published",
+            "meta": {
+              "kind": "data",
+              "lastPreviewUrl": ""
+            },
+            "query": [],
+            "data": {
+              "name": "Web Developer 1",
+              "tagType": "activity"
+            },
+            "variations": {},
+            "lastUpdated": 1761411383495,
+            "firstPublished": 1754820976457,
+            "testRatio": 1,
+            "createdBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "lastUpdatedBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "folders": [],
+            "rev": "bt4ae0t3v6i"
+          }
+        }
+      }
+    ],
+    "author": [
+      {
+        "authorItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "d88df536cf414b3684e3e2d8b4c67071",
+          "model": "tag",
+          "value": {
+            "id": "d88df536cf414b3684e3e2d8b4c67071",
+            "name": "Alexandru-Sergiu Ciobanasu",
+            "published": "published",
+            "createdDate": 1762422613193,
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "lastUpdated": 1762424045321,
+            "data": {
+              "masterTag": {
+                "@type": "@builder.io/core:Reference",
+                "id": "aaa928be9fd44166bc836cbb36f346a5",
+                "model": "tag",
+                "value": {
+                  "id": "aaa928be9fd44166bc836cbb36f346a5",
+                  "name": "Sergiu Ciobanasu",
+                  "published": "published",
+                  "createdDate": 1762421466901,
+                  "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+                  "data": {
+                    "name": "Sergiu Ciobanasu",
+                    "tagType": "person",
+                    "tagLine": "Creativity is inteligence having fun!!!",
+                    "picture": "https://static.wixstatic.com/media/471908_cef1a31534ec4839801c74b7826c2222~mv2.jpeg",
+                    "tagPageLink": "/person/sergiu-ciobanasu-ugkrj",
+                    "wixId": "2091bc29-ffe9-4557-a5c9-14eea4ef2191"
+                  },
+                  "lastUpdated": 1762421466883,
+                  "rev": "pp8ufus9j9"
+                }
+              }
+            },
+            "meta": {
+              "hasAutosaves": true
+            },
+            "rev": "zyx3csfk74g"
+          }
+        }
+      }
+    ],
+    "countryTag": [
+      {
+        "countryTagItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "2abdb30bf6bb4b199ff59a8c1d427bf6",
+          "model": "tag",
+          "value": {
+            "id": "2abdb30bf6bb4b199ff59a8c1d427bf6",
+            "name": "Romania",
+            "published": "published",
+            "createdDate": 1762423431782,
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "data": {
+              "name": "Romania",
+              "tagType": "country",
+              "wixId": "e4cab9c4-7f21-4ec6-88ad-7aa8698612f4"
+            },
+            "lastUpdated": 1762423431765,
+            "rev": "30ye0c395bu"
+          }
+        }
+      }
+    ],
+    "domains": [
+      {
+        "domainsItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "c387dbb9b5ce4ab584bf7c5b21dba64f",
+          "model": "tag",
+          "value": {
+            "id": "c387dbb9b5ce4ab584bf7c5b21dba64f",
+            "name": "Agriculture",
+            "published": "published",
+            "createdDate": 1762421595897,
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "data": {
+              "name": "Agriculture",
+              "tagType": "domain",
+              "wixId": "2ceb4abf-2b73-4a2d-b2c3-4d4468d94f4a"
+            },
+            "lastUpdated": 1762421595877,
+            "rev": "nt5qt05ili"
+          }
+        }
+      }
+    ],
+    "linkedinLink": "https://www.linkedin.com",
+    "methods": [
+      {
+        "methodsItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "55732d36970a422a971380e9ec30ceef",
+          "model": "tag",
+          "value": {
+            "id": "55732d36970a422a971380e9ec30ceef",
+            "name": "foresight method",
+            "published": "published",
+            "createdDate": 1762422899492,
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "data": {
+              "name": "foresight method",
+              "tagType": "page type",
+              "wixId": "aea99dd0-13d1-4231-96b4-b1da2d2f8401"
+            },
+            "lastUpdated": 1762422899471,
+            "rev": "penn8gxxcqn"
+          }
+        }
+      }
+    ],
+    "orcidLink": "https://www.orcid.com",
+    "organisation": [
+      {
+        "organisationItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "818219e4b8954fd18b87fde8cfa5f8a9",
+          "model": "tag",
+          "value": {
+            "id": "818219e4b8954fd18b87fde8cfa5f8a9",
+            "name": "UEFISCDI",
+            "published": "published",
+            "createdDate": 1762422652745,
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "data": {
+              "name": "UEFISCDI",
+              "tagType": "organisation",
+              "tagLine": "The Executive Agency for Higher Education, Research, Development and Innovation Funding of Romania",
+              "picture": "https://static.wixstatic.com/media/471908_f66da0478b09447ba0708a35af2af36c~mv2.png",
+              "tagPageLink": "/organisation/uefiscdi-kp7s3",
+              "wixId": "95224d24-7699-4603-8d55-58c15794dd58"
+            },
+            "lastUpdated": 1762422652723,
+            "rev": "9jy54fe6s1"
+          }
+        }
+      }
+    ],
+    "organisationProject": [
+      {
+        "organisationProjectItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "241cb9fdbe894c609282105130ac0b83",
+          "model": "tag",
+          "value": {
+            "createdDate": 1754820990784,
+            "id": "241cb9fdbe894c609282105130ac0b83",
+            "name": "Futures4Europe",
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "published": "published",
+            "meta": {
+              "kind": "data",
+              "lastPreviewUrl": ""
+            },
+            "query": [],
+            "data": {
+              "name": "Futures4Europe",
+              "tagType": "project",
+              "tagLine": "Futures4Europe Project Tagline"
+            },
+            "variations": {},
+            "lastUpdated": 1754821024391,
+            "firstPublished": 1754821024373,
+            "testRatio": 1,
+            "createdBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "lastUpdatedBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "folders": [],
+            "rev": "ve066lttgsa"
+          }
+        }
+      }
+    ],
+    "organisationType": [
+      {
+        "organisationTypeItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "69231e05b54540288da4517bcfd0a8bf",
+          "model": "tag",
+          "value": {
+            "id": "69231e05b54540288da4517bcfd0a8bf",
+            "name": "private research organisation",
+            "published": "published",
+            "createdDate": 1762421733591,
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "data": {
+              "name": "private research organisation",
+              "tagType": "organisation type",
+              "wixId": "3bb47c34-b69e-4f67-96ce-46cfde43bac4"
+            },
+            "lastUpdated": 1762421733569,
+            "rev": "ulzo73h280s"
+          }
+        }
+      }
+    ],
+    "pageOwner": [
+      {
+        "pageOwnerItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "d88df536cf414b3684e3e2d8b4c67071",
+          "model": "tag",
+          "value": {
+            "id": "d88df536cf414b3684e3e2d8b4c67071",
+            "name": "Alexandru-Sergiu Ciobanasu",
+            "published": "published",
+            "createdDate": 1762422613193,
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "lastUpdated": 1762424045321,
+            "data": {
+              "masterTag": {
+                "@type": "@builder.io/core:Reference",
+                "id": "aaa928be9fd44166bc836cbb36f346a5",
+                "model": "tag",
+                "value": {
+                  "id": "aaa928be9fd44166bc836cbb36f346a5",
+                  "name": "Sergiu Ciobanasu",
+                  "published": "published",
+                  "createdDate": 1762421466901,
+                  "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+                  "data": {
+                    "name": "Sergiu Ciobanasu",
+                    "tagType": "person",
+                    "tagLine": "Creativity is inteligence having fun!!!",
+                    "picture": "https://static.wixstatic.com/media/471908_cef1a31534ec4839801c74b7826c2222~mv2.jpeg",
+                    "tagPageLink": "/person/sergiu-ciobanasu-ugkrj",
+                    "wixId": "2091bc29-ffe9-4557-a5c9-14eea4ef2191"
+                  },
+                  "lastUpdated": 1762421466883,
+                  "rev": "pp8ufus9j9"
+                }
+              }
+            },
+            "meta": {
+              "hasAutosaves": true
+            },
+            "rev": "zyx3csfk74g"
+          }
+        }
+      }
+    ],
+    "pageTypes": [
+      {
+        "pageTypeItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "8db967d0eaa74f7a8c09bbbd76674876",
+          "model": "tag",
+          "value": {
+            "id": "8db967d0eaa74f7a8c09bbbd76674876",
+            "name": "organisation info",
+            "published": "published",
+            "createdDate": 1762423383551,
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "data": {
+              "name": "organisation info",
+              "tagType": "page type",
+              "wixId": "e0e12984-c4f3-4800-b201-3cdf4c4a01e8"
+            },
+            "lastUpdated": 1762423383533,
+            "rev": "bjqgrbvv75"
+          }
+        }
+      }
+    ],
+    "person": [
+      {
+        "personItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "d88df536cf414b3684e3e2d8b4c67071",
+          "model": "tag",
+          "value": {
+            "id": "d88df536cf414b3684e3e2d8b4c67071",
+            "name": "Alexandru-Sergiu Ciobanasu",
+            "published": "published",
+            "createdDate": 1762422613193,
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "lastUpdated": 1762424045321,
+            "data": {
+              "masterTag": {
+                "@type": "@builder.io/core:Reference",
+                "id": "aaa928be9fd44166bc836cbb36f346a5",
+                "model": "tag",
+                "value": {
+                  "id": "aaa928be9fd44166bc836cbb36f346a5",
+                  "name": "Sergiu Ciobanasu",
+                  "published": "published",
+                  "createdDate": 1762421466901,
+                  "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+                  "data": {
+                    "name": "Sergiu Ciobanasu",
+                    "tagType": "person",
+                    "tagLine": "Creativity is inteligence having fun!!!",
+                    "picture": "https://static.wixstatic.com/media/471908_cef1a31534ec4839801c74b7826c2222~mv2.jpeg",
+                    "tagPageLink": "/person/sergiu-ciobanasu-ugkrj",
+                    "wixId": "2091bc29-ffe9-4557-a5c9-14eea4ef2191"
+                  },
+                  "lastUpdated": 1762421466883,
+                  "rev": "pp8ufus9j9"
+                }
+              }
+            },
+            "meta": {
+              "hasAutosaves": true
+            },
+            "rev": "zyx3csfk74g"
+          }
+        }
+      }
+    ],
+    "postContentRIch1": "<p>Test 123 Post content rich 1</p>",
+    "postContentRIch2": "<p><span style=\"font-size: 14px;\">Test 123 Post content rich 2</span></p>",
+    "postContentRIch3": "<p><span style=\"font-size: 14px;\">Test 123 Post content rich 3</span></p>",
+    "project": [
+      {
+        "projectItem": {
+          "@type": "@builder.io/core:Reference",
+          "id": "241cb9fdbe894c609282105130ac0b83",
+          "model": "tag",
+          "value": {
+            "createdDate": 1754820990784,
+            "id": "241cb9fdbe894c609282105130ac0b83",
+            "name": "Futures4Europe",
+            "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+            "published": "published",
+            "meta": {
+              "kind": "data",
+              "lastPreviewUrl": ""
+            },
+            "query": [],
+            "data": {
+              "name": "Futures4Europe",
+              "tagType": "project",
+              "tagLine": "Futures4Europe Project Tagline"
+            },
+            "variations": {},
+            "lastUpdated": 1754821024391,
+            "firstPublished": 1754821024373,
+            "testRatio": 1,
+            "createdBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "lastUpdatedBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+            "folders": [],
+            "rev": "ve066lttgsa"
+          }
+        }
+      }
+    ],
+    "researchGateLink": "https://www.researchGate.com",
+    "slug": "/organisation/organisation-page-test",
+    "title": "Organisation Page Test",
+    "websiteLink": "https://www.google.com"
+  },
+  "folders": [],
+  "id": "58fb8872358c4cc4a6ef79885e8e5c6a",
+  "lastUpdated": 1762424887842,
+  "lastUpdatedBy": "IG1wX56C5OVXKxRSTdLbIWkjHmH2",
+  "meta": {
+    "hasAutosaves": false,
+    "kind": "data",
+    "lastPreviewUrl": ""
+  },
+  "modelId": "0381e7a039ee4e25af1b383ae849892c",
+  "name": "Organisation Page Test",
+  "published": "published",
+  "query": [],
+  "testRatio": 1,
+  "variations": {},
+  "firstPublished": 1762424887832,
+  "rev": "gun2jf8hsbq",
+  "variationId": "58fb8872358c4cc4a6ef79885e8e5c6a"
+}

@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getWixClientData } from '@app/hooks/useWixClientServer';
-import { saveToCache, getFromCache } from '../../utils/cache';
-import { referencedItemOptions } from '@app/wixUtils/server-side';
+import { NextRequest, NextResponse } from "next/server";
+import { getWixClientData } from "@app/hooks/useWixClientServer";
+import { saveToCache, getFromCache } from "../../utils/cache";
+import { referencedItemOptions } from "@app/wixUtils/server-side";
 
 export const revalidate = 0; // 5 minutes
 
 export const GET = async (req: NextRequest) => {
-  const cacheKey = 'posts.json';
+  const cacheKey = "posts.json";
   const cachedData = await getFromCache(cacheKey);
 
   if (cachedData) {
@@ -24,7 +24,7 @@ export const GET = async (req: NextRequest) => {
     do {
       const result = await wixClient.items
         .queryDataItems({
-          dataCollectionId: 'PostPages',
+          dataCollectionId: "PostPages",
           referencedItemOptions: referencedItemOptions,
           returnTotalCount: true,
         })
@@ -40,16 +40,16 @@ export const GET = async (req: NextRequest) => {
     await saveToCache(cacheKey, allItems);
     return NextResponse.json(allItems, { status: 200 });
   } catch (error) {
-    console.error('Error fetching posts:', error);
+    console.error("Error fetching posts:", error);
     return NextResponse.json(
-      { message: 'Error fetching posts' },
+      { message: "Error fetching posts" },
       { status: 500 }
     );
   }
 };
 
 export const POST = async (req: NextRequest) => {
-  const cacheKey = 'posts.json';
+  const cacheKey = "posts.json";
 
   try {
     const wixClient = await getWixClientData();
@@ -62,7 +62,7 @@ export const POST = async (req: NextRequest) => {
     do {
       const result = await wixClient.items
         .queryDataItems({
-          dataCollectionId: 'PostPages',
+          dataCollectionId: "PostPages",
           referencedItemOptions: referencedItemOptions,
           returnTotalCount: true,
         })
@@ -73,17 +73,17 @@ export const POST = async (req: NextRequest) => {
       totalCount = result?._totalCount;
       skip = limit + skip;
     } while (skip < totalCount);
-    console.log('allItems', allItems);
+    // console.log('allItems', allItems);
 
     await saveToCache(cacheKey, allItems);
     return NextResponse.json(
-      { message: 'Cache updated successfully.' },
+      { message: "Cache updated successfully." },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error updating cache:', error);
+    console.error("Error updating cache:", error);
     return NextResponse.json(
-      { message: 'Failed to update cache' },
+      { message: "Failed to update cache" },
       {
         status: 500,
       }

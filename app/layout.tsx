@@ -1,37 +1,38 @@
-'use client';
-import './globals.css';
-import { WixProvider, OAuthStrategy } from '@wix/sdk-react';
-import Footer from '@app/shared-components/Layout/Footer';
-import Header from '@app/shared-components/Layout/Header';
-import classNames from 'classnames';
-import style from './layout.module.css';
-import { AuthProvider } from './custom-hooks/AuthContext/AuthContext';
-import { useEffect, useState } from 'react';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import posthog from 'posthog-js';
-import { PostHogProvider } from 'posthog-js/react';
-import { SearchProvider } from './custom-hooks/SearchContext/SearchContext';
-import GA from './3rd-parties/GA/GA';
-import Linkedin from './3rd-parties/Linkedin/Linkedin';
+"use client";
+import "./globals.css";
+import { WixProvider, OAuthStrategy } from "@wix/sdk-react";
+import Footer from "@app/shared-components/Layout/Footer";
+import Header from "@app/shared-components/Layout/Header";
+import classNames from "classnames";
+import style from "./layout.module.css";
+import { AuthProvider } from "./custom-hooks/AuthContext/AuthContext";
+import { useEffect, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import posthog from "posthog-js";
+import { PostHogProvider } from "posthog-js/react";
+import { SearchProvider } from "./custom-hooks/SearchContext/SearchContext";
+import GA from "./3rd-parties/GA/GA";
+import Linkedin from "./3rd-parties/Linkedin/Linkedin";
+import BuilderProvider from "./shared-components/Builder/BuilderProvider";
 // Initialize PostHog
 function CustomPostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // Check if we're on localhost
       const isLocalhost =
-        window.location.hostname === 'localhost' ||
-        window.location.hostname === '127.0.0.1';
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1";
 
       // Only initialize PostHog if we're not on localhost
       if (!isLocalhost) {
         posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-          api_host: 'https://eu.i.posthog.com',
-          debug: process.env.NODE_ENV === 'development', // Debug only in development
+          api_host: "https://eu.i.posthog.com",
+          debug: process.env.NODE_ENV === "development", // Debug only in development
         });
       } else {
         // Optional: For development visibility
-        console.log('PostHog tracking disabled on localhost');
+        // console.log("PostHog tracking disabled on localhost");
       }
     }
   }, []);
@@ -54,14 +55,14 @@ export default function RootLayout({
   const [isHomePage, setIsHomePage] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // Check if we're on the home page
       const path = window.location.pathname;
-      setIsHomePage(path === '/' || path === '/home');
+      setIsHomePage(path === "/" || path === "/home");
 
       if (localStorage) {
         const tokens = JSON.parse(
-          localStorage.getItem('f4e_wix_accessTokenAndRefreshToken') || 'null'
+          localStorage.getItem("f4e_wix_accessTokenAndRefreshToken") || "null"
         );
         setTokens(tokens);
       }
@@ -86,7 +87,7 @@ export default function RootLayout({
         <link rel="icon" href="/images/favicon.ico" />
       </head>
       <body
-        className={classNames('antialiased bg-white body', {
+        className={classNames("antialiased bg-white body", {
           [style.homePage]: isHomePage,
         })}
       >
@@ -100,20 +101,22 @@ export default function RootLayout({
                 })}
               >
                 <div className={classNames(style.mainBody)}>
-                  <AuthProvider>
-                    <SearchProvider>
-                      <Header />
-                      <main className="min-h-[600px]">{children}</main>
-                      <div
-                        className={classNames(
-                          'flex flex-col items-center justify-center',
-                          style.footer
-                        )}
-                      >
-                        <Footer />
-                      </div>
-                    </SearchProvider>
-                  </AuthProvider>
+                  <BuilderProvider>
+                    <AuthProvider>
+                      <SearchProvider>
+                        <Header />
+                        <main className="min-h-[600px]">{children}</main>
+                        <div
+                          className={classNames(
+                            "flex flex-col items-center justify-center",
+                            style.footer
+                          )}
+                        >
+                          <Footer />
+                        </div>
+                      </SearchProvider>
+                    </AuthProvider>
+                  </BuilderProvider>
                 </div>
               </WixProvider>
 

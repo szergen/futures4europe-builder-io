@@ -1,37 +1,44 @@
 // Helper function to format the date
-export const formatDate = (dateStr: string) => {
+// Accepts both string dates and numeric timestamps (milliseconds)
+export const formatDate = (dateStr: string | number) => {
   const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
-  const suffixes = ['th', 'st', 'nd', 'rd'];
+  const suffixes = ["th", "st", "nd", "rd"];
   const date = new Date(dateStr);
+
+  // Check if date is valid
+  if (isNaN(date.getTime())) {
+    return "Invalid date";
+  }
+
   const day = date.getDate();
   const month = months[date.getMonth()];
   const year = date.getFullYear();
   const daySuffix = ((day) => {
     if (day % 100 >= 11 && day % 100 <= 13) {
-      return 'th';
+      return "th";
     }
     switch (day % 10) {
       case 1:
-        return 'st';
+        return "st";
       case 2:
-        return 'nd';
+        return "nd";
       case 3:
-        return 'rd';
+        return "rd";
       default:
-        return 'th';
+        return "th";
     }
   })(day);
 

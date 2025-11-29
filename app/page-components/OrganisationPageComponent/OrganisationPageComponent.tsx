@@ -977,7 +977,7 @@ function OrganisationPageComponent({
       const organisationInfoTag = tags.find(
         (tag) => tag.name === 'organisation info'
       );
-      console.log('debug1->projectInfoTag', organisationInfoTag);
+      // console.log('debug1->projectInfoTag', organisationInfoTag);
       if (organisationInfoTag) {
         updateOrganisationDataOnKeyValue('pageType', organisationInfoTag);
       }
