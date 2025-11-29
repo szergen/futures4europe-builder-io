@@ -71,10 +71,29 @@ futures4europe-builder-io/
 │   ├── api/                 # API routes
 │   ├── custom-hooks/        # React hooks
 │   └── dashboard/           # Admin dashboard
-├── builder.config.ts        # Builder.io configuration
+├── scripts/
+│   ├── migrations/          # Migration scripts
+│   │   └── migrate-tags.js           # Tag migration (completed)
+│   └── utilities/           # Utility scripts
+│       ├── list-builder-models.js    # List Builder.io models
+│       ├── verify-builder.js         # Verify Builder.io setup
+│       ├── mentions.js               # Mentions processing
+│       └── cron.js                   # Cron jobs
+├── data/
+│   ├── examples/            # Reference/example data
+│   │   ├── example_post_page.json
+│   │   ├── example_info_page.json
+│   │   └── example_tag.json
+│   ├── exports/             # Wix data exports
+│   │   └── Tags_wix.csv
+│   └── mappings/            # Migration ID mappings (gitignored)
+│       └── tag-migration-mapping.json
 ├── cache/                   # JSON cache files
 ├── docs/                    # Documentation
-└── migrate-tags.js          # Migration scripts
+│   ├── builder-io/          # Builder.io setup guides
+│   └── migration/           # Migration documentation
+├── builder.config.ts        # Builder.io configuration
+└── ...                      # Config files (package.json, tsconfig, etc.)
 ```
 
 ## ✅ Migration Status

@@ -17,8 +17,8 @@ A platform administrator needs to migrate existing post pages from Wix to Builde
 
 **Acceptance Scenarios**:
 
-1. **Given** a CSV/JSON export of Wix post pages exists, **When** administrator runs the migration script with a count (e.g., `node migrate-post-pages.js 10`), **Then** the specified number of posts are created in Builder.io with all fields mapped correctly
-2. **Given** posts have already been migrated, **When** administrator re-runs the migration script, **Then** previously migrated posts are skipped (not duplicated) and only new posts are created
+1. **Given** a CSV/JSON export of Wix post pages exists in `data/exports/`, **When** administrator runs the migration script with a count (e.g., `node scripts/migrations/migrate-posts.js 10`), **Then** the specified number of posts are created in Builder.io with all fields mapped correctly
+2. **Given** posts have already been migrated, **When** administrator re-runs the migration script, **Then** previously migrated posts are skipped (not duplicated) using the mapping file at `data/mappings/post-migration-mapping.json` and only new posts are created
 3. **Given** a post contains references to tags, people, projects, or organisations, **When** the post is migrated, **Then** these references are converted to Builder.io Reference format with correct model and ID mappings
 4. **Given** the migration is in progress, **When** a single post fails to migrate, **Then** the error is logged with details and the script continues with the next post
 5. **Given** migration completes, **When** administrator reviews the output, **Then** a summary report shows total posts processed, successful migrations, skipped (already migrated), and failed with error details
@@ -51,8 +51,8 @@ Administrators need to migrate large numbers of posts (hundreds or thousands) wi
 
 **Acceptance Scenarios**:
 
-1. **Given** administrator wants to migrate all posts, **When** running script with `all` parameter (e.g., `node migrate-post-pages.js all`), **Then** all posts from Wix are migrated in batches with progress indicators
-2. **Given** migration is interrupted (network failure, manual stop), **When** script is restarted, **Then** migration resumes from last successful post using the mapping file
+1. **Given** administrator wants to migrate all posts, **When** running script with `all` parameter (e.g., `node scripts/migrations/migrate-posts.js all`), **Then** all posts from Wix are migrated in batches with progress indicators
+2. **Given** migration is interrupted (network failure, manual stop), **When** script is restarted, **Then** migration resumes from last successful post using the mapping file at `data/mappings/post-migration-mapping.json`
 3. **Given** a large batch is being migrated, **When** migration is running, **Then** progress updates appear in console showing current post number, total posts, success/failure counts, and estimated time remaining
 4. **Given** rate limiting concerns exist, **When** posts are being migrated, **Then** script includes configurable delay between API calls (default 200ms) to avoid rate limits
 
@@ -68,7 +68,7 @@ Administrators want to preview migration results without actually creating posts
 
 **Acceptance Scenarios**:
 
-1. **Given** administrator wants to test migration, **When** running script in dry-run mode (e.g., `node migrate-post-pages.js 5 --dry-run`), **Then** script validates data transformation but does not create posts in Builder.io
+1. **Given** administrator wants to test migration, **When** running script in dry-run mode (e.g., `node scripts/migrations/migrate-posts.js 5 --dry-run`), **Then** script validates data transformation but does not create posts in Builder.io
 2. **Given** dry-run mode is active, **When** script processes posts, **Then** output shows the exact JSON payload that would be sent to Builder.io for each post
 3. **Given** validation errors exist in source data, **When** dry-run processes posts, **Then** errors are identified and reported without stopping the entire process
 
@@ -89,13 +89,13 @@ Administrators want to preview migration results without actually creating posts
 
 ### Functional Requirements
 
-- **FR-001**: System MUST read post data from Wix export format (CSV or JSON)
-- **FR-002**: System MUST transform Wix post data to Builder.io `post-page` model format following the mapping in `builderPostUtils.ts`
+- **FR-001**: System MUST read post data from Wix export format (CSV or JSON) in `data/exports/` directory
+- **FR-002**: System MUST transform Wix post data to Builder.io `post-page` model format following the mapping in `app/utils/builderPostUtils.ts`
 - **FR-003**: System MUST create posts in Builder.io using the Write API with private API key
 - **FR-004**: System MUST handle all post sub-types (post, event, project-result) by mapping the `pageTypes` field
 - **FR-005**: System MUST convert Wix reference IDs to Builder.io Reference format `{@type: "@builder.io/core:Reference", id: "...", model: "..."}`
-- **FR-006**: System MUST maintain bidirectional mapping between Wix IDs and Builder.io IDs in a JSON mapping file
-- **FR-007**: System MUST skip already-migrated posts by checking the mapping file before creation
+- **FR-006**: System MUST maintain bidirectional mapping between Wix IDs and Builder.io IDs in a JSON mapping file at `data/mappings/post-migration-mapping.json`
+- **FR-007**: System MUST skip already-migrated posts by checking the mapping file at `data/mappings/post-migration-mapping.json` before creation
 - **FR-008**: System MUST log all migration operations (success, skip, failure) with timestamps
 - **FR-009**: System MUST accept command-line arguments for count (number or "all") and optional flags (dry-run, validate)
 - **FR-010**: System MUST handle the following reference field arrays: author, pageOwner, people, methods, domains, projects, organisations, speakers, moderators, projectResultAuthor, pageTypes
@@ -189,13 +189,14 @@ Based on `builderPostUtils.ts` transformation logic:
 
 ## Assumptions
 
-1. Tag migration has already been completed (as indicated by existing `migrate-tags.js`)
-2. Wix post data will be exported in a consistent format (CSV or JSON)
+1. Tag migration has already been completed (script at `scripts/migrations/migrate-tags.js`)
+2. Wix post data will be exported in a consistent format (CSV or JSON) to `data/exports/`
 3. Builder.io Private API key is available in `.env.local` as `BUILDER_PRIVATE_API_KEY`
 4. The `post-page` model is already configured in Builder.io with correct schema
 5. Referenced entities (tags for people, projects, organisations, methods, domains) already exist in Builder.io
-6. The transformation logic in `builderPostUtils.ts` represents the correct field mappings
+6. The transformation logic in `app/utils/builderPostUtils.ts` represents the correct field mappings
 7. Rate limiting allows at least 5 requests per second (200ms delay between requests)
 8. Script will be run from the repository root directory
 9. Node.js environment with required dependencies (dotenv, node-fetch, csv-parse) is available
-10. Mapping file will be stored at `./post-migration-mapping.json` similar to tag migration
+10. Mapping file will be stored at `data/mappings/post-migration-mapping.json` following project conventions
+11. Example reference data is available in `data/examples/example_post_page.json`
