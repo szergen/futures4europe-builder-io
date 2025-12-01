@@ -81,6 +81,7 @@
 - [ ] T030 [US1] Add duplicate prevention logic in migrate() - check mapping file before processing each post, skip if already migrated
 - [ ] T031 [US1] Add error handling in migrate() - individual post failures logged with details, continue with remaining posts
 - [ ] T032 [US1] Add summary report generation in migrate() - total processed, successful, skipped, failed counts with details
+- [ ] T032B [US1] Create initial docs/migration/posts/POST_MIGRATION_GUIDE.md with basic setup, CSV format, CLI usage, and example commands (satisfies Constitution Principle V)
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently (MVP complete!)
 
@@ -146,14 +147,15 @@
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-**Purpose**: Documentation, optimization, and production readiness
+**Purpose**: Documentation enhancement, optimization, and production readiness (initial docs created in Phase 3)
 
 - [ ] T052 [P] Create specs/001-migrate-post-pages/quickstart.md with step-by-step migration instructions
 - [ ] T053 [P] Create specs/001-migrate-post-pages/field-mapping.md documenting all 40+ CSV→Builder.io transformations
-- [ ] T054 [P] Create docs/migration/posts/POST_MIGRATION_GUIDE.md following tag migration pattern
+- [ ] T054 [P] Enhance docs/migration/posts/POST_MIGRATION_GUIDE.md with troubleshooting, advanced usage, and field mapping details
 - [ ] T055 [P] Add comprehensive JSDoc comments to all functions in scripts/migrations/migrate-posts.js
 - [ ] T056 [P] Update README.md migration status section with post migration completion
 - [ ] T057 [P] Add troubleshooting section to docs/migration/posts/POST_MIGRATION_GUIDE.md with common errors and solutions
+- [ ] T057B [P] Create specs/001-migrate-post-pages/checklists/validation.md with field-by-field manual testing checklist (40+ fields, 3 sub-types, reference integrity checks)
 - [ ] T058 Test scripts/migrations/migrate-posts.js with 10 test posts - verify all fields, references, duplicate prevention
 - [ ] T059 Test scripts/migrations/migrate-posts.js with posts containing missing references - verify warnings logged, posts still migrated
 - [ ] T060 Test scripts/migrations/migrate-posts.js with duplicate slugs - verify auto-suffix applied, logged

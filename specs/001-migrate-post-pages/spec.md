@@ -90,6 +90,9 @@ Administrators want to preview migration results without actually creating posts
 - **Duplicate slugs**: When multiple posts have the same slug, the first post keeps the original slug. Subsequent posts with the same slug automatically get a numeric suffix appended (e.g., "my-post", "my-post-2", "my-post-3"). Each modification is logged with the original and new slug for administrator review.
 - **Missing required fields**: Posts missing required fields (title or slug) are skipped entirely and logged as failed migrations with details of which fields are missing. These posts can be fixed in the source data and re-migrated.
 - **Image/media references**: Image URLs (postImage1-10, projectResultMedia) are migrated as-is without downloading or re-uploading image files. Images remain hosted at their original location (Wix Media or CDN), and only the URL references are transferred to Builder.io.
+
+### Open Questions (Not Yet Clarified)
+
 - How are posts with all three sub-types (post, event, project-result) differentiated during migration?
 - How does the script handle very large rich text content (postContentRIch1-10 fields)?
 - What happens when Wix API is temporarily unavailable during migration?
@@ -99,10 +102,10 @@ Administrators want to preview migration results without actually creating posts
 
 ### Functional Requirements
 
-- **FR-001**: System MUST read post data from Wix CSV export file in `data/exports/` directory
+- **FR-001**: System MUST read post data from Wix CSV export file `data/exports/Posts_Events_Project+Results+Pages_wix.csv`
 - **FR-002**: System MUST transform Wix post data to Builder.io `post-page` model format following the mapping in `app/utils/builderPostUtils.ts`
 - **FR-003**: System MUST create posts in Builder.io using the Write API with private API key
-- **FR-004**: System MUST handle all post sub-types (post, event, project-result) by mapping the `pageTypes` field
+- **FR-004**: System MUST handle all post sub-types (post, event, project-result) by resolving `pageTypes` Wix IDs via `data/mappings/tag-migration-mapping.json` to determine classification based on the resolved tag name (e.g., "Post", "Event", "Project Result" tags indicate respective sub-types)
 - **FR-005**: System MUST convert Wix reference IDs to Builder.io Reference format `{@type: "@builder.io/core:Reference", id: "...", model: "..."}`
 - **FR-006**: System MUST maintain bidirectional mapping between Wix IDs and Builder.io IDs in a JSON mapping file at `data/mappings/post-migration-mapping.json`
 - **FR-007**: System MUST skip already-migrated posts by checking the mapping file at `data/mappings/post-migration-mapping.json` before creation
@@ -118,7 +121,7 @@ Administrators want to preview migration results without actually creating posts
 - **FR-017**: System MUST preserve Wix post ID in Builder.io data for reference tracking
 - **FR-018**: System MUST provide summary statistics after migration completes
 - **FR-019**: System MUST handle API errors gracefully and continue with remaining posts
-- **FR-020**: System MUST implement rate limiting delay (configurable, default 200ms) between API calls
+- **FR-020**: System MUST implement rate limiting delay (configurable via RATE_LIMIT constant in script, default 200ms) between API calls
 - **FR-021**: System MUST handle missing reference entities by omitting them from reference arrays and logging warnings with post ID, reference type, and missing entity ID
 - **FR-022**: System MUST handle duplicate slugs by auto-appending numeric suffix (e.g., "-2", "-3") to ensure uniqueness and logging the original and modified slugs
 - **FR-023**: System MUST validate that required fields (title, slug) are present before migration and skip posts missing these fields, logging them as failed with specific missing field details
@@ -135,14 +138,14 @@ Administrators want to preview migration results without actually creating posts
 
 ### Measurable Outcomes
 
-- **SC-001**: Administrator can migrate a single test post and verify all 40+ fields are correctly mapped in Builder.io within 5 minutes
+- **SC-001**: Administrator can migrate a single test post and verify all 40+ fields are correctly mapped in Builder.io within 5 minutes of migration completion (excluding environment setup time, measured from command execution to field verification in Builder.io UI)
 - **SC-002**: System successfully migrates 100% of posts without data loss when source data is valid
 - **SC-003**: Migration script processes at least 100 posts per hour (accounting for rate limits)
-- **SC-004**: Re-running migration script results in 0 duplicate posts (100% skip rate for already-migrated content)
+- **SC-004**: Re-running migration script with same or larger count parameter results in 0 duplicate posts (100% skip rate for already-migrated content, verified via mapping file and Builder.io post count remaining unchanged)
 - **SC-005**: All reference fields (tags, people, projects, organisations) maintain correct relationships after migration
 - **SC-006**: Migration can be interrupted and resumed without requiring full restart or losing progress
 - **SC-007**: Error messages provide sufficient detail to diagnose and fix source data issues
-- **SC-008**: Migrated posts display correctly in the existing post-page components without requiring code changes
+- **SC-008**: Migrated posts render without errors in PostPageComponent and all fields display values matching source CSV data, verified via manual spot-check of 10 representative posts (covering all 3 sub-types: post, event, project-result), with no code changes required to components
 
 ## Field Mapping Summary
 
