@@ -52,18 +52,35 @@ const CSV_FILE =
   "./data/exports/Project_Organisation_Person+Info+Pages_wix.csv";
 const TAG_MAPPING_FILE = "./data/mappings/tag-migration-mapping.json";
 
-// Three separate mapping files for each page type
+// Mapping files configuration
+// Option 1: Separate mapping files for each page type (tracks migrations per type)
+// const MAPPING_FILES = {
+//   person: "./data/mappings/person-migration-mapping.json",
+//   organisation: "./data/mappings/organisation-migration-mapping.json",
+//   project: "./data/mappings/project-migration-mapping.json",
+// };
+
+// Option 2: Single mapping file for all info pages (simpler if using single model)
+const SINGLE_MAPPING_FILE = "./data/mappings/info-page-migration-mapping.json";
 const MAPPING_FILES = {
-  person: "./data/mappings/person-migration-mapping.json",
-  organisation: "./data/mappings/organisation-migration-mapping.json",
-  project: "./data/mappings/project-migration-mapping.json",
+  person: SINGLE_MAPPING_FILE,
+  organisation: SINGLE_MAPPING_FILE,
+  project: SINGLE_MAPPING_FILE,
 };
 
 // Model names for Builder.io
+// Option 1: Use separate models for each type (requires creating 3 models in Builder.io)
+// const MODELS = {
+//   person: "person-page",
+//   organisation: "organisation-page",
+//   project: "project-page",
+// };
+
+// Option 2: Use single model for all info pages (simpler - requires only 1 model)
 const MODELS = {
-  person: "person-page",
-  organisation: "organisation-page",
-  project: "project-page",
+  person: "info-page",
+  organisation: "info-page",
+  project: "info-page",
 };
 
 // Slug prefixes for each page type
