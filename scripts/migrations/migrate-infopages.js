@@ -628,6 +628,17 @@ function resolveTagReferences(wixTagIds, tagMapping, wrapperKey) {
 }
 
 /**
+ * Convert field name to camelCase (e.g., "country tag" -> "countryTag")
+ * @param {string} fieldName - Field name with spaces or hyphens
+ * @returns {string} camelCase field name
+ */
+function toCamelCase(fieldName) {
+  return fieldName
+    .replace(/[-\s]+(.)?/g, (_, char) => (char ? char.toUpperCase() : ""))
+    .replace(/^(.)/, (char) => char.toLowerCase());
+}
+
+/**
  * T052: Transform all tag reference fields for an info page
  * @param {Object} row - CSV row with normalized column names
  * @param {Object} tagMapping - Tag migration mapping
@@ -651,7 +662,7 @@ function transformTagReferences(row, tagMapping, pageType) {
   for (const { field, wrapper } of commonRefFields) {
     const wixTagIds = parseTagIds(row[field]);
     if (wixTagIds.length > 0) {
-      const fieldName = field.replace(/\s+/g, ""); // Remove spaces
+      const fieldName = toCamelCase(field); // Convert to camelCase
       refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping, wrapper);
     }
   }
@@ -670,7 +681,7 @@ function transformTagReferences(row, tagMapping, pageType) {
     for (const { field, wrapper } of personRefFields) {
       const wixTagIds = parseTagIds(row[field]);
       if (wixTagIds.length > 0) {
-        const fieldName = field.replace(/\s+/g, "").replace(/-/g, "");
+        const fieldName = toCamelCase(field);
         refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping, wrapper);
       }
     }
@@ -691,7 +702,7 @@ function transformTagReferences(row, tagMapping, pageType) {
     for (const { field, wrapper } of orgRefFields) {
       const wixTagIds = parseTagIds(row[field]);
       if (wixTagIds.length > 0) {
-        const fieldName = field.replace(/\s+/g, "");
+        const fieldName = toCamelCase(field);
         refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping, wrapper);
       }
     }
@@ -714,7 +725,7 @@ function transformTagReferences(row, tagMapping, pageType) {
     for (const { field, wrapper } of projectRefFields) {
       const wixTagIds = parseTagIds(row[field]);
       if (wixTagIds.length > 0) {
-        const fieldName = field.replace(/\s+/g, "");
+        const fieldName = toCamelCase(field);
         refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping, wrapper);
       }
     }
