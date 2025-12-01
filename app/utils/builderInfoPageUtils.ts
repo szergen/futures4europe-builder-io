@@ -58,12 +58,28 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
       postContentRIch1: data.postContentRIch1 || "",
       postContentRIch2: data.postContentRIch2 || "",
       postContentRIch3: data.postContentRIch3 || "",
+      postContentRIch4: data.postContentRIch4 || "",
+      postContentRIch5: data.postContentRIch5 || "",
+      postContentRIch6: data.postContentRIch6 || "",
+      postContentRIch7: data.postContentRIch7 || "",
+      postContentRIch8: data.postContentRIch8 || "",
+      postContentRIch9: data.postContentRIch9 || "",
+      postImage1: data.postImage1 || "",
+      postImage2: data.postImage2 || "",
+      postImage3: data.postImage3 || "",
+      postImage4: data.postImage4 || "",
+      postImage5: data.postImage5 || "",
+      postImage6: data.postImage6 || "",
+      postImage7: data.postImage7 || "",
+      postImage8: data.postImage8 || "",
+      postImage9: data.postImage9 || "",
 
       // Links
       linkedinLink: data.linkedinLink || "",
       orcidLink: data.orcidLink || "",
       researchGateLink: data.researchGateLink || "",
       websiteLink: data.websiteLink || "",
+      organisationEstablishedDate: data.organisationEstablishedDate || "",
 
       // Reference arrays - transform nested structure to flat
       activity: transformReferenceArray(data.activity, "activityItem"),
@@ -71,6 +87,8 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
       countryTag: transformReferenceArray(data.countryTag, "countryTagItem"),
       domains: transformReferenceArray(data.domains, "domainsItem"),
       methods: transformReferenceArray(data.methods, "methodsItem"),
+      projectStartDate: data.projectStartDate || "",
+      projectEndDate: data.projectEndDate || "",
       organisation: transformReferenceArray(
         data.organisation,
         "organisationItem"
@@ -83,6 +101,17 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
         data.organisationType,
         "organisationTypeItem"
       ),
+      organisationMemberOf: transformReferenceArray(
+        data.organisationMemberOf,
+        "organisationMemberOfItem"
+      ),
+      organisationHasMember: transformReferenceArray(
+        data.organisationHasMember,
+        "organisationHasMemberItem"
+      ),
+      mediaFiles: data.mediaFiles || [],
+      organisationPeopleRoles: data.organisationPeopleRoles || [],
+      organisationProjectRoles: data.organisationProjectRoles || [],
       description: data.description || "",
       pageOwner: transformReferenceArray(data.pageOwner, "pageOwnerItem"),
       pageTypes: transformReferenceArray(data.pageTypes, "pageTypeItem"),
@@ -92,6 +121,19 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
         data.projectFunded,
         "projectFundedItem"
       ),
+      projectParticipantTeam: transformReferenceArray(
+        data.projectParticipantTeam,
+        "projectParticipantTeamItem"
+      ),
+      projectCoordinator: transformReferenceArray(
+        data.projectCoordinator,
+        "projectCoordinatorItem"
+      ),
+      projectOrganisation: transformReferenceArray(
+        data.projectOrganisation,
+        "projectOrganisationItem"
+      ),
+      // projectOrganisationRoles: data.projectOrganisationRoles || [],
 
       // Content images (if any)
       contentImages: data.contentImages || [],
