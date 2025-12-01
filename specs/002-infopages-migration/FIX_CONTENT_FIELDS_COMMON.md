@@ -1,8 +1,13 @@
-# Fix: Post Content Rich and Post Image Fields Now Common for All Page Types
+# Fix: Content Fields, Media Files, and Internal Links Now Common for All Page Types
 
 ## Issue
 
-The Post Content Rich (1-10) and Post Image (1-10) fields were being processed only for **project** page types, but they should be available for **all page types** (person, organisation, and project).
+Several content-related fields were being processed only for **project** page types, but they should be available for **all page types** (person, organisation, and project):
+
+- Post Content Rich (1-10)
+- Post Image (1-10)
+- Internal Links
+- Media Files
 
 ## Root Cause
 
@@ -102,12 +107,15 @@ if (type === "project") {
 
 These are now processed **before** any type-specific fields, making them universally available.
 
-### Still Project-Specific
+### Also Common Fields (Added)
+
+- `internalLinks` (JSON array, currently empty in all pages)
+- `mediaFiles` (JSON array, **568 pages** have this - **357 person pages!**)
+
+### Still Project-Specific (Correctly)
 
 - `projectStartDate`
 - `projectEndDate`
-- `internalLinks`
-- `mediaFiles`
 
 ## Data Analysis
 

@@ -506,6 +506,23 @@ function transformInfoPage(row, pageTypeInfo, tagMapping, typeMapping) {
     }
   }
 
+  // Common array fields (Internal Links, Media Files) - available for all page types
+  if (row["internal links"]) {
+    try {
+      data.internalLinks = JSON.parse(row["internal links"]);
+    } catch (e) {
+      data.internalLinks = [];
+    }
+  }
+
+  if (row["media files"]) {
+    try {
+      data.mediaFiles = JSON.parse(row["media files"]);
+    } catch (e) {
+      data.mediaFiles = [];
+    }
+  }
+
   // T024: Organisation-specific fields
   if (type === "organisation" && row["organisation established date"]) {
     data.organisationEstablishedDate = new Date(
@@ -520,23 +537,6 @@ function transformInfoPage(row, pageTypeInfo, tagMapping, typeMapping) {
     }
     if (row["project end date"]) {
       data.projectEndDate = new Date(row["project end date"]).getTime();
-    }
-
-    // Internal Links and Media Files
-    if (row["internal links"]) {
-      try {
-        data.internalLinks = JSON.parse(row["internal links"]);
-      } catch (e) {
-        data.internalLinks = [];
-      }
-    }
-
-    if (row["media files"]) {
-      try {
-        data.mediaFiles = JSON.parse(row["media files"]);
-      } catch (e) {
-        data.mediaFiles = [];
-      }
     }
   }
 

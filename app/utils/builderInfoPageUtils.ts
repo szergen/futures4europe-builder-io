@@ -101,6 +101,16 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
         data.organisationType,
         "organisationTypeItem"
       ),
+      organisationMemberOf: transformReferenceArray(
+        data.organisationMemberOf,
+        "organisationMemberOfItem"
+      ),
+      organisationHasMember: transformReferenceArray(
+        data.organisationHasMember,
+        "organisationHasMemberItem"
+      ),
+      organisationPeopleRoles: data.organisationPeopleRoles || [],
+      organisationProjectRoles: data.organisationProjectRoles || [],
       description: data.description || "",
       pageOwner: transformReferenceArray(data.pageOwner, "pageOwnerItem"),
       pageTypes: transformReferenceArray(data.pageTypes, "pageTypeItem"),
