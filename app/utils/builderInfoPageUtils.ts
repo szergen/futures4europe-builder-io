@@ -87,6 +87,8 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
       countryTag: transformReferenceArray(data.countryTag, "countryTagItem"),
       domains: transformReferenceArray(data.domains, "domainsItem"),
       methods: transformReferenceArray(data.methods, "methodsItem"),
+      projectStartDate: data.projectStartDate || "",
+      projectEndDate: data.projectEndDate || "",
       organisation: transformReferenceArray(
         data.organisation,
         "organisationItem"
