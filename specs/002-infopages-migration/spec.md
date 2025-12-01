@@ -14,6 +14,7 @@
 - Q: Should the migration script handle case-insensitive column name matching to be more resilient to CSV export variations? → A: Yes, use case-insensitive column name matching (e.g., "title", "Title", "TITLE" all work)
 - Q: Should the migration script attempt to resolve organisation/person names in structured roles fields to Builder.io Reference IDs, or store them as plain text strings? → A: Store as plain text strings exactly as they appear in CSV (no resolution)
 - Q: How should the migration script handle CSV rows with empty/missing Page Types field? → A: Skip the row entirely and log as error with row ID for manual review and source data correction
+- Q: What types of entities do the reference fields in info pages point to, and how should model resolution work? → A: All reference fields point to tags only. Use tag-migration-mapping.json to resolve all Wix reference IDs to Builder.io tag IDs
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -29,7 +30,7 @@ A platform administrator needs to migrate existing info pages (Person, Organisat
 
 1. **Given** a CSV export of Wix info pages exists at `data/exports/Project_Organisation_Person+Info+Pages_wix.csv`, **When** administrator runs the migration script with a count (e.g., `node scripts/migrations/migrate-infopages.js 10`), **Then** the specified number of info pages are created in Builder.io with all fields mapped correctly
 2. **Given** info pages have already been migrated, **When** administrator re-runs the migration script, **Then** previously migrated pages are skipped (not duplicated) using the mapping file at `data/mappings/infopage-migration-mapping.json` and only new pages are created
-3. **Given** an info page contains references to tags, people, projects, or organisations, **When** the page is migrated, **Then** these references are converted to Builder.io Reference format with correct model and ID mappings
+3. **Given** an info page contains references to tags (methods, domains, types, etc.), **When** the page is migrated, **Then** these tag references are converted to Builder.io Reference format using the tag-migration-mapping.json
 4. **Given** the migration is in progress, **When** a single info page fails to migrate, **Then** the error is logged with details and the script continues with the next page
 5. **Given** migration completes, **When** administrator reviews the output, **Then** a summary report shows total info pages processed, successful migrations, skipped (already migrated), and failed with error details
 
@@ -104,7 +105,7 @@ Administrators want to preview migration results without actually creating info 
 
 ### Edge Cases
 
-- **Missing references**: When an info page references a tag/person/project/organisation that doesn't exist in Builder.io, the page is migrated successfully but the invalid reference is omitted from the reference array. A warning is logged with the page ID, reference type, and missing entity ID for later resolution.
+- **Missing references**: When an info page references a tag ID that doesn't exist in `tag-migration-mapping.json` (tag not yet migrated to Builder.io), the page is migrated successfully but the invalid reference is omitted from the reference array. A warning is logged with the page ID, reference field name, and missing Wix tag ID for later resolution.
 - **Duplicate slugs**: When multiple info pages have the same slug within the same page type, the first page keeps the original slug. Subsequent pages with the same slug automatically get a numeric suffix appended (e.g., "john-doe", "john-doe-2", "john-doe-3"). Each modification is logged with the original and new slug for administrator review.
 - **Missing required fields**: Info pages missing required fields (title or slug) are skipped entirely and logged as failed migrations with details of which fields are missing. These pages can be fixed in the source data and re-migrated.
 - **Missing Page Types field**: CSV rows with empty or missing `Page Types` field are skipped entirely and logged as errors with the row ID, since the script cannot determine which Builder.io model to use without a valid page type.
@@ -126,7 +127,8 @@ Administrators want to preview migration results without actually creating info 
   - Project pages → `project-page` model
 - **FR-004**: System MUST transform Wix info page data to Builder.io format with model-specific field mappings
 - **FR-005**: System MUST create info pages in Builder.io using the Write API with private API key
-- **FR-006**: System MUST convert Wix reference IDs to Builder.io Reference format `{@type: "@builder.io/core:Reference", id: "...", model: "..."}`
+- **FR-006**: System MUST convert Wix tag reference IDs to Builder.io Reference format `{@type: "@builder.io/core:Reference", id: "...", model: "tag"}` using mappings from `data/mappings/tag-migration-mapping.json`
+- **FR-006a**: System MUST resolve all reference fields (methods, domains, personType, organisationType, projectFunded, etc.) as tag references since all referenced entities are tags
 - **FR-007**: System MUST maintain separate bidirectional mapping files for each page type at:
   - `data/mappings/person-migration-mapping.json`
   - `data/mappings/organisation-migration-mapping.json`
@@ -142,7 +144,7 @@ Administrators want to preview migration results without actually creating info 
 - **FR-013**: System MUST provide summary statistics after migration completes, broken down by page type
 - **FR-014**: System MUST handle API errors gracefully and continue with remaining pages
 - **FR-015**: System MUST implement rate limiting delay (configurable, default 200ms) between API calls
-- **FR-016**: System MUST handle missing reference entities by omitting them from reference arrays and logging warnings
+- **FR-016**: System MUST handle missing tag references (Wix tag IDs not found in tag-migration-mapping.json) by omitting them from reference arrays and logging warnings with page ID, field name, and missing Wix tag ID
 - **FR-017**: System MUST handle duplicate slugs within the same page type by auto-appending numeric suffix
 - **FR-018**: System MUST validate that required fields (title, slug) are present before migration and skip pages missing these fields
 - **FR-019**: System MUST migrate image/media field URLs as-is without downloading or re-uploading files
@@ -153,39 +155,36 @@ Administrators want to preview migration results without actually creating info 
 
 - **FR-021**: System MUST map Person-specific fields including:
   - Basic: title, slug, description
-  - References: methods, domains, person (self-reference), personType, personProjectCoordination, personProjectParticipation, personOrganisation, personOrganisationFormer
-  - Structured roles: personOrganisationRoles, personOrganisationRolesFormer (JSON arrays of organisation/role objects)
+  - Tag references: methods, domains, person (self-reference tag), personType, personProjectCoordination, personProjectParticipation, personOrganisation, personOrganisationFormer, activity, countryTag
+  - Structured roles: personOrganisationRoles, personOrganisationRolesFormer (JSON arrays of organisation/role text objects, not references)
   - External links: linkedinLink, websiteLink, researchGateLink, orcidLink
-  - Activity/Country tags
 
 ### Organisation Page Field Requirements
 
 - **FR-022**: System MUST map Organisation-specific fields including:
   - Basic: title, slug, description
-  - References: organisationType, organisationProject, organisationPeople, organisationHasMember, organisationMemberOf
-  - Structured roles: organisationProjectRoles, organisationPeopleRoles (JSON arrays of organisation/person and role objects)
+  - Tag references: organisationType, organisationProject, organisationPeople, organisationHasMember, organisationMemberOf, activity, countryTag
+  - Structured roles: organisationProjectRoles, organisationPeopleRoles (JSON arrays of organisation/person and role text objects, not references)
   - Date: organisationEstablishedDate
   - External links: websiteLink
-  - Activity/Country tags
 
 ### Project Page Field Requirements
 
 - **FR-023**: System MUST map Project-specific fields including:
   - Basic: title, slug, description
-  - References: projectFunded, projectCoordinator, projectParticipantTeam, projectOrganisation
-  - Structured roles: projectOrganisationRoles (JSON array of organisation/role objects)
+  - Tag references: projectFunded, projectCoordinator, projectParticipantTeam, projectOrganisation, activity, countryTag
+  - Structured roles: projectOrganisationRoles (JSON array of organisation/role text objects, not references)
   - Dates: projectStartDate, projectEndDate
   - Content: postContent1-10, postImage1-10
   - External links: websiteLink
-  - Activity/Country tags
 
 ### Key Entities
 
-- **Person Page**: Info page for individuals with profile information, affiliations, projects, and external links
-- **Organisation Page**: Info page for organizations with members, projects, roles, and establishment information
-- **Project Page**: Info page for projects with timeline, participants, coordinators, and rich content sections
-- **Reference**: Link to other entities stored as Builder.io Reference objects
-- **Migration Mapping**: Persistent record linking Wix info page IDs to Builder.io page IDs for tracking and preventing duplicates
+- **Person Page**: Info page for individuals with profile information, tag-based affiliations, and external links
+- **Organisation Page**: Info page for organizations with tag-based relationships, roles, and establishment information
+- **Project Page**: Info page for projects with timeline, tag-based participants, coordinators, and rich content sections
+- **Tag Reference**: Link to tag entities stored as Builder.io Reference objects (`{@type: "@builder.io/core:Reference", id: "...", model: "tag"}`)
+- **Migration Mapping**: Persistent record linking Wix info page IDs to Builder.io page IDs for tracking and preventing duplicates (separate files per page type)
 - **Page Type**: Classification of info pages (person, organisation, project) determining which fields are relevant and which Builder.io model to use
 
 ## Success Criteria _(mandatory)_
@@ -221,24 +220,27 @@ Administrators want to preview migration results without actually creating info 
 - `published` → `published` ("published" status)
 - `Owner` → `createdBy` (Builder.io user ID)
 
-**Common References**:
+**Common References** (all are tag references):
 
-- `Methods` → `data.methods[]` with Builder.io Reference format
-- `Domains` → `data.domains[]` with Builder.io Reference format
-- `Country Tag` → `data.countryTag` (single reference)
-- `Activity` → `data.activity[]` (activity tags)
+- `Methods` → `data.methods[]` with Builder.io tag Reference format
+- `Domains` → `data.domains[]` with Builder.io tag Reference format
+- `Country Tag` → `data.countryTag` (single tag reference)
+- `Activity` → `data.activity[]` (tag references to activity tags)
 
 ### Person Page Specific Fields
 
-**References**:
+**References** (all are tag references):
 
-- `Person` → `data.person` (self-reference for profile)
-- `Person Type` → `data.personType[]`
-- `Person Project Coordonation` → `data.personProjectCoordination[]`
-- `Person Project Participation` → `data.personProjectParticipation[]`
-- `Person Organisation` → `data.personOrganisation[]`
+- `Person` → `data.person` (tag reference to person's own profile tag)
+- `Person Type` → `data.personType[]` (tag references)
+- `Person Project Coordonation` → `data.personProjectCoordination[]` (tag references to project tags)
+- `Person Project Participation` → `data.personProjectParticipation[]` (tag references to project tags)
+- `Person Organisation` → `data.personOrganisation[]` (tag references to organisation tags)
+- `Person Organisation - Former` → `data.personOrganisationFormer[]` (tag references to organisation tags)
+
+**Structured Roles** (stored as JSON text, not references):
+
 - `Person Organisation Roles` → `data.personOrganisationRoles` (JSON array of objects: `[{"organisation":"X","role":"Y"}]`, organisation/role stored as text strings)
-- `Person Organisation - Former` → `data.personOrganisationFormer[]`
 - `Person Organisation Roles Former` → `data.personOrganisationRolesFormer` (JSON array of objects: `[{"organisation":"X","role":"Y"}]`, organisation/role stored as text strings)
 
 **External Links**:
@@ -250,15 +252,18 @@ Administrators want to preview migration results without actually creating info 
 
 ### Organisation Page Specific Fields
 
-**References**:
+**References** (all are tag references):
 
-- `Organisation Type` → `data.organisationType[]`
-- `Organisation Project` → `data.organisationProject[]`
+- `Organisation Type` → `data.organisationType[]` (tag references)
+- `Organisation Project` → `data.organisationProject[]` (tag references to project tags)
+- `Organisation People` → `data.organisationPeople[]` (tag references to person tags)
+- `Organisation Has Member` → `data.organisationHasMember[]` (tag references)
+- `Organisation Member Of` → `data.organisationMemberOf[]` (tag references)
+
+**Structured Roles** (stored as JSON text, not references):
+
 - `Organisation Project Roles` → `data.organisationProjectRoles` (JSON array of objects: `[{"organisation":"X","role":"Y"}]`, organisation/role stored as text strings)
-- `Organisation People` → `data.organisationPeople[]`
 - `Organisation People Roles` → `data.organisationPeopleRoles` (JSON array of objects: `[{"organisation":"X","role":"Y"}]`, organisation/role stored as text strings)
-- `Organisation Has Member` → `data.organisationHasMember[]`
-- `Organisation Member Of` → `data.organisationMemberOf[]`
 
 **Dates**:
 
@@ -270,12 +275,15 @@ Administrators want to preview migration results without actually creating info 
 
 ### Project Page Specific Fields
 
-**References**:
+**References** (all are tag references):
 
-- `Project Funded` → `data.projectFunded[]`
-- `Project Coordinator` → `data.projectCoordinator[]`
-- `Project Participant Team` → `data.projectParticipantTeam[]`
-- `Project Organisation` → `data.projectOrganisation[]`
+- `Project Funded` → `data.projectFunded[]` (tag references to funding tags)
+- `Project Coordinator` → `data.projectCoordinator[]` (tag references to organisation/person tags)
+- `Project Participant Team` → `data.projectParticipantTeam[]` (tag references to organisation/person tags)
+- `Project Organisation` → `data.projectOrganisation[]` (tag references to organisation tags)
+
+**Structured Roles** (stored as JSON text, not references):
+
 - `Project Organisation Roles` → `data.projectOrganisationRoles` (JSON array of objects: `[{"organisation":"X","role":"Y"}]`, organisation/role stored as text strings)
 
 **Dates**:
@@ -304,7 +312,7 @@ Administrators want to preview migration results without actually creating info 
 3. Wix info page data will be exported as CSV file to `data/exports/Project_Organisation_Person+Info+Pages_wix.csv` with consistent column structure
 4. Builder.io Private API key is available in `.env.local` as `BUILDER_PRIVATE_API_KEY`
 5. The `person-page`, `organisation-page`, and `project-page` models are already configured in Builder.io with correct schemas
-6. Referenced entities (tags, other info pages) already exist in Builder.io or their mappings are available
+6. All tags referenced by info pages have been migrated and are available in `data/mappings/tag-migration-mapping.json`
 7. Rate limiting allows at least 5 requests per second (200ms delay between requests)
 8. Script will be run from the repository root directory
 9. Node.js environment with required dependencies (dotenv, node-fetch, csv-parse) is available
@@ -313,6 +321,7 @@ Administrators want to preview migration results without actually creating info 
 
 ## Dependencies
 
-- Tag migration must be completed first (provides tag-migration-mapping.json for page type resolution)
-- Post pages migration should be completed first (provides reference IDs for internal links)
+- **Tag migration must be completed first** (provides tag-migration-mapping.json for both page type resolution and all tag reference resolution)
+- Post pages migration should be completed first (provides reference IDs if internal links reference post pages)
 - Builder.io models (`person-page`, `organisation-page`, `project-page`) must be configured with appropriate schemas
+- All info page reference fields resolve to tags only - no cross-references between Person/Organisation/Project pages
