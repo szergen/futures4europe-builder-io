@@ -345,7 +345,8 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
       {post.pageType?.[0]?.name?.toLowerCase() === "event" &&
         !isEditModeOn &&
         post?.projectResultMedia &&
-        (post?.projectResultMedia?.thumbnail || post?.projectResultMedia?.url) && (
+        (post?.projectResultMedia?.thumbnail ||
+          post?.projectResultMedia?.url) && (
           <div className={style.imageAndButtons}>
             <div>
               <DisplayProjectResultMedia
