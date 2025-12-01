@@ -656,6 +656,7 @@ function transformTagReferences(row, tagMapping, pageType) {
     { field: "activity", wrapper: "activityItem" },
     { field: "person", wrapper: "personItem" },
     { field: "organisation", wrapper: "organisationItem" },
+    { field: "methods", wrapper: "methodsItem" },
     { field: "project", wrapper: "projectItem" },
   ];
 
@@ -711,8 +712,6 @@ function transformTagReferences(row, tagMapping, pageType) {
   // Project-specific reference fields (actual CSV: "Methods", "Project Organisation", etc.)
   if (pageType === "project") {
     const projectRefFields = [
-      { field: "methods", wrapper: "methodsItem" },
-      { field: "project", wrapper: "projectItem" },
       { field: "project funded", wrapper: "projectFundedItem" },
       { field: "project organisation", wrapper: "projectOrganisationItem" },
       { field: "project coordinator", wrapper: "projectCoordinatorItem" },
