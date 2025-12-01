@@ -107,6 +107,19 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
         data.projectFunded,
         "projectFundedItem"
       ),
+      projectParticipantTeam: transformReferenceArray(
+        data.projectParticipantTeam,
+        "projectParticipantTeamItem"
+      ),
+      projectCoordinator: transformReferenceArray(
+        data.projectCoordinator,
+        "projectCoordinatorItem"
+      ),
+      projectOrganisation: transformReferenceArray(
+        data.projectOrganisation,
+        "projectOrganisationItem"
+      ),
+      
 
       // Content images (if any)
       contentImages: data.contentImages || [],
