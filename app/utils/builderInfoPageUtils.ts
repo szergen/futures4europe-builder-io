@@ -119,7 +119,7 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
         data.projectOrganisation,
         "projectOrganisationItem"
       ),
-      projectOrganisationRoles: data.projectOrganisationRoles || [],
+      // projectOrganisationRoles: data.projectOrganisationRoles || [],
 
       // Content images (if any)
       contentImages: data.contentImages || [],

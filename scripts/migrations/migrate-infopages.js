@@ -766,7 +766,7 @@ function transformStructuredRoles(row, pageType) {
           // T056: Validate array of objects with organisation/role structure
           if (Array.isArray(parsed)) {
             // T057: Store as plain text (no reference resolution)
-            const fieldName = field.replace(/\s+/g, "").replace(/-/g, "");
+            const fieldName = toCamelCase(field);
             roles[fieldName] = parsed;
           }
         } catch (e) {
@@ -793,7 +793,7 @@ function transformStructuredRoles(row, pageType) {
         try {
           const parsed = JSON.parse(fieldValue);
           if (Array.isArray(parsed)) {
-            const fieldName = field.replace(/\s+/g, "");
+            const fieldName = toCamelCase(field);
             roles[fieldName] = parsed;
           }
         } catch (e) {
@@ -814,7 +814,7 @@ function transformStructuredRoles(row, pageType) {
         try {
           const parsed = JSON.parse(fieldValue);
           if (Array.isArray(parsed)) {
-            const fieldName = field.replace(/\s+/g, "");
+            const fieldName = toCamelCase(field);
             roles[fieldName] = parsed;
           }
         } catch (e) {

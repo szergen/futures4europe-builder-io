@@ -56,6 +56,8 @@ function toCamelCase(fieldName) {
 
 All field name conversions now use `toCamelCase()`:
 
+**Tag Reference Fields:**
+
 ```javascript
 // Common fields
 for (const { field, wrapper } of commonRefFields) {
@@ -90,6 +92,60 @@ for (const { field, wrapper } of projectRefFields) {
   if (wixTagIds.length > 0) {
     const fieldName = toCamelCase(field); // ✅ Proper camelCase
     refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping, wrapper);
+  }
+}
+```
+
+**Structured Roles Fields:**
+
+```javascript
+// Person roles
+for (const field of roleFields) {
+  const fieldValue = row[field];
+  if (fieldValue && fieldValue.trim() !== "") {
+    try {
+      const parsed = JSON.parse(fieldValue);
+      if (Array.isArray(parsed)) {
+        const fieldName = toCamelCase(field); // ✅ Proper camelCase
+        roles[fieldName] = parsed;
+      }
+    } catch (e) {
+      log.warning(
+        `Failed to parse structured roles for ${field}: ${e.message}`
+      );
+    }
+  }
+}
+
+// Organisation roles
+for (const field of orgRoleFields) {
+  const fieldValue = row[field];
+  if (fieldValue && fieldValue.trim() !== "") {
+    try {
+      const parsed = JSON.parse(fieldValue);
+      if (Array.isArray(parsed)) {
+        const fieldName = toCamelCase(field); // ✅ Proper camelCase
+        roles[fieldName] = parsed;
+      }
+    } catch (e) {
+      log.warning(`Failed to parse ${field}: ${e.message}`);
+    }
+  }
+}
+
+// Project roles
+for (const field of projectRoleFields) {
+  const fieldValue = row[field];
+  if (fieldValue && fieldValue.trim() !== "") {
+    try {
+      const parsed = JSON.parse(fieldValue);
+      if (Array.isArray(parsed)) {
+        const fieldName = toCamelCase(field); // ✅ Proper camelCase
+        roles[fieldName] = parsed;
+      }
+    } catch (e) {
+      log.warning(`Failed to parse ${field}: ${e.message}`);
+    }
   }
 }
 ```
@@ -176,25 +232,39 @@ All multi-word fields now have proper camelCase naming:
 
 - `countryTag` (was "countrytag")
 
-**Person-Specific:**
+**Person-Specific Reference Fields:**
 
 - `personOrganisation` (was "personorganisation")
 - `personOrganisationFormer` (was "personorganisationformer")
 - `personType` (was "persontype")
 
-**Organisation-Specific:**
+**Person Structured Roles (JSON data):**
+
+- `personOrganisationRoles` (was "personorganisationroles")
+- `personOrganisationRolesFormer` (was "personorganisationrolesformer")
+
+**Organisation-Specific Reference Fields:**
 
 - `organisationType` (was "organisationtype")
 - `organisationProject` (was "organisationproject")
 - `organisationHasMember` (was "organisationhasmember")
 - `organisationMemberOf` (was "organisationmemberof")
 
-**Project-Specific:**
+**Organisation Structured Roles (JSON data):**
+
+- `organisationPeopleRoles` (was "organisationpeopleroles")
+- `organisationProjectRoles` (was "organisationprojectroles")
+
+**Project-Specific Reference Fields:**
 
 - `projectFunded` (was "projectfunded")
 - `projectOrganisation` (was "projectorganisation")
 - `projectCoordinator` (was "projectcoordinator")
 - `projectParticipantTeam` (was "projectparticipantteam")
+
+**Project Structured Roles (JSON data):**
+
+- `projectOrganisationRoles` (was "projectorganisationroles")
 
 ## Files Modified
 
@@ -205,6 +275,9 @@ All multi-word fields now have proper camelCase naming:
     - Person-specific reference fields
     - Organisation-specific reference fields
     - Project-specific reference fields
+    - Person structured roles fields
+    - Organisation structured roles fields
+    - Project structured roles fields
 
 ## Why This Matters
 
@@ -222,4 +295,4 @@ All multi-word fields now have proper camelCase naming:
 **Status**: ✅ Fixed and Tested
 **Date**: December 2025
 **Pattern**: JavaScript/JSON camelCase convention
-**Impact**: Critical for all multi-word field names (20+ fields)
+**Impact**: Critical for all multi-word field names (25+ fields including structured roles)
