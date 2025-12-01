@@ -247,7 +247,7 @@ export function transformBuilderXToWixFormat(builderX: any) { }
 import { getBuilderXBySlug, transformBuilderXToWixFormat } from '@app/utils/builderXUtils';
 
 // 3. Add to BuilderContent.tsx
-model: "page" | "admin-section" | "blog-post-test" | "tag" | "post-page" | "info-page" | "X"
+model: "page" | "admin-section" | "tag" | "post-page" | "info-page" | "X"
 
 // 4. Create documentation
 - X_MIGRATION.md (detailed)

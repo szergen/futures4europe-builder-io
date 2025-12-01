@@ -160,7 +160,7 @@ In `app/shared-components/Builder/BuilderContent.tsx`, the interface should incl
 
 ```typescript
 interface BuilderContentProps {
-  model: "page" | "admin-section" | "blog-post-test" | "tag";
+  model: "page" | "admin-section" | "tag";
   // ...
 }
 ```
