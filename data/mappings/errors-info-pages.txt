@@ -1,0 +1,24 @@
+❌ Errors:
+✗ 2988888b-5063-45a2-abd8-898f107b0795 - Miguel Peco-Yeste (unknown): Could not determine page type
+✗ 2dbed881-d435-4cc6-840b-e2049319e1fb - Bruno Gransche (unknown): Could not determine page type
+✗ 49909d61-50e5-4885-acdc-56c0f06aab0a - Think Next Ltd (unknown): Could not determine page type
+✗ 5b89375f-9a30-49c9-8d00-3af063aca4bf - The project Center for Socio-Economic Research on Environmental Policy Impact Assessment (unknown): Could not determine page type
+✗ 60c445ad-d72f-495a-8983-7de4df8618ff - Meta4 Innovations (unknown): Could not determine page type
+✗ 64654abd-c597-46e5-938f-80538ec575fd - Megatrends 2040 (unknown): Could not determine page type
+✗ 651db260-433b-4bc1-83c2-8851ba5e0fa4 - Welfare systems and labour market policies for economic and social resilience in Europe (unknown): Could not determine page type
+✗ 7c983a09-7f3e-426e-b4fa-f5888ddde781 - Julia Krantz (unknown): Could not determine page type
+✗ 86b35914-33b1-4055-bde8-c9dd5e83ea1d - Karen Stock (unknown): Could not determine page type
+✗ 8fa3e3d7-b7d2-4051-8bcc-16244b29ba84 - Towards an anticipatory agenda for the Humanities and Social Sciences (unknown): Could not determine page type
+✗ 9c2441d6-9108-45a5-894c-47a53969780a - Stavros Mantzanakis (unknown): Could not determine page type
+✗ 9e32332f-02ea-4c2d-8986-1bfeeb22bf2f - RIFI - Research Infrastructures: Foresight & Impact (unknown): Could not determine page type
+✗ 9f92ae95-37c8-4190-84d7-0164b385b821 - NCP4HE (unknown): Could not determine page type
+✗ b1af105f-971d-46a2-be1d-14f0e6317b7e - Tryggvi Thayer (unknown): Could not determine page type
+✗ b3450be8-1a51-48e6-bd0c-f3424ad6d8b1 - Technology Centre Prague (unknown): Could not determine page type
+✗ b4bc9255-d656-45db-9942-f5383c0cdb50 - Katie Jenkins (unknown): Could not determine page type
+✗ b5f60e17-7665-4c2f-ae1d-58c0e169522d - Ioana Spanache (unknown): Could not determine page type
+✗ cd0bb886-044e-4963-be35-cd1dbb4f0a1d - Agathe Acchiardo (unknown): Could not determine page type
+✗ d291d31a-0564-4fb1-88b1-dc51ed07c69c - Max Priebe (unknown): Could not determine page type
+✗ dac6a93a-c66f-4a86-bead-341cc4a579f9 - Iva Vancurova (unknown): Could not determine page type
+✗ ed39b856-762b-45e3-ac6e-d4de876e003d - Agathe Acchiardo (unknown): Could not determine page type
+✗ f5f9060e-9bcb-4169-a3d8-8d86cd7e24ad - Max Priebe (unknown): Could not determine page type
+✗ ff16f269-d74f-4ff6-8053-66a04f7a8c50 - Accreditation Services (unknown): Could not determine page type
