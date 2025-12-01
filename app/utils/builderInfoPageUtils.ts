@@ -109,6 +109,7 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
         data.organisationHasMember,
         "organisationHasMemberItem"
       ),
+      mediaFiles: data.mediaFiles || [],
       organisationPeopleRoles: data.organisationPeopleRoles || [],
       organisationProjectRoles: data.organisationProjectRoles || [],
       description: data.description || "",
