@@ -1,9 +1,9 @@
-import classNames from 'classnames';
-import Image from 'next/image';
-import React from 'react';
-import style from './DisplayProjectResultMedia.module.css';
-import { FaPlay } from 'react-icons/fa';
-import Link from 'next/link';
+import classNames from "classnames";
+import Image from "next/image";
+import React from "react";
+import style from "./DisplayProjectResultMedia.module.css";
+import { FaPlay } from "react-icons/fa";
+import Link from "next/link";
 // import * as pdfjsLib from 'pdfjs-dist';
 // import 'pdfjs-dist/build/pdf.worker.mjs';
 
@@ -79,7 +79,7 @@ const DisplayProjectResultMedia: React.FC<DisplayProjectResultMediaProps> = ({
 
   return (
     <div className="relative group">
-      {projectResultMedia.type === 'document' ? (
+      {projectResultMedia.type === "document" ? (
         <Image
           src={projectResultMedia.thumbnail}
           width={247}
@@ -87,7 +87,7 @@ const DisplayProjectResultMedia: React.FC<DisplayProjectResultMediaProps> = ({
           className={classNames(style.projectResultImage)}
           alt={`Project Result Preview - ${projectResultMedia.displayName}`}
         />
-      ) : (
+      ) : projectResultMedia.url ? (
         <Link href={projectResultMedia.url} target="_blank">
           <div className="relative rounded-xl overflow-hidden">
             <Image
@@ -97,7 +97,7 @@ const DisplayProjectResultMedia: React.FC<DisplayProjectResultMediaProps> = ({
               className={classNames(
                 style.projectResultImage,
                 style.videoImage,
-                'blur-[2px] transition-all duration-300 ease-in-out group-hover:blur-none group-hover:scale-110'
+                "blur-[2px] transition-all duration-300 ease-in-out group-hover:blur-none group-hover:scale-110"
               )}
               alt={`Project Result Preview - ${projectResultMedia.displayName}`}
             />
@@ -113,7 +113,7 @@ const DisplayProjectResultMedia: React.FC<DisplayProjectResultMediaProps> = ({
             </div>
           </div>
         </Link>
-      )}
+      ) : null}
       {/* <canvas className={classNames('hidden')} ref={canvasRef}></canvas> */}
     </div>
   );

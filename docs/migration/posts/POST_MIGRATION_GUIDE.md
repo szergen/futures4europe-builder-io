@@ -68,8 +68,8 @@ The script expects a CSV file with the following key columns:
 ### Required Fields
 
 - `ID` - Wix post ID (preserved as `wixId` in Builder.io)
-- `Title` - Post title
-- `Slug` - URL slug (will be prefixed with `/post/`)
+- `Title` - Post title (**Note**: Capital 'T')
+- `Slug` - URL slug (will be prefixed with `/post/`) (**Note**: Capital 'S')
 - `pageTypes` - JSON array of type IDs (determines sub-type: post/event/project-result)
 
 ### Optional Fields
@@ -88,9 +88,11 @@ The script expects a CSV file with the following key columns:
 
 ### Example CSV Row (simplified)
 
+**Note**: CSV column names are case-sensitive. Use exact names: `Title`, `Slug`, `ID`, `Author`, etc.
+
 ```csv
 ID,Title,Slug,pageTypes,Author
-"abc123","Future of AI","/post/future-of-ai-2024","[""649a0649-abfd-43c3-86d5-2765c99f7f31""]","[""d5357589-65fd-456f-a506-7a4d1275451c""]"
+"abc123","Future of AI","future-of-ai-2024","[""649a0649-abfd-43c3-86d5-2765c99f7f31""]","[""d5357589-65fd-456f-a506-7a4d1275451c""]"
 ```
 
 ---
@@ -118,7 +120,9 @@ ID,Title,Slug,pageTypes,Author
 ### Content (Rich Text & Images)
 
 - `Post Content 1-10` → `data.postContentRIch1-10` (HTML/rich text)
-- `Post Image 1-10` → `data.postImage1-10` (image objects with `url`)
+- `Post Image 1-10` → `data.postImage1-10` (image objects, parsed from JSON)
+
+**Note**: Image fields in CSV contain JSON strings like `{"url":"...","caption":"..."}` which are automatically parsed into objects.
 
 ### References
 
@@ -147,8 +151,10 @@ All reference fields are resolved via `tag-migration-mapping.json`:
 ### Project Result-Specific Fields
 
 - `projectResultAuthor` → `data.projectResultAuthor[]` (references)
-- `Project Result Media` → `data.projectResultMedia` (image object)
+- `Project Result Media` → `data.projectResultMedia` (media object, parsed from JSON)
 - `projectResultPublicationDate` → `data.projectResultPublicationDate` (timestamp)
+
+**Note**: `Project Result Media` contains JSON strings like `{"displayName":"...","url":"...","fileName":"...","thumbnail":"...","sizeInBytes":"...","type":"document"}` which are automatically parsed into complete media objects.
 
 ---
 
@@ -314,12 +320,14 @@ data/exports/Posts_Events_Project+Results+Pages_wix.csv
 ### Missing Required Fields
 
 ```
-✗ [5/100] Skipping Post 5: Missing required fields: title, slug
+✗ [5/100] Skipping Post 5: Missing required fields: Title, Slug
 ```
 
-**Cause**: Post missing `title` or `slug` in CSV  
+**Cause**: Post missing `Title` or `Slug` in CSV (case-sensitive column names)  
 **Impact**: Post skipped entirely  
 **Solution**: Add missing fields to CSV and re-run migration
+
+**Note**: The script validates for `Title` and `Slug` with capital letters matching the CSV headers
 
 ---
 

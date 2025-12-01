@@ -189,11 +189,12 @@ async function makeRequest(method, endpoint, data = null) {
 
 /**
  * Validate that required fields are present in post data
- * @param {Object} post - Post data object
+ * @param {Object} post - Post data object (CSV row)
  * @returns {Object} {valid: boolean, missing: Array}
  */
 function validateRequiredFields(post) {
-  const required = ["title", "slug"];
+  // CSV headers are: "Title" and "Slug" (capitalized)
+  const required = ["Title", "Slug"];
   const missing = [];
 
   for (const field of required) {
@@ -275,6 +276,26 @@ function transformMetadata(csvRow) {
 }
 
 /**
+ * Helper to safely parse JSON string or return default
+ * @param {string} jsonString - JSON string from CSV
+ * @param {*} defaultValue - Default value if parse fails
+ * @returns {*} Parsed object or default value
+ */
+function parseJsonField(jsonString, defaultValue = {}) {
+  if (!jsonString || jsonString.trim() === "") {
+    return defaultValue;
+  }
+  try {
+    return JSON.parse(jsonString);
+  } catch (e) {
+    // If not valid JSON, treat as plain string (for backward compatibility)
+    return typeof defaultValue === "object" && defaultValue !== null
+      ? { url: jsonString }
+      : jsonString;
+  }
+}
+
+/**
  * Transform content fields (rich text and images)
  * @param {Object} csvRow - CSV row data
  * @returns {Object} Content fields object
@@ -288,11 +309,11 @@ function transformContentFields(csvRow) {
     content[`postContentRIch${i}`] = csvRow[fieldName] || "";
   }
 
-  // Image fields (10 images)
+  // Image fields (10 images) - Parse JSON objects from CSV
   for (let i = 1; i <= 10; i++) {
     const fieldName = `Post Image ${i}`;
-    const imageUrl = csvRow[fieldName] || "";
-    content[`postImage${i}`] = imageUrl ? { url: imageUrl } : {};
+    const imageData = csvRow[fieldName] || "";
+    content[`postImage${i}`] = parseJsonField(imageData, {});
   }
 
   return content;
@@ -495,9 +516,8 @@ function transformProjectResultFields(csvRow, tagMapping) {
       parseJsonArray(csvRow.projectResultAuthor),
       "projectResultAuthorItem"
     ),
-    projectResultMedia: csvRow["Project Result Media"]
-      ? { url: csvRow["Project Result Media"] }
-      : {},
+    // Parse JSON object from CSV instead of wrapping in { url: ... }
+    projectResultMedia: parseJsonField(csvRow["Project Result Media"], {}),
     projectResultPublicationDate: csvRow.projectResultPublicationDate
       ? new Date(csvRow.projectResultPublicationDate).getTime()
       : null,

@@ -139,6 +139,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
   project = {
     ...project,
     pageType: project?.data?.pageTypes[0],
+    pageTypes: project?.data?.pageTypes[0],
     updatedDate: project?.data?._updatedDate, //done - system field
     projectTag: project?.data?.Project[0], //done
     description: project?.data?.description, //done

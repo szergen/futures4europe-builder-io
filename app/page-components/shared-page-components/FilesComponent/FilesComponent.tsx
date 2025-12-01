@@ -1,15 +1,15 @@
-import style from './FilesComponent.module.css';
-import classNames from 'classnames';
-import Image from 'next/image';
-import Typography from '@app/shared-components/Typography/Typography';
-import DisplayProjectResultMedia from '../DisplayProjectResultMedia/DisplayProjectResultMedia';
-import ProjectResultHeaderImage from '@app/shared-components/ProjectResultHeaderImage/ProjectResultHeaderImage';
-import { useEffect, useState } from 'react';
-import InputText from '@app/shared-components/InputText/InputText';
-import Button from '@app/shared-components/Button/Button';
-import { Button as ButtonFlow, Badge } from 'flowbite-react';
-import Link from 'next/link';
-import SpriteSvg from '@app/shared-components/SpriteSvg/SpriteSvg';
+import style from "./FilesComponent.module.css";
+import classNames from "classnames";
+import Image from "next/image";
+import Typography from "@app/shared-components/Typography/Typography";
+import DisplayProjectResultMedia from "../DisplayProjectResultMedia/DisplayProjectResultMedia";
+import ProjectResultHeaderImage from "@app/shared-components/ProjectResultHeaderImage/ProjectResultHeaderImage";
+import { useEffect, useState } from "react";
+import InputText from "@app/shared-components/InputText/InputText";
+import Button from "@app/shared-components/Button/Button";
+import { Button as ButtonFlow, Badge } from "flowbite-react";
+import Link from "next/link";
+import SpriteSvg from "@app/shared-components/SpriteSvg/SpriteSvg";
 
 export type FilesComponentProps = {
   isEditModeOn?: boolean;
@@ -43,12 +43,12 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
   useEffect(() => {
     if (isEditModeOn) {
       const emptyImage = {
-        thumbnail: '',
-        type: '',
-        displayName: '',
-        url: '',
-        fileName: '',
-        sizeInBytes: '',
+        thumbnail: "",
+        type: "",
+        displayName: "",
+        url: "",
+        fileName: "",
+        sizeInBytes: "",
       };
 
       const files = currentFiles || [];
@@ -58,15 +58,15 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
       if (!isLastFileEmpty) {
         setCurrentFiles([...files, emptyImage]);
         updatePostDataBasedOnKeyValue &&
-          updatePostDataBasedOnKeyValue('mediaFiles', [...files, emptyImage]);
+          updatePostDataBasedOnKeyValue("mediaFiles", [...files, emptyImage]);
       }
     }
-    console.log('debug5->currentFiles', currentFiles);
+    console.log("debug5->currentFiles", currentFiles);
   }, [isEditModeOn, currentFiles]);
 
   const handleDeleteFile = async (index: number) => {
     try {
-      if (window.confirm('Are you sure you want to delete this file?')) {
+      if (window.confirm("Are you sure you want to delete this file?")) {
         setDeletingFileIndex(index);
         setError(null);
 
@@ -79,26 +79,26 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
         // If we're deleting the last file and we're in edit mode, add an empty file slot
         if (isEditModeOn && newMediaFiles.length === 0) {
           const emptyImage = {
-            thumbnail: '',
-            type: '',
-            displayName: '',
-            url: '',
-            fileName: '',
-            sizeInBytes: '',
+            thumbnail: "",
+            type: "",
+            displayName: "",
+            url: "",
+            fileName: "",
+            sizeInBytes: "",
           };
           newMediaFiles.push(emptyImage);
         }
         setCurrentFiles(newMediaFiles);
         updatePostDataBasedOnKeyValue &&
-          updatePostDataBasedOnKeyValue('mediaFiles', newMediaFiles);
+          updatePostDataBasedOnKeyValue("mediaFiles", newMediaFiles);
       }
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : 'Failed to delete file. Please try again.'
+          : "Failed to delete file. Please try again."
       );
-      console.error('Error deleting file:', err);
+      console.error("Error deleting file:", err);
     } finally {
       setDeletingFileIndex(null);
     }
@@ -112,7 +112,7 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
         isEditModeOn) && (
         <Typography
           tag="h2"
-          className={classNames('text-gray-800 w-full my-4', style.filesTitle)}
+          className={classNames("text-gray-800 w-full my-4", style.filesTitle)}
         >
           Files
         </Typography>
@@ -144,18 +144,18 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
                 <>
                   <DisplayProjectResultMedia
                     projectResultMedia={media || {}}
-                    key={'files-component-' + index}
+                    key={"files-component-" + index}
                   />
-                  {media.type !== 'video' && (
+                  {media.type !== "video" && media.url && (
                     <Link href={media.url} target="_blank">
                       <Button>
                         Download File (
                         {(Number(media.sizeInBytes) / 1024)
                           ?.toString()
-                          ?.split('.')?.[0] + 'kb'}
-                        ){' '}
+                          ?.split(".")?.[0] + "kb"}
+                        ){" "}
                         <span className="rounded-lg bg-white text-blue-500 p-1 font-bold">
-                          {media?.url?.split('.')?.pop()?.toUpperCase()}
+                          {media?.url?.split(".")?.pop()?.toUpperCase()}
                         </span>
                       </Button>
                     </Link>
@@ -164,8 +164,8 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
               )
             ) : (
               <ProjectResultHeaderImage
-                key={'files-component-' + index}
-                fileIdPrefix={'files-component-prefix-' + index}
+                key={"files-component-" + index}
+                fileIdPrefix={"files-component-prefix-" + index}
                 currentImage={media.thumbnail}
                 resultType={media.type}
                 updatePostData={(value) => {
@@ -179,7 +179,7 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
                     type: value.type,
                   };
                   updatePostDataBasedOnKeyValue &&
-                    updatePostDataBasedOnKeyValue('mediaFiles', newMediaFiles);
+                    updatePostDataBasedOnKeyValue("mediaFiles", newMediaFiles);
                   setCurrentFiles(newMediaFiles);
                 }}
                 updatePostDataForVideoImage={(value) => {
@@ -187,13 +187,13 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
                   newMediaFiles[index] = {
                     ...newMediaFiles[index],
                     thumbnail: value.thumbnail,
-                    sizeInBytes: '',
+                    sizeInBytes: "",
                     url: value.url,
-                    fileName: '',
-                    type: 'video',
+                    fileName: "",
+                    type: "video",
                   };
                   updatePostDataBasedOnKeyValue &&
-                    updatePostDataBasedOnKeyValue('mediaFiles', newMediaFiles);
+                    updatePostDataBasedOnKeyValue("mediaFiles", newMediaFiles);
                   setCurrentFiles(newMediaFiles);
                 }}
               />
@@ -207,7 +207,7 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
                 <InputText
                   className={style.fileTitle}
                   placeholder="Enter display name"
-                  value={media.displayName || ''}
+                  value={media.displayName || ""}
                   onChange={(e) => {
                     let newMediaFiles = [...currentFiles];
                     newMediaFiles[index] = {
@@ -217,7 +217,7 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
                     setCurrentFiles(newMediaFiles);
                     updatePostDataBasedOnKeyValue &&
                       updatePostDataBasedOnKeyValue(
-                        'mediaFiles',
+                        "mediaFiles",
                         newMediaFiles
                       );
                   }}

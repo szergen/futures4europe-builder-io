@@ -1,8 +1,8 @@
-import style from './TagListComponent.module.css';
-import classNames from 'classnames';
-import Typography from '@app/shared-components/Typography/Typography';
-import Tag, { TagProps } from '@app/shared-components/Tag/Tag';
-import TagPicker from '@app/shared-components/TagPicker/TagPicker';
+import style from "./TagListComponent.module.css";
+import classNames from "classnames";
+import Typography from "@app/shared-components/Typography/Typography";
+import Tag, { TagProps } from "@app/shared-components/Tag/Tag";
+import TagPicker from "@app/shared-components/TagPicker/TagPicker";
 
 export type TagListComponentProps = {
   tagList: Array<TagProps>;
@@ -23,11 +23,11 @@ const capitalizeFirstLetter = (str: string) => {
 
 // Define which tag types should show the tagline
 const tagTypesWithTagline = [
-  'project',
-  'organisation',
-  'project-result',
-  'domain',
-  'foresight method',
+  "project",
+  "organisation",
+  "project-result",
+  "domain",
+  "foresight method",
 ];
 
 const TagListComponent: React.FC<TagListComponentProps> = ({
@@ -54,12 +54,14 @@ const TagListComponent: React.FC<TagListComponentProps> = ({
     <section className={classNames(style.tagListContainer)}>
       <Typography
         tag="h2"
-        className={classNames('text-gray-800 w-full my-4', style.tagListTitle)}
+        className={classNames("text-gray-800 w-full my-4", style.tagListTitle)}
       >
         {tagListTitle}
       </Typography>
       {!isEditModeOn ? (
-        tagList?.map((tag) => <Tag key={tag?.name} {...tag} />)
+        tagList
+          ?.filter((tag) => tag && tag.name)
+          ?.map((tag) => <Tag key={tag?.name} {...tag} />)
       ) : (
         <TagPicker
           tags={tags?.filter((tag) => !tag?.masterTag)}
@@ -71,7 +73,7 @@ const TagListComponent: React.FC<TagListComponentProps> = ({
           onTagCreated={handleTagCreated}
           placeholder={placeholder} // New @alex
           newTagHeader={`Create a new ${tagType} tag`}
-          newTagType={`${capitalizeFirstLetter(tagType || '')} name`}
+          newTagType={`${capitalizeFirstLetter(tagType || "")} name`}
           newTagTagline={`Enter a tagline (slogan, acronym, english translation, ...)`}
           showTagTagline={shouldShowTagline}
         />

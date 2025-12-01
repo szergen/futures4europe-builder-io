@@ -62,11 +62,13 @@ export const Tag: React.FC<TagProps> = ({
   const [currentPopularity, setCurrentPopularity] = useState<
     number | undefined
   >(undefined);
-  const tagPageLinkOrMentionsLink = tagPageLink
-    ? tagPageLink
-    : _id
-    ? `/mentions/${_id}`
-    : null;
+  // Ensure we only use tagPageLink if it's a valid, non-empty string
+  const tagPageLinkOrMentionsLink =
+    tagPageLink && tagPageLink.trim() !== ""
+      ? tagPageLink
+      : _id
+      ? `/mentions/${_id}`
+      : null;
 
   const shouldDisableUnderLine =
     !["person", "organisation", "project"].includes(tagType || "") ||
