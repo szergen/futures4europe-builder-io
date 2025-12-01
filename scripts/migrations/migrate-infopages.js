@@ -486,6 +486,26 @@ function transformInfoPage(row, pageTypeInfo, tagMapping, typeMapping) {
     ...structuredRoles, // Add structured roles
   };
 
+  // Common content fields (Post Content Rich 1-10, Post Image 1-10) - available for all page types
+  // Note: Field name matches posts migration exactly: postContentRIch (capital R, capital I)
+  for (let i = 1; i <= 10; i++) {
+    const contentKey = `post content rich ${i}`;
+    const imageKey = `post image ${i}`;
+
+    if (row[contentKey]) {
+      data[`postContentRIch${i}`] = row[contentKey]; // Matches posts migration typo for consistency
+    }
+
+    if (row[imageKey]) {
+      try {
+        data[`postImage${i}`] = JSON.parse(row[imageKey]);
+      } catch (e) {
+        // Store as-is if not valid JSON
+        data[`postImage${i}`] = { url: row[imageKey] };
+      }
+    }
+  }
+
   // T024: Organisation-specific fields
   if (type === "organisation" && row["organisation established date"]) {
     data.organisationEstablishedDate = new Date(
@@ -500,26 +520,6 @@ function transformInfoPage(row, pageTypeInfo, tagMapping, typeMapping) {
     }
     if (row["project end date"]) {
       data.projectEndDate = new Date(row["project end date"]).getTime();
-    }
-
-    // Project content fields (Post Content Rich 1-10, Post Image 1-10)
-    // Note: Field name matches posts migration exactly: postContentRIch (capital R, capital I)
-    for (let i = 1; i <= 10; i++) {
-      const contentKey = `post content rich ${i}`;
-      const imageKey = `post image ${i}`;
-
-      if (row[contentKey]) {
-        data[`postContentRIch${i}`] = row[contentKey]; // Matches posts migration typo for consistency
-      }
-
-      if (row[imageKey]) {
-        try {
-          data[`postImage${i}`] = JSON.parse(row[imageKey]);
-        } catch (e) {
-          // Store as-is if not valid JSON
-          data[`postImage${i}`] = { url: row[imageKey] };
-        }
-      }
     }
 
     // Internal Links and Media Files

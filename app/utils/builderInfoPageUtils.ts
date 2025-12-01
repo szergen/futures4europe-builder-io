@@ -79,6 +79,7 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
       orcidLink: data.orcidLink || "",
       researchGateLink: data.researchGateLink || "",
       websiteLink: data.websiteLink || "",
+      organisationEstablishedDate: data.organisationEstablishedDate || "",
 
       // Reference arrays - transform nested structure to flat
       activity: transformReferenceArray(data.activity, "activityItem"),
