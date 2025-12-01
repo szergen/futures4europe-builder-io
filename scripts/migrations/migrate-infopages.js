@@ -464,6 +464,13 @@ function transformInfoPage(row, pageTypeInfo, tagMapping, typeMapping) {
     externalLinks.orcidLink = row["orcid link"] || "";
   }
 
+  // Add pageTypes field as a tag reference (important for filtering/display)
+  const pageTypesIds = parseTagIds(row["page types"]);
+  const pageTypesRefs =
+    pageTypesIds.length > 0
+      ? resolveTagReferences(pageTypesIds, tagMapping, "pageTypeItem")
+      : [];
+
   // T044-T052: Transform tag references (Phase 3)
   const tagReferences = transformTagReferences(row, tagMapping, type);
 
@@ -474,6 +481,7 @@ function transformInfoPage(row, pageTypeInfo, tagMapping, typeMapping) {
   const data = {
     ...basicFields,
     ...externalLinks,
+    pageTypes: pageTypesRefs, // ✅ Store pageTypes as tag references
     ...tagReferences, // Add resolved tag references
     ...structuredRoles, // Add structured roles
   };
@@ -495,12 +503,13 @@ function transformInfoPage(row, pageTypeInfo, tagMapping, typeMapping) {
     }
 
     // Project content fields (Post Content Rich 1-10, Post Image 1-10)
+    // Note: Field name matches posts migration exactly: postContentRIch (capital R, capital I)
     for (let i = 1; i <= 10; i++) {
       const contentKey = `post content rich ${i}`;
       const imageKey = `post image ${i}`;
 
       if (row[contentKey]) {
-        data[`postContentRich${i}`] = row[contentKey];
+        data[`postContentRIch${i}`] = row[contentKey]; // Matches posts migration typo for consistency
       }
 
       if (row[imageKey]) {
@@ -533,8 +542,11 @@ function transformInfoPage(row, pageTypeInfo, tagMapping, typeMapping) {
 
   return {
     name: row.title || "Untitled", // Content Entry Name in Builder.io UI
+    published: metadata.published,
     data,
-    ...metadata,
+    createdDate: metadata.createdDate,
+    lastUpdated: metadata.lastUpdated,
+    createdBy: metadata.createdBy,
   };
 }
 
@@ -586,9 +598,10 @@ function parseTagIds(fieldValue) {
  * T045-T051: Resolve Wix tag IDs to Builder.io Reference objects
  * @param {Array} wixTagIds - Array of Wix tag IDs
  * @param {Object} tagMapping - Tag migration mapping
- * @returns {Array} Array of Builder.io Reference objects
+ * @param {string} wrapperKey - Wrapper key for the reference (e.g., "domainsItem")
+ * @returns {Array} Array of wrapped Builder.io Reference objects
  */
-function resolveTagReferences(wixTagIds, tagMapping) {
+function resolveTagReferences(wixTagIds, tagMapping, wrapperKey) {
   const resolved = [];
 
   for (const wixTagId of wixTagIds) {
@@ -596,12 +609,15 @@ function resolveTagReferences(wixTagIds, tagMapping) {
     const tagData = tagMapping.wixToBuilder[wixTagId];
 
     if (tagData && tagData.builderId) {
-      // T047: Create Builder.io Reference object
-      resolved.push({
+      // T047: Create Builder.io Reference object wrapped in item key (matches posts migration pattern)
+      const ref = {
         "@type": "@builder.io/core:Reference",
         id: tagData.builderId,
         model: "tag",
-      });
+      };
+
+      // Wrap reference in item object (e.g., { domainsItem: ref })
+      resolved.push({ [wrapperKey]: ref });
     } else {
       // T048: Log warning for unresolved tags
       log.warning(`Tag reference not found in mapping: ${wixTagId}`);
@@ -621,30 +637,37 @@ function resolveTagReferences(wixTagIds, tagMapping) {
 function transformTagReferences(row, tagMapping, pageType) {
   const refs = {};
 
-  // Common reference fields (actual CSV: "Domains", "Country Tag")
-  const commonRefFields = ["domains", "country tag"];
+  // Common reference fields (actual CSV: "Domains", "Country Tag", "Author")
+  const commonRefFields = [
+    { field: "domains", wrapper: "domainsItem" },
+    { field: "country tag", wrapper: "countryTagItem" },
+    { field: "author", wrapper: "authorItem" },
+  ];
 
-  for (const field of commonRefFields) {
+  for (const { field, wrapper } of commonRefFields) {
     const wixTagIds = parseTagIds(row[field]);
     if (wixTagIds.length > 0) {
       const fieldName = field.replace(/\s+/g, ""); // Remove spaces
-      refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping);
+      refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping, wrapper);
     }
   }
 
   // Person-specific reference fields (actual CSV: "Person Organisation", "Person Type", etc.)
   if (pageType === "person") {
     const personRefFields = [
-      "person organisation",
-      "person organisation - former",
-      "person type",
+      { field: "person organisation", wrapper: "personOrganisationItem" },
+      {
+        field: "person organisation - former",
+        wrapper: "personOrganisationFormerItem",
+      },
+      { field: "person type", wrapper: "personTypeItem" },
     ];
 
-    for (const field of personRefFields) {
+    for (const { field, wrapper } of personRefFields) {
       const wixTagIds = parseTagIds(row[field]);
       if (wixTagIds.length > 0) {
         const fieldName = field.replace(/\s+/g, "").replace(/-/g, "");
-        refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping);
+        refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping, wrapper);
       }
     }
   }
@@ -652,17 +675,20 @@ function transformTagReferences(row, tagMapping, pageType) {
   // Organisation-specific reference fields (actual CSV: "Organisation Type", etc.)
   if (pageType === "organisation") {
     const orgRefFields = [
-      "organisation type",
-      "organisation project",
-      "organisation has member",
-      "organisation member of",
+      { field: "organisation type", wrapper: "organisationTypeItem" },
+      { field: "organisation project", wrapper: "organisationProjectItem" },
+      {
+        field: "organisation has member",
+        wrapper: "organisationHasMemberItem",
+      },
+      { field: "organisation member of", wrapper: "organisationMemberOfItem" },
     ];
 
-    for (const field of orgRefFields) {
+    for (const { field, wrapper } of orgRefFields) {
       const wixTagIds = parseTagIds(row[field]);
       if (wixTagIds.length > 0) {
         const fieldName = field.replace(/\s+/g, "");
-        refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping);
+        refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping, wrapper);
       }
     }
   }
@@ -670,18 +696,23 @@ function transformTagReferences(row, tagMapping, pageType) {
   // Project-specific reference fields (actual CSV: "Methods", "Project Organisation", etc.)
   if (pageType === "project") {
     const projectRefFields = [
-      "methods",
-      "project organisation",
-      "project coordinator",
-      "project participant team",
-      "activity",
+      { field: "methods", wrapper: "methodsItem" },
+      { field: "project", wrapper: "projectItem" },
+      { field: "project funded", wrapper: "projectFundedItem" },
+      { field: "project organisation", wrapper: "projectOrganisationItem" },
+      { field: "project coordinator", wrapper: "projectCoordinatorItem" },
+      {
+        field: "project participant team",
+        wrapper: "projectParticipantTeamItem",
+      },
+      { field: "activity", wrapper: "activityItem" },
     ];
 
-    for (const field of projectRefFields) {
+    for (const { field, wrapper } of projectRefFields) {
       const wixTagIds = parseTagIds(row[field]);
       if (wixTagIds.length > 0) {
         const fieldName = field.replace(/\s+/g, "");
-        refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping);
+        refs[fieldName] = resolveTagReferences(wixTagIds, tagMapping, wrapper);
       }
     }
   }
