@@ -27,12 +27,12 @@
 
 **Purpose**: Project initialization and basic script structure
 
-- [ ] T001 Create migration script file at scripts/migrations/migrate-posts.js
-- [ ] T002 Copy boilerplate from scripts/migrations/migrate-tags.js (env loading, colors, logging utilities)
-- [ ] T003 [P] Define configuration constants in scripts/migrations/migrate-posts.js (CSV_FILE, MAPPING_FILE, API_URL, RATE_LIMIT)
-- [ ] T004 [P] Verify .env.local contains BUILDER_PRIVATE_API_KEY
-- [ ] T005 [P] Verify data/exports/Posts_Events_Project+Results+Pages_wix.csv exists
-- [ ] T006 [P] Verify data/mappings/tag-migration-mapping.json exists for reference resolution
+- [x] T001 Create migration script file at scripts/migrations/migrate-posts.js
+- [x] T002 Copy boilerplate from scripts/migrations/migrate-tags.js (env loading, colors, logging utilities)
+- [x] T003 [P] Define configuration constants in scripts/migrations/migrate-posts.js (CSV_FILE, MAPPING_FILE, API_URL, RATE_LIMIT)
+- [x] T004 [P] Verify .env.local contains BUILDER_PRIVATE_API_KEY
+- [x] T005 [P] Verify data/exports/Posts_Events_Project+Results+Pages_wix.csv exists
+- [x] T006 [P] Verify data/mappings/tag-migration-mapping.json exists for reference resolution
 
 ---
 
@@ -42,14 +42,14 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Implement loadCSV() function in scripts/migrations/migrate-posts.js to parse CSV using csv-parse/sync
-- [ ] T008 Implement loadMapping() function in scripts/migrations/migrate-posts.js to load or initialize post-migration-mapping.json
-- [ ] T009 Implement saveMapping() function in scripts/migrations/migrate-posts.js with atomic file writes
-- [ ] T010 Implement loadTagMapping() function in scripts/migrations/migrate-posts.js to load tag-migration-mapping.json for reference resolution
-- [ ] T011 Implement makeRequest() HTTP helper function in scripts/migrations/migrate-posts.js with Bearer auth
-- [ ] T012 Implement validateRequiredFields() function in scripts/migrations/migrate-posts.js to check title and slug presence
-- [ ] T013 Implement CLI argument parsing in scripts/migrations/migrate-posts.js (count, --dry-run, --validate flags)
-- [ ] T014 Implement showHelp() function in scripts/migrations/migrate-posts.js with usage documentation
+- [x] T007 Implement loadCSV() function in scripts/migrations/migrate-posts.js to parse CSV using csv-parse/sync
+- [x] T008 Implement loadMapping() function in scripts/migrations/migrate-posts.js to load or initialize post-migration-mapping.json
+- [x] T009 Implement saveMapping() function in scripts/migrations/migrate-posts.js with atomic file writes
+- [x] T010 Implement loadTagMapping() function in scripts/migrations/migrate-posts.js to load tag-migration-mapping.json for reference resolution
+- [x] T011 Implement makeRequest() HTTP helper function in scripts/migrations/migrate-posts.js with Bearer auth
+- [x] T012 Implement validateRequiredFields() function in scripts/migrations/migrate-posts.js to check title and slug presence
+- [x] T013 Implement CLI argument parsing in scripts/migrations/migrate-posts.js (count, --dry-run, --validate flags)
+- [x] T014 Implement showHelp() function in scripts/migrations/migrate-posts.js with usage documentation
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -63,25 +63,25 @@
 
 ### Implementation for User Story 1
 
-- [ ] T015 [P] [US1] Implement transformBasicFields() function in scripts/migrations/migrate-posts.js (title, subtitle, slug with /post/ prefix, wixId)
-- [ ] T016 [P] [US1] Implement transformMetadata() function in scripts/migrations/migrate-posts.js (createdDate, lastUpdated, published, \_owner/createdBy)
-- [ ] T017 [P] [US1] Implement transformContentFields() function in scripts/migrations/migrate-posts.js (postContentRIch1-10, postImage1-10)
-- [ ] T018 [US1] Implement resolveReference() function in scripts/migrations/migrate-posts.js to convert Wix ID to Builder.io Reference object using tag mapping
-- [ ] T019 [US1] Implement transformReferences() function in scripts/migrations/migrate-posts.js to handle all 10+ reference types (author, pageOwner, people, methods, domains, projects, organisations, pageTypes, countryTag, speakers, moderators, projectResultAuthor)
-- [ ] T020 [US1] Add missing reference warning logic in transformReferences() - omit invalid refs, log warning with post ID and missing reference details
-- [ ] T021 [US1] Implement transformEventFields() function in scripts/migrations/migrate-posts.js (eventRegistration, eventStartDate, eventEndDate, speakers, moderators)
-- [ ] T022 [US1] Implement transformProjectResultFields() function in scripts/migrations/migrate-posts.js (projectResultAuthor, projectResultMedia, projectResultPublicationDate)
-- [ ] T023 [US1] Implement transformAdditionalFields() function in scripts/migrations/migrate-posts.js (internalLinks, mediaFiles, recommendations)
-- [ ] T024 [US1] Implement transformPost() main function in scripts/migrations/migrate-posts.js that orchestrates all transformation functions
-- [ ] T025 [US1] Implement checkDuplicateSlug() function in scripts/migrations/migrate-posts.js to query Builder.io for existing slugs
-- [ ] T026 [US1] Add slug collision handling in transformPost() - auto-append numeric suffix (-2, -3, etc.) and log modifications
-- [ ] T027 [US1] Implement createPost() function in scripts/migrations/migrate-posts.js to call Builder.io Write API (POST /api/v1/write/post-page)
-- [ ] T028 [US1] Add rate limiting in migrate() function - 200ms delay between API calls (configurable via RATE_LIMIT constant)
-- [ ] T029 [US1] Implement migrate() main function in scripts/migrations/migrate-posts.js with loop: load CSV → check if migrated → validate → transform → create → update mapping → log result
-- [ ] T030 [US1] Add duplicate prevention logic in migrate() - check mapping file before processing each post, skip if already migrated
-- [ ] T031 [US1] Add error handling in migrate() - individual post failures logged with details, continue with remaining posts
-- [ ] T032 [US1] Add summary report generation in migrate() - total processed, successful, skipped, failed counts with details
-- [ ] T032B [US1] Create initial docs/migration/posts/POST_MIGRATION_GUIDE.md with basic setup, CSV format, CLI usage, and example commands (satisfies Constitution Principle V)
+- [x] T015 [P] [US1] Implement transformBasicFields() function in scripts/migrations/migrate-posts.js (title, subtitle, slug with /post/ prefix, wixId)
+- [x] T016 [P] [US1] Implement transformMetadata() function in scripts/migrations/migrate-posts.js (createdDate, lastUpdated, published, \_owner/createdBy)
+- [x] T017 [P] [US1] Implement transformContentFields() function in scripts/migrations/migrate-posts.js (postContentRIch1-10, postImage1-10)
+- [x] T018 [US1] Implement resolveReference() function in scripts/migrations/migrate-posts.js to convert Wix ID to Builder.io Reference object using tag mapping
+- [x] T019 [US1] Implement transformReferences() function in scripts/migrations/migrate-posts.js to handle all 10+ reference types (author, pageOwner, people, methods, domains, projects, organisations, pageTypes, countryTag, speakers, moderators, projectResultAuthor)
+- [x] T020 [US1] Add missing reference warning logic in transformReferences() - omit invalid refs, log warning with post ID and missing reference details
+- [x] T021 [US1] Implement transformEventFields() function in scripts/migrations/migrate-posts.js (eventRegistration, eventStartDate, eventEndDate, speakers, moderators)
+- [x] T022 [US1] Implement transformProjectResultFields() function in scripts/migrations/migrate-posts.js (projectResultAuthor, projectResultMedia, projectResultPublicationDate)
+- [x] T023 [US1] Implement transformAdditionalFields() function in scripts/migrations/migrate-posts.js (internalLinks, mediaFiles, recommendations)
+- [x] T024 [US1] Implement transformPost() main function in scripts/migrations/migrate-posts.js that orchestrates all transformation functions
+- [x] T025 [US1] Implement checkDuplicateSlug() function in scripts/migrations/migrate-posts.js to query Builder.io for existing slugs
+- [x] T026 [US1] Add slug collision handling in transformPost() - auto-append numeric suffix (-2, -3, etc.) and log modifications
+- [x] T027 [US1] Implement createPost() function in scripts/migrations/migrate-posts.js to call Builder.io Write API (POST /api/v1/write/post-page)
+- [x] T028 [US1] Add rate limiting in migrate() function - 200ms delay between API calls (configurable via RATE_LIMIT constant)
+- [x] T029 [US1] Implement migrate() main function in scripts/migrations/migrate-posts.js with loop: load CSV → check if migrated → validate → transform → create → update mapping → log result
+- [x] T030 [US1] Add duplicate prevention logic in migrate() - check mapping file before processing each post, skip if already migrated
+- [x] T031 [US1] Add error handling in migrate() - individual post failures logged with details, continue with remaining posts
+- [x] T032 [US1] Add summary report generation in migrate() - total processed, successful, skipped, failed counts with details
+- [x] T032B [US1] Create initial docs/migration/posts/POST_MIGRATION_GUIDE.md with basic setup, CSV format, CLI usage, and example commands (satisfies Constitution Principle V)
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently (MVP complete!)
 
