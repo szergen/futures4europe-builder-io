@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "I want to create the migrations for the post pages from Wix to builder."
 
+## Clarifications
+
+### Session 2025-11-29
+
+- Q: How should the migration script handle posts that reference entities (tags, people, projects, organisations) that don't exist in Builder.io? → A: Migrate the post but omit the invalid references, log warnings with details
+- Q: How should the migration handle posts with duplicate slugs? → A: Auto-append suffix to duplicate slugs (e.g., "my-post", "my-post-2", "my-post-3") and log
+- Q: How should the migration handle posts that are missing required fields like title or slug? → A: Skip the post entirely, log as failed with missing field details
+- Q: Which Wix export format should the migration script primarily support? → A: CSV only
+- Q: How should image/media references be handled during migration? → A: Migrate only the image URLs as-is - images stay at original host (Wix/CDN)
+
 ## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Data Migration Administrator Migrates Posts (Priority: P1)
@@ -17,7 +27,7 @@ A platform administrator needs to migrate existing post pages from Wix to Builde
 
 **Acceptance Scenarios**:
 
-1. **Given** a CSV/JSON export of Wix post pages exists in `data/exports/`, **When** administrator runs the migration script with a count (e.g., `node scripts/migrations/migrate-posts.js 10`), **Then** the specified number of posts are created in Builder.io with all fields mapped correctly
+1. **Given** a CSV export of Wix post pages exists in `data/exports/`, **When** administrator runs the migration script with a count (e.g., `node scripts/migrations/migrate-posts.js 10`), **Then** the specified number of posts are created in Builder.io with all fields mapped correctly
 2. **Given** posts have already been migrated, **When** administrator re-runs the migration script, **Then** previously migrated posts are skipped (not duplicated) using the mapping file at `data/mappings/post-migration-mapping.json` and only new posts are created
 3. **Given** a post contains references to tags, people, projects, or organisations, **When** the post is migrated, **Then** these references are converted to Builder.io Reference format with correct model and ID mappings
 4. **Given** the migration is in progress, **When** a single post fails to migrate, **Then** the error is logged with details and the script continues with the next post
@@ -76,20 +86,20 @@ Administrators want to preview migration results without actually creating posts
 
 ### Edge Cases
 
-- What happens when a post references a tag/person/project/organisation that hasn't been migrated to Builder.io yet?
-- How does the system handle posts with missing required fields (title, slug)?
-- What happens when multiple posts have the same slug?
+- **Missing references**: When a post references a tag/person/project/organisation that doesn't exist in Builder.io, the post is migrated successfully but the invalid reference is omitted from the reference array. A warning is logged with the post ID, reference type, and missing entity ID for later resolution.
+- **Duplicate slugs**: When multiple posts have the same slug, the first post keeps the original slug. Subsequent posts with the same slug automatically get a numeric suffix appended (e.g., "my-post", "my-post-2", "my-post-3"). Each modification is logged with the original and new slug for administrator review.
+- **Missing required fields**: Posts missing required fields (title or slug) are skipped entirely and logged as failed migrations with details of which fields are missing. These posts can be fixed in the source data and re-migrated.
+- **Image/media references**: Image URLs (postImage1-10, projectResultMedia) are migrated as-is without downloading or re-uploading image files. Images remain hosted at their original location (Wix Media or CDN), and only the URL references are transferred to Builder.io.
 - How are posts with all three sub-types (post, event, project-result) differentiated during migration?
 - How does the script handle very large rich text content (postContentRIch1-10 fields)?
 - What happens when Wix API is temporarily unavailable during migration?
-- How are media/image references handled (postImage1-10 fields)?
 - How does the script handle posts that were partially migrated (some fields succeeded, some failed)?
 
 ## Requirements _(mandatory)_
 
 ### Functional Requirements
 
-- **FR-001**: System MUST read post data from Wix export format (CSV or JSON) in `data/exports/` directory
+- **FR-001**: System MUST read post data from Wix CSV export file in `data/exports/` directory
 - **FR-002**: System MUST transform Wix post data to Builder.io `post-page` model format following the mapping in `app/utils/builderPostUtils.ts`
 - **FR-003**: System MUST create posts in Builder.io using the Write API with private API key
 - **FR-004**: System MUST handle all post sub-types (post, event, project-result) by mapping the `pageTypes` field
@@ -109,6 +119,10 @@ Administrators want to preview migration results without actually creating posts
 - **FR-018**: System MUST provide summary statistics after migration completes
 - **FR-019**: System MUST handle API errors gracefully and continue with remaining posts
 - **FR-020**: System MUST implement rate limiting delay (configurable, default 200ms) between API calls
+- **FR-021**: System MUST handle missing reference entities by omitting them from reference arrays and logging warnings with post ID, reference type, and missing entity ID
+- **FR-022**: System MUST handle duplicate slugs by auto-appending numeric suffix (e.g., "-2", "-3") to ensure uniqueness and logging the original and modified slugs
+- **FR-023**: System MUST validate that required fields (title, slug) are present before migration and skip posts missing these fields, logging them as failed with specific missing field details
+- **FR-024**: System MUST migrate image/media field URLs as-is without downloading or re-uploading files, preserving the original hosted location
 
 ### Key Entities
 
@@ -190,7 +204,7 @@ Based on `builderPostUtils.ts` transformation logic:
 ## Assumptions
 
 1. Tag migration has already been completed (script at `scripts/migrations/migrate-tags.js`)
-2. Wix post data will be exported in a consistent format (CSV or JSON) to `data/exports/`
+2. Wix post data will be exported as CSV file to `data/exports/` with consistent column structure matching Wix field names
 3. Builder.io Private API key is available in `.env.local` as `BUILDER_PRIVATE_API_KEY`
 4. The `post-page` model is already configured in Builder.io with correct schema
 5. Referenced entities (tags for people, projects, organisations, methods, domains) already exist in Builder.io
