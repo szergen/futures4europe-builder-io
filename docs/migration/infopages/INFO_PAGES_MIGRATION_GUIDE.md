@@ -33,12 +33,48 @@ node scripts/migrations/migrate-infopages.js 10
 # Migrate all pages
 node scripts/migrations/migrate-infopages.js all
 
+# Migrate specific range: 10 pages starting from position 50 (records 50-59)
+node scripts/migrations/migrate-infopages.js 10 --start 50
+
+# Migrate in batches
+node scripts/migrations/migrate-infopages.js 100 --start 0    # First 100
+node scripts/migrations/migrate-infopages.js 100 --start 100  # Next 100
+
+# Resume from specific position
+node scripts/migrations/migrate-infopages.js all --start 250
+
 # Preview migration without making API calls (coming soon)
 node scripts/migrations/migrate-infopages.js 10 --dry-run
 
 # Validate migrated data (coming soon)
 node scripts/migrations/migrate-infopages.js 10 --validate
 ```
+
+### The --start Flag
+
+The `--start` flag allows you to migrate X number of pages starting from the Nth position (0-based index).
+
+**Use Cases:**
+
+- **Testing specific records**: Test with pages from the middle or end of the dataset
+- **Batch processing**: Migrate in chunks for better control and monitoring
+- **Resuming**: Continue from where a previous migration stopped
+- **Parallel processing**: Run multiple migration processes simultaneously on different ranges
+
+**Examples:**
+
+```bash
+# Records 50-59 (10 pages starting at position 50)
+node scripts/migrations/migrate-infopages.js 10 --start 50
+
+# Records 100-119 (20 pages starting at position 100)
+node scripts/migrations/migrate-infopages.js 20 --start 100
+
+# All remaining pages from position 500 to end (104 pages)
+node scripts/migrations/migrate-infopages.js all --start 500
+```
+
+The script will show: `Migrating 10 info pages (records 51-60 of 604 total)...`
 
 ## Architecture
 

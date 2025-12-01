@@ -73,15 +73,81 @@ data/mappings/
 # Show help
 node scripts/migrations/migrate-infopages.js --help
 
-# Test with 5 pages
+# Test with 5 pages (from start)
 node scripts/migrations/migrate-infopages.js 5
 
 # Test with 10 pages
 node scripts/migrations/migrate-infopages.js 10
 
+# Migrate 10 pages starting from position 50 (records 50-59)
+node scripts/migrations/migrate-infopages.js 10 --start 50
+
+# Migrate 20 pages starting from position 100 (records 100-119)
+node scripts/migrations/migrate-infopages.js 20 --start 100
+
+# Migrate all remaining pages from position 500 to end
+node scripts/migrations/migrate-infopages.js all --start 500
+
 # Migrate all (604 pages)
 node scripts/migrations/migrate-infopages.js all
 ```
+
+## Using the --start Flag
+
+The `--start` flag allows you to migrate specific ranges of pages, which is useful for:
+
+### Use Cases
+
+**1. Testing Specific Records**
+
+```bash
+# Test with records in the middle of the dataset
+node scripts/migrations/migrate-infopages.js 10 --start 50
+```
+
+**2. Batch Processing**
+
+```bash
+# Migrate in chunks of 100
+node scripts/migrations/migrate-infopages.js 100 --start 0    # First batch
+node scripts/migrations/migrate-infopages.js 100 --start 100  # Second batch
+node scripts/migrations/migrate-infopages.js 100 --start 200  # Third batch
+```
+
+**3. Resuming After Interruption**
+
+```bash
+# If migration stopped at record 250, resume from there
+node scripts/migrations/migrate-infopages.js all --start 250
+```
+
+**4. Parallel Processing** (Advanced)
+
+```bash
+# In terminal 1
+node scripts/migrations/migrate-infopages.js 200 --start 0
+
+# In terminal 2 (simultaneously)
+node scripts/migrations/migrate-infopages.js 200 --start 200
+
+# In terminal 3 (simultaneously)
+node scripts/migrations/migrate-infopages.js 204 --start 400
+```
+
+### Examples
+
+```bash
+# Records 50-59 (10 pages starting at position 50)
+node scripts/migrations/migrate-infopages.js 10 --start 50
+
+# Records 100-119 (20 pages starting at position 100)
+node scripts/migrations/migrate-infopages.js 20 --start 100
+
+# All remaining pages from 500 to end (104 pages)
+node scripts/migrations/migrate-infopages.js all --start 500
+```
+
+**Note**: The `--start` value is 0-based (like array indices), but the logging shows 1-based positions for readability.
 
 ## If Something Goes Wrong
 

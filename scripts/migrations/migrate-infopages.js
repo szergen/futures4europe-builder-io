@@ -117,16 +117,19 @@ function displayHelp() {
 ${colors.cyan}Wix Info Pages to Builder.io Migration Script${colors.reset}
 
 ${colors.bright}Usage:${colors.reset}
-  node scripts/migrations/migrate-infopages.js <count> [--dry-run] [--validate]
+  node scripts/migrations/migrate-infopages.js <count> [--start N] [--dry-run] [--validate]
 
 ${colors.bright}Arguments:${colors.reset}
-  count       Number of info pages to migrate (number or "all")
-  --dry-run   Preview migration without creating pages
-  --validate  Validate migrated pages against source data
+  count           Number of info pages to migrate (number or "all")
+  --start N       Start from the Nth record (0-based index, default: 0)
+  --dry-run       Preview migration without creating pages
+  --validate      Validate migrated pages against source data
 
 ${colors.bright}Examples:${colors.reset}
   node scripts/migrations/migrate-infopages.js 10
   node scripts/migrations/migrate-infopages.js all
+  node scripts/migrations/migrate-infopages.js 10 --start 50      # Migrate records 50-59
+  node scripts/migrations/migrate-infopages.js 20 --start 100     # Migrate records 100-119
   node scripts/migrations/migrate-infopages.js 5 --dry-run
   node scripts/migrations/migrate-infopages.js 10 --validate
 
@@ -139,7 +142,7 @@ ${colors.bright}Page Types:${colors.reset}
 
 /**
  * Parse command line arguments
- * @returns {Object} Parsed arguments {count, isDryRun, isValidate}
+ * @returns {Object} Parsed arguments {count, start, isDryRun, isValidate}
  */
 function parseArguments() {
   const args = process.argv.slice(2);
@@ -153,6 +156,19 @@ function parseArguments() {
   const isDryRun = args.includes("--dry-run");
   const isValidate = args.includes("--validate");
 
+  // Parse --start flag
+  let start = 0;
+  const startFlagIndex = args.indexOf("--start");
+  if (startFlagIndex !== -1 && args[startFlagIndex + 1]) {
+    const startValue = parseInt(args[startFlagIndex + 1]);
+    if (isNaN(startValue) || startValue < 0) {
+      log.error(`Invalid --start value: ${args[startFlagIndex + 1]}`);
+      log.info("--start must be a non-negative number");
+      process.exit(1);
+    }
+    start = startValue;
+  }
+
   // Validate count argument
   if (count !== "all" && isNaN(parseInt(count))) {
     log.error(`Invalid count argument: ${count}`);
@@ -162,6 +178,7 @@ function parseArguments() {
 
   return {
     count: count === "all" ? count : parseInt(count),
+    start,
     isDryRun,
     isValidate,
   };
@@ -876,18 +893,37 @@ async function createInfoPage(model, pageData, index, total, pageType) {
 /**
  * T030: Main migration function
  * @param {string} count - Number of pages to migrate ("all" or number)
+ * @param {number} start - Starting index (0-based, default: 0)
  */
-async function migrate(count) {
+async function migrate(count, start = 0) {
   log.title("🚀 Starting Info Pages Migration to Builder.io");
 
   // Load CSV and mappings
   const allPages = loadCSV();
   const tagMapping = loadTagMapping();
 
-  // T031: Determine how many to migrate
-  const pagesToMigrate =
-    count === "all" ? allPages : allPages.slice(0, parseInt(count));
-  log.info(`Migrating ${pagesToMigrate.length} info pages...`);
+  // Validate start index
+  if (start >= allPages.length) {
+    log.error(
+      `Start index ${start} is beyond total records (${allPages.length})`
+    );
+    process.exit(1);
+  }
+
+  // T031: Determine how many to migrate with start offset
+  let pagesToMigrate;
+  if (count === "all") {
+    pagesToMigrate = allPages.slice(start);
+  } else {
+    const end = start + parseInt(count);
+    pagesToMigrate = allPages.slice(start, end);
+  }
+
+  log.info(
+    `Migrating ${pagesToMigrate.length} info pages (records ${start + 1}-${
+      start + pagesToMigrate.length
+    } of ${allPages.length} total)...`
+  );
 
   // Load mapping files for all three page types
   const mappings = {
@@ -915,6 +951,8 @@ async function migrate(count) {
   for (let i = 0; i < pagesToMigrate.length; i++) {
     const row = pagesToMigrate[i];
     const wixId = row.id;
+    const currentPosition = start + i + 1; // Actual position in full dataset
+    const totalInBatch = start + pagesToMigrate.length;
 
     counters.total++;
 
@@ -924,7 +962,7 @@ async function migrate(count) {
     // T032: Skip if no valid page type
     if (!pageTypeInfo) {
       log.error(
-        `[${i + 1}/${pagesToMigrate.length}] Skipping ${
+        `[${currentPosition}/${totalInBatch}] Skipping ${
           row.title || wixId
         }: Could not determine page type`
       );
@@ -943,9 +981,7 @@ async function migrate(count) {
     // T033: Check if already migrated using appropriate mapping file
     if (mappings[type].wixToBuilder[wixId]) {
       log.warning(
-        `[${i + 1}/${pagesToMigrate.length}] Skipping ${
-          row.title
-        } (${type} - already migrated)`
+        `[${currentPosition}/${totalInBatch}] Skipping ${row.title} (${type} - already migrated)`
       );
       counters.skip++;
       counters.byType[type].skip++;
@@ -956,7 +992,7 @@ async function migrate(count) {
     const validation = validateRequiredFields(row);
     if (!validation.valid) {
       log.error(
-        `[${i + 1}/${pagesToMigrate.length}] Skipping ${
+        `[${currentPosition}/${totalInBatch}] Skipping ${
           row.title || wixId
         } (${type}): Missing required fields: ${validation.missing.join(", ")}`
       );
@@ -983,8 +1019,8 @@ async function migrate(count) {
     const result = await createInfoPage(
       model,
       infoPage,
-      i,
-      pagesToMigrate.length,
+      start + i,
+      totalInBatch,
       type
     );
 
@@ -1062,7 +1098,7 @@ async function migrate(count) {
 
 async function main() {
   // Parse CLI arguments
-  const { count, isDryRun, isValidate } = parseArguments();
+  const { count, start, isDryRun, isValidate } = parseArguments();
 
   // Validate API key
   if (!PRIVATE_API_KEY) {
@@ -1080,7 +1116,7 @@ async function main() {
     log.info("Coming in Phase 5 (User Story 5)");
     process.exit(0);
   } else {
-    await migrate(count);
+    await migrate(count, start);
   }
 }
 
