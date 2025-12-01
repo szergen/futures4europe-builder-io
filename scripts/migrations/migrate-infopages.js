@@ -532,6 +532,7 @@ function transformInfoPage(row, pageTypeInfo, tagMapping, typeMapping) {
   }
 
   return {
+    name: row.title || "Untitled", // Content Entry Name in Builder.io UI
     data,
     ...metadata,
   };
