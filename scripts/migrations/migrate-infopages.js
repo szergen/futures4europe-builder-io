@@ -988,11 +988,28 @@ async function migrate(count, start = 0) {
   );
 
   // Load mapping files for all three page types
-  const mappings = {
-    person: loadMapping("person"),
-    organisation: loadMapping("organisation"),
-    project: loadMapping("project"),
-  };
+  // Note: If using single mapping file, all three will reference the same object
+  const usingSingleFile =
+    MAPPING_FILES.person === MAPPING_FILES.organisation &&
+    MAPPING_FILES.organisation === MAPPING_FILES.project;
+
+  let mappings;
+  if (usingSingleFile) {
+    // Use single shared mapping object to prevent overwrites
+    const sharedMapping = loadMapping("person");
+    mappings = {
+      person: sharedMapping,
+      organisation: sharedMapping,
+      project: sharedMapping,
+    };
+  } else {
+    // Load separate mapping objects for each type
+    mappings = {
+      person: loadMapping("person"),
+      organisation: loadMapping("organisation"),
+      project: loadMapping("project"),
+    };
+  }
 
   // T038: Track counters (overall and per page type)
   const counters = {
