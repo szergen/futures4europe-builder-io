@@ -1,0 +1,32 @@
+# futures4europe-builder-io Development Guidelines
+
+Auto-generated from all feature plans. Last updated: 2025-12-01
+
+## Active Technologies
+
+- TypeScript 4.8.4 / Next.js 13.4.9 (App Router) (003-post-page-migration)
+- Builder.io cloud CMS (Write API for mutations, Read API for queries) (003-post-page-migration)
+
+## Project Structure
+
+```text
+src/
+tests/
+```
+
+## Commands
+
+npm test && npm run lint
+
+## Code Style
+
+TypeScript 5.x / Next.js 14.x (App Router): Follow standard conventions
+
+## Recent Changes
+
+- 003-post-page-migration: Added TypeScript 4.8.4 / Next.js 13.4.9 (App Router)
+
+- 003-post-page-migration: Added TypeScript 5.x / Next.js 14.x (App Router)
+
+<!-- MANUAL ADDITIONS START -->
+<!-- MANUAL ADDITIONS END -->
