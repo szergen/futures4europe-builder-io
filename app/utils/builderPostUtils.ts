@@ -7,6 +7,274 @@
 
 import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
 
+// ============================================================================
+// WRITE API CONFIGURATION
+// ============================================================================
+
+const BUILDER_API_URL = "https://builder.io/api/v1/write";
+const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
+
+// ============================================================================
+// WRITE API UTILITIES (FOR CREATING/UPDATING POSTS)
+// ============================================================================
+
+/**
+ * Transform tag arrays to Builder.io Reference format
+ * Converts component tag arrays to Builder.io reference structure
+ * @param tags - Array of tag objects with _id property
+ * @param modelName - Target model name (default: "tag-page")
+ * @returns Array of Builder.io Reference objects
+ */
+export function transformReferencesForBuilder(
+  tags: any[] | undefined,
+  modelName: string = "tag-page"
+): any[] {
+  if (!tags || !Array.isArray(tags) || tags.length === 0) {
+    return [];
+  }
+
+  return tags
+    .filter((tag) => tag && tag._id) // Only include tags with valid IDs
+    .map((tag) => ({
+      "@type": "@builder.io/core:Reference",
+      id: tag._id,
+      model: modelName,
+    }));
+}
+
+/**
+ * Transform component state to Builder.io API payload
+ * Converts PostPageComponent data structure to Builder.io Write API format
+ * @param postData - Post data from component state
+ * @param contentText - Array of rich text content sections (10 sections)
+ * @param contentImages - Array of image objects (10 images)
+ * @returns Builder.io API payload
+ */
+export function transformPostDataForBuilder(
+  postData: any,
+  contentText: string[],
+  contentImages: any[]
+): any {
+  const data: any = {
+    // Basic fields
+    title: postData.title || "",
+    subtitle: postData.subtitle || "",
+    slug: postData.slug || "",
+
+    // Content sections (10 rich text fields)
+    postContentRIch1: contentText[0] || "",
+    postContentRIch2: contentText[1] || "",
+    postContentRIch3: contentText[2] || "",
+    postContentRIch4: contentText[3] || "",
+    postContentRIch5: contentText[4] || "",
+    postContentRIch6: contentText[5] || "",
+    postContentRIch7: contentText[6] || "",
+    postContentRIch8: contentText[7] || "",
+    postContentRIch9: contentText[8] || "",
+    postContentRIch10: contentText[9] || "",
+
+    // Images (10 image fields)
+    postImage1: contentImages[0] || {},
+    postImage2: contentImages[1] || {},
+    postImage3: contentImages[2] || {},
+    postImage4: contentImages[3] || {},
+    postImage5: contentImages[4] || {},
+    postImage6: contentImages[5] || {},
+    postImage7: contentImages[6] || {},
+    postImage8: contentImages[7] || {},
+    postImage9: contentImages[8] || {},
+    postImage10: contentImages[9] || {},
+
+    // Reference fields - transform to Builder.io format
+    author: transformReferencesForBuilder(postData.author),
+    pageOwner: transformReferencesForBuilder(postData.pageOwner),
+    pageTypes: transformReferencesForBuilder(postData.pageTypes),
+    people: transformReferencesForBuilder(postData.people),
+    methods: transformReferencesForBuilder(postData.methods),
+    domains: transformReferencesForBuilder(postData.domains),
+    projects: transformReferencesForBuilder(postData.projects),
+    organisations: transformReferencesForBuilder(postData.organisations),
+
+    // Single reference field (countryTag)
+    countryTag:
+      postData.countryTag && postData.countryTag[0]
+        ? {
+            "@type": "@builder.io/core:Reference",
+            id: postData.countryTag[0]._id,
+            model: "tag-page",
+          }
+        : undefined,
+
+    // Event-specific fields
+    speakers: transformReferencesForBuilder(postData.speakers),
+    moderators: transformReferencesForBuilder(postData.moderators),
+    eventStartDate: postData.eventStartDate || undefined,
+    eventEndDate: postData.eventEndDate || undefined,
+    eventRegistration: postData.eventRegistration || undefined,
+
+    // Project result-specific fields
+    projectResultAuthor: transformReferencesForBuilder(
+      postData.projectResultAuthor
+    ),
+    projectResultMedia: postData.projectResultMedia || {},
+    projectResultPublicationDate:
+      postData.projectResultPublicationDate || undefined,
+
+    // Additional fields
+    mediaFiles: postData.mediaFiles || [],
+    internalLinks: transformReferencesForBuilder(
+      postData.internalLinks,
+      "post-page"
+    ),
+    recommendations: postData.recommendations || 0,
+  };
+
+  // Remove undefined fields to keep payload clean
+  Object.keys(data).forEach((key) => {
+    if (data[key] === undefined) {
+      delete data[key];
+    }
+  });
+
+  return data;
+}
+
+/**
+ * Create a new post in Builder.io
+ * @param postData - Post data from component state
+ * @param contentText - Array of rich text content sections
+ * @param contentImages - Array of image objects
+ * @returns Builder.io API response with created post data
+ */
+export async function createBuilderPost(
+  postData: any,
+  contentText: string[],
+  contentImages: any[]
+): Promise<any> {
+  try {
+    const data = transformPostDataForBuilder(
+      postData,
+      contentText,
+      contentImages
+    );
+
+    const payload = {
+      name: postData.title || postData.slug || "Untitled Post",
+      data,
+      published: "published",
+    };
+
+    console.log("[Builder.io] Creating new post:", {
+      slug: data.slug,
+      title: data.title,
+    });
+
+    const response = await fetch(`${BUILDER_API_URL}/post-page`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BUILDER_PRIVATE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("[Builder.io] Create post failed:", {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+      });
+      throw new Error(
+        `Failed to create post: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const result = await response.json();
+    console.log("[Builder.io] Post created successfully:", {
+      id: result.id,
+      slug: result.data?.slug,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("[Builder.io] Error creating post:", error);
+    throw error;
+  }
+}
+
+/**
+ * Update an existing post in Builder.io
+ * @param postId - Builder.io content ID
+ * @param postData - Post data from component state
+ * @param contentText - Array of rich text content sections
+ * @param contentImages - Array of image objects
+ * @returns Builder.io API response with updated post data
+ */
+export async function updateBuilderPost(
+  postId: string,
+  postData: any,
+  contentText: string[],
+  contentImages: any[]
+): Promise<any> {
+  try {
+    const data = transformPostDataForBuilder(
+      postData,
+      contentText,
+      contentImages
+    );
+
+    const payload = {
+      name: postData.title || postData.slug || "Untitled Post",
+      data,
+      published: "published",
+    };
+
+    console.log("[Builder.io] Updating post:", {
+      id: postId,
+      slug: data.slug,
+      title: data.title,
+    });
+
+    const response = await fetch(`${BUILDER_API_URL}/post-page/${postId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${BUILDER_PRIVATE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("[Builder.io] Update post failed:", {
+        id: postId,
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+      });
+      throw new Error(
+        `Failed to update post: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const result = await response.json();
+    console.log("[Builder.io] Post updated successfully:", {
+      id: result.id,
+      slug: result.data?.slug,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("[Builder.io] Error updating post:", error);
+    throw error;
+  }
+}
+
+// ============================================================================
+// READ API UTILITIES (FOR FETCHING POSTS)
+// ============================================================================
+
 /**
  * Fetch a post from Builder.io by slug
  * @param slug - The post slug (e.g., "my-post-title")

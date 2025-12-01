@@ -24,12 +24,12 @@
 
 **Purpose**: Verify prerequisites and prepare environment
 
-- [ ] T001 Verify Builder.io `post-page` model is configured with all required fields (check Builder.io dashboard)
-- [ ] T002 Verify `.env.local` contains `BUILDER_PRIVATE_API_KEY` (check environment variable exists)
-- [ ] T003 [P] Review existing PostPageComponent to understand data structure in `app/page-components/PostPageComponent/PostPageComponent.tsx` (read-only)
-- [ ] T004 [P] Review existing builderPostUtils to understand transformation patterns in `app/utils/builderPostUtils.ts` (read-only)
-- [ ] T005 [P] Review existing cache utilities in `app/utils/cache-utils.ts` (no changes needed, read-only)
-- [ ] T006 [P] Review slug generation utilities in `app/utils/PageComponents.utils.ts` (no changes needed, read-only)
+- [x] T001 Verify Builder.io `post-page` model is configured with all required fields (check Builder.io dashboard)
+- [x] T002 Verify `.env.local` contains `BUILDER_PRIVATE_API_KEY` (check environment variable exists)
+- [x] T003 [P] Review existing PostPageComponent to understand data structure in `app/page-components/PostPageComponent/PostPageComponent.tsx` (read-only)
+- [x] T004 [P] Review existing builderPostUtils to understand transformation patterns in `app/utils/builderPostUtils.ts` (read-only)
+- [x] T005 [P] Review existing cache utilities in `app/utils/cache-utils.ts` (no changes needed, read-only)
+- [x] T006 [P] Review slug generation utilities in `app/page-components/PageComponents.utils.ts` (no changes needed, read-only)
 
 **Checkpoint**: All prerequisites verified, environment ready for implementation
 
@@ -41,12 +41,12 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Add `transformReferencesForBuilder()` helper function in `app/utils/builderPostUtils.ts` (converts tag arrays to Builder.io Reference format)
-- [ ] T008 [P] Add `transformPostDataForBuilder()` function in `app/utils/builderPostUtils.ts` (converts component state to Builder.io API payload)
-- [ ] T009 [P] Add `createBuilderPost()` API function in `app/utils/builderPostUtils.ts` (handles POST to Builder.io Write API)
-- [ ] T010 [P] Add `updateBuilderPost()` API function in `app/utils/builderPostUtils.ts` (handles PUT to Builder.io Write API)
-- [ ] T011 Add API constants (BUILDER_API_URL, BUILDER_PRIVATE_API_KEY) in `app/utils/builderPostUtils.ts`
-- [ ] T012 Verify all utility functions compile without TypeScript errors (run `npm run lint` or check IDE)
+- [x] T007 Add `transformReferencesForBuilder()` helper function in `app/utils/builderPostUtils.ts` (converts tag arrays to Builder.io Reference format)
+- [x] T008 [P] Add `transformPostDataForBuilder()` function in `app/utils/builderPostUtils.ts` (converts component state to Builder.io API payload)
+- [x] T009 [P] Add `createBuilderPost()` API function in `app/utils/builderPostUtils.ts` (handles POST to Builder.io Write API)
+- [x] T010 [P] Add `updateBuilderPost()` API function in `app/utils/builderPostUtils.ts` (handles PUT to Builder.io Write API)
+- [x] T011 Add API constants (BUILDER_API_URL, BUILDER_PRIVATE_API_KEY) in `app/utils/builderPostUtils.ts`
+- [x] T012 Verify all utility functions compile without TypeScript errors (run `npm run lint` or check IDE)
 
 **Checkpoint**: Foundation ready - Builder.io API utilities complete and tested, user story implementation can now begin in parallel
 
@@ -60,13 +60,13 @@
 
 ### Implementation for User Story 1
 
-- [ ] T013 [P] [US1] Create new route file `app/post-page/New_Post/page.tsx` by copying from `app/post/New_Post/page.tsx`
-- [ ] T014 [US1] Update `createNewPost()` function in `app/page-components/PostPageComponent/PostPageComponent.tsx` to use `createBuilderPost()` instead of Wix `insertDataItem`
-- [ ] T015 [US1] Replace Wix reference update calls in `createNewPost()` with single Builder.io payload (remove all `replaceDataItemReferences` calls)
-- [ ] T016 [US1] Add cache invalidation call `await invalidatePostPageCache(result.data.slug)` after successful create in `createNewPost()`
-- [ ] T017 [US1] Update redirect to use Builder.io slug format: `router.push(\`/post-page/\${result.data.slug}\`)`in`createNewPost()`
-- [ ] T018 [US1] Add error handling with user-visible alert for API failures in `createNewPost()`
-- [ ] T019 [US1] Add imports for new utilities (`createBuilderPost`, `invalidatePostPageCache`) in `PostPageComponent.tsx`
+- [x] T013 [P] [US1] Create new route file `app/post-page/New_Post/page.tsx` by copying from `app/post/New_Post/page.tsx`
+- [x] T014 [US1] Update `createNewPost()` function in `app/page-components/PostPageComponent/PostPageComponent.tsx` to use `createBuilderPost()` instead of Wix `insertDataItem`
+- [x] T015 [US1] Replace Wix reference update calls in `createNewPost()` with single Builder.io payload (remove all `replaceDataItemReferences` calls)
+- [x] T016 [US1] Add cache invalidation call `await invalidatePostPageCache(result.data.slug)` after successful create in `createNewPost()`
+- [x] T017 [US1] Update redirect to use Builder.io slug format: `router.push(\`/post-page/\${result.data.slug}\`)`in`createNewPost()`
+- [x] T018 [US1] Add error handling with user-visible alert for API failures in `createNewPost()`
+- [x] T019 [US1] Add imports for new utilities (`createBuilderPost`, `invalidatePostPageCache`) in `PostPageComponent.tsx`
 - [ ] T020 [US1] Verify new route is accessible at `/post-page/New_Post?pageType=post` (manual browser test)
 - [ ] T021 [US1] Manual test: Create basic post with title, subtitle, content section 1 (follow quickstart.md Step 5)
 - [ ] T022 [US1] Manual test: Verify single API call in Network tab (POST to `/v1/write/post-page`)
@@ -85,12 +85,12 @@
 
 ### Implementation for User Story 2
 
-- [ ] T025 [US2] Update `updateDataToServer()` function in `app/page-components/PostPageComponent/PostPageComponent.tsx` to use `updateBuilderPost()` instead of Wix `updateDataItem`
-- [ ] T026 [US2] Replace all Wix reference update calls in `updateDataToServer()` with single Builder.io payload (remove `replaceDataItemReferences` calls)
-- [ ] T027 [US2] Add cache invalidation call `await invalidatePostPageCache(postData.slug)` after successful update in `updateDataToServer()`
-- [ ] T028 [US2] Remove comparison logic for `defaultPostData` vs `postData` in `updateDataToServer()` (Builder.io API optimization: accepts full payload, no manual change detection needed - satisfies FR-028)
-- [ ] T029 [US2] Add error handling with user-visible alert for API failures in `updateDataToServer()`
-- [ ] T030 [US2] Update imports to include `updateBuilderPost` in `PostPageComponent.tsx`
+- [x] T025 [US2] Update `updateDataToServer()` function in `app/page-components/PostPageComponent/PostPageComponent.tsx` to use `updateBuilderPost()` instead of Wix `updateDataItem`
+- [x] T026 [US2] Replace all Wix reference update calls in `updateDataToServer()` with single Builder.io payload (remove `replaceDataItemReferences` calls)
+- [x] T027 [US2] Add cache invalidation call `await invalidatePostPageCache(postData.slug)` after successful update in `updateDataToServer()`
+- [x] T028 [US2] Remove comparison logic for `defaultPostData` vs `postData` in `updateDataToServer()` (Builder.io API optimization: accepts full payload, no manual change detection needed - satisfies FR-028)
+- [x] T029 [US2] Add error handling with user-visible alert for API failures in `updateDataToServer()`
+- [x] T030 [US2] Update imports to include `updateBuilderPost` in `PostPageComponent.tsx`
 - [ ] T031 [US2] Manual test: Open existing post and click "Edit Page" (follow quickstart.md Step 6)
 - [ ] T032 [US2] Manual test: Modify title, subtitle, and add person tag, then publish
 - [ ] T033 [US2] Manual test: Verify single API call in Network tab (PUT to `/v1/write/post-page/{id}`)
@@ -109,9 +109,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T036 [US3] Verify `transformPostDataForBuilder()` includes event fields: `speakers`, `moderators`, `eventStartDate`, `eventEndDate`, `eventRegistration` in `app/utils/builderPostUtils.ts`
-- [ ] T037 [US3] Update `createNewPost()` to pass event-specific fields to `createBuilderPost()` in `PostPageComponent.tsx`
-- [ ] T038 [US3] Verify `updateDataToServer()` passes event-specific fields to `updateBuilderPost()` in `PostPageComponent.tsx`
+- [x] T036 [US3] Verify `transformPostDataForBuilder()` includes event fields: `speakers`, `moderators`, `eventStartDate`, `eventEndDate`, `eventRegistration` in `app/utils/builderPostUtils.ts`
+- [x] T037 [US3] Update `createNewPost()` to pass event-specific fields to `createBuilderPost()` in `PostPageComponent.tsx`
+- [x] T038 [US3] Verify `updateDataToServer()` passes event-specific fields to `updateBuilderPost()` in `PostPageComponent.tsx`
 - [ ] T039 [US3] Manual test: Navigate to `/post-page/New_Post?pageType=event` (follow quickstart.md Step 8)
 - [ ] T040 [US3] Manual test: Fill in event speakers, moderators, start date, end date, registration link
 - [ ] T041 [US3] Manual test: Publish and verify all event fields saved in Builder.io
@@ -130,9 +130,9 @@
 
 ### Implementation for User Story 4
 
-- [ ] T044 [US4] Verify `transformPostDataForBuilder()` includes project result fields: `projectResultAuthor`, `projectResultMedia`, `projectResultPublicationDate` in `app/utils/builderPostUtils.ts`
-- [ ] T045 [US4] Update `createNewPost()` to pass project result fields to `createBuilderPost()` in `PostPageComponent.tsx`
-- [ ] T046 [US4] Verify `updateDataToServer()` passes project result fields to `updateBuilderPost()` in `PostPageComponent.tsx`
+- [x] T044 [US4] Verify `transformPostDataForBuilder()` includes project result fields: `projectResultAuthor`, `projectResultMedia`, `projectResultPublicationDate` in `app/utils/builderPostUtils.ts`
+- [x] T045 [US4] Update `createNewPost()` to pass project result fields to `createBuilderPost()` in `PostPageComponent.tsx`
+- [x] T046 [US4] Verify `updateDataToServer()` passes project result fields to `updateBuilderPost()` in `PostPageComponent.tsx`
 - [ ] T047 [US4] Manual test: Navigate to `/post-page/New_Post?pageType=projectResult` (follow quickstart.md Step 8)
 - [ ] T048 [US4] Manual test: Fill in project result authors, media file, publication date
 - [ ] T049 [US4] Manual test: Publish and verify all project result fields saved in Builder.io
@@ -151,9 +151,9 @@
 
 ### Implementation for User Story 5
 
-- [ ] T052 [US5] Verify `transformPostDataForBuilder()` includes ALL reference fields in single payload (no separate calls)
-- [ ] T053 [US5] Verify `createBuilderPost()` sends all references in single POST request
-- [ ] T054 [US5] Verify `updateBuilderPost()` sends all references in single PUT request
+- [x] T052 [US5] Verify `transformPostDataForBuilder()` includes ALL reference fields in single payload (no separate calls)
+- [x] T053 [US5] Verify `createBuilderPost()` sends all references in single POST request
+- [x] T054 [US5] Verify `updateBuilderPost()` sends all references in single PUT request
 - [ ] T055 [US5] Manual test: Create post with all 10 content sections, all 10 images, and multiple reference fields (follow quickstart.md Step 9)
 - [ ] T056 [US5] Manual test: Measure time from "Publish" click to redirect (should be <3 seconds per SC-001)
 - [ ] T057 [US5] Manual test: Verify network tab shows ONLY 1 POST request (not 10+ like Wix)
@@ -174,7 +174,7 @@
 - [ ] T063 [P] Manual test: Verify "Discard Changes" preserves original state
 - [ ] T064 [P] Manual test: Verify cache invalidation works (check listing page immediately after save)
 - [ ] T065 [P] Manual test: Verify all existing UI behaviors preserved (edit mode, loading modal, validation states)
-- [ ] T066 Verify console logging shows appropriate detail: operation start, success/failure, IDs, errors only (no full payloads per clarification Q4)
+- [x] T066 Verify console logging shows appropriate detail: operation start, success/failure, IDs, errors only (no full payloads per clarification Q4)
 - [ ] T067 Run complete testing checklist from quickstart.md (all 20 checkboxes)
 - [ ] T068 [P] Verify success criteria SC-001: Post creation <3 seconds
 - [ ] T069 [P] Verify success criteria SC-002: Post update <2 seconds
@@ -183,7 +183,7 @@
 - [ ] T072 Verify success criteria SC-005: All 3 post types work correctly
 - [ ] T073 Verify success criteria SC-010: 100% of reference fields save correctly
 - [ ] T074 [P] Update any relevant migration documentation if needed
-- [ ] T075 Code cleanup: Remove any commented-out Wix API code
+- [x] T075 Code cleanup: Remove any commented-out Wix API code
 - [ ] T076 Final review: Compare implementation against all 31 functional requirements in spec.md
 
 **Final Checkpoint**: All user stories complete, all success criteria met, ready for production deployment
