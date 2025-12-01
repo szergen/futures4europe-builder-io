@@ -46,7 +46,7 @@ A user who owns a post page can edit any field (title, content, tags, metadata) 
 **Acceptance Scenarios**:
 
 1. **Given** a user owns a post page, **When** they click "Edit Page", modify the title and subtitle, then click "Publish Page", **Then** the changes are saved to Builder.io and the updated page is displayed with cache invalidation
-2. **Given** a user is editing a post, **When** they modify rich text content in any of the 10 content sections, **Then** only the changed sections are updated in Builder.io (not all 10) for optimization
+2. **Given** a user is editing a post, **When** they modify rich text content in any of the 10 content sections, **Then** all content sections are sent to Builder.io API (Builder.io handles optimization internally)
 3. **Given** a user is editing a post, **When** they add or remove tags (people, methods, domains, etc.), **Then** all reference field changes are sent in a single optimized API call to Builder.io
 4. **Given** a user is editing a post, **When** they click "Discard Changes", **Then** all modifications are reverted to the last saved state and edit mode is exited without saving to Builder.io
 5. **Given** a user is editing a post, **When** changes are being saved, **Then** a "Saving Page..." modal is displayed to prevent duplicate submissions and closes when the save is complete
@@ -112,7 +112,7 @@ When a user saves a post with multiple reference field changes (tags, people, pr
 - **Duplicate slug generation**: When a generated slug already exists in Builder.io, the system appends a unique hash to ensure slug uniqueness (using existing generateUniqueHash function)
 - **Concurrent edits**: When multiple users try to edit the same post simultaneously, the last save wins (Builder.io handles this via its API)
 - **Cache invalidation failure**: When cache invalidation fails (called after successful Builder.io save but before redirect), the post is still saved correctly and redirect proceeds normally, but updated content may not appear immediately on listing pages until cache expires naturally (graceful degradation)
-- **Missing user tag**: When a new user who doesn't have a corresponding person tag in Builder.io tries to create a post, the system should create the post without author/pageOwner fields or display an error
+- **Missing user tag**: When a new user who doesn't have a corresponding person tag in Builder.io tries to create a post, the system displays an error message "User profile not found. Please contact administrator." and prevents post creation
 
 ## Requirements _(mandatory)_
 
@@ -127,7 +127,7 @@ When a user saves a post with multiple reference field changes (tags, people, pr
 - **FR-007**: System MUST create new post in Builder.io with a single API call containing all fields (title, subtitle, content, images, references, metadata)
 - **FR-008**: System MUST update existing post in Builder.io with a single API call containing all changed fields (not separate calls per field)
 - **FR-009**: System MUST generate unique slug using existing `sanitizeTitleForSlug(title)` function (preserves current logic: lowercase, replace spaces/special chars with hyphens, existing character limit) + unique hash for new posts
-- **FR-010**: System MUST set `author` and `pageOwner` reference fields to the logged-in user's tag ID when creating new posts
+- **FR-010**: System MUST set `author` and `pageOwner` reference fields to the logged-in user's tag ID when creating new posts; if user tag does not exist in Builder.io, system MUST prevent post creation and display error message
 - **FR-011**: System MUST set default `pageType` reference based on query parameter when creating new posts
 - **FR-012**: System MUST validate required fields (title at minimum) before allowing save/publish
 - **FR-013**: System MUST display "Saving Page..." modal during API calls to prevent duplicate submissions
@@ -145,7 +145,7 @@ When a user saves a post with multiple reference field changes (tags, people, pr
 - **FR-025**: System MUST log save operations to browser console including: operation start, success/failure status, Builder.io response IDs, and error details (but NOT full API request/response payloads to avoid exposing sensitive data)
 - **FR-026**: System MUST handle API errors gracefully with user-friendly error messages
 - **FR-027**: System MUST NOT automatically retry failed API calls; instead, preserve data in edit state and allow user to manually retry after resolving issues
-- **FR-028**: System MUST detect which fields have changed and only send changed fields in update API calls (optimization)
+- **FR-028**: System SHOULD detect which fields have changed for logging purposes, but Builder.io API accepts all fields in update payload (no manual diff required for API optimization)
 - **FR-029**: System MUST batch all reference field updates into a single API call instead of separate calls per reference type
 - **FR-030**: System MUST revalidate Builder.io cache paths (`/post` and `/post/{slug}`) after successful saves and before redirect
 - **FR-031**: System MUST create new API utility functions in `app/utils/builderPostUtils.ts` or similar for Builder.io create/update operations

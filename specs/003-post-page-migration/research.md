@@ -244,6 +244,35 @@ async function savePost(postData) {
 
 ---
 
+## Builder.io API Optimization Strategy
+
+### Decision
+
+Builder.io Write API is designed to accept full data payloads without requiring client-side change detection.
+
+### Rationale
+
+- **Simplified client code**: No need for complex diffing logic between current and previous state
+- **Reduced error surface**: Manual change detection can introduce bugs if fields are missed
+- **API-level optimization**: Builder.io internally optimizes updates by only persisting changed fields
+- **Single source of truth**: API handles all optimization logic consistently
+
+### Implementation Impact
+
+This design decision affects FR-028 and tasks T028, T054:
+
+- Client sends complete data payload on every update
+- No manual comparison of `defaultPostData` vs `postData` needed
+- Builder.io API determines what has changed and optimizes storage
+- Logging can still track operation types (create vs update) without field-level diffing
+
+### Alternatives Considered
+
+1. ❌ **Client-side change detection** - Complex, error-prone, increases bundle size
+2. ❌ **Field-level tracking** - Requires state management overhead, doesn't improve API performance
+
+---
+
 ## Research Area 5: Slug Generation
 
 ### Decision

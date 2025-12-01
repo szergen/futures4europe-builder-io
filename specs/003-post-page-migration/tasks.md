@@ -88,7 +88,7 @@
 - [ ] T025 [US2] Update `updateDataToServer()` function in `app/page-components/PostPageComponent/PostPageComponent.tsx` to use `updateBuilderPost()` instead of Wix `updateDataItem`
 - [ ] T026 [US2] Replace all Wix reference update calls in `updateDataToServer()` with single Builder.io payload (remove `replaceDataItemReferences` calls)
 - [ ] T027 [US2] Add cache invalidation call `await invalidatePostPageCache(postData.slug)` after successful update in `updateDataToServer()`
-- [ ] T028 [US2] Remove comparison logic for `defaultPostData` vs `postData` (Builder.io accepts all fields, no need to detect changes)
+- [ ] T028 [US2] Remove comparison logic for `defaultPostData` vs `postData` in `updateDataToServer()` (Builder.io API optimization: accepts full payload, no manual change detection needed - satisfies FR-028)
 - [ ] T029 [US2] Add error handling with user-visible alert for API failures in `updateDataToServer()`
 - [ ] T030 [US2] Update imports to include `updateBuilderPost` in `PostPageComponent.tsx`
 - [ ] T031 [US2] Manual test: Open existing post and click "Edit Page" (follow quickstart.md Step 6)

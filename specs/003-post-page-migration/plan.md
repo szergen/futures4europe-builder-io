@@ -25,7 +25,7 @@ Migrate post-page creation and editing functionality from Wix CMS to Builder.io 
 - `react` (React 18)
 
 **Storage**: Builder.io cloud CMS (Write API for mutations, Read API for queries)  
-**Testing**: Browser-based testing via Builder.io browser tools, E2E testing for user flows  
+**Testing**: Manual browser-based end-to-end testing via quickstart.md guide, Network tab verification for API calls  
 **Target Platform**: Next.js web application (SSR/ISR hybrid)  
 **Project Type**: Web application (Next.js with client and server components)  
 **Performance Goals**:
