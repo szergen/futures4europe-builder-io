@@ -637,11 +637,15 @@ function resolveTagReferences(wixTagIds, tagMapping, wrapperKey) {
 function transformTagReferences(row, tagMapping, pageType) {
   const refs = {};
 
-  // Common reference fields (actual CSV: "Domains", "Country Tag", "Author")
+  // Common reference fields (actual CSV: "Domains", "Country Tag", "Author", "Activity")
   const commonRefFields = [
     { field: "domains", wrapper: "domainsItem" },
     { field: "country tag", wrapper: "countryTagItem" },
     { field: "author", wrapper: "authorItem" },
+    { field: "activity", wrapper: "activityItem" },
+    { field: "person", wrapper: "personItem" },
+    { field: "organisation", wrapper: "organisationItem" },
+    { field: "project", wrapper: "projectItem" },
   ];
 
   for (const { field, wrapper } of commonRefFields) {
@@ -705,7 +709,6 @@ function transformTagReferences(row, tagMapping, pageType) {
         field: "project participant team",
         wrapper: "projectParticipantTeamItem",
       },
-      { field: "activity", wrapper: "activityItem" },
     ];
 
     for (const { field, wrapper } of projectRefFields) {
