@@ -1,15 +1,16 @@
 <!--
   SYNC IMPACT REPORT
 
-  Version Change: 1.0.0 → 1.0.1
+  Version Change: 1.0.1 → 1.0.2
 
   Modified Sections:
-  - [UPDATED] V. Documentation & Migration Tracking - Updated file paths to reflect new docs/ folder structure
+  - [UPDATED] V. Documentation & Migration Tracking - Added project organization requirements
 
   Changes:
-  - Documentation now organized in docs/ folder with subfolders
-  - Updated references: docs/migration/[content-type]/ structure
-  - Added documentation organization requirements
+  - Added scripts/ folder organization (migrations/, utilities/)
+  - Added data/ folder organization (examples/, exports/, mappings/)
+  - Clarified where migration scripts and data files must be located
+  - Updated file organization requirements for better project structure
 
   Templates Requiring Updates:
   ✅ plan-template.md - No changes needed
@@ -76,6 +77,8 @@
 
 **All migration work MUST be documented with current status and remaining tasks.**
 
+#### Documentation Organization
+
 - All documentation MUST be organized in the `docs/` folder with logical grouping
 - Migration documentation MUST be organized by content type: `docs/migration/[content-type]/`
 - Each content type MUST have migration status documents in their respective folders:
@@ -92,7 +95,24 @@
 - Scripts MUST include inline documentation explaining transformation logic
 - Quick-start guides MUST be created for each migrated content type
 
-**Rationale**: The project involves complex, multi-phase migration work. Without comprehensive, well-organized documentation, team members cannot understand current state, make informed decisions, or coordinate effectively. Organized documentation structure improves discoverability and maintainability.
+#### Scripts Organization
+
+- All migration scripts MUST be in `scripts/migrations/` directory
+- Naming convention: `migrate-[content-type].js` (e.g., `migrate-posts.js`, `migrate-tags.js`)
+- Utility scripts MUST be in `scripts/utilities/` directory
+- Scripts MUST be executable and include usage documentation in file headers
+- All scripts MUST use consistent command-line argument patterns
+
+#### Data Organization
+
+- Reference/example data MUST be in `data/examples/` directory
+- Wix exports (CSV, JSON) MUST be in `data/exports/` directory
+- Migration mapping files MUST be in `data/mappings/` directory
+- Naming convention for mappings: `[content-type]-migration-mapping.json`
+- Mapping files MUST NOT be committed to version control (add to .gitignore)
+- Cache data remains in `cache/` directory at root
+
+**Rationale**: The project involves complex, multi-phase migration work with scripts, data files, and documentation. Without comprehensive, well-organized structure, team members cannot understand current state, find necessary files, make informed decisions, or coordinate effectively. Organized structure improves discoverability, maintainability, and prevents root directory clutter.
 
 ### VI. Performance & Caching
 
@@ -232,4 +252,4 @@
 
 ---
 
-**Version**: 1.0.1 | **Ratified**: 2025-11-29 | **Last Amended**: 2025-11-29
+**Version**: 1.0.2 | **Ratified**: 2025-11-29 | **Last Amended**: 2025-11-29

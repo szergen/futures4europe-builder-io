@@ -1,17 +1,17 @@
-import style from './HeaderComponent.module.css';
-import classNames from 'classnames';
-import Typography from '@app/shared-components/Typography/Typography';
-import Tag, { TagProps } from '@app/shared-components/Tag/Tag';
-import Divider from '@app/shared-components/Divider/Divider';
-import Link from 'next/link';
-import Button from '@app/shared-components/Button/Button';
-import InputText from '@app/shared-components/InputText/InputText';
-import TagPicker from '@app/shared-components/TagPicker/TagPicker';
-import DatePickerRangeComponentDouble from '@app/shared-components/DatePickerRangeComponentDouble/DatePickerRangeComponentDouble';
-import DisplayProjectResultMedia from '@app/page-components/shared-page-components/DisplayProjectResultMedia/DisplayProjectResultMedia';
-import ProjectResultHeaderImage from '@app/shared-components/ProjectResultHeaderImage/ProjectResultHeaderImage';
-import dayjs from 'dayjs';
-import DatePickerComponent from '@app/shared-components/DatePickerComponent/DatePickerComponent';
+import style from "./HeaderComponent.module.css";
+import classNames from "classnames";
+import Typography from "@app/shared-components/Typography/Typography";
+import Tag, { TagProps } from "@app/shared-components/Tag/Tag";
+import Divider from "@app/shared-components/Divider/Divider";
+import Link from "next/link";
+import Button from "@app/shared-components/Button/Button";
+import InputText from "@app/shared-components/InputText/InputText";
+import TagPicker from "@app/shared-components/TagPicker/TagPicker";
+import DatePickerRangeComponentDouble from "@app/shared-components/DatePickerRangeComponentDouble/DatePickerRangeComponentDouble";
+import DisplayProjectResultMedia from "@app/page-components/shared-page-components/DisplayProjectResultMedia/DisplayProjectResultMedia";
+import ProjectResultHeaderImage from "@app/shared-components/ProjectResultHeaderImage/ProjectResultHeaderImage";
+import dayjs from "dayjs";
+import DatePickerComponent from "@app/shared-components/DatePickerComponent/DatePickerComponent";
 
 export type HeaderComponentProps = {
   post: {
@@ -60,61 +60,63 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
 }) => {
   const validationFunctionForTitle = (tempTitle: string | undefined) => {
     if (!tempTitle) {
-      return 'Title is required';
+      return "Title is required";
     }
 
     const trimmedTitle = tempTitle.trim();
     // Empty after trimming
     if (trimmedTitle.length === 0) {
-      return 'Title cannot be only whitespace';
+      return "Title cannot be only whitespace";
     }
     // Check if title starts or ends with space
     if (trimmedTitle !== tempTitle) {
-      return 'This field dose not accept leading and/or trailing whitespace (spaces). Please make sure that you do not have spaces at the start and end of the title.';
+      return "This field dose not accept leading and/or trailing whitespace (spaces). Please make sure that you do not have spaces at the start and end of the title.";
     }
     // Check for excessive spaces
     if (/\s{2,}/.test(trimmedTitle)) {
-      return 'Title cannot contain multiple consecutive spaces';
+      return "Title cannot contain multiple consecutive spaces";
     }
 
     // URL pattern check
     if (/[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/.test(trimmedTitle)) {
-      return 'Title cannot contain website addresses';
+      return "Title cannot contain website addresses";
     }
     // Special characters check
     const specialCharsRegex = /[<>{}[\]\\\/]/;
     if (specialCharsRegex.test(trimmedTitle)) {
-      return 'Title cannot contain special characters like < > { } [ ] \\ /';
+      return "Title cannot contain special characters like < > { } [ ] \\ /";
     }
     if (tempTitle?.length < 5) {
-      return 'Title should be at least 5 characters long';
+      return "Title should be at least 5 characters long";
     }
     if (tempTitle?.length > 100) {
-      return 'Title should be at most 100 characters long';
+      return "Title should be at most 100 characters long";
     }
-    if (tempTitle === 'New Post') {
+    if (tempTitle === "New Post") {
       return 'Title cannot be "New Post"';
     }
-    return '';
+    return "";
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
     }
   };
 
   return (
     <div className={classNames(style.postHeader)}>
-      {post.pageType?.[0]?.name?.toLowerCase() === 'project result' && (
+      {post.pageType?.[0]?.name?.toLowerCase() === "project result" && (
         // Project Result Image
         <div className={style.imageAndButtons}>
           <div>
             {!isEditModeOn ? (
-              post?.projectResultMedia && (
+              post?.projectResultMedia &&
+              (post?.projectResultMedia?.thumbnail ||
+                post?.projectResultMedia?.url) && (
                 <a
-                  href={post?.projectResultMedia.url || '#'}
-                  download={post?.projectResultMedia.displayName + '.pdf'}
+                  href={post?.projectResultMedia.url || "#"}
+                  download={post?.projectResultMedia.displayName + ".pdf"}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -146,10 +148,10 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
                     projectResultMedia: {
                       ...post.projectResultMedia,
                       thumbnail: value.thumbnail,
-                      sizeInBytes: '',
+                      sizeInBytes: "",
                       url: value.url,
-                      fileName: '',
-                      type: 'video',
+                      fileName: "",
+                      type: "video",
                     },
                   });
                 }}
@@ -180,7 +182,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
             // />
             <InputText
               placeholder="Enter display name"
-              value={post?.projectResultMedia?.displayName || ''}
+              value={post?.projectResultMedia?.displayName || ""}
               onChange={(e) => {
                 // Limit input to 50 characters
                 const displayName = e.target.value.slice(0, 50);
@@ -195,11 +197,11 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
               validate={(value) => {
                 // if (!value) return 'Display name is required';
                 if (value.length > 50)
-                  return 'Display name must be 50 characters or less';
-                return ''; // No error
+                  return "Display name must be 50 characters or less";
+                return ""; // No error
               }}
               helperText={`${
-                (post?.projectResultMedia?.displayName || '').length
+                (post?.projectResultMedia?.displayName || "").length
               }/50 characters`}
               setValidationState={(error) => {
                 setValidationState &&
@@ -207,11 +209,11 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
               }}
             />
           )}
-          {!isEditModeOn && post?.projectResultMedia?.type === 'document' && (
+          {!isEditModeOn && post?.projectResultMedia?.type === "document" && (
             <div className={style.downloadAndViews}>
               <a
-                href={post?.projectResultMedia.url || '#'}
-                download={post?.projectResultMedia.displayName + '.pdf'}
+                href={post?.projectResultMedia.url || "#"}
+                download={post?.projectResultMedia.displayName + ".pdf"}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -219,11 +221,11 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
                   Download result (
                   {(Number(post.projectResultMedia.sizeInBytes) / 1024)
                     ?.toString()
-                    ?.split('.')?.[0] + 'kb'}
-                  ){' '}
+                    ?.split(".")?.[0] + "kb"}
+                  ){" "}
                   <span className="rounded-lg bg-white text-blue-500 p-1 font-bold">
                     {post.projectResultMedia?.url
-                      ?.split('.')
+                      ?.split(".")
                       ?.pop()
                       ?.toUpperCase()}
                   </span>
@@ -235,7 +237,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
       )}
 
       {/* Add Event File Uploader Logic */}
-      {post.pageType?.[0]?.name?.toLowerCase() === 'event' && isEditModeOn && (
+      {post.pageType?.[0]?.name?.toLowerCase() === "event" && isEditModeOn && (
         <div className={style.imageAndButtons}>
           <div>
             <ProjectResultHeaderImage
@@ -260,10 +262,10 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
                   projectResultMedia: {
                     ...post.projectResultMedia,
                     thumbnail: value.thumbnail,
-                    sizeInBytes: '',
+                    sizeInBytes: "",
                     url: value.url,
-                    fileName: '',
-                    type: 'video',
+                    fileName: "",
+                    type: "video",
                   },
                 });
               }}
@@ -272,13 +274,13 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
 
           <div
             className={classNames(
-              'overflow-hidden p-4 w-full h-full',
+              "overflow-hidden p-4 w-full h-full",
               style.displayName
             )}
           >
             <InputText
               placeholder="Enter display name"
-              value={post?.projectResultMedia?.displayName || ''}
+              value={post?.projectResultMedia?.displayName || ""}
               onChange={(e) => {
                 // Only update if we're under the character limit
                 const newValue = e.target.value;
@@ -298,7 +300,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
               //   return ''; // No error
               // }}
               helperText={`${
-                (post?.projectResultMedia?.displayName || '').length
+                (post?.projectResultMedia?.displayName || "").length
               }/50 characters`}
               setValidationState={(error) => {
                 setValidationState &&
@@ -308,19 +310,19 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
               onKeyDown={(e) => {
                 // Get current length directly from the value that's being used
                 const currentLength = (
-                  post?.projectResultMedia?.displayName || ''
+                  post?.projectResultMedia?.displayName || ""
                 ).length;
 
                 // Allow delete, backspace, arrow keys, and modifier combinations regardless of length
                 const allowedKeys = [
-                  'Backspace',
-                  'Delete',
-                  'ArrowLeft',
-                  'ArrowRight',
-                  'ArrowUp',
-                  'ArrowDown',
-                  'Home',
-                  'End',
+                  "Backspace",
+                  "Delete",
+                  "ArrowLeft",
+                  "ArrowRight",
+                  "ArrowUp",
+                  "ArrowDown",
+                  "Home",
+                  "End",
                 ];
                 const hasModifier = e.ctrlKey || e.metaKey || e.altKey;
 
@@ -340,9 +342,11 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
       )}
 
       {/* Display uploaded file for events when not in edit mode */}
-      {post.pageType?.[0]?.name?.toLowerCase() === 'event' &&
+      {post.pageType?.[0]?.name?.toLowerCase() === "event" &&
         !isEditModeOn &&
-        post?.projectResultMedia && (
+        post?.projectResultMedia &&
+        (post?.projectResultMedia?.thumbnail ||
+          post?.projectResultMedia?.url) && (
           <div className={style.imageAndButtons}>
             <div>
               <DisplayProjectResultMedia
@@ -355,11 +359,11 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
             >
               {post?.projectResultMedia?.displayName}
             </Typography>
-            {post?.projectResultMedia?.type === 'document' && (
+            {post?.projectResultMedia?.type === "document" && (
               <div className={style.downloadAndViews}>
                 <a
-                  href={post?.projectResultMedia.url || '#'}
-                  download={post?.projectResultMedia.displayName + '.pdf'}
+                  href={post?.projectResultMedia.url || "#"}
+                  download={post?.projectResultMedia.displayName + ".pdf"}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -367,11 +371,11 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
                     Download (
                     {(Number(post.projectResultMedia.sizeInBytes) / 1024)
                       ?.toString()
-                      ?.split('.')?.[0] + 'kb'}
-                    ){' '}
+                      ?.split(".")?.[0] + "kb"}
+                    ){" "}
                     <span className="rounded-lg bg-white text-blue-500 p-1 font-bold">
                       {post.projectResultMedia?.url
-                        ?.split('.')
+                        ?.split(".")
                         ?.pop()
                         ?.toUpperCase()}
                     </span>
@@ -386,7 +390,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
         {/* Post Info Name */}
         {!isEditModeOn ? (
           <Typography tag="h1" className=" text-gray-800">
-            {post?.title?.replace(/_/g, ' ')}
+            {post?.title?.replace(/_/g, " ")}
           </Typography>
         ) : (
           <InputText
@@ -397,9 +401,9 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
             )}
             // label=""
             placeholder={
-              post?.pageType?.[0]?.name !== 'event'
-                ? 'Enter the post title'
-                : 'Enter the event title'
+              post?.pageType?.[0]?.name !== "event"
+                ? "Enter the post title"
+                : "Enter the event title"
             }
             value={post?.title}
             onChange={(e) => updatePostData({ ...post, title: e.target.value })}
@@ -422,11 +426,11 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
           <InputText
             label=""
             placeholder={
-              post?.pageType?.[0]?.name !== 'event'
-                ? 'Enter the post subtitle'
-                : 'Enter the event subtitle'
+              post?.pageType?.[0]?.name !== "event"
+                ? "Enter the post subtitle"
+                : "Enter the event subtitle"
             }
-            value={post?.subtitle || ''}
+            value={post?.subtitle || ""}
             onChange={(e) =>
               updatePostData({ ...post, subtitle: e.target.value })
             }
@@ -438,7 +442,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
           />
         )}
         {/* Event Date */}
-        {post.pageType?.[0]?.name?.toLowerCase() === 'event' && (
+        {post.pageType?.[0]?.name?.toLowerCase() === "event" && (
           <div>
             {!isEditModeOn ? (
               <Typography
@@ -446,12 +450,12 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
                 className="text-gray-500 text-sm font-bold mt-3"
               >
                 {post?.eventStartDate
-                  ? dayjs(post?.eventStartDate).format('YYYY-MM-DD HH:mm (CET)')
-                  : ''}{' '}
-                {post?.eventStartDate && post?.eventEndDate && '-'}{' '}
+                  ? dayjs(post?.eventStartDate).format("YYYY-MM-DD HH:mm (CET)")
+                  : ""}{" "}
+                {post?.eventStartDate && post?.eventEndDate && "-"}{" "}
                 {post?.eventStartDate && post?.eventEndDate
-                  ? dayjs(post?.eventEndDate).format('YYYY-MM-DD HH:mm (CET)')
-                  : ''}
+                  ? dayjs(post?.eventEndDate).format("YYYY-MM-DD HH:mm (CET)")
+                  : ""}
               </Typography>
             ) : (
               <div className="flex items-center mt-4">
@@ -469,13 +473,13 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
                   }
                   handleUpdateStartDate={(date) =>
                     updatePostDataBasedOnKeyValue(
-                      'eventStartDate',
+                      "eventStartDate",
                       date.toISOString()
                     )
                   }
                   handleUpdateEndDate={(date) =>
                     updatePostDataBasedOnKeyValue(
-                      'eventEndDate',
+                      "eventEndDate",
                       date.toISOString()
                     )
                   }
@@ -486,7 +490,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
           </div>
         )}
         {/* Project Result Publication Date */}
-        {post.pageType?.[0]?.name?.toLowerCase() === 'project result' && (
+        {post.pageType?.[0]?.name?.toLowerCase() === "project result" && (
           <div>
             {!isEditModeOn ? (
               <Typography
@@ -496,9 +500,9 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
                 Publication Date:
                 {post?.projectResultPublicationDate
                   ? dayjs(post?.projectResultPublicationDate).format(
-                      'YYYY MMMM'
+                      "YYYY MMMM"
                     )
-                  : ''}{' '}
+                  : ""}{" "}
               </Typography>
             ) : (
               <div className="flex items-center mt-4">
@@ -512,9 +516,9 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
                       : new Date(post?.projectResultPublicationDate)
                   }
                   onChange={(value) => {
-                    console.log('value', value);
+                    console.log("value", value);
                     return updatePostDataBasedOnKeyValue(
-                      'projectResultPublicationDate',
+                      "projectResultPublicationDate",
                       value
                     );
                   }}
@@ -525,7 +529,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
           </div>
         )}
         {/* Registration Link */}
-        {post.pageType?.[0]?.name?.toLowerCase() === 'event' && (
+        {post.pageType?.[0]?.name?.toLowerCase() === "event" && (
           <>
             <Divider className="mt-2" />
             <Typography
@@ -533,7 +537,8 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
               className="text-primary-500 text-xs mt-2 text-gray-500"
             >
               {!isEditModeOn ? (
-                post?.eventRegistration && (
+                post?.eventRegistration &&
+                post.eventRegistration.trim() !== "" && (
                   <Link
                     href={post?.eventRegistration}
                     target="_blank"
@@ -547,7 +552,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
                   isHorizontal
                   type="url"
                   placeholder="Paste link to the registration page"
-                  value={post?.eventRegistration || ''}
+                  value={post?.eventRegistration || ""}
                   onChange={(e) =>
                     updatePostData({
                       ...post,
@@ -562,25 +567,25 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
         {/* Post Country */}
         {
           <div className="mt-1">
-            {' '}
+            {" "}
             {/*//REVIEW REMOVED FLEX */}
             {!isEditModeOn ? (
               post?.countryTag && <Tag {...post.countryTag} />
             ) : (
               <TagPicker
                 placeholder={
-                  post?.pageType?.[0]?.name !== 'event'
+                  post?.pageType?.[0]?.name !== "event"
                     ? // ? 'Add one or more country tags relevant to your post'
-                      'Add the country tag relevant to your post'
-                    : 'Add the country tag relevant to your post'
+                      "Add the country tag relevant to your post"
+                    : "Add the country tag relevant to your post"
                 }
                 tags={tags?.filter(
-                  (tag) => tag?.tagType === 'country' && !tag?.masterTag
+                  (tag) => tag?.tagType === "country" && !tag?.masterTag
                 )}
                 className="mt-1"
                 selectedValue={post.countryTag?.name || undefined}
                 updatePostData={(value) =>
-                  updatePostDataBasedOnKeyValue('countryTag', value)
+                  updatePostDataBasedOnKeyValue("countryTag", value)
                 }
                 tagType="country"
                 onTagCreated={handleTagCreated}

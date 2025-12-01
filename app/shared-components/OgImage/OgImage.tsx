@@ -1,7 +1,7 @@
-'use client';
-import React, { useEffect } from 'react';
-import Image from 'next/image';
-import styles from './OgImage.module.css';
+"use client";
+import React, { useEffect } from "react";
+import Image from "next/image";
+import styles from "./OgImage.module.css";
 
 export interface OgImageProps {
   primaryImage?: string;
@@ -21,41 +21,41 @@ export interface OgImageProps {
 const OgImage: React.FC<OgImageProps> = ({
   primaryImage,
   secondaryImage,
-  title = 'Futures4Europe',
-  description = 'Exploring European futures through strategic foresight',
+  title = "Futures4Europe",
+  description = "Exploring European futures through strategic foresight",
   url,
-  siteName = 'Futures4Europe',
+  siteName = "Futures4Europe",
 }) => {
   // Fallback image if no primary image is provided
-  const defaultImage = 'https://futures4europe.eu/images/placeholder.webp';
+  const defaultImage = "https://futures4europe.eu/images/placeholder.webp";
   const ogImage = primaryImage || defaultImage;
 
   // Use effect to update meta tags in the document head
   useEffect(() => {
     // Update Open Graph meta tags
-    updateMetaTag('og:title', title);
-    updateMetaTag('og:description', description);
-    updateMetaTag('og:image', ogImage);
-    updateMetaTag('og:type', 'website');
-    updateMetaTag('og:site_name', siteName);
+    updateMetaTag("og:title", title);
+    updateMetaTag("og:description", description);
+    updateMetaTag("og:image", ogImage);
+    updateMetaTag("og:type", "website");
+    updateMetaTag("og:site_name", siteName);
 
     if (secondaryImage) {
-      updateMetaTag('og:image:alt', secondaryImage);
+      updateMetaTag("og:image:alt", secondaryImage);
     } else {
-      removeMetaTag('og:image:alt');
+      removeMetaTag("og:image:alt");
     }
 
     if (url) {
-      updateMetaTag('og:url', url);
+      updateMetaTag("og:url", url);
     } else {
-      removeMetaTag('og:url');
+      removeMetaTag("og:url");
     }
 
     // Update Twitter Card meta tags
-    updateMetaTag('twitter:card', 'summary_large_image');
-    updateMetaTag('twitter:title', title);
-    updateMetaTag('twitter:description', description);
-    updateMetaTag('twitter:image', ogImage);
+    updateMetaTag("twitter:card", "summary_large_image");
+    updateMetaTag("twitter:title", title);
+    updateMetaTag("twitter:description", description);
+    updateMetaTag("twitter:image", ogImage);
 
     return () => {
       // Cleanup function is optional
@@ -69,16 +69,16 @@ const OgImage: React.FC<OgImageProps> = ({
       document.querySelector(`meta[name="${property}"]`);
 
     if (!metaTag) {
-      metaTag = document.createElement('meta');
-      if (property.startsWith('og:')) {
-        metaTag.setAttribute('property', property);
+      metaTag = document.createElement("meta");
+      if (property.startsWith("og:")) {
+        metaTag.setAttribute("property", property);
       } else {
-        metaTag.setAttribute('name', property);
+        metaTag.setAttribute("name", property);
       }
       document.head.appendChild(metaTag);
     }
 
-    metaTag.setAttribute('content', content);
+    metaTag.setAttribute("content", content);
   };
 
   // Helper function to remove meta tags
@@ -94,7 +94,7 @@ const OgImage: React.FC<OgImageProps> = ({
   return (
     <>
       {/* Optionally show the images in development mode */}
-      {process.env.NODE_ENV === 'development' && (
+      {/* {process.env.NODE_ENV === 'development' && (
         <div className={styles.ogImagePreview}>
           <h3>OG Image Preview (Development Only)</h3>
           <div className={styles.previewContainer}>
@@ -120,7 +120,7 @@ const OgImage: React.FC<OgImageProps> = ({
             )}
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 };

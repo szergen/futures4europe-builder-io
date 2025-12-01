@@ -77,7 +77,8 @@ function transformReference(ref: any) {
       name: refData.name || ref.value.name,
       tagType: refData.tagType,
       tagLine: refData.tagLine,
-      tagPageLink: refData.tagPageLink,
+      // Only include tagPageLink if it has a valid value (not empty string or undefined)
+      tagPageLink: refData.tagPageLink || undefined,
       picture: refData.picture,
       // Include any other fields from the reference
       ...refData,

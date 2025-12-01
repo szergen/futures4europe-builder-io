@@ -4,16 +4,16 @@
  * Wix Tags to Builder.io Migration Script
  *
  * Usage:
- *   node migrate-tags.js <count> [migrateMasterTags]
+ *   node scripts/migrations/migrate-tags.js <count> [migrateMasterTags]
  *
  * Arguments:
  *   count              - Number of entries to migrate (1, 2, 100, or "all")
  *   migrateMasterTags  - Optional flag to update masterTag references
  *
  * Examples:
- *   node migrate-tags.js 10                    # Migrate first 10 tags
- *   node migrate-tags.js all                   # Migrate all tags
- *   node migrate-tags.js all migrateMasterTags # Update masterTag references
+ *   node scripts/migrations/migrate-tags.js 10                    # Migrate first 10 tags
+ *   node scripts/migrations/migrate-tags.js all                   # Migrate all tags
+ *   node scripts/migrations/migrate-tags.js all migrateMasterTags # Update masterTag references
  */
 
 require("dotenv").config({ path: ".env.local" });
@@ -25,8 +25,8 @@ const { parse } = require("csv-parse/sync");
 // Note: Use PRIVATE API KEY for write operations, not the public key
 const PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY;
 const MODEL_NAME = "tag";
-const CSV_FILE = "./Tags_wix.csv";
-const MAPPING_FILE = "./tag-migration-mapping.json";
+const CSV_FILE = "./data/exports/Tags_wix.csv";
+const MAPPING_FILE = "./data/mappings/tag-migration-mapping.json";
 const BUILDER_API_URL = "https://builder.io/api/v1";
 
 // Colors for console output
@@ -332,16 +332,16 @@ async function main() {
 ${colors.bright}Wix Tags to Builder.io Migration Script${colors.reset}
 
 Usage:
-  node migrate-tags.js <count> [migrateMasterTags]
+  node scripts/migrations/migrate-tags.js <count> [migrateMasterTags]
 
 Arguments:
   count              - Number of entries to migrate (1, 2, 100, or "all")
   migrateMasterTags  - Optional flag to update masterTag references
 
 Examples:
-  node migrate-tags.js 10                    # Migrate first 10 tags
-  node migrate-tags.js all                   # Migrate all tags
-  node migrate-tags.js all migrateMasterTags # Update masterTag references
+  node scripts/migrations/migrate-tags.js 10                    # Migrate first 10 tags
+  node scripts/migrations/migrate-tags.js all                   # Migrate all tags
+  node scripts/migrations/migrate-tags.js all migrateMasterTags # Update masterTag references
 
 Note: 
   - The first run creates tags without masterTag references
@@ -368,7 +368,9 @@ Note:
       log.info(
         '\n💡 Next step: Run with "migrateMasterTags" flag to link master tags'
       );
-      log.info(`   Example: node migrate-tags.js ${count} migrateMasterTags`);
+      log.info(
+        `   Example: node scripts/migrations/migrate-tags.js ${count} migrateMasterTags`
+      );
     }
   } catch (error) {
     log.error(`Migration failed: ${error.message}`);
