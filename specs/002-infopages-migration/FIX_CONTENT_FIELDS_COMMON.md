@@ -47,15 +47,25 @@ if (type === "project") {
 
 This meant:
 
-- ❌ Person pages could not have Post Content Rich fields
-- ❌ Organisation pages could not have Post Content Rich fields
-- ✅ Project pages could have Post Content Rich fields
+- ❌ Person pages could not have Post Content Rich fields or Media Files
+- ❌ Organisation pages could not have Post Content Rich fields or Media Files
+- ✅ Project pages could have all these fields
 
 But these should be **common fields** available to all page types!
 
+## Data Evidence
+
+From the CSV analysis:
+
+- **187 pages** have Post Content Rich fields (all projects currently)
+- **568 pages** have Media Files (**357 are person pages!**)
+- **0 pages** have Internal Links (currently empty for all)
+
+This confirms that `mediaFiles` is heavily used by person pages, not just projects!
+
 ## Solution
 
-Moved the Post Content Rich and Post Image fields processing **outside** of the project-specific block, making them available for all page types:
+Moved all content-related fields **outside** of the project-specific block, making them available for all page types:
 
 ```javascript
 // After (Correct)
@@ -87,14 +97,31 @@ for (let i = 1; i <= 10; i++) {
   }
 }
 
+// Common array fields (Internal Links, Media Files) - available for all page types
+if (row["internal links"]) {
+  try {
+    data.internalLinks = JSON.parse(row["internal links"]);
+  } catch (e) {
+    data.internalLinks = [];
+  }
+}
+
+if (row["media files"]) {
+  try {
+    data.mediaFiles = JSON.parse(row["media files"]);
+  } catch (e) {
+    data.mediaFiles = [];
+  }
+}
+
 // Now type-specific fields follow...
 if (type === "organisation" && row["organisation established date"]) {
   // ...
 }
 
 if (type === "project") {
-  // Project-specific fields like dates, internal links, media files
-  // But NOT content fields anymore!
+  // Project-specific fields like dates only
+  // Content fields, links, and media are now common!
 }
 ```
 
@@ -161,8 +188,10 @@ for (let i = 1; i <= 10; i++) {
 - `scripts/migrations/migrate-infopages.js`
   - Moved Post Content Rich 1-10 processing outside project block
   - Moved Post Image 1-10 processing outside project block
-  - Now processed immediately after data object creation
-  - Available for all page types (person, organisation, project)
+  - Moved Internal Links processing outside project block
+  - Moved Media Files processing outside project block
+  - All now processed immediately after data object creation
+  - All available for all page types (person, organisation, project)
 
 ## Verification
 
@@ -176,13 +205,17 @@ The fields will now be migrated for:
 
 ✅ **Post Content Rich 1-10 fields** - Now common for all page types  
 ✅ **Post Image 1-10 fields** - Now common for all page types  
+✅ **Internal Links field** - Now common for all page types  
+✅ **Media Files field** - Now common for all page types (568 pages use this!)  
 ✅ **Consistent with posts migration** - Content fields are universal  
-✅ **Future-proof** - Any page type can have rich content  
-✅ **No data loss** - All content fields will be migrated regardless of page type
+✅ **Future-proof** - Any page type can have rich content and media  
+✅ **No data loss** - All content fields will be migrated regardless of page type  
+✅ **Especially critical for person pages** - 357 person pages have media files!
 
 ---
 
 **Status**: ✅ Fixed and Ready
 **Date**: December 2025
 **Pattern**: Common content fields (matches posts migration philosophy)
-**Impact**: All 604 info pages can now have Post Content Rich fields
+**Impact**: All 604 info pages can now have Post Content Rich fields and Media Files
+**Critical**: 357 person pages with media files will now migrate correctly!
