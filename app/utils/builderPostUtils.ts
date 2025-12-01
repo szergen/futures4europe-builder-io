@@ -11,8 +11,9 @@ import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
 // WRITE API CONFIGURATION
 // ============================================================================
 
-const BUILDER_API_URL = "https://builder.io/api/v1/write";
-const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
+// Use Next.js API routes to handle Builder.io Write API calls server-side
+// This prevents exposing the private API key to the client
+const BUILDER_API_ROUTE = "/api/builder/post";
 
 // ============================================================================
 // WRITE API UTILITIES (FOR CREATING/UPDATING POSTS)
@@ -169,24 +170,23 @@ export async function createBuilderPost(
       title: data.title,
     });
 
-    const response = await fetch(`${BUILDER_API_URL}/post-page`, {
+    // Call Next.js API route (server-side) instead of Builder.io directly
+    const response = await fetch(BUILDER_API_ROUTE, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${BUILDER_PRIVATE_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
+      const errorData = await response.json();
       console.error("[Builder.io] Create post failed:", {
         status: response.status,
-        statusText: response.statusText,
-        error: errorText,
+        error: errorData,
       });
       throw new Error(
-        `Failed to create post: ${response.status} ${response.statusText}`
+        errorData.error || `Failed to create post: ${response.status}`
       );
     }
 
@@ -236,25 +236,24 @@ export async function updateBuilderPost(
       title: data.title,
     });
 
-    const response = await fetch(`${BUILDER_API_URL}/post-page/${postId}`, {
+    // Call Next.js API route (server-side) instead of Builder.io directly
+    const response = await fetch(`${BUILDER_API_ROUTE}/${postId}`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${BUILDER_PRIVATE_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
+      const errorData = await response.json();
       console.error("[Builder.io] Update post failed:", {
         id: postId,
         status: response.status,
-        statusText: response.statusText,
-        error: errorText,
+        error: errorData,
       });
       throw new Error(
-        `Failed to update post: ${response.status} ${response.statusText}`
+        errorData.error || `Failed to update post: ${response.status}`
       );
     }
 
