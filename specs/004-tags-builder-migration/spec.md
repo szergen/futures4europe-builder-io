@@ -18,6 +18,16 @@
 
 **Target**: Switch all application code to use Builder.io as the source of truth for tags while Wix tags remain available for reference/rollback purposes.
 
+## Clarifications
+
+### Session 2024-12-03
+
+- Q: How should the code switch from Wix to Builder.io be deployed? → A: Big bang deployment - Switch all tag operations to Builder.io in a single deployment (Wix will only be used for user authentication)
+- Q: What observability measures are needed for the cutover? → A: Basic logging only - Use existing logging infrastructure (Vercel, Posthog, or Sentry)
+- Q: How should success be validated immediately after deployment? → A: Automated smoke tests + manual sampling - Run automated tests for critical tag operations, spot-check UI manually
+- Q: How should affiliation tag references be handled during the cutover? → A: Affiliations remain in Wix with separate migration - Affiliations will have their own data model in Builder.io and be migrated separately in a future spec
+- Q: How should mention calculations handle Wix affiliation tag IDs during the transition? → A: Use mapping file for affiliation IDs - Mention calculation translates Wix tag IDs from affiliations to Builder.io IDs using tag-migration-mapping.json
+
 ## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Content Editor Creates New Tags in Builder.io (Priority: P1)
@@ -70,7 +80,7 @@ Tag popularity and mention counts need to be calculated based on references in B
 2. **Given** a tag has a masterTag reference, **When** calculating mentions, **Then** mentions of the masterTag are also counted toward the tag's total
 3. **Given** tags reference info pages and post pages, **When** system builds the mentions cache, **Then** the `tags-with-popularity.json` cache is populated from Builder.io data sources
 4. **Given** new pages are created or updated in Builder.io, **When** cache refresh is triggered, **Then** tag mention counts are recalculated based on current Builder.io data
-5. **Given** a tag is referenced in affiliations data, **When** calculating mentions, **Then** affiliation references are counted in the tag's popularity score
+5. **Given** a tag is referenced in affiliations data (stored in Wix with Wix tag IDs), **When** calculating mentions, **Then** affiliation Wix tag IDs are translated to Builder.io IDs using the mapping file and counted in the tag's popularity score
 
 ---
 
@@ -131,17 +141,19 @@ The migration successfully:
 - **FR-007**: System MUST update `/api/tags` POST endpoint to rebuild cache from Builder.io tags
 - **FR-008**: System MUST update `cacheWarmer.ts` to fetch tags from Builder.io API endpoint
 - **FR-009**: System MUST update `/api/tags-with-popularity` to calculate mentions using tags from Builder.io
-- **FR-010**: System MUST update mention calculation (`calculatePopularity`) to work with Builder.io tag structure
+- **FR-010**: System MUST update mention calculation (`calculatePopularity`) to work with Builder.io tag structure and translate Wix tag IDs from affiliations to Builder.io IDs using the mapping file
 - **FR-011**: System MUST update `useFetchListTags` hook to filter tags from Builder.io source
 - **FR-012**: System MUST use existing mapping file (`data/mappings/tag-migration-mapping.json`) for any legacy Wix ID to Builder.io ID conversions if needed
 - **FR-013**: System MUST handle tag fetch pagination if Builder.io returns tags in batches
 - **FR-014**: System MUST validate tag data structure before creation (required: name and tagType)
 - **FR-015**: System MUST implement retry logic for Builder.io API calls (3 retries with exponential backoff)
 - **FR-016**: System MUST update cache invalidation (`invalidateAllCache`) to work with Builder.io-sourced data
-- **FR-017**: System MUST log all tag creation, fetch, and cache operations for debugging and audit purposes
+- **FR-017**: System MUST log all tag creation, fetch, and cache operations using existing logging infrastructure (Vercel, Posthog, or Sentry)
 - **FR-018**: System MUST handle Builder.io API errors gracefully with user-friendly error messages
 - **FR-019**: System MUST support tag filtering by tagType when fetching from Builder.io
 - **FR-020**: System MUST update `getCollectionItems` API endpoint to support fetching from Builder.io when collection is "Tags"
+- **FR-021**: System MUST completely replace Wix tag operations with Builder.io operations in a single deployment (no gradual rollout or feature flags)
+- **FR-022**: System MUST provide automated smoke tests for post-deployment validation covering tag fetch, tag creation, cache operations, and mention calculations
 
 ### Key Entities
 
@@ -174,6 +186,7 @@ The migration successfully:
 - **SC-006**: Application performance remains the same or improves compared to Wix-based tag operations (measured via response times for tag fetch and creation)
 - **SC-007**: Zero tag-related errors occur during a one-week observation period after switching to Builder.io
 - **SC-008**: All existing tags migrated to Builder.io are accessible through the new Builder.io-based endpoints with correct data and relationships
+- **SC-009**: Post-deployment validation completes successfully through automated smoke tests covering tag fetch, tag creation, cache operations, and mention calculations, with manual UI spot-checks
 
 ## Assumptions
 
@@ -184,7 +197,7 @@ The migration successfully:
 - Redis cache infrastructure remains unchanged and continues to work with Builder.io-sourced data
 - Tag IDs in Builder.io are stable and do not change after creation (required for reference integrity)
 - Info pages and post pages in Builder.io already reference Builder.io tag IDs (not Wix IDs) due to prior migrations
-- Affiliation data may still reference Wix tag IDs and will be updated separately if needed
+- Affiliation data remains in Wix with separate Builder.io data model and migration planned for future spec
 - Current Wix authentication and session management will remain in place (only tag operations are being switched)
 - Image URLs stored in tag `picture` field can remain at their current hosting location (no need to migrate image files)
 - Application has Builder.io private API key configured with write permissions to create tags
@@ -193,21 +206,22 @@ The migration successfully:
 ## Dependencies
 
 - Builder.io Write API must be accessible and functional
-- `data/mappings/tag-migration-mapping.json` already exists from completed migration (required for any legacy ID conversions)
+- `data/mappings/tag-migration-mapping.json` already exists from completed migration (required for translating Wix tag IDs to Builder.io IDs in mention calculations for affiliations)
 - Redis cache service must be operational
 - Info pages and post pages in Builder.io already reference Builder.io tag IDs (prerequisite: completed)
-- Affiliation data update process may need coordination if affiliations still reference Wix tag IDs
+- Wix affiliations API remains accessible for fetching affiliation data during mention calculations (affiliations will be migrated separately in future spec)
 
 ## Out of Scope
 
 - Historical tag data migration from Wix to Builder.io (already completed)
 - Creating or running migration scripts for tag data (migration is complete)
-- Migrating Wix authentication or user management to Builder.io
+- Migrating Wix authentication or user management to Builder.io (Wix authentication remains)
+- Feature flag infrastructure for gradual rollout (using complete cutover deployment strategy)
 - Changing the structure or fields of the tag model (using existing Builder.io tag model as-is)
 - Migrating tag-related images or media files to a new hosting service
 - Real-time synchronization between Wix and Builder.io during transition period
-- Automated rollback mechanism to revert to Wix tags if issues occur (Wix data remains available for manual rollback)
+- Automated rollback mechanism to revert to Wix tags if issues occur (rollback via manual code revert if needed)
 - UI/UX changes to tag pickers or tag display components (only changing data source)
 - Performance optimization of Builder.io API calls beyond basic retry logic
 - Custom Builder.io plugins or extensions for tag management
-- Updating affiliation data to use Builder.io tag IDs (separate effort if needed)
+- Migrating affiliation data to Builder.io (separate spec with own data model and migration plan)
