@@ -439,8 +439,10 @@ function translateWixTagIdToBuilderId(wixId: string): string | undefined;
 
 **Error Handling**:
 
-- Returns undefined if wixId not found (logs warning)
-- Throws on invalid mapping file format
+- Returns undefined if wixId not found
+- Logs warning: `"Wix tag ID ${wixId} not found in mapping file - skipping mention"`
+- Mention calculation continues with remaining tags
+- Throws on invalid mapping file format (fails fast at module load)
 
 **Example**:
 

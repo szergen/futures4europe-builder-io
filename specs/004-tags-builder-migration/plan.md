@@ -39,7 +39,7 @@ Switch all tag operations (fetch, create, cache, mentions calculation) from Wix 
 
 - Tag fetch: < 3 seconds for typical datasets (< 5000 tags)
 - Tag creation: Appears in pickers within 5 seconds
-- Cache warming: Complete within reasonable timeframe for production data
+- Cache warming: Complete within 30 seconds for 5000 tags dataset (< 60 seconds maximum)
 
 **Constraints**:
 
@@ -51,7 +51,12 @@ Switch all tag operations (fetch, create, cache, mentions calculation) from Wix 
 **Scale/Scope**:
 
 - ~5000 tags (estimated current dataset)
-- 23 API endpoints/functions to update
+- 13 API endpoints/functions to update:
+  - 4 new Builder.io CRUD routes (GET/POST /api/builder/tag, GET/PUT/DELETE /api/builder/tag/[id])
+  - 3 existing routes updated (GET/POST /api/tags, GET /api/tags-with-popularity)
+  - 2 utility routes (POST /api/getCollectionItems, POST /api/invalidate-cache)
+  - 3 utility files (builderTagUtils.ts, tags.utils.ts, cacheWarmer.ts)
+  - 1 hook (useFetchListTags.tsx)
 - 4 major UI components (TagPicker, AuthContext, register page, tag lists)
 - Multiple cache invalidation points
 
@@ -204,7 +209,7 @@ scripts/
 
 tests/
 └── e2e/
-    └── tags.spec.ts                # NEW: E2E tests for tag operations
+    └── tags-builder.spec.ts        # NEW: E2E smoke tests for Builder.io tag operations
 ```
 
 **Structure Decision**: Web application using Next.js App Router structure. API routes in `app/api/`, utilities in `app/utils/`, components in `app/shared-components/` and `app/page-components/`. Following existing project patterns per constitution.
@@ -292,22 +297,27 @@ All contracts defined. Ready for task breakdown.
 
 Task breakdown generated with:
 
-- 60 tasks organized by 4 user stories
+- 66 tasks organized by 4 user stories (6 added for constitution compliance)
 - 7 phases from Setup to Polish
 - Dependency-ordered execution plan
 - Parallel execution opportunities identified
 - Independent test criteria per story
 - Big bang deployment strategy defined
+- Incremental README updates after each user story
+- Performance comparison and automated code verification
 
 Key deliverables:
 
-1. ✅ Foundational utilities (builderTagUtils.ts)
-2. ✅ User Story 2: Tag fetching from Builder.io
-3. ✅ User Story 1: Tag creation in Builder.io
-4. ✅ User Story 4: Cache system with Builder.io
-5. ✅ User Story 3: Mentions calculation from Builder.io
-6. ✅ Smoke tests for validation
-7. ✅ Documentation updates
+1. ✅ Documentation structure (docs/migration/tags/) per constitution
+2. ✅ Foundational utilities (builderTagUtils.ts)
+3. ✅ User Story 2: Tag fetching from Builder.io
+4. ✅ User Story 1: Tag creation in Builder.io
+5. ✅ User Story 4: Cache system with Builder.io
+6. ✅ User Story 3: Mentions calculation from Builder.io
+7. ✅ Smoke tests for validation
+8. ✅ Performance comparison for SC-006
+9. ✅ Incremental README updates per constitution
+10. ✅ Automated Wix code verification
 
 Task breakdown complete. Ready for implementation via `/speckit.implement`.
 

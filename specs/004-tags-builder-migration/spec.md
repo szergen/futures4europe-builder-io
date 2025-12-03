@@ -126,7 +126,7 @@ The migration successfully:
 - **MasterTag circular references**: When a tag references itself as a masterTag (directly or through a chain), the system detects the circular reference, breaks the cycle by ignoring the invalid masterTag, and logs an error for administrator review.
 - **Tag references in mentions calculation**: When calculating mentions for a tag that no longer exists in Builder.io but is referenced in pages, the system logs the missing tag reference but continues calculating mentions for valid tags without failing.
 - **Empty tag lists**: When Builder.io returns zero tags (empty model), the system displays an empty state message to users and logs a warning, allowing administrators to identify if tags failed to migrate.
-- **Concurrent tag creation**: When multiple users create the same tag simultaneously, Builder.io's eventual consistency may result in duplicate tags briefly; system implements client-side duplicate checking before creation and server-side deduplication scripts for cleanup.
+- **Concurrent tag creation**: When multiple users create the same tag simultaneously, Builder.io's eventual consistency may result in duplicate tags within a 2-5 second window; system implements client-side duplicate checking before creation and server-side deduplication scripts for periodic cleanup. This is acceptable eventual consistency per clarifications.
 
 ## Requirements _(mandatory)_
 
@@ -141,16 +141,16 @@ The migration successfully:
 - **FR-007**: System MUST update `/api/tags` POST endpoint to rebuild cache from Builder.io tags
 - **FR-008**: System MUST update `cacheWarmer.ts` to fetch tags from Builder.io API endpoint
 - **FR-009**: System MUST update `/api/tags-with-popularity` to calculate mentions using tags from Builder.io
-- **FR-010**: System MUST update mention calculation (`calculatePopularity`) to work with Builder.io tag structure and translate Wix tag IDs from affiliations to Builder.io IDs using the mapping file
+- **FR-010**: System MUST update mention calculation (`calculatePopularity`) to work with Builder.io tag structure and translate Wix tag IDs from affiliations to Builder.io IDs using the mapping file (if mapping entry not found: log warning with Wix ID, skip that mention from count, continue processing other tags)
 - **FR-011**: System MUST update `useFetchListTags` hook to filter tags from Builder.io source
 - **FR-012**: System MUST use existing mapping file (`data/mappings/tag-migration-mapping.json`) for any legacy Wix ID to Builder.io ID conversions if needed
-- **FR-013**: System MUST handle tag fetch pagination if Builder.io returns tags in batches
+- **FR-013**: System MUST handle tag fetch pagination if Builder.io returns tags in batches (Builder.io SDK getAll() automatically handles pagination with 100-item pages; implementation should use getAll() or implement manual pagination with limit: 100, offset-based iteration)
 - **FR-014**: System MUST validate tag data structure before creation (required: name and tagType)
 - **FR-015**: System MUST implement retry logic for Builder.io API calls (3 retries with exponential backoff)
 - **FR-016**: System MUST update cache invalidation (`invalidateAllCache`) to work with Builder.io-sourced data
 - **FR-017**: System MUST log all tag creation, fetch, and cache operations using existing logging infrastructure (Vercel, Posthog, or Sentry)
-- **FR-018**: System MUST handle Builder.io API errors gracefully with user-friendly error messages
-- **FR-019**: System MUST support tag filtering by tagType when fetching from Builder.io
+- **FR-018**: System MUST handle Builder.io API errors gracefully with user-friendly error messages (following error format standards defined in contracts/builder-tag-api.md)
+- **FR-019**: System MUST support tag filtering by tagType when fetching from Builder.io (via query parameter `?tagType=value` on GET /api/tags endpoint, filtered client-side from cache or via Builder.io query)
 - **FR-020**: System MUST update `getCollectionItems` API endpoint to support fetching from Builder.io when collection is "Tags"
 - **FR-021**: System MUST completely replace Wix tag operations with Builder.io operations in a single deployment (no gradual rollout or feature flags)
 - **FR-022**: System MUST provide automated smoke tests for post-deployment validation covering tag fetch, tag creation, cache operations, and mention calculations
@@ -182,9 +182,9 @@ The migration successfully:
 - **SC-002**: System fetches all tags from Builder.io in under 3 seconds for typical datasets (< 5000 tags)
 - **SC-003**: Tag mention counts calculated from Builder.io data match the counts that were previously calculated from Wix data with 100% accuracy
 - **SC-004**: Cache warming and invalidation complete successfully and fetch data exclusively from Builder.io endpoints
-- **SC-005**: After code changes, no code paths in the application reference Wix for tag operations (verified via code search for Wix tag collection references)
+- **SC-005**: After code changes, no code paths in the application reference Wix for tag operations (verified via automated grep: `grep -r "wixClient.*Tags\|insertDataItem.*tag\|queryCollectionItems.*Tags" app/ --exclude-dir=node_modules` returns zero results)
 - **SC-006**: Application performance remains the same or improves compared to Wix-based tag operations (measured via response times for tag fetch and creation)
-- **SC-007**: Zero tag-related errors occur during a one-week observation period after switching to Builder.io
+- **SC-007**: Zero tag-related errors occur during a one-week observation period after switching to Builder.io (monitored via existing Vercel/Sentry error tracking with manual daily log review; dashboard setup optional)
 - **SC-008**: All existing tags migrated to Builder.io are accessible through the new Builder.io-based endpoints with correct data and relationships
 - **SC-009**: Post-deployment validation completes successfully through automated smoke tests covering tag fetch, tag creation, cache operations, and mention calculations, with manual UI spot-checks
 

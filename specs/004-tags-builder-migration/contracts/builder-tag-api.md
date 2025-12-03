@@ -24,6 +24,10 @@ Fetch all tags from Builder.io with caching.
 **Method**: `GET`
 **Auth**: None (public read)
 **Cache**: Redis (`tags.json`, 4-hour TTL)
+**Query Parameters**:
+
+- `tagType` (optional): Filter tags by type (e.g., `?tagType=domain`)
+- Supported values: person, organisation, project, domain, foresight method, activity, country, etc.
 
 **Response** (200 OK):
 
@@ -474,14 +478,32 @@ import { builder } from "@builder.io/sdk";
 
 builder.init(process.env.BUILDER_PUBLIC_API_KEY);
 
-// Get all tags
+// Get all tags with automatic pagination
 const tags = await builder.getAll("tag", {
-  limit: 100,
+  limit: 100, // Builder.io maximum per request
   options: {
     noTargeting: true, // Faster for backend queries
     includeRefs: false, // Don't expand references
   },
 });
+// SDK automatically handles pagination and returns all results
+
+// Manual pagination (if needed for custom logic)
+let allTags = [];
+let offset = 0;
+const limit = 100;
+let hasMore = true;
+
+while (hasMore) {
+  const batch = await builder.getAll("tag", {
+    limit,
+    offset,
+    options: { noTargeting: true },
+  });
+  allTags = allTags.concat(batch);
+  hasMore = batch.length === limit;
+  offset += limit;
+}
 
 // Get single tag
 const tag = await builder.get("tag", {
@@ -626,6 +648,48 @@ describe("Builder.io Tag API", () => {
   });
 });
 ```
+
+## Error Message Standards
+
+**User-Friendly Error Format**:
+
+All error messages returned to users MUST follow this structure:
+
+```typescript
+interface UserFriendlyError {
+  error: string; // Brief, non-technical message for users
+  details?: string; // Technical details for debugging (optional in production)
+  action?: string; // Suggested action user can take
+  code?: string; // Error code for tracking (e.g., "TAG_CREATE_FAILED")
+}
+```
+
+**Examples**:
+
+```json
+{
+  "error": "Unable to create tag at this time",
+  "action": "Please try again in a few moments",
+  "code": "TAG_CREATE_FAILED"
+}
+```
+
+```json
+{
+  "error": "Tag with this name already exists",
+  "action": "Please choose a different name or use the existing tag",
+  "code": "TAG_DUPLICATE"
+}
+```
+
+**Error Categories**:
+
+- Network failures: "Unable to connect to tag service"
+- Validation failures: Clear field-specific messages (e.g., "Tag name is required")
+- Duplicate errors: "This tag already exists"
+- Rate limits: "Too many requests. Please wait a moment and try again"
+
+---
 
 ## Summary
 

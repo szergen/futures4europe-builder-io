@@ -7,7 +7,7 @@ description: "Task list for switching tag operations from Wix to Builder.io"
 **Input**: Design documents from `/specs/004-tags-builder-migration/`
 **Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/
 
-**Tests**: Tests are OPTIONAL in this feature and not explicitly requested in the specification.
+**Tests**: Automated smoke tests are REQUIRED per FR-022 for post-deployment validation. Unit tests are optional.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -37,6 +37,7 @@ description: "Task list for switching tag operations from Wix to Builder.io"
 - [ ] T003 [P] Verify Builder.io API keys configured (BUILDER_PUBLIC_API_KEY and BUILDER_PRIVATE_API_KEY)
 - [ ] T004 [P] Verify Redis cache service is operational and accessible
 - [ ] T005 [P] Install or verify @builder.io/sdk dependency in package.json
+- [ ] T006 Create docs/migration/tags/ directory and migration status document per constitution
 
 ---
 
@@ -46,15 +47,15 @@ description: "Task list for switching tag operations from Wix to Builder.io"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 Create builderTagUtils.ts module in app/utils/ with TypeScript interfaces (BuilderTag, WixTag, TagMappingEntry)
-- [ ] T007 [P] Implement error classes in app/utils/builderTagUtils.ts (ValidationError, DuplicateError, NotFoundError, BuilderApiError)
-- [ ] T008 [P] Implement mapping module initialization in app/utils/builderTagUtils.ts (load JSON, build wixToBuilderMap and builderToWixMap)
-- [ ] T009 Implement translateWixTagIdToBuilderId() function in app/utils/builderTagUtils.ts
-- [ ] T010 Implement translateBuilderIdToWixTagId() function in app/utils/builderTagUtils.ts
-- [ ] T011 Implement transformBuilderTagToWixFormat() function in app/utils/builderTagUtils.ts
-- [ ] T012 Implement transformWixTagToBuilderFormat() function in app/utils/builderTagUtils.ts
-- [ ] T013 Implement batchTransformBuilderTagsToWixFormat() function in app/utils/builderTagUtils.ts
-- [ ] T014 Implement retry utility fetchWithRetry() in app/utils/builderTagUtils.ts with exponential backoff (3 retries)
+- [ ] T007 Create builderTagUtils.ts module in app/utils/ with TypeScript interfaces (BuilderTag, WixTag, TagMappingEntry)
+- [ ] T008 [P] Implement error classes in app/utils/builderTagUtils.ts (ValidationError, DuplicateError, NotFoundError, BuilderApiError)
+- [ ] T009 [P] Implement mapping module initialization in app/utils/builderTagUtils.ts (load JSON, build wixToBuilderMap and builderToWixMap)
+- [ ] T010 Implement translateWixTagIdToBuilderId() function in app/utils/builderTagUtils.ts
+- [ ] T011 Implement translateBuilderIdToWixTagId() function in app/utils/builderTagUtils.ts
+- [ ] T012 Implement transformBuilderTagToWixFormat() function in app/utils/builderTagUtils.ts
+- [ ] T013 Implement transformWixTagToBuilderFormat() function in app/utils/builderTagUtils.ts
+- [ ] T014 Implement batchTransformBuilderTagsToWixFormat() function in app/utils/builderTagUtils.ts
+- [ ] T015 Implement retry utility fetchWithRetry() in app/utils/builderTagUtils.ts with exponential backoff (3 retries)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -68,14 +69,15 @@ description: "Task list for switching tag operations from Wix to Builder.io"
 
 ### Implementation for User Story 2
 
-- [ ] T015 [P] [US2] Implement getAllBuilderTags() function in app/utils/builderTagUtils.ts with caching support
-- [ ] T016 [P] [US2] Implement getBuilderTagById() function in app/utils/builderTagUtils.ts
-- [ ] T017 [US2] Update GET /api/tags route in app/api/tags/route.ts to fetch from Builder.io via getAllBuilderTags()
-- [ ] T018 [US2] Update GET /api/tags route to transform Builder.io tags to Wix format using batchTransformBuilderTagsToWixFormat()
-- [ ] T019 [US2] Update useFetchTags hook in app/custom-hooks/useFetchTags.tsx to use /api/tags endpoint (verify no Wix-specific logic)
-- [ ] T020 [US2] Update useFetchListTags hook in app/custom-hooks/useFetchListTags.tsx to filter tags from Builder.io source
-- [ ] T021 [US2] Update POST /api/getCollectionItems route in app/api/getCollectionItems/route.ts to route "Tags" collection to Builder.io
-- [ ] T022 [US2] Add error handling and logging for Builder.io fetch failures in app/api/tags/route.ts
+- [ ] T016 [P] [US2] Implement getAllBuilderTags() function in app/utils/builderTagUtils.ts with caching support
+- [ ] T017 [P] [US2] Implement getBuilderTagById() function in app/utils/builderTagUtils.ts
+- [ ] T018 [US2] Update GET /api/tags route in app/api/tags/route.ts to fetch from Builder.io via getAllBuilderTags()
+- [ ] T019 [US2] Update GET /api/tags route to transform Builder.io tags to Wix format using batchTransformBuilderTagsToWixFormat()
+- [ ] T020 [US2] Update useFetchTags hook in app/custom-hooks/useFetchTags.tsx to use /api/tags endpoint (verify no Wix-specific logic)
+- [ ] T021 [US2] Update useFetchListTags hook in app/custom-hooks/useFetchListTags.tsx to filter tags from Builder.io source
+- [ ] T022 [US2] Update POST /api/getCollectionItems route in app/api/getCollectionItems/route.ts to route "Tags" collection to Builder.io
+- [ ] T023 [US2] Add error handling and logging for Builder.io fetch failures in app/api/tags/route.ts
+- [ ] T024 [US2] Update README.md migration status: Mark tag fetching as migrated to Builder.io
 
 **Checkpoint**: At this point, all tag fetching operations use Builder.io as source of truth
 
@@ -89,18 +91,19 @@ description: "Task list for switching tag operations from Wix to Builder.io"
 
 ### Implementation for User Story 1
 
-- [ ] T023 [US1] Implement createBuilderTag() function in app/utils/builderTagUtils.ts with validation and duplicate checking
-- [ ] T024 [US1] Implement updateBuilderTag() function in app/utils/builderTagUtils.ts
-- [ ] T025 [US1] Create POST /api/builder/tag route in app/api/builder/tag/route.ts for tag creation
-- [ ] T026 [US1] Create GET /api/builder/tag/[id] route in app/api/builder/tag/[id]/route.ts
-- [ ] T027 [P] [US1] Create PUT /api/builder/tag/[id] route in app/api/builder/tag/[id]/route.ts
-- [ ] T028 [P] [US1] Create DELETE /api/builder/tag/[id] route in app/api/builder/tag/[id]/route.ts
-- [ ] T029 [US1] Update uploadTag() function in TagPicker component at app/shared-components/TagPicker/TagPicker.tsx to use Builder.io API
-- [ ] T030 [US1] Update uploadTag() function in AuthContext at app/custom-hooks/AuthContext/AuthContext.tsx to use Builder.io API
-- [ ] T031 [US1] Update tag creation in register page at app/register/page.tsx to use Builder.io API
-- [ ] T032 [US1] Add validation logic for required fields (name, tagType) in POST /api/builder/tag route
-- [ ] T033 [US1] Add duplicate name checking (case-insensitive) in createBuilderTag() function
-- [ ] T034 [US1] Trigger cache invalidation after tag creation in POST /api/builder/tag route
+- [ ] T025 [US1] Implement createBuilderTag() function in app/utils/builderTagUtils.ts with validation and duplicate checking
+- [ ] T026 [US1] Implement updateBuilderTag() function in app/utils/builderTagUtils.ts
+- [ ] T027 [US1] Create POST /api/builder/tag route in app/api/builder/tag/route.ts for tag creation
+- [ ] T028 [US1] Create GET /api/builder/tag/[id] route in app/api/builder/tag/[id]/route.ts
+- [ ] T029 [P] [US1] Create PUT /api/builder/tag/[id] route in app/api/builder/tag/[id]/route.ts
+- [ ] T030 [P] [US1] Create DELETE /api/builder/tag/[id] route in app/api/builder/tag/[id]/route.ts
+- [ ] T031 [US1] Update uploadTag() function in TagPicker component at app/shared-components/TagPicker/TagPicker.tsx to use Builder.io API
+- [ ] T032 [US1] Update uploadTag() function in AuthContext at app/custom-hooks/AuthContext/AuthContext.tsx to use Builder.io API
+- [ ] T033 [US1] Update tag creation in register page at app/register/page.tsx to use Builder.io API
+- [ ] T034 [US1] Add validation logic for required fields (name, tagType) in POST /api/builder/tag route
+- [ ] T035 [US1] Add duplicate name checking (case-insensitive) in createBuilderTag() function
+- [ ] T036 [US1] Trigger cache invalidation after tag creation in POST /api/builder/tag route
+- [ ] T037 [US1] Update README.md migration status: Mark tag creation as migrated to Builder.io
 
 **Checkpoint**: At this point, all tag creation operations use Builder.io as destination
 
@@ -114,13 +117,14 @@ description: "Task list for switching tag operations from Wix to Builder.io"
 
 ### Implementation for User Story 4
 
-- [ ] T035 [US4] Update warmCache() function in app/services/cacheWarmer.ts to fetch tags from Builder.io
-- [ ] T036 [US4] Update POST /api/tags route in app/api/tags/route.ts to rebuild cache from Builder.io tags
-- [ ] T037 [US4] Update invalidateAllCache() function in app/services/redisCache.ts to work with Builder.io-sourced data
-- [ ] T038 [US4] Create POST /api/invalidate-cache route in app/api/invalidate-cache/route.ts for cache management
-- [ ] T039 [US4] Update cache invalidation triggers to call Builder.io-based refresh
-- [ ] T040 [US4] Add cache TTL validation (4-hour TTL) in app/services/redisCache.ts
-- [ ] T041 [US4] Add error handling for cache fetch failures with fallback to direct Builder.io API
+- [ ] T038 [US4] Update warmCache() function in app/services/cacheWarmer.ts to fetch tags from Builder.io
+- [ ] T039 [US4] Update POST /api/tags route in app/api/tags/route.ts to rebuild cache from Builder.io tags
+- [ ] T040 [US4] Update invalidateAllCache() function in app/services/redisCache.ts to work with Builder.io-sourced data
+- [ ] T041 [US4] Create POST /api/invalidate-cache route in app/api/invalidate-cache/route.ts for cache management
+- [ ] T042 [US4] Update cache invalidation triggers to call Builder.io-based refresh
+- [ ] T043 [US4] Add cache TTL validation (4-hour TTL) in app/services/redisCache.ts
+- [ ] T044 [US4] Add error handling for cache fetch failures with fallback to direct Builder.io API
+- [ ] T045 [US4] Update README.md migration status: Mark tag caching as migrated to Builder.io
 
 **Checkpoint**: At this point, cache system is fully synchronized with Builder.io data
 
@@ -134,14 +138,15 @@ description: "Task list for switching tag operations from Wix to Builder.io"
 
 ### Implementation for User Story 3
 
-- [ ] T042 [US3] Update calculatePopularity() function in app/utils/tags.utils.ts to work with Builder.io tag structure
-- [ ] T043 [US3] Update calculatePopularity() to fetch info pages and post pages from Builder.io (or cache)
-- [ ] T044 [US3] Add affiliation tag ID translation in calculatePopularity() using translateWixTagIdToBuilderId() for Wix affiliation data
-- [ ] T045 [US3] Update masterTag reference counting logic in calculatePopularity() to use Builder.io format
-- [ ] T046 [US3] Update GET /api/tags-with-popularity route in app/api/tags-with-popularity/route.ts to use Builder.io-based calculation
-- [ ] T047 [US3] Add caching for tags-with-popularity calculation (tags-with-popularity.json key, 4-hour TTL)
-- [ ] T048 [US3] Add error handling for missing tag references in mention calculation
-- [ ] T049 [US3] Add logging for affiliation tag ID translation failures in calculatePopularity()
+- [ ] T046 [US3] Update calculatePopularity() function in app/utils/tags.utils.ts to work with Builder.io tag structure
+- [ ] T047 [US3] Update calculatePopularity() to fetch info pages and post pages from Builder.io (or cache)
+- [ ] T048 [US3] Add affiliation tag ID translation in calculatePopularity() using translateWixTagIdToBuilderId() for Wix affiliation data
+- [ ] T049 [US3] Update masterTag reference counting logic in calculatePopularity() to use Builder.io format
+- [ ] T050 [US3] Update GET /api/tags-with-popularity route in app/api/tags-with-popularity/route.ts to use Builder.io-based calculation
+- [ ] T051 [US3] Add caching for tags-with-popularity calculation (tags-with-popularity.json key, 4-hour TTL)
+- [ ] T052 [US3] Add error handling for missing tag references in mention calculation
+- [ ] T053 [US3] Add logging for affiliation tag ID translation failures in calculatePopularity()
+- [ ] T054 [US3] Update README.md migration status: Mark tag mentions calculation as migrated to Builder.io
 
 **Checkpoint**: All tag mention calculations now use Builder.io data sources
 
@@ -151,17 +156,18 @@ description: "Task list for switching tag operations from Wix to Builder.io"
 
 **Purpose**: Validation, testing, and documentation updates
 
-- [ ] T050 [P] Create smoke tests in tests/e2e/tags-builder.spec.ts for tag fetch operations
-- [ ] T051 [P] Create smoke tests for tag creation operations in tests/e2e/tags-builder.spec.ts
-- [ ] T052 [P] Create smoke tests for cache operations in tests/e2e/tags-builder.spec.ts
-- [ ] T053 [P] Create smoke tests for mention calculations in tests/e2e/tags-builder.spec.ts
-- [ ] T054 [P] Add logging statements for all Builder.io API operations using existing infrastructure (Vercel/Posthog/Sentry)
-- [ ] T055 [P] Add performance monitoring for tag fetch operations (measure < 3 second goal)
-- [ ] T056 Update quickstart.md with examples of using new Builder.io tag utilities
-- [ ] T057 Code review: Search codebase for remaining Wix tag references and remove/update
-- [ ] T058 [P] Update README.md to mark tags as migrated to Builder.io
-- [ ] T059 [P] Add inline code documentation for all public functions in app/utils/builderTagUtils.ts
-- [ ] T060 Run smoke tests and validate all four user stories work independently
+- [ ] T055 [P] Create smoke tests in tests/e2e/tags-builder.spec.ts for tag fetch operations
+- [ ] T056 [P] Create smoke tests for tag creation operations in tests/e2e/tags-builder.spec.ts
+- [ ] T057 [P] Create smoke tests for cache operations in tests/e2e/tags-builder.spec.ts
+- [ ] T058 [P] Create smoke tests for mention calculations in tests/e2e/tags-builder.spec.ts
+- [ ] T059 [P] Add logging statements for all Builder.io API operations using existing infrastructure (Vercel/Posthog/Sentry) with tag-specific error codes for tracking SC-007
+- [ ] T060 [P] Add performance monitoring for tag fetch operations (measure < 3 second goal)
+- [ ] T061 [P] Capture baseline Wix tag operation performance metrics and compare to Builder.io implementation for SC-006 validation
+- [ ] T062 Update quickstart.md with user-facing examples per constitution: tag creation via UI, tag search/filtering, and developer API usage for Builder.io tag utilities
+- [ ] T063 Code review: Run automated grep for Wix tag references ('wixClient.*Tags', 'insertDataItem.*tag', 'queryCollectionItems.\*Tags') and fail if found; manually verify zero Wix code paths for SC-005
+- [ ] T064 [P] Update README.md final status: Mark complete tags migration to Builder.io with all features
+- [ ] T065 [P] Add inline code documentation for all public functions in app/utils/builderTagUtils.ts
+- [ ] T066 Run smoke tests and validate all four user stories work independently
 
 ---
 
@@ -196,12 +202,12 @@ description: "Task list for switching tag operations from Wix to Builder.io"
 - All Setup tasks marked [P] can run in parallel
 - All Foundational tasks marked [P] can run in parallel (within Phase 2)
 - Once Foundational phase completes, user stories can start in parallel (if team capacity allows)
-- All error classes in T007 can be implemented together
-- All mapping functions (T008-T010) can be implemented together
-- All transformation functions (T011-T013) can be implemented together
-- All Builder.io CRUD routes (T026-T028) can be implemented in parallel
-- All smoke tests (T050-T053) can be written in parallel
-- All documentation tasks (T054, T056, T058-T059) can be done in parallel
+- All error classes in T008 can be implemented together
+- All mapping functions (T009-T011) can be implemented together
+- All transformation functions (T012-T014) can be implemented together
+- All Builder.io CRUD routes (T028-T030) can be implemented in parallel
+- All smoke tests (T055-T058) can be written in parallel
+- All documentation tasks (T059, T061-T062, T064-T065) can be done in parallel
 
 ---
 
@@ -209,26 +215,26 @@ description: "Task list for switching tag operations from Wix to Builder.io"
 
 ```bash
 # Launch utility functions together:
-Task T015: "Implement getAllBuilderTags() function in app/utils/builderTagUtils.ts"
-Task T016: "Implement getBuilderTagById() function in app/utils/builderTagUtils.ts"
+Task T016: "Implement getAllBuilderTags() function in app/utils/builderTagUtils.ts"
+Task T017: "Implement getBuilderTagById() function in app/utils/builderTagUtils.ts"
 
 # Then launch hook updates together:
-Task T019: "Update useFetchTags hook in app/custom-hooks/useFetchTags.tsx"
-Task T020: "Update useFetchListTags hook in app/custom-hooks/useFetchListTags.tsx"
+Task T020: "Update useFetchTags hook in app/custom-hooks/useFetchTags.tsx"
+Task T021: "Update useFetchListTags hook in app/custom-hooks/useFetchListTags.tsx"
 ```
 
 ## Parallel Example: User Story 1 (Create Tags)
 
 ```bash
 # Launch CRUD routes together:
-Task T026: "Create GET /api/builder/tag/[id] route"
-Task T027: "Create PUT /api/builder/tag/[id] route"
-Task T028: "Create DELETE /api/builder/tag/[id] route"
+Task T028: "Create GET /api/builder/tag/[id] route"
+Task T029: "Create PUT /api/builder/tag/[id] route"
+Task T030: "Create DELETE /api/builder/tag/[id] route"
 
 # Then launch component updates together:
-Task T029: "Update TagPicker component uploadTag() function"
-Task T030: "Update AuthContext uploadTag() function"
-Task T031: "Update register page tag creation"
+Task T031: "Update TagPicker component uploadTag() function"
+Task T032: "Update AuthContext uploadTag() function"
+Task T033: "Update register page tag creation"
 ```
 
 ---
@@ -292,20 +298,20 @@ Per specification clarifications:
 
 ## Summary
 
-**Total Tasks**: 60
+**Total Tasks**: 66
 **User Stories**: 4 active (US1, US2, US3, US4)
 **Suggested MVP**: User Story 2 (Fetch Tags) + Foundational
 **Deployment Strategy**: Big bang (all user stories complete before deploy)
 
 ### Task Breakdown by Phase
 
-- **Phase 1 (Setup)**: 5 tasks
+- **Phase 1 (Setup)**: 6 tasks (added documentation structure per constitution)
 - **Phase 2 (Foundational)**: 9 tasks (BLOCKING)
-- **Phase 3 (US2 - Fetch)**: 8 tasks
-- **Phase 4 (US1 - Create)**: 12 tasks
-- **Phase 5 (US4 - Cache)**: 7 tasks
-- **Phase 6 (US3 - Mentions)**: 8 tasks
-- **Phase 7 (Polish)**: 11 tasks
+- **Phase 3 (US2 - Fetch)**: 9 tasks (added incremental README update)
+- **Phase 4 (US1 - Create)**: 13 tasks (added incremental README update)
+- **Phase 5 (US4 - Cache)**: 8 tasks (added incremental README update)
+- **Phase 6 (US3 - Mentions)**: 9 tasks (added incremental README update)
+- **Phase 7 (Polish)**: 12 tasks (added performance comparison)
 
 ### Parallel Opportunities Identified
 
@@ -315,7 +321,7 @@ Per specification clarifications:
 - 4 tasks in Phase 4 can run in parallel
 - 0 tasks in Phase 5 require sequential execution
 - 0 tasks in Phase 6 require sequential execution
-- 7 tasks in Phase 7 can run in parallel
+- 8 tasks in Phase 7 can run in parallel
 
 ### Independent Test Criteria
 
@@ -330,4 +336,4 @@ Per specification clarifications:
 ✅ All user story tasks have [Story] labels
 ✅ All parallelizable tasks have [P] markers
 ✅ All tasks include specific file paths
-✅ Task IDs sequential (T001-T060)
+✅ Task IDs sequential (T001-T066)
