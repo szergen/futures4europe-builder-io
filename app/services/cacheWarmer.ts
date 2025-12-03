@@ -1,22 +1,24 @@
-import { RedisCacheService } from './redisCache';
+import { RedisCacheService } from "./redisCache";
 
 export async function warmCache() {
   try {
-    console.log('Warming cache...');
+    console.log("Warming cache...");
 
     // Determine the base URL for API calls
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
-    // Fetch and cache tags
+    // Fetch and cache tags from Builder.io
+    console.log("Fetching tags from Builder.io for cache warming...");
     const tagsResponse = await fetch(`${baseUrl}/api/tags`);
     const tags = await tagsResponse.json();
-    await RedisCacheService.saveToCache('tags.json', tags, 4 * 60 * 60 * 1000);
+    await RedisCacheService.saveToCache("tags.json", tags, 4 * 60 * 60 * 1000);
+    console.log(`✓ Cached ${tags.length} tags from Builder.io`);
 
     // Fetch and cache all info pages
     const infoPagesResponse = await fetch(`${baseUrl}/api/infoPages`);
     const infoPages = await infoPagesResponse.json();
     await RedisCacheService.saveToCache(
-      'infoPages.json',
+      "infoPages.json",
       infoPages,
       4 * 60 * 60 * 1000
     );
@@ -25,7 +27,7 @@ export async function warmCache() {
     const postPagesResponse = await fetch(`${baseUrl}/api/postPages`);
     const postPages = await postPagesResponse.json();
     await RedisCacheService.saveToCache(
-      'postPages.json',
+      "postPages.json",
       postPages,
       4 * 60 * 60 * 1000
     );
@@ -34,7 +36,7 @@ export async function warmCache() {
     const affiliationsResponse = await fetch(`${baseUrl}/api/affiliations`);
     const affiliations = await affiliationsResponse.json();
     await RedisCacheService.saveToCache(
-      'affiliations.json',
+      "affiliations.json",
       affiliations,
       4 * 60 * 60 * 1000
     );
@@ -45,15 +47,15 @@ export async function warmCache() {
     );
     const popularTags = await popularTagsResponse.json();
     await RedisCacheService.saveToCache(
-      'tags-with-popularity.json',
+      "tags-with-popularity.json",
       popularTags,
       4 * 60 * 60 * 1000
     );
 
-    console.log('Cache warming complete!');
+    console.log("Cache warming complete!");
     return true;
   } catch (error) {
-    console.error('Error warming cache:', error);
+    console.error("Error warming cache:", error);
     return false;
   }
 }

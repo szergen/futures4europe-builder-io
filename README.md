@@ -103,7 +103,14 @@ futures4europe-builder-io/
 - [x] **Display Components**: All 4 content types (post, project, person, organisation)
 - [x] **Schema Definition**: Builder.io models created and configured
 - [x] **Data Transformations**: Wix → Builder.io transform functions implemented
-- [x] **Tag Migration**: Tags migrated from Wix to Builder.io
+- [x] **Tag Migration**: **✅ COMPLETE** - All tag operations migrated to Builder.io
+  - [x] Data migration: 3,077 tags migrated
+  - [x] Tag fetching: All GET operations use Builder.io
+  - [x] Tag creation: UI components create in Builder.io
+  - [x] CRUD API: Full RESTful API for tags (GET/POST/PUT/DELETE)
+  - [x] Cache system: Redis caching with Builder.io source
+  - [x] Mentions calculation: Popularity with Wix affiliation translation
+  - [x] Zero Wix dependencies for tag operations
 - [x] **Caching Layer**: Redis integration for performance
 - [x] **Static Site Generation**: ISR (Incremental Static Regeneration) setup
 
@@ -130,8 +137,6 @@ futures4europe-builder-io/
   - [x] Tags migration (completed)
 
 - [ ] **Homepage Configuration**: Migrate homepage content to Builder.io
-
-- [ ] **Tag Mentions**: Refactor to leverage Builder.io's reference capabilities
 
 ### Remaining
 

@@ -13,7 +13,6 @@ import fetchTagsWithPopularity from "../useFetchTags";
 import { TagProps } from "@app/shared-components/Tag/Tag";
 import useFetchPostPages from "../useFetchPostPages";
 import useFetchInfoPages from "../useFetchInfoPages";
-import { items } from "@wix/data";
 import { refetchTags } from "@app/utils/refetch-utils";
 import { invalidateAllCache } from "@app/utils/cache-utils";
 import useFetchAffiliations from "../useFetchAffiliations";
@@ -182,22 +181,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setRefreshTags(true); // Simply set to true instead of toggling
   };
 
-  const { insertDataItem } = useWixModules(items);
-
   const uploadTag = async (tagName: string) => {
     try {
-      const result = await insertDataItem({
-        dataCollectionId: "Tags",
-        dataItem: {
-          data: {
-            name: tagName,
-            tagType: "person",
-          },
+      const response = await fetch("/api/builder/tag", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          name: tagName,
+          tagType: "person",
+        }),
       });
-      return result;
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to create person tag");
+      }
+
+      const result = await response.json();
+      console.log("✓ Person tag created in Builder.io:", result.tag.id);
+      return { dataItem: { data: result.tag } }; // Match Wix return format
     } catch (error) {
-      console.error("Error uploading tag:", error);
+      console.error("Error uploading person tag to Builder.io:", error);
+      throw error;
     }
   };
 

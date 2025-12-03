@@ -1,9 +1,9 @@
-'use client';
-import { useState } from 'react';
-import classNames from 'classnames';
+"use client";
+import { useState } from "react";
+import classNames from "classnames";
 // import { useRouter } from 'next/navigation';
 // import { getWixClientMember } from '@app/hooks/useWixClientServer';
-import LoadingSpinner from '@app/shared-components/LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
 import {
   Button,
   Card,
@@ -12,26 +12,24 @@ import {
   TextInput,
   Alert,
   Modal,
-} from 'flowbite-react';
-import { HiMail, HiKey, HiInformationCircle } from 'react-icons/hi';
-import { useWixModules } from '@wix/sdk-react';
-import { authentication } from '@wix/members';
-import ReCAPTCHA from 'react-google-recaptcha';
-import Link from 'next/link';
-import { items } from '@wix/data';
+} from "flowbite-react";
+import { HiMail, HiKey, HiInformationCircle } from "react-icons/hi";
+import { useWixModules } from "@wix/sdk-react";
+import { authentication } from "@wix/members";
+import ReCAPTCHA from "react-google-recaptcha";
+import Link from "next/link";
 
 // TODO @alex adaugat consent newsletter
-import { subscribeToNewsletter } from '@app/wixUtils/client-side';
-import { refetchTags } from '@app/utils/refetch-utils';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
+import { subscribeToNewsletter } from "@app/wixUtils/client-side";
+import { refetchTags } from "@app/utils/refetch-utils";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
 
 export default function RegisterPage() {
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   // const router = useRouter();
   const { register: wixRegister } = useWixModules(authentication);
-  const { insertDataItem } = useWixModules(items);
 
-  const [captchaToken, setCaptchaToken] = useState('');
+  const [captchaToken, setCaptchaToken] = useState("");
   const [isTagCreated, setIsTagCreated] = useState(false);
   const [showAccountCreatedModal, setShowAccountCreatedModal] = useState(false);
 
@@ -39,42 +37,52 @@ export default function RegisterPage() {
     setCaptchaToken(token);
   };
 
-  const [email, setEmail] = useState('');
-  const [submitState, setSubmitState] = useState('idle');
+  const [email, setEmail] = useState("");
+  const [submitState, setSubmitState] = useState("idle");
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
 
   const { tags, handleTagCreated } = useAuth();
   const uploadTag = async (tagName: string) => {
     try {
-      const result = await insertDataItem({
-        dataCollectionId: 'Tags',
-        dataItem: {
-          data: {
-            name: tagName,
-            tagType: 'person',
-          },
+      const response = await fetch("/api/builder/tag", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          name: tagName,
+          tagType: "person",
+        }),
       });
-      return result;
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to create person tag");
+      }
+
+      const result = await response.json();
+      console.log("✓ Person tag created during registration:", result.tag.id);
+      return { dataItem: { data: result.tag } }; // Match Wix return format
     } catch (error) {
-      console.error('Error uploading tag:', error);
+      console.error("Error uploading person tag to Builder.io:", error);
+      throw error;
     }
   };
 
   // TODO @Alex de verificat, am pus o verificare sa nu poti face cont daca pui whitespace
   // rezolvat un issue cu un cont care avea un saptiu simplu ca nume
 
-  const [firstNameError, setFirstNameError] = useState('');
-  const [lastNameError, setLastNameError] = useState('');
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
 
   const validateName = (name, fieldName) => {
     // Check if name is undefined, null, or not a string
-    if (!name || typeof name !== 'string') {
+    if (!name || typeof name !== "string") {
       return `${fieldName} is required`;
     }
 
     // Check if name is at least 2 characters and not just whitespace
-    if (name.length < 2 || name.trim() === '') {
+    if (name.length < 2 || name.trim() === "") {
       return `${fieldName} must be at least 2 characters and not just whitespace`;
     }
 
@@ -83,7 +91,7 @@ export default function RegisterPage() {
       return `${fieldName} cannot contain numbers`;
     }
 
-    return '';
+    return "";
   };
 
   const handleRegister = async (event: SubmitEvent) => {
@@ -91,28 +99,28 @@ export default function RegisterPage() {
 
     const form = event.currentTarget;
     // Access form fields properly using HTMLFormElement methods
-    const email = (form.elements.namedItem('email') as HTMLInputElement)?.value;
-    const password = (form.elements.namedItem('password') as HTMLInputElement)
+    const email = (form.elements.namedItem("email") as HTMLInputElement)?.value;
+    const password = (form.elements.namedItem("password") as HTMLInputElement)
       ?.value;
-    const firstName = (form.elements.namedItem('firstName') as HTMLInputElement)
+    const firstName = (form.elements.namedItem("firstName") as HTMLInputElement)
       ?.value;
-    const lastName = (form.elements.namedItem('lastName') as HTMLInputElement)
+    const lastName = (form.elements.namedItem("lastName") as HTMLInputElement)
       ?.value;
 
     // Reset previous errors
-    setError('');
-    setFirstNameError('');
-    setLastNameError('');
+    setError("");
+    setFirstNameError("");
+    setLastNameError("");
 
     // Validate first name
-    const firstNameValidationError = validateName(firstName, 'First name');
+    const firstNameValidationError = validateName(firstName, "First name");
     if (firstNameValidationError) {
       setFirstNameError(firstNameValidationError);
       return;
     }
 
     // Validate last name
-    const lastNameValidationError = validateName(lastName, 'Last name');
+    const lastNameValidationError = validateName(lastName, "Last name");
     if (lastNameValidationError) {
       setLastNameError(lastNameValidationError);
       return;
@@ -129,7 +137,7 @@ export default function RegisterPage() {
       // console.log('captchaToken', captchaToken);
 
       const response = await wixRegister(email, password, {
-        profilePrivacyStatus: 'PUBLIC',
+        profilePrivacyStatus: "PUBLIC",
         contactInfo: {
           firstName: firstName,
           lastName: lastName,
@@ -140,18 +148,18 @@ export default function RegisterPage() {
       const marketingConsent = await subscribeToNewsletter(email);
 
       //console.log('marketingConsent', marketingConsent);
-      setSubmitState('success');
+      setSubmitState("success");
 
       // #region Wix upload logic
       let tagResult;
       const tagExists = tags.find(
-        (tag) => tag.name === firstName + ' ' + lastName
+        (tag) => tag.name === firstName + " " + lastName
       );
 
       if (response && !tagExists) {
-        console.log('Tag does not exist, uploading tag');
-        tagResult = await uploadTag(firstName + ' ' + lastName);
-        console.log('tagResult', tagResult);
+        console.log("Tag does not exist, uploading tag");
+        tagResult = await uploadTag(firstName + " " + lastName);
+        console.log("tagResult", tagResult);
         // if (tagResult) {
         // await refetchTags();
         handleTagCreated();
@@ -166,17 +174,17 @@ export default function RegisterPage() {
       // router.push('/login'); // Redirect to login page after registration
     } catch (err: any) {
       switch (err?.details?.applicationError?.code) {
-        case '-19995':
+        case "-19995":
           setError(
-            'Email already exists. Please try again with a different mail.'
+            "Email already exists. Please try again with a different mail."
           );
           break;
-        case '-19988':
-          setError('Password is too short. Please use at least 8 characters.');
+        case "-19988":
+          setError("Password is too short. Please use at least 8 characters.");
           break;
-        case '-19989':
+        case "-19989":
           setError(
-            'Password is too weak. Please include a mix of letters, numbers, and special characters.'
+            "Password is too weak. Please include a mix of letters, numbers, and special characters."
           );
           break;
         default:
@@ -186,16 +194,16 @@ export default function RegisterPage() {
           } else if (err?.message) {
             setError(err.message);
           } else {
-            setError('Registration failed. Please try again.');
+            setError("Registration failed. Please try again.");
           }
           break;
       }
-      console.error('Registration failed:', err);
+      console.error("Registration failed:", err);
       setShowAccountCreatedModal(false);
 
       // TODO @alex adaugat consent newsletter
-      console.error('Error upserting email consent:', error);
-      setSubmitState('error');
+      console.error("Error upserting email consent:", error);
+      setSubmitState("error");
     }
 
     // Add your submission logic here
@@ -332,7 +340,7 @@ export default function RegisterPage() {
                     className="w-full border-0 border-lg btn-main px-2 py-2 mb-6 text-sm font-bold leading-none text-white transition duration-300 md:w-96 hover:bg-blue-600 focus:ring-4 bg-blue-500"
                     type="submit"
                     disabled={
-                      process.env.NODE_ENV === 'production' // Check if it's production environment
+                      process.env.NODE_ENV === "production" // Check if it's production environment
                         ? !captchaToken || !isPrivacyChecked // Use combined condition in production
                         : !isPrivacyChecked // Use only captchaToken condition in development
                     }
@@ -340,7 +348,7 @@ export default function RegisterPage() {
                     Create account
                   </Button>
                   <p className="text-sm leading-relaxed text-grey-900">
-                    Are you already a member?{' '}
+                    Are you already a member?{" "}
                     <a className="font-bold text-grey-700" href="/login">
                       Log in
                     </a>
@@ -375,8 +383,8 @@ export default function RegisterPage() {
                               target="_blank"
                               className="text-blue-600"
                             >
-                              {' '}
-                              Terms of use{' '}
+                              {" "}
+                              Terms of use{" "}
                             </a>
                             and
                             <a
@@ -384,7 +392,7 @@ export default function RegisterPage() {
                               target="_blank"
                               className="text-blue-600"
                             >
-                              {' '}
+                              {" "}
                               Privacy Policy
                             </a>
                             .
@@ -416,7 +424,7 @@ export default function RegisterPage() {
                         className="font-normal text-gray-500 dark:text-gray-300"
                       >
                         I agree my information will be processed in accordance
-                        with the Future4Europe{' '}
+                        with the Future4Europe{" "}
                         <a
                           href="/static-pages/privacy-policy"
                           target="_blank"
@@ -440,10 +448,10 @@ export default function RegisterPage() {
         theme={{
           header: {
             close: {
-              base: 'hidden',
+              base: "hidden",
             },
-            base: 'flex items-center justify-between rounded-t border-b p-5 dark:border-gray-600',
-            title: 'w-full text-center',
+            base: "flex items-center justify-between rounded-t border-b p-5 dark:border-gray-600",
+            title: "w-full text-center",
           },
         }}
         onClose={() => setShowAccountCreatedModal(false)}
@@ -483,7 +491,7 @@ export default function RegisterPage() {
                           color="primary"
                           type="submit"
                           theme={{
-                            base: 'rounded-md px-12 bg-green-600 hover:bg-green-500 text-white font-semibold py-3',
+                            base: "rounded-md px-12 bg-green-600 hover:bg-green-500 text-white font-semibold py-3",
                           }}
                         >
                           Login

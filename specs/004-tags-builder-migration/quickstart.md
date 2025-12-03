@@ -46,7 +46,79 @@ const tags = await builder.getAll("tag", { limit: 1 });
 console.log("Connected to Builder.io:", tags.length > 0);
 ```
 
-## Common Tasks
+## User-Facing Examples
+
+### Creating a Tag via UI
+
+**TagPicker Component** - Users can create new tags directly from the tag picker:
+
+1. Open tag picker in any post/project/person form
+2. Type a new tag name
+3. Click "Create [tag name]" button
+4. Fill in optional tagline
+5. Tag is created in Builder.io and immediately available
+
+**Behind the scenes**:
+
+- `POST /api/builder/tag` with validation
+- Duplicate name checking (case-insensitive)
+- Automatic cache invalidation
+- Returns created tag with Builder.io ID
+
+### Searching and Filtering Tags
+
+**Tag Search** - Filter tags by type or name:
+
+```typescript
+// Filter by tag type (e.g., "person", "project", "organisation")
+const personTags = await fetch("/api/tags?tagType=person").then((res) =>
+  res.json()
+);
+
+// In client component with hooks
+import useFetchListTags from "@app/custom-hooks/useFetchListTags";
+
+function MyComponent() {
+  const { tags, loading } = useFetchListTags({ tagType: "project" });
+
+  if (loading) return <LoadingSpinner />;
+
+  return (
+    <div>
+      {tags.map((tag) => (
+        <Tag key={tag._id} {...tag} />
+      ))}
+    </div>
+  );
+}
+```
+
+**Features**:
+
+- Real-time filtering client-side
+- Case-insensitive matching
+- Handles plural/singular variations (e.g., "project" matches "projects")
+
+### Tag with Popularity (Mentions)
+
+**Display Popular Tags**:
+
+```typescript
+const popularTags = await fetch("/api/tags-with-popularity").then((res) =>
+  res.json()
+);
+
+// Tags include mentions count
+popularTags.forEach((tag) => {
+  console.log(`${tag.name}: ${tag.mentions} mentions`);
+});
+```
+
+---
+
+## Developer API Examples
+
+### Common Tasks
 
 ### 1. Fetch All Tags
 

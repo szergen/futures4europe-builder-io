@@ -1,11 +1,9 @@
 import React, { use, useEffect, useState } from "react";
-import { items } from "@wix/data";
 import CreatableSelect from "react-select/creatable";
 import { components } from "react-select";
 import classNames from "classnames";
 import Tag, { TagProps } from "../Tag/Tag";
 import { Modal, Button, TextInput, Label } from "flowbite-react";
-import { useWixModules } from "@wix/sdk-react";
 import styles from "./TagPicker.module.css";
 import { motion } from "framer-motion";
 import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
@@ -107,23 +105,31 @@ export const TagPicker: React.FC<TagPickerProps> = ({
   }, [tags]);
   // #endregion
 
-  // #region Wix upload logic
-  const { insertDataItem } = useWixModules(items);
+  // #region Builder.io upload logic
   const uploadTag = async (tagName: string, tagTagline: string) => {
     try {
-      const result = await insertDataItem({
-        dataCollectionId: "Tags",
-        dataItem: {
-          data: {
-            name: tagName,
-            tagLine: tagTagline,
-            tagType: tagType,
-          },
+      const response = await fetch("/api/builder/tag", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          name: tagName,
+          tagLine: tagTagline,
+          tagType: tagType,
+        }),
       });
-      return result;
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to create tag");
+      }
+
+      const result = await response.json();
+      return result.tag;
     } catch (error) {
-      console.error("Error uploading tag:", error);
+      console.error("Error uploading tag to Builder.io:", error);
+      throw error;
     }
   };
   // #endregion

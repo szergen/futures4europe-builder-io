@@ -27,10 +27,14 @@ export const GET = async (req: NextRequest) => {
 
     // Fetch any missing data from API
     if (!tags) {
+      console.log(
+        "Fetching tags from Builder.io for popularity calculation..."
+      );
       const tagsResponse = await fetch(`${baseUrl}/api/tags`);
       if (!tagsResponse.ok)
         throw new Error(`Failed to fetch tags: ${tagsResponse.status}`);
       tags = await tagsResponse.json();
+      console.log(`✓ Fetched ${tags.length} tags from Builder.io`);
     }
 
     if (!infoPages) {
@@ -60,17 +64,24 @@ export const GET = async (req: NextRequest) => {
       affiliations = await affiliationsResponse.json();
     }
 
-    // Calculate popularity
+    // Calculate popularity using Builder.io tags
+    // Note: affiliations still use Wix IDs, but calculatePopularity handles ID translation
     const tagsWithMentions = await tags.map((tag: any) => tag.data);
     const affiliationsWithMentions = await affiliations.map(
       (affiliation: any) => affiliation.data
     );
 
+    console.log(
+      "Calculating popularity with Builder.io tags and Wix affiliations..."
+    );
     const popularTags = calculatePopularity(
       tagsWithMentions,
       infoPages,
       postPages,
       affiliationsWithMentions
+    );
+    console.log(
+      `✓ Calculated popularity for ${popularTags.length} Builder.io tags`
     );
 
     // Sort by popularity
