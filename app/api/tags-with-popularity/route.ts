@@ -65,8 +65,9 @@ export const GET = async (req: NextRequest) => {
     }
 
     // Calculate popularity using Builder.io tags
-    // Note: affiliations still use Wix IDs, but calculatePopularity handles ID translation
-    const tagsWithMentions = await tags.map((tag: any) => tag.data);
+    // Note: Tags from /api/tags are already in Wix format (flat structure)
+    // Affiliations still use Wix IDs, but calculatePopularity handles ID translation
+    const tagsWithMentions = tags; // Already in correct format
     const affiliationsWithMentions = await affiliations.map(
       (affiliation: any) => affiliation.data
     );
@@ -74,15 +75,30 @@ export const GET = async (req: NextRequest) => {
     console.log(
       "Calculating popularity with Builder.io tags and Wix affiliations..."
     );
+
+    // Import missing IDs tracking from builderTagUtils
+    const { getMissingWixIds, clearMissingWixIds } = await import(
+      "@app/utils/builderTagUtils"
+    );
+    clearMissingWixIds(); // Clear previous run
+
     const popularTags = calculatePopularity(
       tagsWithMentions,
       infoPages,
       postPages,
       affiliationsWithMentions
     );
+
+    const missingIds = getMissingWixIds();
     console.log(
       `✓ Calculated popularity for ${popularTags.length} Builder.io tags`
     );
+    if (missingIds.length > 0) {
+      console.warn(
+        `⚠️  Found ${missingIds.length} unique Wix tag IDs in affiliations that are not in mapping file`
+      );
+      console.warn(`First 5 missing IDs:`, missingIds.slice(0, 5));
+    }
 
     // Sort by popularity
     const sortedTags = popularTags.sort(

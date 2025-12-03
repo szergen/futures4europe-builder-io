@@ -8,7 +8,13 @@ import {
  * Helper function to check if an ID matches, considering both Builder.io and Wix formats
  * For affiliations (which still use Wix IDs), translates to Builder.io ID for comparison
  */
-export const idsMatch = (id1: string, id2: string): boolean => {
+export const idsMatch = (
+  id1: string | undefined | null,
+  id2: string | undefined | null
+): boolean => {
+  // Guard against undefined/null values
+  if (!id1 || !id2) return false;
+
   if (id1 === id2) return true;
 
   // Try translating id2 (potential Wix ID) to Builder.io format

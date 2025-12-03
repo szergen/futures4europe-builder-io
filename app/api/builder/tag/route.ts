@@ -77,6 +77,32 @@ export const POST = async (req: NextRequest) => {
     }
 
     if (error instanceof DuplicateError) {
+      // Fetch and return the existing tag instead of error
+      try {
+        const { getBuilderTagById } = await import(
+          "@app/utils/builderTagUtils"
+        );
+        const existingTag = await getBuilderTagById(error.existingId);
+
+        if (existingTag) {
+          console.log(
+            `✓ Returning existing tag "${name}" with ID ${error.existingId}`
+          );
+          return NextResponse.json(
+            {
+              success: true,
+              tag: existingTag,
+              message: `Tag "${name}" already exists, returning existing tag`,
+              isExisting: true,
+            },
+            { status: 200 } // 200 instead of 409 - success with existing tag
+          );
+        }
+      } catch (fetchError) {
+        console.error("Failed to fetch existing tag:", fetchError);
+      }
+
+      // Fallback to error response if we can't fetch the existing tag
       return NextResponse.json(
         {
           error: "Tag with this name already exists",

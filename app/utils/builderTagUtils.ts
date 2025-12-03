@@ -136,7 +136,8 @@ export class BuilderApiError extends Error {
 // Module Initialization
 // ============================================================================
 
-// Initialize Builder.io SDK with public key
+// Note: Using Builder.io REST API directly instead of SDK for better reliability
+// SDK initialization kept for potential future use
 if (typeof window !== "undefined") {
   // Client-side initialization
   builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY || "");
@@ -163,22 +164,49 @@ Object.entries(mappingFile.wixToBuilder).forEach(([wixId, entry]) => {
 console.log(`✓ Tag mapping loaded: ${wixToBuilderMap.size} entries`);
 
 // Export mapping functions
+// Track missing IDs to avoid duplicate warnings
+const missingWixIds = new Set<string>();
+
 export const translateWixTagIdToBuilderId = (
-  wixId: string
+  wixId: string | undefined | null
 ): string | undefined => {
+  // Guard against undefined/null values
+  if (!wixId) {
+    return undefined;
+  }
+
   const builderId = wixToBuilderMap.get(wixId);
   if (!builderId) {
-    console.warn(
-      `Wix tag ID ${wixId} not found in mapping file - skipping mention`
-    );
+    // Only log each missing ID once
+    if (!missingWixIds.has(wixId)) {
+      missingWixIds.add(wixId);
+      console.warn(
+        `[MAPPING MISS] Wix tag ID ${wixId} not found in mapping file (total missing: ${missingWixIds.size})`
+      );
+    }
   }
   return builderId;
 };
 
 export const translateBuilderIdToWixTagId = (
-  builderId: string
+  builderId: string | undefined | null
 ): string | undefined => {
+  // Guard against undefined/null values
+  if (!builderId) {
+    return undefined;
+  }
+
   return builderToWixMap.get(builderId);
+};
+
+// Export function to get missing IDs summary
+export const getMissingWixIds = (): string[] => {
+  return Array.from(missingWixIds);
+};
+
+// Export function to clear missing IDs tracking
+export const clearMissingWixIds = (): void => {
+  missingWixIds.clear();
 };
 
 // ============================================================================
@@ -326,29 +354,92 @@ export async function getAllBuilderTags(options?: {
   skipCache?: boolean;
 }): Promise<BuilderTag[]> {
   const { includeRefs = false, skipCache = false } = options || {};
-  const cacheKey = "tags.json";
+  const cacheKey = "builder-tags-raw.json"; // Different key to avoid conflict with transformed tags
 
   try {
     // Check Redis cache first (unless skipCache is true)
     if (!skipCache) {
       const cached = await RedisCacheService.getFromCache(cacheKey);
       if (cached && Array.isArray(cached)) {
-        console.log("✓ Tags fetched from cache:", cached.length);
+        console.log("✓ Builder.io tags fetched from cache:", cached.length);
         return cached;
       }
     }
 
-    // Fetch from Builder.io with retry logic
-    const tags = await fetchWithRetry(async () => {
-      const result = await builder.getAll("tag", {
-        limit: 100, // Builder.io maximum per request
-        options: {
-          noTargeting: true, // Faster for backend queries
-          includeRefs: includeRefs,
-        },
+    // Fetch from Builder.io with manual pagination
+    console.log("Fetching tags from Builder.io SDK...");
+
+    const { builderConfig } = await import("../../builder.config");
+    if (builderConfig.apiKey) {
+      builder.init(builderConfig.apiKey);
+    }
+
+    const allTags: BuilderTag[] = [];
+    let offset = 0;
+    const limit = 100; // Fetch 100 at a time
+    let hasMore = true;
+
+    while (hasMore) {
+      const batch = await fetchWithRetry(async () => {
+        const results = await builder.getAll("tag", {
+          limit: limit,
+          offset: offset,
+          options: {
+            noTargeting: true,
+            includeRefs: includeRefs,
+          },
+          cachebust: true,
+        });
+        return results as BuilderTag[];
       });
-      return result as BuilderTag[];
-    });
+
+      // Validate batch structure
+      const invalidTags = batch.filter((tag) => !tag?.data?.name);
+      if (invalidTags.length > 0) {
+        console.warn(
+          `⚠️  Found ${invalidTags.length} tags with missing names in batch at offset ${offset}`
+        );
+        console.warn(
+          `Sample invalid tag:`,
+          JSON.stringify(invalidTags[0], null, 2)
+        );
+      }
+
+      allTags.push(...batch);
+      console.log(
+        `Fetched ${batch.length} tags (offset: ${offset}, total: ${allTags.length})`
+      );
+
+      hasMore = batch.length === limit;
+      offset += limit;
+
+      // Safety check
+      if (offset > 10000) {
+        console.warn("Reached offset limit of 10000, stopping");
+        break;
+      }
+    }
+
+    console.log(`✓ Fetched total ${allTags.length} tags from Builder.io`);
+
+    // Validate all tags
+    const validTags = allTags.filter((tag) => tag?.data?.name);
+    const invalidTags = allTags.filter((tag) => !tag?.data?.name);
+
+    if (invalidTags.length > 0) {
+      console.error(
+        `❌ Data quality issue: ${invalidTags.length}/${allTags.length} tags have missing names`
+      );
+      console.error(
+        `Invalid tag IDs:`,
+        invalidTags.slice(0, 5).map((t) => t?.id)
+      );
+    }
+
+    console.log(
+      `✅ Valid tags with names: ${validTags.length}/${allTags.length}`
+    );
+    const tags = allTags;
 
     // Cache the result (4-hour TTL = 14,400,000 ms)
     if (tags && tags.length > 0) {
@@ -383,6 +474,12 @@ export async function getBuilderTagById(
   const { includeRefs = false } = options || {};
 
   try {
+    // Initialize builder with API key
+    const { builderConfig } = await import("../../builder.config");
+    if (builderConfig.apiKey) {
+      builder.init(builderConfig.apiKey);
+    }
+
     const tag = await fetchWithRetry(async () => {
       const result = await builder.get("tag", {
         query: {
@@ -391,13 +488,14 @@ export async function getBuilderTagById(
         options: {
           includeRefs: includeRefs,
         },
+        cachebust: true,
       });
       return result as BuilderTag | null;
     });
 
     return tag;
   } catch (error: any) {
-    if (error.statusCode === 404) {
+    if (error.statusCode === 404 || error.message?.includes("404")) {
       return null;
     }
     throw new BuilderApiError(
@@ -436,13 +534,25 @@ export async function createBuilderTag(tagData: {
   try {
     // Check for duplicate name (case-insensitive)
     const allTags = await getAllBuilderTags({ skipCache: true });
-    const duplicate = allTags.find(
-      (tag) => tag.data.name.toLowerCase() === tagData.name.toLowerCase()
+
+    console.log(
+      `Checking for duplicate tag: "${tagData.name}" (total tags: ${allTags.length})`
     );
+
+    const duplicate = allTags.find((tag) => {
+      // Guard against missing data or name
+      if (!tag?.data?.name) {
+        console.warn(
+          `Tag with ID ${tag?.id} has no name, skipping duplicate check`
+        );
+        return false;
+      }
+      return tag.data.name.toLowerCase() === tagData.name.toLowerCase();
+    });
 
     if (duplicate) {
       console.log(
-        `Tag "${tagData.name}" already exists, returning existing tag`
+        `Tag "${tagData.name}" already exists with ID ${duplicate.id}`
       );
       throw new DuplicateError(
         `Tag with name "${tagData.name}" already exists`,
@@ -450,18 +560,43 @@ export async function createBuilderTag(tagData: {
       );
     }
 
+    console.log(
+      `No duplicate found for "${tagData.name}", proceeding with creation`
+    );
+
     // Transform to Builder.io format
     const payload = transformWixTagToBuilderFormat(tagData);
 
-    // Create in Builder.io
+    // Get private API key for write operations
+    const { builderConfig } = await import("../../builder.config");
+    const apiKey = builderConfig.privateApiKey;
+
+    if (!apiKey) {
+      throw new Error(
+        "Builder.io private API key required for write operations. Set BUILDER_PRIVATE_API_KEY in environment."
+      );
+    }
+
     const createdTag = await fetchWithRetry(async () => {
-      // @ts-ignore - Builder.io SDK types may not be complete
-      const result = await builder.create({
-        model: "tag",
-        data: payload,
-        published: "published",
+      const res = await fetch("https://builder.io/api/v1/write", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          modelName: "tag",
+          published: "published",
+          ...payload,
+        }),
       });
-      return result as BuilderTag;
+
+      if (!res.ok) {
+        const error = await res.text();
+        throw new Error(`Builder.io create error: ${res.status} - ${error}`);
+      }
+
+      return res.json();
     });
 
     console.log(
@@ -469,8 +604,10 @@ export async function createBuilderTag(tagData: {
       createdTag.id
     );
 
-    // Invalidate cache to include new tag
+    // Invalidate both caches to include new tag
+    await RedisCacheService.invalidateCache("builder-tags-raw.json");
     await RedisCacheService.invalidateCache("tags.json");
+    await RedisCacheService.invalidateCache("tags-with-popularity.json");
 
     return createdTag;
   } catch (error: any) {
@@ -545,21 +682,43 @@ export async function updateBuilderTag(
       };
     }
 
-    // Update in Builder.io
+    // Get private API key for write operations
+    const { builderConfig } = await import("../../builder.config");
+    const apiKey = builderConfig.privateApiKey;
+
+    if (!apiKey) {
+      throw new Error(
+        "Builder.io private API key required for write operations. Set BUILDER_PRIVATE_API_KEY in environment."
+      );
+    }
+
     const updatedTag = await fetchWithRetry(async () => {
-      // @ts-ignore - Builder.io SDK types may not be complete
-      const result = await builder.update({
-        model: "tag",
-        id: id,
-        data: updatedData,
+      const res = await fetch(`https://builder.io/api/v1/write/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          modelName: "tag",
+          ...updatedData,
+        }),
       });
-      return result as BuilderTag;
+
+      if (!res.ok) {
+        const error = await res.text();
+        throw new Error(`Builder.io update error: ${res.status} - ${error}`);
+      }
+
+      return res.json();
     });
 
     console.log(`✓ Tag ${id} updated in Builder.io`);
 
-    // Invalidate cache
+    // Invalidate all tag caches
+    await RedisCacheService.invalidateCache("builder-tags-raw.json");
     await RedisCacheService.invalidateCache("tags.json");
+    await RedisCacheService.invalidateCache("tags-with-popularity.json");
 
     return updatedTag;
   } catch (error: any) {
