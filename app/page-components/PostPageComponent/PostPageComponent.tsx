@@ -13,14 +13,7 @@ import FilesComponent from "../shared-page-components/FilesComponent/FilesCompon
 import { mockPost } from "../../mocks/pagesMocks";
 import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
 import OgImage from "@app/shared-components/OgImage";
-import {
-  updateDataItem,
-  replaceDataItemReferences,
-  revalidateDataItem,
-} from "@app/wixUtils/client-side";
 import TagPicker from "@app/shared-components/TagPicker/TagPicker";
-import { useWixModules } from "@wix/sdk-react";
-import { items } from "@wix/data";
 import {
   formatDate,
   checkIfArrayNeedsUpdateForTags,
@@ -34,6 +27,10 @@ import { Modal } from "flowbite-react";
 import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
 import { sanitizeTitleForSlug } from "../PageComponents.utils";
 import { invalidatePostPageCache } from "@app/utils/cache-utils";
+import {
+  createBuilderPost,
+  updateBuilderPost,
+} from "@app/utils/builderPostUtils";
 
 export type PostPageComponentProps = {
   pageTitle: string;
@@ -196,474 +193,173 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   const [isSaveInProgress, setIsSaveInProgress] = useState(false);
 
   const updateDataToServer = async () => {
-    console.log("Updating Page from", postData.dataCollectionId, postData._id);
+    console.log("[Builder.io] Updating post:", post.id, postData.slug);
     setIsSaveInProgress(true);
-    const hasDifferentMedia = postData?.mediaFiles?.some(
-      (file: any, index: number) =>
-        file.url !== defaultPostData?.mediaFiles?.[index]?.url ||
-        file.displayName !== defaultPostData?.mediaFiles?.[index]?.displayName
-    );
-    // Update Subtitle
-    if (
-      postData.subtitle !== defaultPostData.subtitle ||
-      postData.title !== defaultPostData.title ||
-      checkIfArrayNeedsUpdateForStrings(
+
+    try {
+      // Get Builder.io post ID from post object
+      const builderId = post.id;
+
+      if (!builderId) {
+        console.error("[Builder.io] No Builder.io ID found for post");
+        alert("Unable to update post. Missing post ID.");
+        setIsSaveInProgress(false);
+        return;
+      }
+
+      // Prepare complete post data with all fields including references
+      // Builder.io API accepts full payload (no manual diff needed per FR-028)
+      const builderPostData = {
+        title: postData?.title,
+        subtitle: postData?.subtitle,
+        slug: postData.slug, // Keep existing slug
+
+        // Author and page owner
+        author: postData.author || [],
+        pageOwner: postData.pageOwner || [],
+
+        // Page type
+        pageTypes: postData.pageType || [],
+
+        // Country tag
+        countryTag: postData.countryTag ? [postData.countryTag] : [],
+
+        // Related tags
+        people: postData.people || [],
+        methods: postData.foreSightMethods || [],
+        domains: postData.domains || [],
+        projects: postData.project || [],
+        organisations: postData.organisation || [],
+        internalLinks: postData.internalLinks || [],
+
+        // Event-specific fields
+        speakers: postData.eventSpeakers || [],
+        moderators: postData.eventModerators || [],
+        eventStartDate: postData.eventStartDate,
+        eventEndDate: postData.eventEndDate,
+        eventRegistration: postData.eventRegistration,
+
+        // Project result-specific fields
+        projectResultAuthor: postData.projectAuthors || [],
+        projectResultMedia: postData.projectResultMedia,
+        projectResultPublicationDate: postData.projectResultPublicationDate,
+
+        // Additional fields
+        mediaFiles: postData.mediaFiles || [],
+        recommendations: postData.recommendations || 0,
+      };
+
+      // Update post in Builder.io (single API call with all references)
+      const result = await updateBuilderPost(
+        builderId,
+        builderPostData,
         postData.contentText,
-        defaultPostData.contentText
-      ) ||
-      // !postData.contentText[0] ||
-      // !postData.contentText[1] ||
-      checkIfArrayNeedsUpdateForTags(
-        postData.contentImages,
-        defaultPostData.contentImages
-      ) ||
-      checkIfArrayNeedsUpdateForStrings(
-        postData.contentImages,
-        defaultPostData.contentImages
-      ) ||
-      areArraysEqualForMediaFiles(
-        postData.mediaFiles,
-        defaultPostData.mediaFiles
-      ) ||
-      hasDifferentMedia ||
-      postData.projectResultPublicationDate !==
-        defaultPostData.projectResultPublicationDate ||
-      postData.eventStartDate !== defaultPostData.eventStartDate ||
-      postData.eventEndDate !== defaultPostData.eventEndDate ||
-      postData.eventRegistration !== defaultPostData.eventRegistration ||
-      postData.projectResultMedia?.url !==
-        defaultPostData.projectResultMedia?.url ||
-      postData.projectResultMedia?.displayName !==
-        defaultPostData.projectResultMedia?.displayName
-    ) {
-      console.log("debug5->Updating Data");
-      const updatedItem = await updateDataItem(
-        postData.dataCollectionId,
-        postData._id,
-        {
-          _id: postData._id,
-          ...postData.data,
-          title: postData?.title,
-          subtitle: postData?.subtitle,
-          postContentRIch1: postData?.contentText[0],
-          postContentRIch2: postData?.contentText[1],
-          postContentRIch3: postData?.contentText[2],
-          postContentRIch4: postData?.contentText[3],
-          postContentRIch5: postData?.contentText[4],
-          postContentRIch6: postData?.contentText[5],
-          postContentRIch7: postData?.contentText[6],
-          postContentRIch8: postData?.contentText[7],
-          postContentRIch9: postData?.contentText[8],
-          postContentRIch10: postData?.contentText[9],
-          postImage1: postData?.contentImages[0],
-          postImage2: postData?.contentImages[1],
-          postImage3: postData?.contentImages[2],
-          postImage4: postData?.contentImages[3],
-          postImage5: postData?.contentImages[4],
-          postImage6: postData?.contentImages[5],
-          postImage7: postData?.contentImages[6],
-          postImage8: postData?.contentImages[7],
-          postImage9: postData?.contentImages[8],
-          postImage10: postData?.contentImages[9],
-          eventStartDate: postData?.eventStartDate,
-          eventEndDate: postData?.eventEndDate,
-          eventRegistration: postData?.eventRegistration,
-          projectResultMedia: postData?.projectResultMedia,
-          mediaFiles: postData?.mediaFiles,
-          projectResultPublicationDate: postData?.projectResultPublicationDate,
-          // pageTypes: postData?.pageType,
-        }
+        postData.contentImages
       );
-      console.log("updatedItem", updatedItem);
-    }
-    // Update Project Authors
-    if (
-      checkIfArrayNeedsUpdateForTags(
-        postData.projectAuthors,
-        defaultPostData.projectAuthors
-      )
-    ) {
-      const updatedAuthors = await replaceDataItemReferences(
-        "PostPages",
-        postData.projectAuthors?.map((author: any) => author._id),
-        "projectResultAuthor",
-        postData._id
-      );
-      console.log("updatedAuthors", updatedAuthors);
-    }
 
-    // Update Page Type
-    if (
-      checkIfArrayNeedsUpdateForTags(
-        postData.pageType,
-        defaultPostData.pageType
-      )
-    ) {
-      const updatedPageTypes = await replaceDataItemReferences(
-        "PostPages",
-        postData?.pageType.map((pageType: any) => pageType._id),
-        "pageTypes",
-        postData._id
-      );
-      console.log("updatedPageTypes", updatedPageTypes);
-    }
-    // Update Country Tag
-    if (postData.countryTag?._id !== defaultPostData.countryTag?._id) {
-      const updatedCountryTag = await replaceDataItemReferences(
-        "PostPages",
-        [postData.countryTag?._id],
-        "countryTag",
-        postData._id
-      );
-      console.log("updatedCountryTag", updatedCountryTag);
-    }
-    // Update People Tags
-    if (
-      checkIfArrayNeedsUpdateForTags(postData.people, defaultPostData.people)
-    ) {
-      const updatedPeople = await replaceDataItemReferences(
-        "PostPages",
-        postData?.people.map((person: any) => person._id),
-        "people",
-        postData?._id
-      );
-      console.log("updatedPeople", updatedPeople);
-    }
-    // Update Foresight Methods
-    if (
-      checkIfArrayNeedsUpdateForTags(
-        postData.foreSightMethods,
-        defaultPostData.foreSightMethods
-      )
-    ) {
-      const updatedMethods = await replaceDataItemReferences(
-        "PostPages",
-        postData.foreSightMethods?.map((method: any) => method._id),
-        "methods",
-        postData._id
-      );
-      console.log("updatedMethods", updatedMethods);
-    }
-    // Update Domains
-    if (
-      checkIfArrayNeedsUpdateForTags(postData.domains, defaultPostData.domains)
-    ) {
-      const updatedDomains = await replaceDataItemReferences(
-        "PostPages",
-        postData.domains?.map((domain: any) => domain._id),
-        "domains",
-        postData._id
-      );
-      console.log("updatedDomains", updatedDomains);
-    }
-    // Update Projects
-    if (
-      checkIfArrayNeedsUpdateForTags(postData.project, defaultPostData.project)
-    ) {
-      const updatedProjects = await replaceDataItemReferences(
-        "PostPages",
-        postData.project?.map((project: any) => project._id),
-        "projects",
-        postData._id
-      );
-      console.log("updatedProjects", updatedProjects);
-    }
-    // Update Organisation
-    if (
-      checkIfArrayNeedsUpdateForTags(
-        postData.organisation,
-        defaultPostData.organisation
-      )
-    ) {
-      const updatedOrganisations = await replaceDataItemReferences(
-        "PostPages",
-        postData.organisation?.map((organisation: any) => organisation._id),
-        "organisations",
-        postData._id
-      );
-      console.log("updatedOrganisations", updatedOrganisations);
-    }
-    // Update Internal Links
-    if (
-      checkIfArrayNeedsUpdateForTags(
-        postData.internalLinks,
-        defaultPostData.internalLinks
-      )
-    ) {
-      const updatedInternalLinks = await replaceDataItemReferences(
-        "PostPages",
-        postData.internalLinks?.map((link: any) => link._id),
-        "internalLinks",
-        postData._id
-      );
-      console.log("updatedInternalLinks", updatedInternalLinks);
-    }
-    // Update Moderators
-    if (
-      checkIfArrayNeedsUpdateForTags(
-        postData.eventModerators,
-        defaultPostData.eventModerators
-      )
-    ) {
-      const updatedModerators = await replaceDataItemReferences(
-        "PostPages",
-        postData.eventModerators?.map((moderator: any) => moderator._id),
-        "moderators",
-        postData._id
-      );
-      console.log("updatedModerators", updatedModerators);
-    }
+      console.log("[Builder.io] Post updated successfully:", result);
 
-    // Update Speakers
-    if (
-      checkIfArrayNeedsUpdateForTags(
-        postData?.eventSpeakers,
-        defaultPostData?.eventSpeakers
-      )
-    ) {
-      const updatedSpeakers = await replaceDataItemReferences(
-        "PostPages",
-        postData.eventSpeakers?.map((speaker: any) => speaker._id),
-        "speakers",
-        postData._id
-      );
-      console.log("updatedSpeakers", updatedSpeakers);
-    }
+      // Invalidate cache for the post page
+      await invalidatePostPageCache(postData.slug);
 
-    // Check if the page was newly created
-    if (defaultPostData.title === "New Post") {
-      handleUserDataRefresh();
       setIsSaveInProgress(false);
-      await revalidateDataItem(`/post`);
-      // await revalidateDataItem(`/post/New_Post`);
-      router.push(`/post/${postData.title.replace(/ /g, "_")}`);
-      return;
+    } catch (error) {
+      console.error("[Builder.io] Error updating post:", error);
+      alert("Failed to update post. Please try again.");
+      setIsSaveInProgress(false);
     }
-    // Revalidate the cache for the page
-    // await refetchTags();
-    // await refetchPosts();
-    // handleTagCreated();
-    // await revalidateDataItem(`/post/${postData.title.replace(/ /g, '_')}`);
-    // await revalidateDataItem(`/post/New_Post`);
-
-    // After successful update, invalidate caches and revalidate paths
-    await invalidatePostPageCache(postData.slug);
-
-    setIsSaveInProgress(false);
   };
 
   // #endregion
 
   // #region for when the page is newly created
-  const { insertDataItem } = useWixModules(items);
 
   const createNewPost = async () => {
-    console.log("Creating New Post");
+    console.log("[Builder.io] Creating New Post");
     setIsSaveInProgress(true);
-    // Create New Post
-    const newPost = await insertDataItem({
-      dataCollectionId: "PostPages",
-      dataItem: {
-        data: {
-          title: postData?.title,
-          subtitle: postData?.subtitle,
-          postContentRIch1: postData?.contentText[0],
-          postContentRIch2: postData?.contentText[1],
-          postContentRIch3: postData?.contentText[2],
-          postContentRIch4: postData?.contentText[3],
-          postContentRIch5: postData?.contentText[4],
-          postContentRIch6: postData?.contentText[5],
-          postContentRIch7: postData?.contentText[6],
-          postContentRIch8: postData?.contentText[7],
-          postContentRIch9: postData?.contentText[8],
-          postContentRIch10: postData?.contentText[9],
-          postImage1: postData?.contentImages[0],
-          postImage2: postData?.contentImages[1],
-          postImage3: postData?.contentImages[2],
-          postImage4: postData?.contentImages[3],
-          postImage5: postData?.contentImages[4],
-          postImage6: postData?.contentImages[5],
-          postImage7: postData?.contentImages[6],
-          postImage8: postData?.contentImages[7],
-          postImage9: postData?.contentImages[8],
-          postImage10: postData?.contentImages[9],
-          eventStartDate: postData?.eventStartDate,
-          eventEndDate: postData?.eventEndDate,
-          eventRegistration: postData?.eventRegistration,
-          projectResultMedia: postData?.projectResultMedia,
-          mediaFiles: postData?.mediaFiles,
-          projectResultPublicationDate: postData?.projectResultPublicationDate,
-          slug:
-            sanitizeTitleForSlug(postData?.title) + "-" + generateUniqueHash(),
-        },
-      },
-    });
-    console.log("newPost", newPost);
 
-    const newPostTitlePath = newPost?.dataItem?.data?.title?.replace(/ /g, "_");
-    const newPostSlug = newPost?.dataItem?.data?.slug;
-    const newPostID = newPost?.dataItem?._id;
-
-    // Update Author based on the user
-    const userTag = tags.find(
-      (tag) => tag?.tagType === "person" && tag?.name === userDetails.userName
-    );
-
-    // Check if both newPostID and userTag._id exist and are strings
-    if (newPostID && userTag && typeof userTag._id === "string") {
-      const userTagId = userTag._id; // This ensures TS treats it as a string
-
-      const updatedAuthor = await replaceDataItemReferences(
-        "PostPages",
-        [userTagId],
-        "author",
-        newPostID
+    try {
+      // Get user tag for author and pageOwner
+      const userTag = tags.find(
+        (tag) => tag?.tagType === "person" && tag?.name === userDetails.userName
       );
-      console.log("updatedAuthor", updatedAuthor);
 
-      const updatedPageOwner = await replaceDataItemReferences(
-        "PostPages",
-        [userTagId],
-        "pageOwner",
-        newPostID
+      // Check if user tag exists - block creation if missing per FR-010
+      if (!userTag || !userTag._id) {
+        alert("User profile not found. Please contact administrator.");
+        setIsSaveInProgress(false);
+        return;
+      }
+
+      // Generate unique slug
+      const slug =
+        sanitizeTitleForSlug(postData?.title) + "-" + generateUniqueHash();
+
+      // Prepare post data with all fields including references
+      const builderPostData = {
+        title: postData?.title,
+        subtitle: postData?.subtitle,
+        slug: `/post/${slug}`, // Builder.io format with /post/ prefix
+
+        // Author and page owner (set from user tag)
+        author: [{ _id: userTag._id }],
+        pageOwner: [{ _id: userTag._id }],
+
+        // Page type
+        pageTypes: postData.pageType || [],
+
+        // Country tag
+        countryTag: postData.countryTag ? [postData.countryTag] : [],
+
+        // Related tags
+        people: postData.people || [],
+        methods: postData.foreSightMethods || [],
+        domains: postData.domains || [],
+        projects: postData.project || [],
+        organisations: postData.organisation || [],
+        internalLinks: postData.internalLinks || [],
+
+        // Event-specific fields
+        speakers: postData.eventSpeakers || [],
+        moderators: postData.eventModerators || [],
+        eventStartDate: postData.eventStartDate,
+        eventEndDate: postData.eventEndDate,
+        eventRegistration: postData.eventRegistration,
+
+        // Project result-specific fields
+        projectResultAuthor: postData.projectAuthors || [],
+        projectResultMedia: postData.projectResultMedia,
+        projectResultPublicationDate: postData.projectResultPublicationDate,
+
+        // Additional fields
+        mediaFiles: postData.mediaFiles || [],
+        recommendations: postData.recommendations || 0,
+      };
+
+      // Create post in Builder.io (single API call with all references)
+      const result = await createBuilderPost(
+        builderPostData,
+        postData.contentText,
+        postData.contentImages
       );
-      console.log("updatedPageOwner", updatedPageOwner);
+
+      console.log("[Builder.io] Post created successfully:", result);
+
+      // Refresh user data
+      handleUserDataRefresh();
+
+      // Invalidate cache for the new post page
+      await invalidatePostPageCache(slug);
+
+      setIsSaveInProgress(false);
+
+      // Redirect to the new post page
+      router.push(`/post-page/${slug}`);
+    } catch (error) {
+      console.error("[Builder.io] Error creating post:", error);
+      alert("Failed to create post. Please try again.");
+      setIsSaveInProgress(false);
     }
-
-    // Update Project Authors
-    if (postData.projectAuthors?.length && newPostID) {
-      const updatedAuthors = await replaceDataItemReferences(
-        "PostPages",
-        postData.projectAuthors
-          ?.map((author: any) => author?._id)
-          ?.filter(Boolean),
-        "projectResultAuthor",
-        newPostID
-      );
-      console.log("updatedAuthors", updatedAuthors);
-    }
-
-    // Update Page Type
-    if (postData.pageType?.length && newPostID) {
-      const updatedPageTypes = await replaceDataItemReferences(
-        "PostPages",
-        postData?.pageType.map((pageType: any) => pageType._id),
-        "pageTypes",
-        newPostID
-      );
-      console.log("updatedPageTypes", updatedPageTypes);
-    }
-
-    // Update Country Tag
-    if (postData.countryTag?._id && newPostID) {
-      const updatedCountryTag = await replaceDataItemReferences(
-        "PostPages",
-        [postData.countryTag?._id],
-        "countryTag",
-        newPostID
-      );
-      console.log("updatedCountryTag", updatedCountryTag);
-    }
-
-    // Update People Tags
-    if (postData.people?.length && newPostID) {
-      const updatedPeople = await replaceDataItemReferences(
-        "PostPages",
-        postData?.people.map((person: any) => person._id),
-        "people",
-        newPostID
-      );
-      console.log("updatedPeople", updatedPeople);
-    }
-
-    // Update Foresight Methods
-    if (postData.foreSightMethods?.length && newPostID) {
-      const updatedMethods = await replaceDataItemReferences(
-        "PostPages",
-        postData.foreSightMethods?.map((method: any) => method._id),
-        "methods",
-        newPostID
-      );
-      console.log("updatedMethods", updatedMethods);
-    }
-
-    // Update Domains
-    if (postData.domains?.length && newPostID) {
-      const updatedDomains = await replaceDataItemReferences(
-        "PostPages",
-        postData.domains?.map((domain: any) => domain._id),
-        "domains",
-        newPostID
-      );
-      console.log("updatedDomains", updatedDomains);
-    }
-
-    // Update Projects
-    if (postData.project?.length && newPostID) {
-      const updatedProjects = await replaceDataItemReferences(
-        "PostPages",
-        postData.project?.map((project: any) => project._id),
-        "projects",
-        newPostID
-      );
-      console.log("updatedProjects", updatedProjects);
-    }
-
-    // Update Organisation
-    if (postData.organisation?.length && newPostID) {
-      const updatedOrganisations = await replaceDataItemReferences(
-        "PostPages",
-        postData.organisation?.map((organisation: any) => organisation._id),
-        "organisations",
-        newPostID
-      );
-      console.log("updatedOrganisations", updatedOrganisations);
-    }
-
-    // Update Internal Links
-    if (postData.internalLinks?.length && newPostID) {
-      const updatedInternalLinks = await replaceDataItemReferences(
-        "PostPages",
-        postData.internalLinks?.map((link: any) => link._id),
-        "internalLinks",
-        newPostID
-      );
-      console.log("updatedInternalLinks", updatedInternalLinks);
-    }
-
-    // Update Moderators
-    if (postData.eventModerators?.length && newPostID) {
-      const updatedModerators = await replaceDataItemReferences(
-        "PostPages",
-        postData.eventModerators?.map((moderator: any) => moderator._id),
-        "moderators",
-        newPostID
-      );
-      console.log("updatedModerators", updatedModerators);
-    }
-
-    // Update Speakers
-    if (postData?.eventSpeakers?.length && newPostID) {
-      const updatedSpeakers = await replaceDataItemReferences(
-        "PostPages",
-        postData.eventSpeakers?.map((speaker: any) => speaker._id),
-        "speakers",
-        newPostID
-      );
-      console.log("updatedSpeakers", updatedSpeakers);
-    }
-
-    // Revalidate the cache for the page
-    // await refetchTags();
-    // await refetchPosts();
-    // handleTagCreated();
-    // await revalidateDataItem(`/post/${newPostSlug}`);
-
-    handleUserDataRefresh();
-    await invalidatePostPageCache(newPostSlug);
-
-    setIsSaveInProgress(false);
-    router.push(`/post/${newPostSlug}`);
   };
   // #endregion
 
