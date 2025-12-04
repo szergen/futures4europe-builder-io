@@ -28,10 +28,10 @@ This project uses Next.js structure:
 
 **Purpose**: Verify prerequisites are in place
 
-- [ ] T001 Verify `data/exports/Affiliations_wix.csv` exists and contains expected ~1,826 records
-- [ ] T002 Verify `data/mappings/tag-migration-mapping.json` exists and is complete
-- [ ] T003 Verify `BUILDER_PRIVATE_API_KEY` is configured in `.env.local`
-- [ ] T004 Verify `NEXT_PUBLIC_BUILDER_API_KEY` is configured in `.env.local`
+- [x] T001 Verify `data/exports/Affiliations_wix.csv` exists and contains expected ~1,826 records
+- [x] T002 Verify `data/mappings/tag-migration-mapping.json` exists and is complete
+- [x] T003 Verify `BUILDER_PRIVATE_API_KEY` is configured in `.env.local`
+- [x] T004 Verify `NEXT_PUBLIC_BUILDER_API_KEY` is configured in `.env.local`
 
 ---
 
@@ -53,24 +53,24 @@ This project uses Next.js structure:
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] Create migration script file `scripts/migrations/migrate-affiliations.js` with shebang, header docs, and require statements (copy structure from `migrate-tags.js`)
-- [ ] T006 [US1] Add configuration constants in `scripts/migrations/migrate-affiliations.js` (PRIVATE_API_KEY, MODEL_NAME="affiliations", CSV_FILE, MAPPING_FILE, TAG_MAPPING_FILE)
-- [ ] T007 [US1] Add colored console logging utilities in `scripts/migrations/migrate-affiliations.js` (log.info, log.success, log.error, log.warning, log.title)
-- [ ] T008 [US1] Implement `makeRequest()` helper function for Builder.io API calls in `scripts/migrations/migrate-affiliations.js`
-- [ ] T009 [US1] Implement `loadTagMapping()` function to load tag-migration-mapping.json in `scripts/migrations/migrate-affiliations.js`
-- [ ] T010 [US1] Implement `readCSV()` function with BOM handling in `scripts/migrations/migrate-affiliations.js`
-- [ ] T011 [US1] Implement `loadMapping()` and `saveMapping()` functions for incremental progress in `scripts/migrations/migrate-affiliations.js`
-- [ ] T012 [US1] Implement `createBuilderReference()` helper to create `{ "@type": "@builder.io/core:Reference", "id": "...", "model": "tag" }` format in `scripts/migrations/migrate-affiliations.js`
-- [ ] T013 [US1] Implement `resolveTagReference()` function that looks up Wix ID in tag mapping and returns Builder.io reference or null with warning in `scripts/migrations/migrate-affiliations.js`
-- [ ] T014 [US1] Implement `isMalformedPersonTag()` helper to detect JSON objects instead of UUIDs in `scripts/migrations/migrate-affiliations.js`
-- [ ] T015 [US1] Implement `transformAffiliationData()` function with all field mappings (Title→title, tags→references, role, extraIdentifier, ID→wixId) in `scripts/migrations/migrate-affiliations.js`
-- [ ] T016 [US1] Implement `createAffiliation()` function to POST to Builder.io Write API with error handling in `scripts/migrations/migrate-affiliations.js`
-- [ ] T017 [US1] Implement main `migrateAffiliations(count)` function with loop, skip-if-migrated check, rate limiting (200ms), and progress logging in `scripts/migrations/migrate-affiliations.js`
-- [ ] T018 [US1] Implement `printSummary()` function showing total/successful/failed/skipped/missing-refs counts in `scripts/migrations/migrate-affiliations.js`
-- [ ] T019 [US1] Implement `verifyMigration(count)` function to spot-check random migrated records against Builder.io in `scripts/migrations/migrate-affiliations.js`
-- [ ] T020 [US1] Implement `dryRun(count)` function that validates CSV parsing, tag mapping lookups, and transformation without calling Builder.io API in `scripts/migrations/migrate-affiliations.js`
-- [ ] T021 [US1] Implement `main()` CLI handler with argument parsing (count, --verify, --dry-run) and usage help in `scripts/migrations/migrate-affiliations.js`
-- [ ] T022 [US1] Test dry-run mode: `node scripts/migrations/migrate-affiliations.js 10 --dry-run` (validates without creating)
+- [x] T005 [US1] Create migration script file `scripts/migrations/migrate-affiliations.js` with shebang, header docs, and require statements (copy structure from `migrate-tags.js`)
+- [x] T006 [US1] Add configuration constants in `scripts/migrations/migrate-affiliations.js` (PRIVATE_API_KEY, MODEL_NAME="affiliations", CSV_FILE, MAPPING_FILE, TAG_MAPPING_FILE)
+- [x] T007 [US1] Add colored console logging utilities in `scripts/migrations/migrate-affiliations.js` (log.info, log.success, log.error, log.warning, log.title)
+- [x] T008 [US1] Implement `makeRequest()` helper function for Builder.io API calls in `scripts/migrations/migrate-affiliations.js`
+- [x] T009 [US1] Implement `loadTagMapping()` function to load tag-migration-mapping.json in `scripts/migrations/migrate-affiliations.js`
+- [x] T010 [US1] Implement `readCSV()` function with BOM handling in `scripts/migrations/migrate-affiliations.js`
+- [x] T011 [US1] Implement `loadMapping()` and `saveMapping()` functions for incremental progress in `scripts/migrations/migrate-affiliations.js`
+- [x] T012 [US1] Implement `createBuilderReference()` helper to create `{ "@type": "@builder.io/core:Reference", "id": "...", "model": "tag" }` format in `scripts/migrations/migrate-affiliations.js`
+- [x] T013 [US1] Implement `resolveTagReference()` function that looks up Wix ID in tag mapping and returns Builder.io reference or null with warning in `scripts/migrations/migrate-affiliations.js`
+- [x] T014 [US1] Implement `isMalformedPersonTag()` helper to detect JSON objects instead of UUIDs in `scripts/migrations/migrate-affiliations.js`
+- [x] T015 [US1] Implement `transformAffiliationData()` function with all field mappings (Title→title, tags→references, role, extraIdentifier, ID→wixId) in `scripts/migrations/migrate-affiliations.js`
+- [x] T016 [US1] Implement `createAffiliation()` function to POST to Builder.io Write API with error handling in `scripts/migrations/migrate-affiliations.js`
+- [x] T017 [US1] Implement main `migrateAffiliations(count)` function with loop, skip-if-migrated check, rate limiting (200ms), and progress logging in `scripts/migrations/migrate-affiliations.js`
+- [x] T018 [US1] Implement `printSummary()` function showing total/successful/failed/skipped/missing-refs counts in `scripts/migrations/migrate-affiliations.js`
+- [x] T019 [US1] Implement `verifyMigration(count)` function to spot-check random migrated records against Builder.io in `scripts/migrations/migrate-affiliations.js`
+- [x] T020 [US1] Implement `dryRun(count)` function that validates CSV parsing, tag mapping lookups, and transformation without calling Builder.io API in `scripts/migrations/migrate-affiliations.js`
+- [x] T021 [US1] Implement `main()` CLI handler with argument parsing (count, --verify, --dry-run) and usage help in `scripts/migrations/migrate-affiliations.js`
+- [x] T022 [US1] Test dry-run mode: `node scripts/migrations/migrate-affiliations.js 10 --dry-run` (validates without creating)
 - [ ] T023 [US1] Test migration with 10 records: `node scripts/migrations/migrate-affiliations.js 10`
 - [ ] T024 [US1] Verify migrated records in Builder.io admin console
 - [ ] T025 [US1] Run verification mode: `node scripts/migrations/migrate-affiliations.js --verify 5`
@@ -89,10 +89,10 @@ This project uses Next.js structure:
 
 ### Implementation for User Story 2
 
-- [ ] T028 [P] [US2] Create TypeScript interfaces in `app/utils/builderAffiliationUtils.ts` (BuilderAffiliation, BuilderReference, WixCompatibleAffiliation)
-- [ ] T029 [P] [US2] Implement `transformBuilderAffiliationToWixFormat()` function in `app/utils/builderAffiliationUtils.ts` to convert Builder.io format to `{ data: { ... } }` wrapper
-- [ ] T030 [US2] Implement `getAllBuilderAffiliations()` function with pagination (100 per page) in `app/utils/builderAffiliationUtils.ts`
-- [ ] T031 [US2] Add retry logic with exponential backoff to `getAllBuilderAffiliations()` in `app/utils/builderAffiliationUtils.ts`
+- [x] T028 [P] [US2] Create TypeScript interfaces in `app/utils/builderAffiliationUtils.ts` (BuilderAffiliation, BuilderReference, WixCompatibleAffiliation)
+- [x] T029 [P] [US2] Implement `transformBuilderAffiliationToWixFormat()` function in `app/utils/builderAffiliationUtils.ts` to convert Builder.io format to `{ data: { ... } }` wrapper
+- [x] T030 [US2] Implement `getAllBuilderAffiliations()` function with pagination (100 per page) in `app/utils/builderAffiliationUtils.ts`
+- [x] T031 [US2] Add retry logic with exponential backoff to `getAllBuilderAffiliations()` in `app/utils/builderAffiliationUtils.ts`
 - [ ] T032 [US2] Update GET handler in `app/api/affiliations/route.ts` to import from builderAffiliationUtils instead of Wix client
 - [ ] T033 [US2] Update GET handler in `app/api/affiliations/route.ts` to call `getAllBuilderAffiliations()` on cache miss
 - [ ] T034 [US2] Update GET handler in `app/api/affiliations/route.ts` to transform response using `transformBuilderAffiliationToWixFormat()`
