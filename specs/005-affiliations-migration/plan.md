@@ -9,7 +9,7 @@ Migrate affiliations data from Wix CSV export to Builder.io and switch the appli
 
 ## Technical Context
 
-**Language/Version**: Node.js 18+, TypeScript 5.x (Next.js 14)  
+**Language/Version**: Node.js 18+, TypeScript 5.x (Next.js 13.4)  
 **Primary Dependencies**: `@builder.io/sdk`, `csv-parse`, `node-fetch`, `dotenv`  
 **Storage**: Builder.io CMS (affiliations model), Redis (Upstash) for caching  
 **Testing**: Manual verification + sample spot-checks (E2E tests exist for broader coverage)  

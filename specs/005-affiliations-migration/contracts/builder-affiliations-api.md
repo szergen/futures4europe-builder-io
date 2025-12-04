@@ -24,6 +24,7 @@ No query parameters.
 ### Response
 
 **Success (200)**:
+
 ```json
 [
   {
@@ -48,6 +49,7 @@ No query parameters.
 ```
 
 **Error (500)**:
+
 ```json
 {
   "message": "Error fetching affiliations"
@@ -78,6 +80,7 @@ No body required.
 ### Response
 
 **Success (200)**:
+
 ```json
 {
   "message": "Cache updated successfully."
@@ -85,6 +88,7 @@ No body required.
 ```
 
 **Error (500)**:
+
 ```json
 {
   "message": "Failed to update cache"
@@ -109,12 +113,14 @@ Used by `migrate-affiliations.js` to create affiliations.
 **Endpoint**: `POST https://builder.io/api/v1/write/affiliations`
 
 **Headers**:
+
 ```
 Authorization: Bearer <BUILDER_PRIVATE_API_KEY>
 Content-Type: application/json
 ```
 
 **Request Body**:
+
 ```json
 {
   "name": "John Doe -to- Project X",
@@ -141,6 +147,7 @@ Content-Type: application/json
 ```
 
 **Success Response (200)**:
+
 ```json
 {
   "id": "builder-affiliation-id-1",
@@ -167,6 +174,7 @@ Content-Type: application/json
 ```
 
 **Error Response (4xx/5xx)**:
+
 ```json
 {
   "error": "Error message"
@@ -184,12 +192,14 @@ Used by `/api/affiliations` endpoint to fetch affiliations.
 **Endpoint**: `GET https://cdn.builder.io/api/v3/content/affiliations`
 
 **Query Parameters**:
+
 - `apiKey`: Builder.io public API key
 - `limit`: Number of items (max 100)
 - `offset`: Pagination offset
 - `cachebust`: Set to `true` for fresh data
 
 **Response**:
+
 ```json
 {
   "results": [
@@ -202,9 +212,13 @@ Used by `/api/affiliations` endpoint to fetch affiliations.
           "@type": "@builder.io/core:Reference",
           "id": "a1b2c3d4e5f6...",
           "model": "tag",
-          "value": { /* resolved tag data */ }
+          "value": {
+            /* resolved tag data */
+          }
         },
-        "personTag": { /* ... */ },
+        "personTag": {
+          /* ... */
+        },
         "extraIdentifier": "participation",
         "wixId": "002bef30-d76d-4423-9045-91d5f29ca3ab"
       },
@@ -278,24 +292,25 @@ interface WixCompatibleAffiliation {
 
 ### HTTP Status Codes
 
-| Code | Meaning | Action |
-|------|---------|--------|
-| 200 | Success | Process response |
-| 400 | Bad Request | Check request format |
-| 401 | Unauthorized | Check API key |
-| 404 | Not Found | Handle gracefully |
-| 429 | Rate Limited | Retry with backoff |
-| 500 | Server Error | Retry or fail |
+| Code | Meaning      | Action               |
+| ---- | ------------ | -------------------- |
+| 200  | Success      | Process response     |
+| 400  | Bad Request  | Check request format |
+| 401  | Unauthorized | Check API key        |
+| 404  | Not Found    | Handle gracefully    |
+| 429  | Rate Limited | Retry with backoff   |
+| 500  | Server Error | Retry or fail        |
 
 ### Retry Strategy
 
 For migration script:
+
 - Max retries: 3
 - Backoff: Exponential (1s, 2s, 4s)
 - Rate limiting: 200ms between requests
 
 For API endpoint:
+
 - Max retries: 3
 - Backoff: Exponential (1s, 2s, 4s)
 - Fallback: Return cached data if available
-

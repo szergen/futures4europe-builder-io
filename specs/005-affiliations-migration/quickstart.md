@@ -8,12 +8,14 @@
 Before starting, ensure you have:
 
 1. **Environment Variables** (in `.env.local`):
+
    ```bash
    BUILDER_PRIVATE_API_KEY=your-private-key  # Required for migration (write)
    NEXT_PUBLIC_BUILDER_API_KEY=your-public-key  # Required for fetching (read)
    ```
 
 2. **Data Files**:
+
    - `data/exports/Affiliations_wix.csv` - Source data (already present)
    - `data/mappings/tag-migration-mapping.json` - Tag ID mappings (already present)
 
@@ -33,6 +35,7 @@ node scripts/migrations/migrate-affiliations.js 10
 ```
 
 Expected output:
+
 ```
 🚀 Starting Affiliations Migration to Builder.io
 
@@ -83,6 +86,7 @@ This migrates all ~1,826 affiliations. Expected time: ~15-25 minutes (with 200ms
 Replace Wix fetching with Builder.io in `app/api/affiliations/route.ts`.
 
 Key changes:
+
 - Remove `getWixClientServerData()` import
 - Add `getAllBuilderAffiliations()` from new utility
 - Transform response to Wix-compatible format
@@ -90,6 +94,7 @@ Key changes:
 ### Step 2: Create Utility File
 
 Create `app/utils/builderAffiliationUtils.ts` with:
+
 - `getAllBuilderAffiliations()` - Fetch with pagination
 - `transformBuilderAffiliationToWixFormat()` - Transform for compatibility
 
@@ -129,26 +134,31 @@ grep -r "wixClient.*Affiliations\|queryDataItems.*Affiliations" app/ --exclude-d
 ### Migration Script Issues
 
 **"Builder.io Private API key not found"**
+
 - Ensure `BUILDER_PRIVATE_API_KEY` is set in `.env.local`
 - Get key from: https://builder.io/account/space
 
 **"Missing tag mapping for Wix ID: xxx"**
+
 - This is a warning, not an error
 - The tag wasn't migrated or doesn't exist
 - Affiliation will be created with null reference
 
 **"HTTP 429: Rate limited"**
+
 - Script implements 200ms delay between requests
 - If still rate limited, increase delay in script
 
 ### API Endpoint Issues
 
 **"Error fetching affiliations"**
+
 - Check Builder.io API key is valid
 - Check network connectivity
 - Check Builder.io service status
 
 **Cache not updating**
+
 - Clear Redis cache manually
 - Call POST `/api/affiliations` to refresh
 - Check cache TTL configuration
@@ -156,11 +166,13 @@ grep -r "wixClient.*Affiliations\|queryDataItems.*Affiliations" app/ --exclude-d
 ### Data Verification
 
 **Affiliation count mismatch**
+
 - Some records may have failed during migration
 - Check mapping file `stats` section
 - Re-run migration (will skip already migrated)
 
 **Tag references missing**
+
 - Tags may not have been migrated
 - Check `tag-migration-mapping.json` for missing entries
 - Run tag migration if needed
@@ -172,11 +184,13 @@ grep -r "wixClient.*Affiliations\|queryDataItems.*Affiliations" app/ --exclude-d
 If issues occur:
 
 1. **Revert code changes** (P2):
+
    ```bash
    git checkout main -- app/api/affiliations/route.ts
    ```
 
 2. **Keep Builder.io data** (can coexist with Wix):
+
    - No need to delete Builder.io affiliations
    - Wix data remains unchanged
 
@@ -188,6 +202,7 @@ If issues occur:
 ## Validation Checklist
 
 ### Phase 1 Complete ✓
+
 - [ ] Migration script created at `scripts/migrations/migrate-affiliations.js`
 - [ ] Test migration successful (10 records)
 - [ ] Full migration completed (~1,826 records)
@@ -195,10 +210,10 @@ If issues occur:
 - [ ] Spot-check verification passed
 
 ### Phase 2 Complete ✓
+
 - [ ] API endpoint updated to use Builder.io
 - [ ] Utility file created at `app/utils/builderAffiliationUtils.ts`
 - [ ] API returns correct response format
 - [ ] Cache warming works
 - [ ] Tag popularity calculation works
 - [ ] No Wix dependencies remaining (grep check)
-
