@@ -437,7 +437,11 @@ async function invalidateTagCache() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      keys: ["tags.json", "tags-with-popularity.json"],
+      keys: [
+        "tags_builder.json",
+        "tags-with-popularity_builder.json",
+        "builder-tags-raw_builder.json",
+      ],
     }),
   });
 }
@@ -450,8 +454,9 @@ await refetchTags(); // Re-fetch tags for UI
 
 **Cache Keys**:
 
-- `tags.json` - All tags from Builder.io
-- `tags-with-popularity.json` - Tags with mention counts
+- `tags_builder.json` - All tags from Builder.io (isolated from production)
+- `tags-with-popularity_builder.json` - Tags with mention counts (isolated from production)
+- `builder-tags-raw_builder.json` - Raw Builder.io tag data (internal cache)
 
 **When to Invalidate**:
 
@@ -629,7 +634,7 @@ if (duplicate) {
 
 ```typescript
 // Verify cache working
-const cached = await RedisCacheService.getFromCache("tags.json");
+const cached = await RedisCacheService.getFromCache("tags_builder.json");
 console.log("Cache hit:", !!cached);
 
 // Check tag count

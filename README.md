@@ -108,9 +108,10 @@ futures4europe-builder-io/
   - [x] Tag fetching: All GET operations use Builder.io
   - [x] Tag creation: UI components create in Builder.io
   - [x] CRUD API: Full RESTful API for tags (GET/POST/PUT/DELETE)
-  - [x] Cache system: Redis caching with Builder.io source
+  - [x] Cache system: Redis caching with `_builder` suffix for isolation
   - [x] Mentions calculation: Popularity with Wix affiliation translation
   - [x] Zero Wix dependencies for tag operations
+  - [x] Cache isolation: Builder.io caches separate from production with `_builder` suffix
 - [x] **Caching Layer**: Redis integration for performance
 - [x] **Static Site Generation**: ISR (Incremental Static Regeneration) setup
 

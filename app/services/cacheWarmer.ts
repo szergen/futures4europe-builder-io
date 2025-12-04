@@ -11,7 +11,11 @@ export async function warmCache() {
     console.log("Fetching tags from Builder.io for cache warming...");
     const tagsResponse = await fetch(`${baseUrl}/api/tags`);
     const tags = await tagsResponse.json();
-    await RedisCacheService.saveToCache("tags.json", tags, 4 * 60 * 60 * 1000);
+    await RedisCacheService.saveToCache(
+      "tags_builder.json",
+      tags,
+      4 * 60 * 60 * 1000
+    );
     console.log(`✓ Cached ${tags.length} tags from Builder.io`);
 
     // Fetch and cache all info pages
@@ -47,7 +51,7 @@ export async function warmCache() {
     );
     const popularTags = await popularTagsResponse.json();
     await RedisCacheService.saveToCache(
-      "tags-with-popularity.json",
+      "tags-with-popularity_builder.json",
       popularTags,
       4 * 60 * 60 * 1000
     );

@@ -354,7 +354,7 @@ export async function getAllBuilderTags(options?: {
   skipCache?: boolean;
 }): Promise<BuilderTag[]> {
   const { includeRefs = false, skipCache = false } = options || {};
-  const cacheKey = "builder-tags-raw.json"; // Different key to avoid conflict with transformed tags
+  const cacheKey = "builder-tags-raw_builder.json"; // Builder.io implementation cache (isolated from production)
 
   try {
     // Check Redis cache first (unless skipCache is true)
@@ -604,10 +604,12 @@ export async function createBuilderTag(tagData: {
       createdTag.id
     );
 
-    // Invalidate both caches to include new tag
-    await RedisCacheService.invalidateCache("builder-tags-raw.json");
-    await RedisCacheService.invalidateCache("tags.json");
-    await RedisCacheService.invalidateCache("tags-with-popularity.json");
+    // Invalidate all Builder.io caches to include new tag
+    await RedisCacheService.invalidateCache("builder-tags-raw_builder.json");
+    await RedisCacheService.invalidateCache("tags_builder.json");
+    await RedisCacheService.invalidateCache(
+      "tags-with-popularity_builder.json"
+    );
 
     return createdTag;
   } catch (error: any) {
@@ -715,10 +717,12 @@ export async function updateBuilderTag(
 
     console.log(`✓ Tag ${id} updated in Builder.io`);
 
-    // Invalidate all tag caches
-    await RedisCacheService.invalidateCache("builder-tags-raw.json");
-    await RedisCacheService.invalidateCache("tags.json");
-    await RedisCacheService.invalidateCache("tags-with-popularity.json");
+    // Invalidate all Builder.io tag caches
+    await RedisCacheService.invalidateCache("builder-tags-raw_builder.json");
+    await RedisCacheService.invalidateCache("tags_builder.json");
+    await RedisCacheService.invalidateCache(
+      "tags-with-popularity_builder.json"
+    );
 
     return updatedTag;
   } catch (error: any) {

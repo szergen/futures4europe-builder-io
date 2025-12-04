@@ -6,7 +6,7 @@ import { RedisCacheService } from "@app/services/redisCache";
 export const revalidate = 0; // 5 minutes
 
 export const GET = async (req: NextRequest) => {
-  const cacheKey = "tags-with-popularity.json";
+  const cacheKey = "tags-with-popularity_builder.json"; // Builder.io implementation cache
 
   try {
     const cachedData = await RedisCacheService.getFromCache(cacheKey);
@@ -18,7 +18,7 @@ export const GET = async (req: NextRequest) => {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
     // Try to get data from cache first, if not found fetch from API
-    let tags = await RedisCacheService.getFromCache("tags.json");
+    let tags = await RedisCacheService.getFromCache("tags_builder.json");
     let infoPages = await RedisCacheService.getFromCache("infoPages.json");
     let postPages = await RedisCacheService.getFromCache("postPages.json");
     let affiliations = await RedisCacheService.getFromCache(

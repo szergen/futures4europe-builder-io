@@ -9,7 +9,7 @@ import {
 export const revalidate = 0;
 
 export const GET = async (req: NextRequest) => {
-  const cacheKey = "tags.json";
+  const cacheKey = "tags_builder.json"; // Builder.io implementation cache
 
   try {
     // Try to get from cache first
@@ -64,7 +64,7 @@ export const GET = async (req: NextRequest) => {
 };
 
 export const POST = async (req: NextRequest) => {
-  const cacheKey = "tags.json";
+  const cacheKey = "tags_builder.json"; // Builder.io implementation cache
 
   try {
     console.log("Rebuilding tags cache from Builder.io...");
