@@ -47,6 +47,7 @@ interface AuthContextType {
   tags: Array<TagProps>;
   tagsFetched: boolean;
   handleTagCreated: () => void;
+  appendTag: (tag: TagProps) => void;
   postPages: any[];
   postPagesFetched: boolean;
   handlePostPageCreated: () => void;
@@ -179,6 +180,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const handleTagCreated = () => {
     setRefreshTags(true); // Simply set to true instead of toggling
+  };
+
+  // OPTIMIZATION: Append a single tag to state without full refresh
+  const appendTag = (tag: TagProps) => {
+    if (!tag) return;
+    setTags((prevTags) => {
+      // Check if tag already exists to avoid duplicates
+      const exists = prevTags.some(
+        (t) => t._id === tag._id || t.name === tag.name
+      );
+      if (exists) {
+        console.log(
+          `Tag "${tag.name}" already exists in state, skipping append`
+        );
+        return prevTags;
+      }
+      console.log(`✓ Tag "${tag.name}" appended to AuthContext state`);
+      return [...prevTags, { ...tag, mentions: 0 }];
+    });
   };
 
   const uploadTag = async (tagName: string) => {
@@ -424,6 +444,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         tags,
         tagsFetched,
         handleTagCreated,
+        appendTag,
         postPages,
         postPagesFetched,
         handlePostPageCreated,
