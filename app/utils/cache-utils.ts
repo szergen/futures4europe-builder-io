@@ -7,9 +7,9 @@
  * @param key The cache key to invalidate
  */
 export const invalidateCache = async (key: string): Promise<Response> => {
-  return fetch('/api/invalidate-cache', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  return fetch("/api/invalidate-cache", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ key }),
   });
 };
@@ -23,9 +23,9 @@ export const invalidateCacheAndRevalidatePath = async (
   key: string,
   path: string
 ): Promise<Response> => {
-  return fetch('/api/invalidate-cache', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  return fetch("/api/invalidate-cache", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ key, path }),
   });
 };
@@ -34,10 +34,10 @@ export const invalidateCacheAndRevalidatePath = async (
  * Invalidates all cache
  */
 export const invalidateAllCache = async (): Promise<Response> => {
-  return fetch('/api/invalidate-cache', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ key: '*' }),
+  return fetch("/api/invalidate-cache", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key: "*" }),
   });
 };
 
@@ -46,9 +46,9 @@ export const invalidateAllCache = async (): Promise<Response> => {
  * @param path The path to revalidate
  */
 export const revalidatePath = async (path: string): Promise<Response> => {
-  return fetch('/api/invalidate-cache', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  return fetch("/api/invalidate-cache", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ path }),
   });
 };
@@ -88,5 +88,13 @@ export const invalidateOrganisationPageCache = async (
 export const invalidatePostPageCache = async (
   slug: string
 ): Promise<Response[]> => {
-  return Promise.all([revalidatePath(`/post/${slug}`)]);
+  // Extract clean slug (remove /post/ prefix if present)
+  const cleanSlug = slug.replace(/^\/post\//, "").replace(/^\/post-page\//, "");
+  console.log(`[Cache] Invalidating post page cache for: ${cleanSlug}`);
+
+  // Revalidate both possible paths to be safe
+  return Promise.all([
+    revalidatePath(`/post-page/${cleanSlug}`), // Main post-page route
+    revalidatePath(`/post/${cleanSlug}`), // Legacy/alternate route
+  ]);
 };

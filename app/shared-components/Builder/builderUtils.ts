@@ -31,6 +31,10 @@ export async function getBuilderContent(
         limit: options.limit,
         offset: options.offset,
         enrich: true,
+        cachebust: true, // Disable SDK caching for fresh data
+        options: {
+          includeRefs: true, // Ensure references are enriched
+        },
       })
       .toPromise();
 
@@ -84,6 +88,9 @@ export async function getAllBuilderContent(
       query: options.query,
       limit: options.limit || 50,
       offset: options.offset || 0,
+      options: {
+        includeRefs: true, // Ensure references are enriched
+      },
     });
 
     return content;

@@ -10,9 +10,12 @@ import {
   extractSlugFromPath,
 } from "@app/utils/builderPostUtils";
 
-// Next.js will invalidate the cache when a
-// request comes in, at most once every 60 seconds.
-// export const revalidate = 300; // Revalidate every 5 minutes
+// Force dynamic rendering to always get fresh data
+// This ensures newly created/updated posts are immediately visible
+export const dynamic = "force-dynamic";
+
+// Disable caching for this route to ensure fresh Builder.io data
+export const revalidate = 0;
 
 // We'll prerender only the params from `generateStaticParams` at build time.
 // If a request comes in for a path that hasn't been generated,

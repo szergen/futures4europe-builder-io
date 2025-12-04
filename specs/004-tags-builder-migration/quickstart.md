@@ -735,19 +735,73 @@ const tags = await getAllBuilderTags(); // Uses cache
 const tags = await builder.getAll("tag"); // Direct API call every time
 ```
 
-### 4. Invalidate Cache After Writes
+### 4. Cache Optimization (Automatic)
+
+**Note**: Cache management is now optimized automatically. You don't need to manually invalidate!
 
 ```typescript
-// ✅ Good - Invalidate after create/update
+// ✅ Optimized - Cache is automatically updated
 const newTag = await createBuilderTag(data);
-await fetch("/api/invalidate-cache", { method: "POST" });
+// New tag is APPENDED to cache, not invalidated
+// Instant availability, no refetch needed
 
-// ❌ Bad - Forget to invalidate
-const newTag = await createBuilderTag(data);
-// Cache now stale!
+const updated = await updateBuilderTag(id, data);
+// Tag is UPDATED in cache, mentions preserved
+// Instant reflection, no refetch needed
 ```
 
-### 5. Use Batch Operations
+**How it works**:
+
+1. **CREATE**: Appends new tag to all 3 cache layers
+
+   - `builder-tags-raw_builder.json`
+   - `tags_builder.json`
+   - `tags-with-popularity_builder.json` (mentions: 0)
+
+2. **UPDATE**: Updates tag in all 3 cache layers (preserves mentions)
+
+3. **Fallback**: If cache operation fails, falls back to invalidation
+
+**Performance Impact**:
+
+- Before: ~10-15s cache rebuild on next request
+- After: Instant availability (< 1ms cache update)
+
+```typescript
+// ❌ Old Way (don't do this)
+const newTag = await createBuilderTag(data);
+await fetch("/api/invalidate-cache", { method: "POST" }); // No longer needed!
+```
+
+### 5. Page Load Optimization
+
+**Optimization**: Removed unnecessary cache invalidation on page load.
+
+```typescript
+// ❌ Before - New_Post page load triggered full cache rebuild
+useEffect(() => {
+  isNewPost && handleTagCreated(); // Invalidated ALL caches
+}, []);
+// Result: 10-15s delay every time someone visited /post-page/New_Post
+
+// ✅ After - New_Post uses existing cached data
+// No useEffect, no cache invalidation
+// Result: <100ms instant load
+```
+
+**Why this matters**:
+
+- **Before**: Every New_Post page visit → Full cache rebuild → 3,000+ tags refetched
+- **After**: New_Post page uses existing cache → Instant load
+- **Trade-off**: Tags might be 1-4 hours stale (acceptable for low-traffic site)
+
+**When cache IS invalidated**:
+
+- Manual cache clear via `/api/invalidate-cache`
+- Cache TTL expires (4 hours)
+- Error in cache append/update operations (fallback)
+
+### 6. Use Batch Operations
 
 ```typescript
 // ✅ Good - Transform in batch

@@ -433,9 +433,11 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
     }
   }, [userDetails, tags]);
 
-  useEffect(() => {
-    isNewPost && handleTagCreated();
-  }, []);
+  // Removed automatic cache refresh on New_Post page load
+  // No need to invalidate cache just for viewing the new post form
+  // useEffect(() => {
+  //   isNewPost && handleTagCreated();
+  // }, []);
 
   const saveOrCreateHandler = isNewPost ? createNewPost : updateDataToServer;
   console.log("postdatadata", postData);
@@ -530,7 +532,6 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
                 updatePostDataBasedOnKeyValue("pageType", value)
               }
               tagType="page type"
-              onTagCreated={handleTagCreated}
               isMulti
               extraFilterTags={extraFilterTags}
               newTagHeader="Create a new page type"
@@ -557,7 +558,6 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         updatePostData={updatePostData}
         updatePostDataBasedOnKeyValue={updatePostDataBasedOnKeyValue}
         tags={tags}
-        handleTagCreated={handleTagCreated}
         setValidationState={updateValidationState}
         // defaultPostTitle={defaultPostData.title}
       />
@@ -582,7 +582,6 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
             updatePostDataBasedOnKeyValue("projectAuthors", value)
           }
           tagType="person"
-          handleTagCreated={handleTagCreated}
         />
       ) : (
         ""
@@ -626,7 +625,6 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
               updatePostDataBasedOnKeyValue("eventModerators", value)
             }
             tagType="person"
-            handleTagCreated={handleTagCreated}
           />
           {/* Speakers */}
           <TagListComponent
@@ -642,7 +640,6 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
               updatePostDataBasedOnKeyValue("eventSpeakers", value)
             }
             tagType="person"
-            handleTagCreated={handleTagCreated}
           />
         </>
       )}
@@ -663,7 +660,6 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
             updatePostDataBasedOnKeyValue("people", value)
           }
           tagType="person"
-          handleTagCreated={handleTagCreated}
         />
       ) : (
         ""
@@ -682,7 +678,6 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           updatePostDataBasedOnKeyValue("foreSightMethods", value)
         }
         tagType="foresight method"
-        handleTagCreated={handleTagCreated}
       />
       {/* Domains */}
       <TagListComponent
@@ -696,7 +691,6 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           updatePostDataBasedOnKeyValue("domains", value)
         }
         tagType="domain"
-        handleTagCreated={handleTagCreated}
       />
       {/* Project */}
       <TagListComponent
@@ -710,7 +704,6 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           updatePostDataBasedOnKeyValue("project", value)
         }
         tagType="project"
-        handleTagCreated={handleTagCreated}
       />
       {/* Organisation */}
       <TagListComponent
@@ -730,7 +723,6 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           updatePostDataBasedOnKeyValue("organisation", value)
         }
         tagType="organisation"
-        handleTagCreated={handleTagCreated}
       />
       {/* Content related to this Info Page */}
       <MiniPagesListComponentPost

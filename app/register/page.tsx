@@ -50,7 +50,7 @@ export default function RegisterPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: tagName,
+            name: tagName,
           tagType: "person",
         }),
       });

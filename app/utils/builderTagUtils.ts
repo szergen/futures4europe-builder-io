@@ -510,19 +510,23 @@ export async function getBuilderTagById(
  * Create a new tag in Builder.io with validation and duplicate checking
  *
  * @param tagData - Tag data to create
+ * @param existingTags - Optional: Pre-loaded tags for duplicate checking (avoids re-fetching)
  * @returns Created Builder.io tag with ID
  * @throws ValidationError if required fields missing
  * @throws DuplicateError if tag name already exists
  * @throws BuilderApiError on Builder.io failures
  */
-export async function createBuilderTag(tagData: {
-  name: string;
-  tagType: string;
-  tagLine?: string;
-  picture?: string;
-  tagPageLink?: string;
-  masterTag?: string; // Builder.io tag ID
-}): Promise<BuilderTag> {
+export async function createBuilderTag(
+  tagData: {
+    name: string;
+    tagType: string;
+    tagLine?: string;
+    picture?: string;
+    tagPageLink?: string;
+    masterTag?: string; // Builder.io tag ID
+  },
+  existingTags?: Array<{ name?: string; _id?: string }> // Optional: pass existing tags to avoid refetch
+): Promise<BuilderTag> {
   // Validate required fields
   if (!tagData.name || !tagData.name.trim()) {
     throw new ValidationError("Tag name is required", "name");
@@ -533,22 +537,43 @@ export async function createBuilderTag(tagData: {
 
   try {
     // Check for duplicate name (case-insensitive)
-    const allTags = await getAllBuilderTags({ skipCache: true });
+    // OPTIMIZATION: Use provided tags if available, otherwise use cache (not re-fetch!)
+    let duplicate: any = null;
 
-    console.log(
-      `Checking for duplicate tag: "${tagData.name}" (total tags: ${allTags.length})`
-    );
-
-    const duplicate = allTags.find((tag) => {
-      // Guard against missing data or name
-      if (!tag?.data?.name) {
-        console.warn(
-          `Tag with ID ${tag?.id} has no name, skipping duplicate check`
+    if (existingTags && existingTags.length > 0) {
+      // Fast path: Use pre-loaded tags from caller (no API call)
+      console.log(
+        `Checking for duplicate tag: "${tagData.name}" using ${existingTags.length} pre-loaded tags`
+      );
+      duplicate = existingTags.find(
+        (tag) =>
+          tag?.name && tag.name.toLowerCase() === tagData.name.toLowerCase()
+      );
+    } else {
+      // Fallback: Use cache (skipCache: false to avoid re-fetching everything)
+      const cachedTags = await RedisCacheService.getFromCache(
+        "tags_builder.json"
+      );
+      if (cachedTags && Array.isArray(cachedTags)) {
+        console.log(
+          `Checking for duplicate tag: "${tagData.name}" using ${cachedTags.length} cached tags`
         );
-        return false;
+        duplicate = cachedTags.find(
+          (tag: any) =>
+            tag?.name && tag.name.toLowerCase() === tagData.name.toLowerCase()
+        );
+      } else {
+        // Last resort: Only fetch if no cache exists
+        console.log(
+          `No cache available, fetching tags for duplicate check: "${tagData.name}"`
+        );
+        const allTags = await getAllBuilderTags({ skipCache: false });
+        duplicate = allTags.find((tag) => {
+          if (!tag?.data?.name) return false;
+          return tag.data.name.toLowerCase() === tagData.name.toLowerCase();
+        });
       }
-      return tag.data.name.toLowerCase() === tagData.name.toLowerCase();
-    });
+    }
 
     if (duplicate) {
       console.log(
@@ -578,16 +603,16 @@ export async function createBuilderTag(tagData: {
     }
 
     const createdTag = await fetchWithRetry(async () => {
-      const res = await fetch("https://builder.io/api/v1/write", {
+      const res = await fetch("https://builder.io/api/v1/write/tag", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          modelName: "tag",
+          name: payload.name,
+          data: payload,
           published: "published",
-          ...payload,
         }),
       });
 
@@ -604,12 +629,61 @@ export async function createBuilderTag(tagData: {
       createdTag.id
     );
 
-    // Invalidate all Builder.io caches to include new tag
-    await RedisCacheService.invalidateCache("builder-tags-raw_builder.json");
-    await RedisCacheService.invalidateCache("tags_builder.json");
-    await RedisCacheService.invalidateCache(
-      "tags-with-popularity_builder.json"
-    );
+    // OPTIMIZATION: Append to cache instead of invalidating
+    // This is faster and doesn't require refetching all 3000+ tags
+    try {
+      // 1. Append to raw Builder.io tags cache
+      const rawCacheKey = "builder-tags-raw_builder.json";
+      const rawCached = await RedisCacheService.getFromCache(rawCacheKey);
+      if (rawCached && Array.isArray(rawCached)) {
+        rawCached.push(createdTag);
+        await RedisCacheService.saveToCache(
+          rawCacheKey,
+          rawCached,
+          4 * 60 * 60 * 1000
+        );
+        console.log("✓ New tag appended to raw cache");
+      }
+
+      // 2. Append to transformed Wix format cache
+      const wixCacheKey = "tags_builder.json";
+      const wixCached = await RedisCacheService.getFromCache(wixCacheKey);
+      if (wixCached && Array.isArray(wixCached)) {
+        const wixFormatted = transformBuilderTagToWixFormat(createdTag);
+        wixCached.push(wixFormatted);
+        await RedisCacheService.saveToCache(
+          wixCacheKey,
+          wixCached,
+          4 * 60 * 60 * 1000
+        );
+        console.log("✓ New tag appended to Wix format cache");
+      }
+
+      // 3. Append to tags-with-popularity cache (with 0 mentions initially)
+      const popCacheKey = "tags-with-popularity_builder.json";
+      const popCached = await RedisCacheService.getFromCache(popCacheKey);
+      if (popCached && Array.isArray(popCached)) {
+        const wixFormatted = transformBuilderTagToWixFormat(createdTag);
+        popCached.push({ ...wixFormatted, mentions: 0 });
+        await RedisCacheService.saveToCache(
+          popCacheKey,
+          popCached,
+          4 * 60 * 60 * 1000
+        );
+        console.log("✓ New tag appended to popularity cache");
+      }
+    } catch (cacheError) {
+      console.warn(
+        "Failed to append tag to cache, will invalidate:",
+        cacheError
+      );
+      // Fallback to invalidation if append fails
+      await RedisCacheService.invalidateCache("builder-tags-raw_builder.json");
+      await RedisCacheService.invalidateCache("tags_builder.json");
+      await RedisCacheService.invalidateCache(
+        "tags-with-popularity_builder.json"
+      );
+    }
 
     return createdTag;
   } catch (error: any) {
@@ -695,15 +769,16 @@ export async function updateBuilderTag(
     }
 
     const updatedTag = await fetchWithRetry(async () => {
-      const res = await fetch(`https://builder.io/api/v1/write/${id}`, {
+      const res = await fetch(`https://builder.io/api/v1/write/tag/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          modelName: "tag",
-          ...updatedData,
+          name: updatedData.name,
+          data: updatedData,
+          published: "published",
         }),
       });
 
@@ -717,12 +792,73 @@ export async function updateBuilderTag(
 
     console.log(`✓ Tag ${id} updated in Builder.io`);
 
-    // Invalidate all Builder.io tag caches
-    await RedisCacheService.invalidateCache("builder-tags-raw_builder.json");
-    await RedisCacheService.invalidateCache("tags_builder.json");
-    await RedisCacheService.invalidateCache(
-      "tags-with-popularity_builder.json"
-    );
+    // OPTIMIZATION: Update cache entries instead of invalidating
+    try {
+      // 1. Update raw Builder.io tags cache
+      const rawCacheKey = "builder-tags-raw_builder.json";
+      const rawCached = await RedisCacheService.getFromCache(rawCacheKey);
+      if (rawCached && Array.isArray(rawCached)) {
+        const index = rawCached.findIndex((tag) => tag.id === id);
+        if (index !== -1) {
+          rawCached[index] = updatedTag;
+          await RedisCacheService.saveToCache(
+            rawCacheKey,
+            rawCached,
+            4 * 60 * 60 * 1000
+          );
+          console.log("✓ Tag updated in raw cache");
+        }
+      }
+
+      // 2. Update transformed Wix format cache
+      const wixCacheKey = "tags_builder.json";
+      const wixCached = await RedisCacheService.getFromCache(wixCacheKey);
+      if (wixCached && Array.isArray(wixCached)) {
+        const index = wixCached.findIndex((tag) => tag._id === id);
+        if (index !== -1) {
+          const wixFormatted = transformBuilderTagToWixFormat(updatedTag);
+          // Preserve existing mentions if present
+          const existingMentions = wixCached[index].mentions;
+          wixCached[index] = { ...wixFormatted, mentions: existingMentions };
+          await RedisCacheService.saveToCache(
+            wixCacheKey,
+            wixCached,
+            4 * 60 * 60 * 1000
+          );
+          console.log("✓ Tag updated in Wix format cache");
+        }
+      }
+
+      // 3. Update tags-with-popularity cache
+      const popCacheKey = "tags-with-popularity_builder.json";
+      const popCached = await RedisCacheService.getFromCache(popCacheKey);
+      if (popCached && Array.isArray(popCached)) {
+        const index = popCached.findIndex((tag) => tag._id === id);
+        if (index !== -1) {
+          const wixFormatted = transformBuilderTagToWixFormat(updatedTag);
+          // Preserve existing mentions
+          const existingMentions = popCached[index].mentions;
+          popCached[index] = { ...wixFormatted, mentions: existingMentions };
+          await RedisCacheService.saveToCache(
+            popCacheKey,
+            popCached,
+            4 * 60 * 60 * 1000
+          );
+          console.log("✓ Tag updated in popularity cache");
+        }
+      }
+    } catch (cacheError) {
+      console.warn(
+        "Failed to update tag in cache, will invalidate:",
+        cacheError
+      );
+      // Fallback to invalidation if update fails
+      await RedisCacheService.invalidateCache("builder-tags-raw_builder.json");
+      await RedisCacheService.invalidateCache("tags_builder.json");
+      await RedisCacheService.invalidateCache(
+        "tags-with-popularity_builder.json"
+      );
+    }
 
     return updatedTag;
   } catch (error: any) {

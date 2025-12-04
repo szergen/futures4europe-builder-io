@@ -8,7 +8,6 @@ import styles from "./TagPicker.module.css";
 import { motion } from "framer-motion";
 import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
 import SpriteSvg from "../SpriteSvg/SpriteSvg";
-import { refetchTags } from "@app/utils/refetch-utils";
 import { Typography } from "@mui/material";
 // import Option from 'react-select/dist/declarations/src/components/Option';
 
@@ -79,7 +78,7 @@ export const TagPicker: React.FC<TagPickerProps> = ({
   const [tagName, setTagName] = useState("");
   const [tagTagline, setTagTagline] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { tags: allTags } = useAuth();
+  const { tags: allTags, appendTag } = useAuth();
   // #endregion
 
   // #region Tag picker state
@@ -108,6 +107,13 @@ export const TagPicker: React.FC<TagPickerProps> = ({
   // #region Builder.io upload logic
   const uploadTag = async (tagName: string, tagTagline: string) => {
     try {
+      // OPTIMIZATION: Pass existing tags to avoid re-fetching 3000+ tags for duplicate check
+      // Only send minimal data (name and _id) to keep payload small
+      const existingTagsMinimal = allTags?.map((tag) => ({
+        name: tag.name,
+        _id: tag._id,
+      }));
+
       const response = await fetch("/api/builder/tag", {
         method: "POST",
         headers: {
@@ -117,6 +123,7 @@ export const TagPicker: React.FC<TagPickerProps> = ({
           name: tagName,
           tagLine: tagTagline,
           tagType: tagType,
+          existingTags: existingTagsMinimal, // Pass for duplicate checking
         }),
       });
 
@@ -141,15 +148,26 @@ export const TagPicker: React.FC<TagPickerProps> = ({
     setIsLoading(true);
 
     try {
-      // #region Logic for creating Tag in Wix
+      // #region Logic for creating Tag in Builder.io
       const uploadedTag = await uploadTag(tagName, tagTagline);
-      await refetchTags();
+      console.log("uploadedTag from Builder.io:", uploadedTag);
+
+      // Transform Builder.io tag to Wix format for state consistency
+      const wixFormattedTag = {
+        _id: uploadedTag?.id,
+        name: uploadedTag?.data?.name || tagName,
+        tagType: uploadedTag?.data?.tagType || tagType,
+        tagLine: uploadedTag?.data?.tagLine || tagTagline,
+        picture: uploadedTag?.data?.picture,
+        tagPageLink: uploadedTag?.data?.tagPageLink,
+        masterTag: uploadedTag?.data?.masterTag,
+        mentions: 0,
+      };
+
+      // OPTIMIZATION: Append to AuthContext state (no full refetch)
+      appendTag(wixFormattedTag);
+
       onTagCreated && onTagCreated();
-
-      // #region tags should be refetched here
-
-      // #endregion
-      console.log("uploadedTag", uploadedTag);
       // #endregion
 
       // #region Logic for updating the tag picker options
@@ -162,18 +180,20 @@ export const TagPicker: React.FC<TagPickerProps> = ({
       // #endregion
 
       // #region Extra logic to update the post data
-      // Single tag picker
-      tags?.push(uploadedTag?.dataItem?.data);
-      updatePostData &&
-        !isMulti &&
-        updatePostData(tags?.find((tag) => tag?.name === newOption?.label));
-      // Multi tag picker
+      // Single tag picker - use the new tag directly
+      updatePostData && !isMulti && updatePostData(wixFormattedTag);
+      // Multi tag picker - append the new tag
       updatePostData &&
         isMulti &&
         updatePostData(
-          [...(value || []), newOption]?.map((value: any) =>
-            tags?.find((tag) => tag?.name === value?.label)
-          )
+          [...(value || []), newOption]?.map((val: any) => {
+            // If it's the newly created tag, use it directly
+            if (val?.label === tagName) {
+              return wixFormattedTag;
+            }
+            // Otherwise find from existing tags
+            return tags?.find((tag) => tag?.name === val?.label);
+          })
         );
       // #endregion
 

@@ -15,7 +15,15 @@ export const revalidate = 0;
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
-    const { name, tagType, tagLine, picture, tagPageLink, masterTag } = body;
+    const {
+      name,
+      tagType,
+      tagLine,
+      picture,
+      tagPageLink,
+      masterTag,
+      existingTags, // Optional: pre-loaded tags for duplicate checking (avoids re-fetch)
+    } = body;
 
     // Validate required fields
     if (!name || !name.trim()) {
@@ -42,15 +50,18 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
-    // Create tag in Builder.io
-    const createdTag = await createBuilderTag({
-      name,
-      tagType,
-      tagLine,
-      picture,
-      tagPageLink,
-      masterTag,
-    });
+    // Create tag in Builder.io (pass existing tags to avoid re-fetching 3000+ tags)
+    const createdTag = await createBuilderTag(
+      {
+        name,
+        tagType,
+        tagLine,
+        picture,
+        tagPageLink,
+        masterTag,
+      },
+      existingTags // Pass through for duplicate checking
+    );
 
     return NextResponse.json(
       {
