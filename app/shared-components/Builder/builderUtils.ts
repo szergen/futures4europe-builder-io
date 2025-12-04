@@ -31,6 +31,7 @@ export async function getBuilderContent(
         limit: options.limit,
         offset: options.offset,
         enrich: true,
+        cachebust: true, // Disable SDK caching for fresh data
         options: {
           includeRefs: true, // Ensure references are enriched
         },
