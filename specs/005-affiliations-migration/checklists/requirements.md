@@ -2,6 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning  
 **Created**: 2024-12-04  
+**Updated**: 2024-12-04 (clarifications resolved)  
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
@@ -69,3 +70,9 @@
 - P1 (Migration) can be implemented and tested independently
 - P2 (Fetch Switch) depends on P1 completion
 - UI operations for affiliations (create/update) intentionally deferred to separate spec
+
+### Clarifications Resolved (2024-12-04)
+
+1. **Response Format**: Transform Builder.io → Wix format for backwards compatibility
+2. **Failure Handling**: Continue on failure (log and skip failed records)
+3. **Verification**: Sample verification (spot-check 5-10 random records) + summary report

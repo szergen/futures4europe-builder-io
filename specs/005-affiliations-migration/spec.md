@@ -63,6 +63,14 @@ This feature is split into two phases:
 
 **Note**: Creating and updating affiliations from the UI (POST operations) is explicitly out of scope and will be handled in a separate specification.
 
+## Clarifications
+
+### Session 2024-12-04
+
+- **Q: Response Format Compatibility** → A: Transform Builder.io response to match existing Wix format for backwards compatibility. The `/api/affiliations` endpoint will fetch from Builder.io but transform the response to maintain the `{ data: { ... } }` wrapper structure that consumers expect.
+- **Q: Migration Failure Handling** → A: Continue on failure - log error, skip failed record, continue with remaining records. This is optimal for large datasets (~1,826 records) and allows the migration to complete even if some records have issues.
+- **Q: Post-Migration Verification** → A: Sample verification - spot-check 5-10 random records for data accuracy after migration completes. The migration script will also output a summary report with counts of successful/failed/skipped records.
+
 ## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - P1: Migrate Affiliations Data to Builder.io (Priority: P1)
@@ -140,17 +148,20 @@ The application needs to fetch affiliations from Builder.io instead of Wix, ensu
 - **FR-011**: Script MUST save progress incrementally to the mapping file after each successful creation
 - **FR-012**: Script MUST handle malformed personTag values (JSON objects instead of UUIDs) by setting the reference to null
 - **FR-013**: Script MUST display colored console output for progress, success, warnings, and errors
+- **FR-014**: Script MUST continue processing remaining records when individual record migration fails (log error and skip)
+- **FR-015**: Script MUST output a summary report at completion showing: total records, successful migrations, failed migrations, skipped (already migrated), and missing tag references
+- **FR-016**: Script MUST support verification mode to spot-check migrated records (e.g., `--verify 10` to check 10 random records)
 
 **Phase 2 - Fetch Switch**:
 
-- **FR-014**: System MUST update `/api/affiliations` GET endpoint to fetch from Builder.io's `affiliations` model instead of Wix
-- **FR-015**: System MUST update `/api/affiliations` POST endpoint to refresh cache from Builder.io
-- **FR-016**: System MUST update `cacheWarmer.ts` to fetch affiliations from Builder.io
-- **FR-017**: System MUST update tag popularity calculation to work with Builder.io affiliations (no Wix ID translation needed post-migration)
-- **FR-018**: System MUST handle Builder.io pagination for fetching all affiliations (use limit/offset or Builder.io SDK's getAll)
-- **FR-019**: System MUST maintain backwards-compatible response format from `/api/affiliations` endpoint
-- **FR-020**: System MUST use Builder.io public API key for read operations in the API endpoint
-- **FR-021**: System MUST create a Builder.io utility function for fetching affiliations (similar to existing tag utilities)
+- **FR-017**: System MUST update `/api/affiliations` GET endpoint to fetch from Builder.io's `affiliations` model instead of Wix
+- **FR-018**: System MUST update `/api/affiliations` POST endpoint to refresh cache from Builder.io
+- **FR-019**: System MUST update `cacheWarmer.ts` to fetch affiliations from Builder.io
+- **FR-020**: System MUST update tag popularity calculation to work with Builder.io affiliations (no Wix ID translation needed post-migration)
+- **FR-021**: System MUST handle Builder.io pagination for fetching all affiliations (use limit/offset or Builder.io SDK's getAll)
+- **FR-022**: System MUST transform Builder.io affiliations response to match existing Wix format (preserving `{ data: { ... } }` wrapper structure) for backwards compatibility
+- **FR-023**: System MUST use Builder.io public API key for read operations in the API endpoint
+- **FR-024**: System MUST create a Builder.io utility function for fetching affiliations (similar to existing tag utilities)
 
 ### Key Entities
 
