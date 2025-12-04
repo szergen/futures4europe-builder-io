@@ -443,7 +443,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   return (
     <div className={classNames("m-auto mb-20", style.postContainer)}>
       {/* Add OG Image component for client-side fallback */}
-      {!isNewPost && postData?.pageType?.[0].name !== "project result" && (
+      {!isNewPost && postData?.pageType?.[0]?.name !== "project result" && (
         <OgImage
           primaryImage={postData.contentImages?.[0]?.url}
           secondaryImage={
@@ -456,7 +456,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           url={currentUrl}
         />
       )}
-      {!isNewPost && postData?.pageType?.[0].name === "project result" && (
+      {!isNewPost && postData?.pageType?.[0]?.name === "project result" && (
         <OgImage
           primaryImage={postData.projectResultMedia?.thumbnail}
           secondaryImage={"https://futures4europe.eu/images/placeholder.webp"}

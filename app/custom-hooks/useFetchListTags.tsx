@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { getCollectionItems } from '@app/wixUtils/client-side';
+import { useState, useEffect } from "react";
 
 interface UseTagsProps {
   tagType?: string;
@@ -14,23 +13,31 @@ const useTags = ({ tagType }: UseTagsProps = {}) => {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const allTags = await getCollectionItems('Tags');
-        const matchedTags = allTags
-          .map((tag) => tag.data)
-          .filter((tagData) => {
-            const normalizedTagType = tagData.tagType?.toLowerCase();
-            const normalizedFilterType = tagType?.toLowerCase();
-            return (
-              !tagType ||
-              normalizedTagType === normalizedFilterType ||
-              normalizedTagType === normalizedFilterType?.replace(/s$/, '') ||
-              normalizedTagType + 's' === normalizedFilterType
-            );
-          });
+        // Fetch tags from Builder.io via API endpoint
+        const response = await fetch("/api/tags");
+        if (!response.ok) {
+          throw new Error("Failed to fetch tags");
+        }
+        const allTags = await response.json();
+
+        // Filter tags by tagType if specified
+        const matchedTags = allTags.filter((tag: any) => {
+          if (!tagType) return true;
+
+          const normalizedTagType = tag.tagType?.toLowerCase();
+          const normalizedFilterType = tagType?.toLowerCase();
+
+          return (
+            normalizedTagType === normalizedFilterType ||
+            normalizedTagType === normalizedFilterType?.replace(/s$/, "") ||
+            normalizedTagType + "s" === normalizedFilterType
+          );
+        });
 
         setTags(matchedTags);
       } catch (error) {
-        console.error('Error fetching tags:', error);
+        console.error("Error fetching tags from Builder.io:", error);
+        setTags([]);
       } finally {
         setLoading(false);
       }

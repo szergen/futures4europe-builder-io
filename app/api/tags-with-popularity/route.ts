@@ -6,7 +6,7 @@ import { RedisCacheService } from "@app/services/redisCache";
 export const revalidate = 0; // 5 minutes
 
 export const GET = async (req: NextRequest) => {
-  const cacheKey = "tags-with-popularity.json";
+  const cacheKey = "tags-with-popularity_builder.json"; // Builder.io implementation cache
 
   try {
     const cachedData = await RedisCacheService.getFromCache(cacheKey);
@@ -18,7 +18,7 @@ export const GET = async (req: NextRequest) => {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
     // Try to get data from cache first, if not found fetch from API
-    let tags = await RedisCacheService.getFromCache("tags.json");
+    let tags = await RedisCacheService.getFromCache("tags_builder.json");
     let infoPages = await RedisCacheService.getFromCache("infoPages.json");
     let postPages = await RedisCacheService.getFromCache("postPages.json");
     let affiliations = await RedisCacheService.getFromCache(
@@ -27,10 +27,14 @@ export const GET = async (req: NextRequest) => {
 
     // Fetch any missing data from API
     if (!tags) {
+      console.log(
+        "Fetching tags from Builder.io for popularity calculation..."
+      );
       const tagsResponse = await fetch(`${baseUrl}/api/tags`);
       if (!tagsResponse.ok)
         throw new Error(`Failed to fetch tags: ${tagsResponse.status}`);
       tags = await tagsResponse.json();
+      console.log(`✓ Fetched ${tags.length} tags from Builder.io`);
     }
 
     if (!infoPages) {
@@ -60,11 +64,23 @@ export const GET = async (req: NextRequest) => {
       affiliations = await affiliationsResponse.json();
     }
 
-    // Calculate popularity
-    const tagsWithMentions = await tags.map((tag: any) => tag.data);
+    // Calculate popularity using Builder.io tags
+    // Note: Tags from /api/tags are already in Wix format (flat structure)
+    // Affiliations still use Wix IDs, but calculatePopularity handles ID translation
+    const tagsWithMentions = tags; // Already in correct format
     const affiliationsWithMentions = await affiliations.map(
       (affiliation: any) => affiliation.data
     );
+
+    console.log(
+      "Calculating popularity with Builder.io tags and Wix affiliations..."
+    );
+
+    // Import missing IDs tracking from builderTagUtils
+    const { getMissingWixIds, clearMissingWixIds } = await import(
+      "@app/utils/builderTagUtils"
+    );
+    clearMissingWixIds(); // Clear previous run
 
     const popularTags = calculatePopularity(
       tagsWithMentions,
@@ -72,6 +88,17 @@ export const GET = async (req: NextRequest) => {
       postPages,
       affiliationsWithMentions
     );
+
+    const missingIds = getMissingWixIds();
+    console.log(
+      `✓ Calculated popularity for ${popularTags.length} Builder.io tags`
+    );
+    if (missingIds.length > 0) {
+      console.warn(
+        `⚠️  Found ${missingIds.length} unique Wix tag IDs in affiliations that are not in mapping file`
+      );
+      console.warn(`First 5 missing IDs:`, missingIds.slice(0, 5));
+    }
 
     // Sort by popularity
     const sortedTags = popularTags.sort(

@@ -23,12 +23,12 @@ const BUILDER_API_ROUTE = "/api/builder/post";
  * Transform tag arrays to Builder.io Reference format
  * Converts component tag arrays to Builder.io reference structure
  * @param tags - Array of tag objects with _id property
- * @param modelName - Target model name (default: "tag-page")
+ * @param modelName - Target model name (default: "tag")
  * @returns Array of Builder.io Reference objects
  */
 export function transformReferencesForBuilder(
   tags: any[] | undefined,
-  modelName: string = "tag-page"
+  modelName: string = "tag"
 ): any[] {
   if (!tags || !Array.isArray(tags) || tags.length === 0) {
     return [];
@@ -102,7 +102,7 @@ export function transformPostDataForBuilder(
         ? {
             "@type": "@builder.io/core:Reference",
             id: postData.countryTag[0]._id,
-            model: "tag-page",
+            model: "tag",
           }
         : undefined,
 
@@ -319,6 +319,7 @@ export async function getAllBuilderPosts() {
       options: {
         noTargeting: true,
       },
+      cachebust: true,
     });
 
     return posts || [];

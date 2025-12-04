@@ -112,7 +112,7 @@ function transformReferencesForBuilder(tags: any[]): any[] {
     .map((tag) => ({
       "@type": "@builder.io/core:Reference" as const,
       id: tag._id,
-      model: "tag-page",
+      model: "tag",
     }));
 }
 
@@ -183,7 +183,7 @@ export function transformPostDataForBuilder(postData: any): any {
     builderData.data.countryTag = {
       "@type": "@builder.io/core:Reference",
       id: postData.countryTag._id,
-      model: "tag-page",
+      model: "tag",
     };
   }
   if (postData.internalLinks?.length) {
