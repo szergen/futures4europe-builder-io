@@ -32,28 +32,33 @@
 ## Validation Notes
 
 ### Content Quality Review
+
 - ✅ Spec focuses on WHAT needs to be done (migrate data, switch fetching) not HOW
 - ✅ Clear business value: completing the migration from Wix to Builder.io for affiliations
 - ✅ Phased approach (P1: Migration, P2: Fetch Switch) makes delivery incremental
 - ✅ All mandatory sections (User Scenarios, Requirements, Success Criteria) are complete
 
 ### Requirements Review
+
 - ✅ Requirements are numbered (FR-001 through FR-021) and testable
 - ✅ Each functional requirement has a clear action (MUST)
 - ✅ Success criteria are measurable (e.g., "under 30 minutes", "response time under 3 seconds")
 - ✅ Edge cases cover: missing mappings, malformed data, duplicates, rate limiting, large dataset
 
 ### Scope Review
+
 - ✅ Clear in-scope: Migration script (P1), Fetch switch (P2)
 - ✅ Clear out-of-scope: UI create/update operations, rollback mechanism, real-time sync
 - ✅ Phased delivery aligns with user request (P1 migration, P2 fetch switch)
 
 ### Data Model Validation
+
 - ✅ Builder.io affiliations model schema verified via MCP (title, projectTag, organisationTag, extraOrganisationTag, personTag, role, extraIdentifier)
 - ✅ Reference fields correctly identified as pointing to `tag` model
 - ✅ Wix CSV structure documented with all relevant fields
 
 ### Migration Pattern Alignment
+
 - ✅ Follows established pattern from `migrate-tags.js` script
 - ✅ CLI arguments pattern (count, "all") matches existing convention
 - ✅ Mapping file output pattern matches existing convention
@@ -64,4 +69,3 @@
 - P1 (Migration) can be implemented and tested independently
 - P2 (Fetch Switch) depends on P1 completion
 - UI operations for affiliations (create/update) intentionally deferred to separate spec
-
