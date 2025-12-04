@@ -604,12 +604,61 @@ export async function createBuilderTag(tagData: {
       createdTag.id
     );
 
-    // Invalidate all Builder.io caches to include new tag
-    await RedisCacheService.invalidateCache("builder-tags-raw_builder.json");
-    await RedisCacheService.invalidateCache("tags_builder.json");
-    await RedisCacheService.invalidateCache(
-      "tags-with-popularity_builder.json"
-    );
+    // OPTIMIZATION: Append to cache instead of invalidating
+    // This is faster and doesn't require refetching all 3000+ tags
+    try {
+      // 1. Append to raw Builder.io tags cache
+      const rawCacheKey = "builder-tags-raw_builder.json";
+      const rawCached = await RedisCacheService.getFromCache(rawCacheKey);
+      if (rawCached && Array.isArray(rawCached)) {
+        rawCached.push(createdTag);
+        await RedisCacheService.saveToCache(
+          rawCacheKey,
+          rawCached,
+          4 * 60 * 60 * 1000
+        );
+        console.log("✓ New tag appended to raw cache");
+      }
+
+      // 2. Append to transformed Wix format cache
+      const wixCacheKey = "tags_builder.json";
+      const wixCached = await RedisCacheService.getFromCache(wixCacheKey);
+      if (wixCached && Array.isArray(wixCached)) {
+        const wixFormatted = transformBuilderTagToWixFormat(createdTag);
+        wixCached.push(wixFormatted);
+        await RedisCacheService.saveToCache(
+          wixCacheKey,
+          wixCached,
+          4 * 60 * 60 * 1000
+        );
+        console.log("✓ New tag appended to Wix format cache");
+      }
+
+      // 3. Append to tags-with-popularity cache (with 0 mentions initially)
+      const popCacheKey = "tags-with-popularity_builder.json";
+      const popCached = await RedisCacheService.getFromCache(popCacheKey);
+      if (popCached && Array.isArray(popCached)) {
+        const wixFormatted = transformBuilderTagToWixFormat(createdTag);
+        popCached.push({ ...wixFormatted, mentions: 0 });
+        await RedisCacheService.saveToCache(
+          popCacheKey,
+          popCached,
+          4 * 60 * 60 * 1000
+        );
+        console.log("✓ New tag appended to popularity cache");
+      }
+    } catch (cacheError) {
+      console.warn(
+        "Failed to append tag to cache, will invalidate:",
+        cacheError
+      );
+      // Fallback to invalidation if append fails
+      await RedisCacheService.invalidateCache("builder-tags-raw_builder.json");
+      await RedisCacheService.invalidateCache("tags_builder.json");
+      await RedisCacheService.invalidateCache(
+        "tags-with-popularity_builder.json"
+      );
+    }
 
     return createdTag;
   } catch (error: any) {
@@ -717,12 +766,73 @@ export async function updateBuilderTag(
 
     console.log(`✓ Tag ${id} updated in Builder.io`);
 
-    // Invalidate all Builder.io tag caches
-    await RedisCacheService.invalidateCache("builder-tags-raw_builder.json");
-    await RedisCacheService.invalidateCache("tags_builder.json");
-    await RedisCacheService.invalidateCache(
-      "tags-with-popularity_builder.json"
-    );
+    // OPTIMIZATION: Update cache entries instead of invalidating
+    try {
+      // 1. Update raw Builder.io tags cache
+      const rawCacheKey = "builder-tags-raw_builder.json";
+      const rawCached = await RedisCacheService.getFromCache(rawCacheKey);
+      if (rawCached && Array.isArray(rawCached)) {
+        const index = rawCached.findIndex((tag) => tag.id === id);
+        if (index !== -1) {
+          rawCached[index] = updatedTag;
+          await RedisCacheService.saveToCache(
+            rawCacheKey,
+            rawCached,
+            4 * 60 * 60 * 1000
+          );
+          console.log("✓ Tag updated in raw cache");
+        }
+      }
+
+      // 2. Update transformed Wix format cache
+      const wixCacheKey = "tags_builder.json";
+      const wixCached = await RedisCacheService.getFromCache(wixCacheKey);
+      if (wixCached && Array.isArray(wixCached)) {
+        const index = wixCached.findIndex((tag) => tag._id === id);
+        if (index !== -1) {
+          const wixFormatted = transformBuilderTagToWixFormat(updatedTag);
+          // Preserve existing mentions if present
+          const existingMentions = wixCached[index].mentions;
+          wixCached[index] = { ...wixFormatted, mentions: existingMentions };
+          await RedisCacheService.saveToCache(
+            wixCacheKey,
+            wixCached,
+            4 * 60 * 60 * 1000
+          );
+          console.log("✓ Tag updated in Wix format cache");
+        }
+      }
+
+      // 3. Update tags-with-popularity cache
+      const popCacheKey = "tags-with-popularity_builder.json";
+      const popCached = await RedisCacheService.getFromCache(popCacheKey);
+      if (popCached && Array.isArray(popCached)) {
+        const index = popCached.findIndex((tag) => tag._id === id);
+        if (index !== -1) {
+          const wixFormatted = transformBuilderTagToWixFormat(updatedTag);
+          // Preserve existing mentions
+          const existingMentions = popCached[index].mentions;
+          popCached[index] = { ...wixFormatted, mentions: existingMentions };
+          await RedisCacheService.saveToCache(
+            popCacheKey,
+            popCached,
+            4 * 60 * 60 * 1000
+          );
+          console.log("✓ Tag updated in popularity cache");
+        }
+      }
+    } catch (cacheError) {
+      console.warn(
+        "Failed to update tag in cache, will invalidate:",
+        cacheError
+      );
+      // Fallback to invalidation if update fails
+      await RedisCacheService.invalidateCache("builder-tags-raw_builder.json");
+      await RedisCacheService.invalidateCache("tags_builder.json");
+      await RedisCacheService.invalidateCache(
+        "tags-with-popularity_builder.json"
+      );
+    }
 
     return updatedTag;
   } catch (error: any) {

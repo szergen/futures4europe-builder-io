@@ -433,9 +433,11 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
     }
   }, [userDetails, tags]);
 
-  useEffect(() => {
-    isNewPost && handleTagCreated();
-  }, []);
+  // Removed automatic cache refresh on New_Post page load
+  // No need to invalidate cache just for viewing the new post form
+  // useEffect(() => {
+  //   isNewPost && handleTagCreated();
+  // }, []);
 
   const saveOrCreateHandler = isNewPost ? createNewPost : updateDataToServer;
   console.log("postdatadata", postData);
