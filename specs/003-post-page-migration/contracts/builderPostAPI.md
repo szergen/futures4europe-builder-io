@@ -130,7 +130,7 @@ interface MediaObject {
 interface Reference {
   "@type": "@builder.io/core:Reference";
   id: string; // Builder.io content ID
-  model: string; // Target model name (e.g., "tag-page", "post-page")
+  model: string; // Target model name (e.g., "tag", "post-page")
 }
 ```
 
@@ -191,21 +191,21 @@ const response = await fetch("https://builder.io/api/v1/write/post-page", {
         {
           "@type": "@builder.io/core:Reference",
           id: "user-tag-id-123",
-          model: "tag-page",
+          model: "tag",
         },
       ],
       pageOwner: [
         {
           "@type": "@builder.io/core:Reference",
           id: "user-tag-id-123",
-          model: "tag-page",
+          model: "tag",
         },
       ],
       pageTypes: [
         {
           "@type": "@builder.io/core:Reference",
           id: "post-type-id",
-          model: "tag-page",
+          model: "tag",
         },
       ],
     },

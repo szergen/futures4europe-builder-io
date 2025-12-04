@@ -83,17 +83,17 @@ This document defines the data entities and transformations for post-page creati
 
 All reference fields use Builder.io Reference format.
 
-| Field           | Type        | Description                   | Related Model             |
-| --------------- | ----------- | ----------------------------- | ------------------------- |
-| `author`        | Reference[] | Post authors                  | `tag-page` (person)       |
-| `pageOwner`     | Reference[] | Page owners (edit permission) | `tag-page` (person)       |
-| `people`        | Reference[] | Related people tags           | `tag-page` (person)       |
-| `methods`       | Reference[] | Foresight methods             | `tag-page` (method)       |
-| `domains`       | Reference[] | Domain tags                   | `tag-page` (domain)       |
-| `projects`      | Reference[] | Related projects              | `tag-page` (project)      |
-| `organisations` | Reference[] | Related organisations         | `tag-page` (organisation) |
-| `pageTypes`     | Reference[] | Page type classification      | `tag-page` (page type)    |
-| `internalLinks` | Reference[] | Internal post links           | `post-page`               |
+| Field           | Type        | Description                   | Related Model        |
+| --------------- | ----------- | ----------------------------- | -------------------- |
+| `author`        | Reference[] | Post authors                  | `tag` (person)       |
+| `pageOwner`     | Reference[] | Page owners (edit permission) | `tag` (person)       |
+| `people`        | Reference[] | Related people tags           | `tag` (person)       |
+| `methods`       | Reference[] | Foresight methods             | `tag` (method)       |
+| `domains`       | Reference[] | Domain tags                   | `tag` (domain)       |
+| `projects`      | Reference[] | Related projects              | `tag` (project)      |
+| `organisations` | Reference[] | Related organisations         | `tag` (organisation) |
+| `pageTypes`     | Reference[] | Page type classification      | `tag` (page type)    |
+| `internalLinks` | Reference[] | Internal post links           | `post-page`          |
 
 **Reference Format**:
 
@@ -101,15 +101,15 @@ All reference fields use Builder.io Reference format.
 {
   "@type": "@builder.io/core:Reference",
   "id": string,        // Builder.io content ID
-  "model": string      // e.g., "tag-page" or "post-page"
+  "model": string      // e.g., "tag" or "post-page"
 }
 ```
 
 #### Single Reference Fields
 
-| Field        | Type      | Description | Related Model        |
-| ------------ | --------- | ----------- | -------------------- |
-| `countryTag` | Reference | Country tag | `tag-page` (country) |
+| Field        | Type      | Description | Related Model   |
+| ------------ | --------- | ----------- | --------------- |
+| `countryTag` | Reference | Country tag | `tag` (country) |
 
 #### Event-Specific Fields
 

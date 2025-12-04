@@ -84,13 +84,13 @@ Transform tag objects to Builder.io Reference format inline during API payload c
 {
   "@type": "@builder.io/core:Reference",
   "id": "builder-content-id",
-  "model": "tag-page"
+  "model": "tag"
 }
 
 // Reference array (e.g., people, methods, domains)
 [
-  { "@type": "@builder.io/core:Reference", "id": "id-1", "model": "tag-page" },
-  { "@type": "@builder.io/core:Reference", "id": "id-2", "model": "tag-page" }
+  { "@type": "@builder.io/core:Reference", "id": "id-1", "model": "tag" },
+  { "@type": "@builder.io/core:Reference", "id": "id-2", "model": "tag" }
 ]
 ```
 
@@ -105,7 +105,7 @@ function transformReferencesForBuilder(tags: TagProps[]): BuilderReference[] {
     .map((tag) => ({
       "@type": "@builder.io/core:Reference" as const,
       id: tag._id,
-      model: "tag-page",
+      model: "tag",
     }));
 }
 ```

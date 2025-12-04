@@ -138,7 +138,7 @@ When a user saves a post with multiple reference field changes (tags, people, pr
 - **FR-018**: System MUST handle event-specific fields: speakers, moderators, eventStartDate, eventEndDate, eventRegistration
 - **FR-019**: System MUST handle project-result-specific fields: projectResultAuthor, projectResultMedia, projectResultPublicationDate
 - **FR-020**: System MUST handle media files field (mediaFiles array with url, displayName, and thumbnail properties)
-- **FR-021**: System MUST convert tag objects to Builder.io Reference format: `{@type: "@builder.io/core:Reference", id: tag._id, model: "tag-page"}`
+- **FR-021**: System MUST convert tag objects to Builder.io Reference format: `{@type: "@builder.io/core:Reference", id: tag._id, model: "tag"}`
 - **FR-022**: System MUST preserve all existing UI/UX behavior (edit/publish buttons, discard changes, validation states)
 - **FR-023**: System MUST maintain page ownership check logic using `pageOwner` field from Builder.io data; non-owners viewing a post page see read-only mode with edit buttons hidden (existing PostPageComponent behavior)
 - **FR-024**: System MUST refresh user data after creating new post to update dashboard lists
@@ -190,15 +190,15 @@ When a user saves a post with multiple reference field changes (tags, people, pr
       "slug": "string",
       "postContentRIch1-10": "string (HTML)",
       "postImage1-10": { "url": "string", "displayName": "string" },
-      "author": [{ "@type": "@builder.io/core:Reference", "id": "string", "model": "tag-page" }],
-      "pageOwner": [{ "@type": "@builder.io/core:Reference", "id": "string", "model": "tag-page" }],
-      "people": [{ "@type": "@builder.io/core:Reference", "id": "string", "model": "tag-page" }],
+      "author": [{ "@type": "@builder.io/core:Reference", "id": "string", "model": "tag" }],
+      "pageOwner": [{ "@type": "@builder.io/core:Reference", "id": "string", "model": "tag" }],
+      "people": [{ "@type": "@builder.io/core:Reference", "id": "string", "model": "tag" }],
       "methods": [...],
       "domains": [...],
       "projects": [...],
       "organisations": [...],
       "pageTypes": [...],
-      "countryTag": { "@type": "@builder.io/core:Reference", "id": "string", "model": "tag-page" },
+      "countryTag": { "@type": "@builder.io/core:Reference", "id": "string", "model": "tag" },
       "eventStartDate": "timestamp",
       "eventEndDate": "timestamp",
       "eventRegistration": "string",
