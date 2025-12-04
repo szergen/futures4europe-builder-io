@@ -28,7 +28,15 @@ Before starting, ensure you have:
 
 ## Phase 1: Migration
 
-### Step 1: Test Migration (10 records)
+### Step 1: Dry-Run Validation
+
+```bash
+node scripts/migrations/migrate-affiliations.js 10 --dry-run
+```
+
+Expected output: Validates CSV parsing, tag mapping lookups, and transformation without creating records in Builder.io.
+
+### Step 2: Test Migration (10 records)
 
 ```bash
 node scripts/migrations/migrate-affiliations.js 10
@@ -55,7 +63,7 @@ Expected output:
 ℹ Mapping saved to: ./data/mappings/affiliation-migration-mapping.json
 ```
 
-### Step 2: Verify Migration
+### Step 3: Verify Migration
 
 ```bash
 node scripts/migrations/migrate-affiliations.js --verify 5
@@ -63,7 +71,7 @@ node scripts/migrations/migrate-affiliations.js --verify 5
 
 This spot-checks 5 random migrated records against Builder.io.
 
-### Step 3: Full Migration
+### Step 4: Full Migration
 
 ```bash
 node scripts/migrations/migrate-affiliations.js all
@@ -71,7 +79,7 @@ node scripts/migrations/migrate-affiliations.js all
 
 This migrates all ~1,826 affiliations. Expected time: ~15-25 minutes (with 200ms rate limiting).
 
-### Step 4: Check Results
+### Step 5: Check Results
 
 1. **Mapping file**: Check `data/mappings/affiliation-migration-mapping.json`
 2. **Builder.io Admin**: Visit Builder.io → Content → affiliations

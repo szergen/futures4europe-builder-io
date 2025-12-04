@@ -68,12 +68,14 @@ This project uses Next.js structure:
 - [ ] T017 [US1] Implement main `migrateAffiliations(count)` function with loop, skip-if-migrated check, rate limiting (200ms), and progress logging in `scripts/migrations/migrate-affiliations.js`
 - [ ] T018 [US1] Implement `printSummary()` function showing total/successful/failed/skipped/missing-refs counts in `scripts/migrations/migrate-affiliations.js`
 - [ ] T019 [US1] Implement `verifyMigration(count)` function to spot-check random migrated records against Builder.io in `scripts/migrations/migrate-affiliations.js`
-- [ ] T020 [US1] Implement `main()` CLI handler with argument parsing (count, --verify) and usage help in `scripts/migrations/migrate-affiliations.js`
-- [ ] T021 [US1] Test migration with 10 records: `node scripts/migrations/migrate-affiliations.js 10`
-- [ ] T022 [US1] Verify migrated records in Builder.io admin console
-- [ ] T023 [US1] Run verification mode: `node scripts/migrations/migrate-affiliations.js --verify 5`
-- [ ] T024 [US1] Execute full migration: `node scripts/migrations/migrate-affiliations.js all`
-- [ ] T025 [US1] Verify `data/mappings/affiliation-migration-mapping.json` is generated with complete mappings
+- [ ] T020 [US1] Implement `dryRun(count)` function that validates CSV parsing, tag mapping lookups, and transformation without calling Builder.io API in `scripts/migrations/migrate-affiliations.js`
+- [ ] T021 [US1] Implement `main()` CLI handler with argument parsing (count, --verify, --dry-run) and usage help in `scripts/migrations/migrate-affiliations.js`
+- [ ] T022 [US1] Test dry-run mode: `node scripts/migrations/migrate-affiliations.js 10 --dry-run` (validates without creating)
+- [ ] T023 [US1] Test migration with 10 records: `node scripts/migrations/migrate-affiliations.js 10`
+- [ ] T024 [US1] Verify migrated records in Builder.io admin console
+- [ ] T025 [US1] Run verification mode: `node scripts/migrations/migrate-affiliations.js --verify 5`
+- [ ] T026 [US1] Execute full migration: `node scripts/migrations/migrate-affiliations.js all`
+- [ ] T027 [US1] Verify `data/mappings/affiliation-migration-mapping.json` is generated with complete mappings
 
 **Checkpoint**: User Story 1 complete - ~1,826 affiliations migrated to Builder.io with mapping file generated
 
@@ -87,20 +89,20 @@ This project uses Next.js structure:
 
 ### Implementation for User Story 2
 
-- [ ] T026 [P] [US2] Create TypeScript interfaces in `app/utils/builderAffiliationUtils.ts` (BuilderAffiliation, BuilderReference, WixCompatibleAffiliation)
-- [ ] T027 [P] [US2] Implement `transformBuilderAffiliationToWixFormat()` function in `app/utils/builderAffiliationUtils.ts` to convert Builder.io format to `{ data: { ... } }` wrapper
-- [ ] T028 [US2] Implement `getAllBuilderAffiliations()` function with pagination (100 per page) in `app/utils/builderAffiliationUtils.ts`
-- [ ] T029 [US2] Add retry logic with exponential backoff to `getAllBuilderAffiliations()` in `app/utils/builderAffiliationUtils.ts`
-- [ ] T030 [US2] Update GET handler in `app/api/affiliations/route.ts` to import from builderAffiliationUtils instead of Wix client
-- [ ] T031 [US2] Update GET handler in `app/api/affiliations/route.ts` to call `getAllBuilderAffiliations()` on cache miss
-- [ ] T032 [US2] Update GET handler in `app/api/affiliations/route.ts` to transform response using `transformBuilderAffiliationToWixFormat()`
-- [ ] T033 [US2] Update POST handler in `app/api/affiliations/route.ts` to refresh cache from Builder.io instead of Wix
-- [ ] T034 [US2] Remove Wix client import (`getWixClientServerData`) from `app/api/affiliations/route.ts`
-- [ ] T035 [US2] Update `app/utils/tags.utls.ts` to remove Wix ID translation in `calculatePopularity()` for affiliations (Builder.io IDs used directly now)
-- [ ] T036 [US2] Test GET endpoint: `curl http://localhost:3000/api/affiliations | jq '.length'`
-- [ ] T037 [US2] Test POST endpoint: `curl -X POST http://localhost:3000/api/affiliations`
-- [ ] T038 [US2] Verify tag popularity calculation still works: `curl http://localhost:3000/api/tags-with-popularity | jq '.[0]'`
-- [ ] T039 [US2] Verify no Wix dependencies: `grep -r "wixClient.*Affiliations\|queryDataItems.*Affiliations" app/`
+- [ ] T028 [P] [US2] Create TypeScript interfaces in `app/utils/builderAffiliationUtils.ts` (BuilderAffiliation, BuilderReference, WixCompatibleAffiliation)
+- [ ] T029 [P] [US2] Implement `transformBuilderAffiliationToWixFormat()` function in `app/utils/builderAffiliationUtils.ts` to convert Builder.io format to `{ data: { ... } }` wrapper
+- [ ] T030 [US2] Implement `getAllBuilderAffiliations()` function with pagination (100 per page) in `app/utils/builderAffiliationUtils.ts`
+- [ ] T031 [US2] Add retry logic with exponential backoff to `getAllBuilderAffiliations()` in `app/utils/builderAffiliationUtils.ts`
+- [ ] T032 [US2] Update GET handler in `app/api/affiliations/route.ts` to import from builderAffiliationUtils instead of Wix client
+- [ ] T033 [US2] Update GET handler in `app/api/affiliations/route.ts` to call `getAllBuilderAffiliations()` on cache miss
+- [ ] T034 [US2] Update GET handler in `app/api/affiliations/route.ts` to transform response using `transformBuilderAffiliationToWixFormat()`
+- [ ] T035 [US2] Update POST handler in `app/api/affiliations/route.ts` to refresh cache from Builder.io instead of Wix
+- [ ] T036 [US2] Remove Wix client import (`getWixClientServerData`) from `app/api/affiliations/route.ts`
+- [ ] T037 [US2] Update `app/utils/tags.utls.ts` to remove Wix ID translation in `calculatePopularity()` for affiliations (Builder.io IDs used directly now)
+- [ ] T038 [US2] Test GET endpoint: `curl http://localhost:3000/api/affiliations | jq '.length'`
+- [ ] T039 [US2] Test POST endpoint: `curl -X POST http://localhost:3000/api/affiliations`
+- [ ] T040 [US2] Verify tag popularity calculation still works: `curl http://localhost:3000/api/tags-with-popularity | jq '.[0]'`
+- [ ] T041 [US2] Verify no Wix dependencies: `grep -r "wixClient.*Affiliations\|queryDataItems.*Affiliations" app/`
 
 **Checkpoint**: User Story 2 complete - application fetches affiliations from Builder.io with backwards-compatible format
 
@@ -110,11 +112,11 @@ This project uses Next.js structure:
 
 **Purpose**: Final verification and cleanup
 
-- [ ] T040 Run quickstart.md Phase 1 validation checklist
-- [ ] T041 Run quickstart.md Phase 2 validation checklist
-- [ ] T042 Verify cache warming works with Builder.io affiliations
-- [ ] T043 Clear Redis cache and verify fresh fetch from Builder.io works
-- [ ] T044 Compare affiliation count: Wix CSV rows vs Builder.io entries vs API response
+- [ ] T042 Run quickstart.md Phase 1 validation checklist
+- [ ] T043 Run quickstart.md Phase 2 validation checklist
+- [ ] T044 Verify `app/services/cacheWarmer.ts` uses `/api/affiliations` endpoint (no code changes needed - it already calls the API which now uses Builder.io)
+- [ ] T045 Clear Redis cache and verify fresh fetch from Builder.io works
+- [ ] T046 Compare affiliation count: Wix CSV rows vs Builder.io entries vs API response
 
 ---
 
@@ -139,14 +141,14 @@ This project uses Next.js structure:
 
 ```
 T005-T007 (setup) → T008-T011 (utilities) → T012-T014 (reference helpers)
-→ T015-T016 (core transform/create) → T017-T020 (main logic) → T021-T025 (execute)
+→ T015-T016 (core transform/create) → T017-T021 (main logic + dry-run) → T022-T027 (execute)
 ```
 
 **User Story 2 (Fetch Switch)**:
 
 ```
-T026-T027 [P] (types/transform) → T028-T029 (fetch function)
-→ T030-T034 (API route updates) → T035 (popularity fix) → T036-T039 (testing)
+T028-T029 [P] (types/transform) → T030-T031 (fetch function)
+→ T032-T036 (API route updates) → T037 (popularity fix) → T038-T041 (testing)
 ```
 
 ### Parallel Opportunities
@@ -158,8 +160,8 @@ T026-T027 [P] (types/transform) → T028-T029 (fetch function)
 
 **Within User Story 2**:
 
-- T026 and T027 can run in parallel (different functions in same new file)
-- T030-T034 are sequential (modifying same file)
+- T028 and T029 can run in parallel (different functions in same new file)
+- T032-T036 are sequential (modifying same file)
 
 ---
 
@@ -167,8 +169,8 @@ T026-T027 [P] (types/transform) → T028-T029 (fetch function)
 
 ```bash
 # Launch type definitions and transform function in parallel:
-Task: "T026 [P] [US2] Create TypeScript interfaces in app/utils/builderAffiliationUtils.ts"
-Task: "T027 [P] [US2] Implement transformBuilderAffiliationToWixFormat() in app/utils/builderAffiliationUtils.ts"
+Task: "T028 [P] [US2] Create TypeScript interfaces in app/utils/builderAffiliationUtils.ts"
+Task: "T029 [P] [US2] Implement transformBuilderAffiliationToWixFormat() in app/utils/builderAffiliationUtils.ts"
 
 # Then sequential tasks for API route updates
 ```
@@ -199,10 +201,10 @@ Task: "T027 [P] [US2] Implement transformBuilderAffiliationToWixFormat() in app/
 | ------------ | ------------ | ----- | ------------------------------------- |
 | Setup        | T001-T004    | -     | Prerequisites verification            |
 | Foundational | -            | -     | No new work (existing infrastructure) |
-| User Story 1 | T005-T025    | US1   | Migration script (21 tasks)           |
-| User Story 2 | T026-T039    | US2   | Fetch switch (14 tasks)               |
-| Polish       | T040-T044    | -     | Validation (5 tasks)                  |
-| **Total**    | **44 tasks** |       |                                       |
+| User Story 1 | T005-T027    | US1   | Migration script (23 tasks)           |
+| User Story 2 | T028-T041    | US2   | Fetch switch (14 tasks)               |
+| Polish       | T042-T046    | -     | Validation (5 tasks)                  |
+| **Total**    | **46 tasks** |       |                                       |
 
 ---
 

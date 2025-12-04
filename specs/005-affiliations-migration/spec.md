@@ -151,6 +151,7 @@ The application needs to fetch affiliations from Builder.io instead of Wix, ensu
 - **FR-014**: Script MUST continue processing remaining records when individual record migration fails (log error and skip)
 - **FR-015**: Script MUST output a summary report at completion showing: total records, successful migrations, failed migrations, skipped (already migrated), and missing tag references
 - **FR-016**: Script MUST support verification mode to spot-check migrated records (e.g., `--verify 10` to check 10 random records)
+- **FR-016b**: Script MUST support dry-run mode (e.g., `--dry-run`) that validates CSV parsing, tag mapping lookups, and data transformation without calling Builder.io API (per Constitution IV)
 
 **Phase 2 - Fetch Switch**:
 
