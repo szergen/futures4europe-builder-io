@@ -578,16 +578,16 @@ export async function createBuilderTag(tagData: {
     }
 
     const createdTag = await fetchWithRetry(async () => {
-      const res = await fetch("https://builder.io/api/v1/write", {
+      const res = await fetch("https://builder.io/api/v1/write/tag", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          modelName: "tag",
+          name: payload.name,
+          data: payload,
           published: "published",
-          ...payload,
         }),
       });
 
@@ -744,15 +744,16 @@ export async function updateBuilderTag(
     }
 
     const updatedTag = await fetchWithRetry(async () => {
-      const res = await fetch(`https://builder.io/api/v1/write/${id}`, {
+      const res = await fetch(`https://builder.io/api/v1/write/tag/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          modelName: "tag",
-          ...updatedData,
+          name: updatedData.name,
+          data: updatedData,
+          published: "published",
         }),
       });
 
