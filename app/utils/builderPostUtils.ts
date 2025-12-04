@@ -20,15 +20,17 @@ const BUILDER_API_ROUTE = "/api/builder/post";
 // ============================================================================
 
 /**
- * Transform tag arrays to Builder.io Reference format
- * Converts component tag arrays to Builder.io reference structure
+ * Transform tag arrays to Builder.io Reference format for CREATE operations
+ * Uses WRAPPED reference format with item keys (required by Builder.io list fields)
  * @param tags - Array of tag objects with _id property
  * @param modelName - Target model name (default: "tag")
- * @returns Array of Builder.io Reference objects
+ * @param wrapperKey - Key to wrap each reference (e.g., "authorItem")
+ * @returns Array of wrapped Builder.io Reference objects
  */
-export function transformReferencesForBuilder(
+export function transformReferencesForBuilderCreate(
   tags: any[] | undefined,
-  modelName: string = "tag"
+  modelName: string = "tag",
+  wrapperKey?: string
 ): any[] {
   if (!tags || !Array.isArray(tags) || tags.length === 0) {
     return [];
@@ -36,22 +38,67 @@ export function transformReferencesForBuilder(
 
   return tags
     .filter((tag) => tag && tag._id) // Only include tags with valid IDs
-    .map((tag) => ({
-      "@type": "@builder.io/core:Reference",
-      id: tag._id,
-      model: modelName,
-    }));
+    .map((tag) => {
+      const reference = {
+        "@type": "@builder.io/core:Reference",
+        id: tag._id,
+        model: modelName,
+      };
+      // Wrap with key (required for Builder.io list fields)
+      return wrapperKey ? { [wrapperKey]: reference } : reference;
+    });
 }
 
 /**
- * Transform component state to Builder.io API payload
- * Converts PostPageComponent data structure to Builder.io Write API format
+ * Transform tag arrays to Builder.io Reference format for UPDATE operations
+ * Uses wrapped reference format with item keys (e.g., { authorItem: {...} })
+ * @param tags - Array of tag objects with _id property
+ * @param modelName - Target model name (default: "tag")
+ * @param wrapperKey - Key to wrap each reference (e.g., "authorItem")
+ * @returns Array of wrapped Builder.io Reference objects
+ */
+export function transformReferencesForBuilderUpdate(
+  tags: any[] | undefined,
+  modelName: string = "tag",
+  wrapperKey?: string
+): any[] {
+  if (!tags || !Array.isArray(tags) || tags.length === 0) {
+    return [];
+  }
+
+  return tags
+    .filter((tag) => tag && tag._id) // Only include tags with valid IDs
+    .map((tag) => {
+      const reference = {
+        "@type": "@builder.io/core:Reference",
+        id: tag._id,
+        model: modelName,
+      };
+      // Wrap with key if provided (needed for UPDATE)
+      return wrapperKey ? { [wrapperKey]: reference } : reference;
+    });
+}
+
+/**
+ * Transform tag arrays to Builder.io Reference format
+ * Alias for backwards compatibility - uses CREATE format (simple references)
+ */
+export function transformReferencesForBuilder(
+  tags: any[] | undefined,
+  modelName: string = "tag"
+): any[] {
+  return transformReferencesForBuilderCreate(tags, modelName);
+}
+
+/**
+ * Transform component state to Builder.io API payload for CREATE operations
+ * Uses simple reference format without wrapper keys
  * @param postData - Post data from component state
  * @param contentText - Array of rich text content sections (10 sections)
  * @param contentImages - Array of image objects (10 images)
  * @returns Builder.io API payload
  */
-export function transformPostDataForBuilder(
+export function transformPostDataForBuilderCreate(
   postData: any,
   contentText: string[],
   contentImages: any[]
@@ -86,15 +133,47 @@ export function transformPostDataForBuilder(
     postImage9: contentImages[8] || {},
     postImage10: contentImages[9] || {},
 
-    // Reference fields - transform to Builder.io format
-    author: transformReferencesForBuilder(postData.author),
-    pageOwner: transformReferencesForBuilder(postData.pageOwner),
-    pageTypes: transformReferencesForBuilder(postData.pageTypes),
-    people: transformReferencesForBuilder(postData.people),
-    methods: transformReferencesForBuilder(postData.methods),
-    domains: transformReferencesForBuilder(postData.domains),
-    projects: transformReferencesForBuilder(postData.projects),
-    organisations: transformReferencesForBuilder(postData.organisations),
+    // Reference fields - WRAPPED format for CREATE (required by Builder.io list fields)
+    author: transformReferencesForBuilderCreate(
+      postData.author,
+      "tag",
+      "authorItem"
+    ),
+    pageOwner: transformReferencesForBuilderCreate(
+      postData.pageOwner,
+      "tag",
+      "pageOwnerItem"
+    ),
+    pageTypes: transformReferencesForBuilderCreate(
+      postData.pageTypes,
+      "tag",
+      "pageTypeItem"
+    ),
+    people: transformReferencesForBuilderCreate(
+      postData.people,
+      "tag",
+      "peopleItem"
+    ),
+    methods: transformReferencesForBuilderCreate(
+      postData.methods,
+      "tag",
+      "methodsItem"
+    ),
+    domains: transformReferencesForBuilderCreate(
+      postData.domains,
+      "tag",
+      "domainsItem"
+    ),
+    projects: transformReferencesForBuilderCreate(
+      postData.projects,
+      "tag",
+      "projectsItem"
+    ),
+    organisations: transformReferencesForBuilderCreate(
+      postData.organisations,
+      "tag",
+      "organisationsItem"
+    ),
 
     // Single reference field (countryTag)
     countryTag:
@@ -107,15 +186,25 @@ export function transformPostDataForBuilder(
         : undefined,
 
     // Event-specific fields
-    speakers: transformReferencesForBuilder(postData.speakers),
-    moderators: transformReferencesForBuilder(postData.moderators),
+    speakers: transformReferencesForBuilderCreate(
+      postData.speakers,
+      "tag",
+      "speakersItem"
+    ),
+    moderators: transformReferencesForBuilderCreate(
+      postData.moderators,
+      "tag",
+      "moderatorsItem"
+    ),
     eventStartDate: postData.eventStartDate || undefined,
     eventEndDate: postData.eventEndDate || undefined,
     eventRegistration: postData.eventRegistration || undefined,
 
     // Project result-specific fields
-    projectResultAuthor: transformReferencesForBuilder(
-      postData.projectResultAuthor
+    projectResultAuthor: transformReferencesForBuilderCreate(
+      postData.projectResultAuthor,
+      "tag",
+      "projectResultAuthorItem"
     ),
     projectResultMedia: postData.projectResultMedia || {},
     projectResultPublicationDate:
@@ -123,9 +212,10 @@ export function transformPostDataForBuilder(
 
     // Additional fields
     mediaFiles: postData.mediaFiles || [],
-    internalLinks: transformReferencesForBuilder(
+    internalLinks: transformReferencesForBuilderCreate(
       postData.internalLinks,
-      "post-page"
+      "post-page",
+      "internalLinksItem"
     ),
     recommendations: postData.recommendations || 0,
   };
@@ -141,6 +231,27 @@ export function transformPostDataForBuilder(
 }
 
 /**
+ * Transform component state to Builder.io API payload for UPDATE operations
+ * Keeps existing format (used by updateBuilderPost)
+ * @param postData - Post data from component state
+ * @param contentText - Array of rich text content sections (10 sections)
+ * @param contentImages - Array of image objects (10 images)
+ * @returns Builder.io API payload
+ */
+export function transformPostDataForBuilder(
+  postData: any,
+  contentText: string[],
+  contentImages: any[]
+): any {
+  // Use the same format as CREATE for now - UPDATE flow handles its own format
+  return transformPostDataForBuilderCreate(
+    postData,
+    contentText,
+    contentImages
+  );
+}
+
+/**
  * Create a new post in Builder.io
  * @param postData - Post data from component state
  * @param contentText - Array of rich text content sections
@@ -153,7 +264,8 @@ export async function createBuilderPost(
   contentImages: any[]
 ): Promise<any> {
   try {
-    const data = transformPostDataForBuilder(
+    // Use CREATE-specific transformation (simple references, no wrapper keys)
+    const data = transformPostDataForBuilderCreate(
       postData,
       contentText,
       contentImages
@@ -337,7 +449,7 @@ export async function getAllBuilderPosts() {
 function transformReference(ref: any) {
   if (!ref) return null;
 
-  // Handle Builder.io reference format
+  // Handle Builder.io reference format WITH enriched value
   if (ref["@type"] === "@builder.io/core:Reference" && ref.value) {
     const refData = ref.value.data || {};
     return {
@@ -353,7 +465,31 @@ function transformReference(ref: any) {
     };
   }
 
-  // If already in simple format, return as-is
+  // Handle Builder.io reference format WITHOUT enriched value (not enriched yet)
+  // This happens when references are stored but not fetched with enrich: true
+  if (ref["@type"] === "@builder.io/core:Reference" && ref.id) {
+    return {
+      _id: ref.id,
+      // Name and other fields will be undefined - the component should handle this
+      // or we need to fetch the tag separately
+      name: undefined,
+      tagType: undefined,
+    };
+  }
+
+  // If already in simple format (has _id), return as-is
+  if (ref._id) {
+    return ref;
+  }
+
+  // Last resort: try to use id as _id if present
+  if (ref.id) {
+    return {
+      _id: ref.id,
+      ...ref,
+    };
+  }
+
   return ref;
 }
 

@@ -107,6 +107,13 @@ export const TagPicker: React.FC<TagPickerProps> = ({
   // #region Builder.io upload logic
   const uploadTag = async (tagName: string, tagTagline: string) => {
     try {
+      // OPTIMIZATION: Pass existing tags to avoid re-fetching 3000+ tags for duplicate check
+      // Only send minimal data (name and _id) to keep payload small
+      const existingTagsMinimal = allTags?.map((tag) => ({
+        name: tag.name,
+        _id: tag._id,
+      }));
+
       const response = await fetch("/api/builder/tag", {
         method: "POST",
         headers: {
@@ -116,6 +123,7 @@ export const TagPicker: React.FC<TagPickerProps> = ({
           name: tagName,
           tagLine: tagTagline,
           tagType: tagType,
+          existingTags: existingTagsMinimal, // Pass for duplicate checking
         }),
       });
 

@@ -510,19 +510,23 @@ export async function getBuilderTagById(
  * Create a new tag in Builder.io with validation and duplicate checking
  *
  * @param tagData - Tag data to create
+ * @param existingTags - Optional: Pre-loaded tags for duplicate checking (avoids re-fetching)
  * @returns Created Builder.io tag with ID
  * @throws ValidationError if required fields missing
  * @throws DuplicateError if tag name already exists
  * @throws BuilderApiError on Builder.io failures
  */
-export async function createBuilderTag(tagData: {
-  name: string;
-  tagType: string;
-  tagLine?: string;
-  picture?: string;
-  tagPageLink?: string;
-  masterTag?: string; // Builder.io tag ID
-}): Promise<BuilderTag> {
+export async function createBuilderTag(
+  tagData: {
+    name: string;
+    tagType: string;
+    tagLine?: string;
+    picture?: string;
+    tagPageLink?: string;
+    masterTag?: string; // Builder.io tag ID
+  },
+  existingTags?: Array<{ name?: string; _id?: string }> // Optional: pass existing tags to avoid refetch
+): Promise<BuilderTag> {
   // Validate required fields
   if (!tagData.name || !tagData.name.trim()) {
     throw new ValidationError("Tag name is required", "name");
@@ -533,22 +537,43 @@ export async function createBuilderTag(tagData: {
 
   try {
     // Check for duplicate name (case-insensitive)
-    const allTags = await getAllBuilderTags({ skipCache: true });
+    // OPTIMIZATION: Use provided tags if available, otherwise use cache (not re-fetch!)
+    let duplicate: any = null;
 
-    console.log(
-      `Checking for duplicate tag: "${tagData.name}" (total tags: ${allTags.length})`
-    );
-
-    const duplicate = allTags.find((tag) => {
-      // Guard against missing data or name
-      if (!tag?.data?.name) {
-        console.warn(
-          `Tag with ID ${tag?.id} has no name, skipping duplicate check`
+    if (existingTags && existingTags.length > 0) {
+      // Fast path: Use pre-loaded tags from caller (no API call)
+      console.log(
+        `Checking for duplicate tag: "${tagData.name}" using ${existingTags.length} pre-loaded tags`
+      );
+      duplicate = existingTags.find(
+        (tag) =>
+          tag?.name && tag.name.toLowerCase() === tagData.name.toLowerCase()
+      );
+    } else {
+      // Fallback: Use cache (skipCache: false to avoid re-fetching everything)
+      const cachedTags = await RedisCacheService.getFromCache(
+        "tags_builder.json"
+      );
+      if (cachedTags && Array.isArray(cachedTags)) {
+        console.log(
+          `Checking for duplicate tag: "${tagData.name}" using ${cachedTags.length} cached tags`
         );
-        return false;
+        duplicate = cachedTags.find(
+          (tag: any) =>
+            tag?.name && tag.name.toLowerCase() === tagData.name.toLowerCase()
+        );
+      } else {
+        // Last resort: Only fetch if no cache exists
+        console.log(
+          `No cache available, fetching tags for duplicate check: "${tagData.name}"`
+        );
+        const allTags = await getAllBuilderTags({ skipCache: false });
+        duplicate = allTags.find((tag) => {
+          if (!tag?.data?.name) return false;
+          return tag.data.name.toLowerCase() === tagData.name.toLowerCase();
+        });
       }
-      return tag.data.name.toLowerCase() === tagData.name.toLowerCase();
-    });
+    }
 
     if (duplicate) {
       console.log(
