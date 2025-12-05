@@ -48,6 +48,7 @@ interface AuthContextType {
   tagsFetched: boolean;
   handleTagCreated: () => void;
   appendTag: (tag: TagProps) => void;
+  updateTag: (tag: TagProps) => void;
   postPages: any[];
   postPagesFetched: boolean;
   handlePostPageCreated: () => void;
@@ -164,7 +165,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const fetchTags = async () => {
       if (refreshTags) {
         setTagsFetched(false);
-        await invalidateAllCache();
+        // OPTIMIZATION: Don't invalidate all cache - createBuilderTag already appends to Redis cache
+        // and appendTag already appends to React state. The refetch here will just read from
+        // the already-updated Redis cache, not wipe everything.
+        // await invalidateAllCache(); // REMOVED - caused full cache wipe on new tag creation
       }
       fetchTagsWithPopularity().then((allTags) => {
         setTags(allTags);
@@ -198,6 +202,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       console.log(`✓ Tag "${tag.name}" appended to AuthContext state`);
       return [...prevTags, { ...tag, mentions: 0 }];
+    });
+  };
+
+  // OPTIMIZATION: Update a single tag in state without full refresh
+  const updateTag = (tag: TagProps) => {
+    if (!tag || !tag._id) return;
+    setTags((prevTags) => {
+      const index = prevTags.findIndex((t) => t._id === tag._id);
+      if (index === -1) {
+        console.log(`Tag "${tag.name}" not found in state, skipping update`);
+        return prevTags;
+      }
+      const updatedTags = [...prevTags];
+      // Preserve mentions count when updating
+      updatedTags[index] = { ...tag, mentions: prevTags[index].mentions };
+      console.log(`✓ Tag "${tag.name}" updated in AuthContext state`);
+      return updatedTags;
     });
   };
 
@@ -445,6 +466,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         tagsFetched,
         handleTagCreated,
         appendTag,
+        updateTag,
         postPages,
         postPagesFetched,
         handlePostPageCreated,
