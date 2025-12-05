@@ -51,7 +51,6 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     tags,
     tagsFetched,
     handleTagCreated,
-    handleUserDataRefresh,
     postPages,
     handleUserTagRefresh,
     updateUserDetails,
@@ -75,6 +74,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       !!personData.pageOwner?.find(
         (owner: any) => owner?._id === userDetails?.userTag?._id
       );
+    console.log("debug222->permissionCondition", permissionCondition);
+    console.log("debug222->personData.pageOwner", personData.pageOwner);
+    console.log("debug222->userDetails.userTag", userDetails.userTag);
+    console.log("debug222->userDetails.accountId", userDetails.accountId);
+    console.log("debug222->userDetails.contactId", userDetails.contactId);
+    console.log("debug222->userDetails.userName", userDetails.userName);
 
     // console.log('debug1->permissionCondition', permissionCondition);
 
@@ -249,27 +254,31 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         console.log("[Builder.io] Person tag has changed, updating...");
 
         // Update tag in Builder.io
+        // Note: API expects fields at top level, not nested under 'data'
         const tagResponse = await fetch(
           `/api/builder/tag/${personData.personTag._id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              data: {
-                name: personData.personTag.name,
-                tagLine: personData.personTag.tagLine,
-                picture: personData.personTag.picture,
-              },
+              name: personData.personTag.name,
+              tagLine: personData.personTag.tagLine,
+              picture: personData.personTag.picture,
             }),
           }
         );
 
         if (tagResponse.ok) {
-          console.log("[Builder.io] Person tag updated successfully");
-          // Update React state
+          const tagResult = await tagResponse.json();
+          console.log(
+            "[Builder.io] Person tag updated successfully:",
+            tagResult
+          );
+          // Update React state with the updated tag
           updateTag(personData.personTag);
         } else {
-          console.error("[Builder.io] Failed to update person tag");
+          const errorText = await tagResponse.text();
+          console.error("[Builder.io] Failed to update person tag:", errorText);
         }
 
         // RETAINED: Update Wix nickname (DO NOT REMOVE)
@@ -622,21 +631,24 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       // #region Update Person Tag with tagPageLink
       if (personTag?._id) {
         console.log("[Builder.io] Updating person tag with tagPageLink...");
+        // Note: API expects fields at top level, not nested under 'data'
         const tagResponse = await fetch(`/api/builder/tag/${personTag._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            data: {
-              name: personData.personTag?.name,
-              tagLine: personData.personTag?.tagLine,
-              picture: personData.personTag?.picture,
-              tagPageLink: newSlug,
-            },
+            name: personData.personTag?.name,
+            tagLine: personData.personTag?.tagLine,
+            picture: personData.personTag?.picture,
+            tagPageLink: newSlug,
           }),
         });
 
         if (tagResponse.ok) {
-          console.log("[Builder.io] Person tag updated with tagPageLink");
+          const tagResult = await tagResponse.json();
+          console.log(
+            "[Builder.io] Person tag updated with tagPageLink:",
+            tagResult
+          );
           // Update React state
           updateTag({
             ...personTag,

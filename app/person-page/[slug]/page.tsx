@@ -90,12 +90,14 @@ export default async function PersonPage({ params }: any) {
   const infoPageItem = transformBuilderInfoPageToWixFormat(builderInfoPage);
   const tagIdForPersonPage = infoPageItem?.data?.person?.[0]?._id;
 
+  console.log("debug222->infoPageItem", infoPageItem);
+
   // Get affiliations (currently returns empty array until affiliations are migrated)
   let affiliations = [] as any[];
   if (tagIdForPersonPage) {
     affiliations = await getBuilderAffiliationsByPersonTag(tagIdForPersonPage);
   }
-  console.log("debug111->affiliations", affiliations);
+  // console.log("debug111->affiliations", affiliations);
 
   const infoPageItemWithAffiliations = {
     ...infoPageItem,

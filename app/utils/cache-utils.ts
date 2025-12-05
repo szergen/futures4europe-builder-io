@@ -70,7 +70,10 @@ export const invalidateMultipleCache = async (
 export const invalidatePersonPageCache = async (
   slug: string
 ): Promise<Response[]> => {
-  return Promise.all([revalidatePath(`/person/${slug}`)]);
+  return Promise.all([
+    revalidatePath(`/person/${slug}`),
+    revalidatePath(`/person-page/${slug}`),
+  ]);
 };
 
 export const invalidateProjectPageCache = async (
