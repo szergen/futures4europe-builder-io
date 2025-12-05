@@ -22,7 +22,7 @@ export const GET = async (req: NextRequest) => {
     let infoPages = await RedisCacheService.getFromCache("infoPages.json");
     let postPages = await RedisCacheService.getFromCache("postPages.json");
     let affiliations = await RedisCacheService.getFromCache(
-      "affiliations.json"
+      "affiliations_builder.json"
     );
 
     // Fetch any missing data from API
@@ -64,16 +64,20 @@ export const GET = async (req: NextRequest) => {
       affiliations = await affiliationsResponse.json();
     }
 
-    // Calculate popularity using Builder.io tags
+    // Calculate popularity using Builder.io tags and affiliations
     // Note: Tags from /api/tags are already in Wix format (flat structure)
-    // Affiliations still use Wix IDs, but calculatePopularity handles ID translation
+    // Affiliations now have full tag objects, extract IDs for popularity calculation
     const tagsWithMentions = tags; // Already in correct format
-    const affiliationsWithMentions = await affiliations.map(
-      (affiliation: any) => affiliation.data
-    );
+    const affiliationsWithMentions = affiliations.map((affiliation: any) => ({
+      personTag: affiliation.personTag?._id || null,
+      projectTag: affiliation.projectTag?._id || null,
+      organisationTag: affiliation.organisationTag?._id || null,
+      extraIdentifier: affiliation.extraIdentifier || "",
+      role: affiliation.role || "",
+    }));
 
     console.log(
-      "Calculating popularity with Builder.io tags and Wix affiliations..."
+      "Calculating popularity with Builder.io tags and affiliations..."
     );
 
     // Import missing IDs tracking from builderTagUtils
@@ -95,7 +99,7 @@ export const GET = async (req: NextRequest) => {
     );
     if (missingIds.length > 0) {
       console.warn(
-        `⚠️  Found ${missingIds.length} unique Wix tag IDs in affiliations that are not in mapping file`
+        `⚠️  Found ${missingIds.length} unique tag IDs in affiliations that are not in mapping file`
       );
       console.warn(`First 5 missing IDs:`, missingIds.slice(0, 5));
     }

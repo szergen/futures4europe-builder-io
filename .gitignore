@@ -97,4 +97,4 @@ next-env.d.ts
 .env.sentry-build-plugin
 
 # Migration mapping files (generated)
-data/mappings/*.json
+# data/mappings/*.json

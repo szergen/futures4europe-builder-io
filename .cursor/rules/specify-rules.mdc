@@ -4,6 +4,9 @@ Auto-generated from all feature plans. Last updated: 2025-12-01
 
 ## Active Technologies
 
+- Node.js 18+, TypeScript 5.x (Next.js 13.4) + `@builder.io/sdk`, `csv-parse`, `node-fetch`, `dotenv` (005-affiliations-migration)
+- Builder.io CMS (affiliations model), Redis (Upstash) for caching (005-affiliations-migration)
+
 - TypeScript 4.8.4 with Next.js 13.4.9 (App Router) (004-tags-builder-migration)
 
 - TypeScript 4.8.4 / Next.js 13.4.9 (App Router) (003-post-page-migration)
@@ -25,6 +28,8 @@ npm test && npm run lint
 TypeScript 4.8.4 / Next.js 13.4.9 (App Router): Follow standard conventions
 
 ## Recent Changes
+
+- 005-affiliations-migration: Added Node.js 18+, TypeScript 5.x (Next.js 13.4) + `@builder.io/sdk`, `csv-parse`, `node-fetch`, `dotenv`
 
 - 004-tags-builder-migration: Added TypeScript 4.8.4 with Next.js 13.4.9 (App Router)
 
