@@ -1,0 +1,2090 @@
+{
+  "wixToBuilder": {
+    "0008b057-94fd-4ca6-9825-8adca7f7bd67": {
+      "builderId": "70176ae6b2954815bd1cdc3369a34d8f",
+      "title": "Future of Space Exploration",
+      "slug": "/post/future-of-space-exploration-53zq4"
+    },
+    "0015b464-5039-49bd-a48c-9e93545dc8ed": {
+      "builderId": "06618505235844e88cecb79a223fdae8",
+      "title": "Expectations and assumptions for the future in the Work Programme 2021-2022 of Horizon Europe",
+      "slug": "/post/expectations-and-assumptions-for-the-future-in-the-work-programme-2021-2022-of-horizon-europe-tegh9"
+    },
+    "00bda2a0-aa21-48e6-9258-78c23d8cc49f": {
+      "builderId": "029111247fda4c819b9c63da5145ca56",
+      "title": "UNIDO EGM on Technology Foresight for Circular Economy",
+      "slug": "/post/unido-expert-group-meeting-on-technology-foresight-for-circular-economy-fkwri"
+    },
+    "00d23bd1-823a-42a6-9f06-394103f5439f": {
+      "builderId": "d4902708f3fe444496d9aff72143677e",
+      "title": "Horizon Futures Watch Workshop #6: The Futures of Big Tech in Europe",
+      "slug": "/post/horizon-futures-watch-workshop-6-the-futures-of-big-tech-in-europe-6ihk5"
+    },
+    "01aa392a-7336-4d02-8dc1-4507852301a7": {
+      "builderId": "f363cebdb8bd4f5093dc4f83c1f74e80",
+      "title": "Developing Context Scenarios for Future EU R&I Policies",
+      "slug": "/post/developing-context-scenarios-for-future-eu-ri-policies-rwxyv"
+    },
+    "020c9ef4-c9dd-4d6f-aa3d-b33aec97babc": {
+      "builderId": "905c1cdde2e543bf987ae43cd5e79386",
+      "title": "Report on the assessment of the digital competencies needed in the Romanian civil service",
+      "slug": "/post/report-on-the-assessment-of-the-digital-competencies-needed-in-the-romanian-civil-service-0dxgl"
+    },
+    "02810a2b-0ef4-4cef-896a-4467c4e1b9b8": {
+      "builderId": "064d2a8b7b5647e7a382843c5186e04d",
+      "title": "Futures of Natural Resources",
+      "slug": "/post/futures-of-natural-resources-the-24th-international-futures-conference-of-finland-futures-research-centre-wrk47"
+    },
+    "065409cd-1aef-4dca-a3b3-5ee4aa200c72": {
+      "builderId": "36e309e352934128883fe85cd4598e97",
+      "title": "RE-ENGINEERING HUMAN NATURE",
+      "slug": "/post/re-engineering-human-nature-p6a87"
+    },
+    "065efc46-7736-407b-aaaa-6fc1ee1bebf2": {
+      "builderId": "1dd932a2d7c549e4b283f09a127fe75a",
+      "title": "Research4Futures Delphi survey – explore the results!",
+      "slug": "/post/research4futures-delphi-survey-explore-the-results-fpdp0"
+    },
+    "0660827e-760a-47b5-8c64-e4d588341de1": {
+      "builderId": "af4c92ef4332428db4550b3a013fd99d",
+      "title": "Horizon Futures Watch Workshop #1: Future of Social Confrontations",
+      "slug": "/post/horizon-futures-watch-workshop-1-future-of-social-confrontations-qxe9v"
+    },
+    "070ef4d2-35ba-4909-9aca-82e9910b1652": {
+      "builderId": "e647e037e18a4c2fab25f808ec06ae6c",
+      "title": "Futures of Green Skills and Jobs: Policy Implications Workshop",
+      "slug": "/post/futures-of-green-skills-and-jobs-policy-implications-workshop-7u7ip"
+    },
+    "077c11b4-1619-4487-8917-2e716032fa2c": {
+      "builderId": "f55aee4440594d259977bef93b5c5b24",
+      "title": "Futures of the interpenetration of criminal and lawful economic activities in the EU in 2035",
+      "slug": "/post/futures-of-the-interpenetration-of-criminal-and-lawful-economic-activities-in-the-eu-in-2035-4zokn"
+    },
+    "07a84ef4-f85d-4f7f-9d6e-7a930c06893d": {
+      "builderId": "56395fde906746dcb37eced5aa0f6322",
+      "title": "FOD II Kick-off Meeting",
+      "slug": "/post/fod-ii-kick-off-pfmx9"
+    },
+    "087b33fd-9170-4bf3-b030-31e6c46c0c66": {
+      "builderId": "3d8c5e05685247a29815a18d0860d6d1",
+      "title": "How Combining Participatory Democracy and Foresight Practices Can Foster Political Innovation",
+      "slug": "/post/how-combining-participatory-democracy-and-foresight-practices-can-foster-political-innovation-t4t0h"
+    },
+    "09f494a8-6475-4710-803b-117d1af4ad6c": {
+      "builderId": "d864548193b54791981c47843188da13",
+      "title": "Prompting the Future of IP Regulation & Innovation Management",
+      "slug": "/post/prompting-the-future-of-ip-regulation-innovation-management-1rpjk"
+    },
+    "0a248500-6030-44e4-ae4e-6d2601413160": {
+      "builderId": "da01ff1485864d7a854ecb54c8787b07",
+      "title": "Constructing Scenarios for the Future of Teaching in Wales",
+      "slug": "/post/constructing-scenarios-for-the-future-of-teaching-in-wales-3zffi"
+    },
+    "0bbb5b2b-7688-4b2d-b889-86b24354cec5": {
+      "builderId": "7f44539bb89f479f973772cd83c66624",
+      "title": "EU Missions – Responsibility, Co-Creation and Design Thinking",
+      "slug": "/post/eu-missions-responsibility-co-creation-and-design-thinking-gt2s4"
+    },
+    "0c1c650f-1817-4d4c-b8ae-46849ed56970": {
+      "builderId": "c6ff3dc1776846418a14e4359eaf7add",
+      "title": "Futures of interpenetration of criminal and lawful economic activities - Workshop #2",
+      "slug": "/post/futures-of-interpenetration-of-criminal-and-lawful-economic-activities-workshop-2-7p955"
+    },
+    "0cf6ed67-f660-46b9-b6f3-cbb5818d50b1": {
+      "builderId": "fb432e66c5d14979a32070887e3e3b83",
+      "title": "THE DEMOGRAPHIC TURN",
+      "slug": "/post/the-demographic-turn-lhbdr"
+    },
+    "0d609e35-ac2a-407a-9d4d-be019c1d59ae": {
+      "builderId": "2a2d2d1645744561aa61645f3e3fd912",
+      "title": "S&T  Foresight - Food",
+      "slug": "/post/st-foresight-food-2d4kw"
+    },
+    "0e24992c-86a5-4c4b-a6ea-d896bded7b00": {
+      "builderId": "3fca42dceca34732b5b36b81c0e5d559",
+      "title": "Futures of Green Skills and Jobs: 1st Scenario Building Workshop",
+      "slug": "/post/futures-of-green-skills-and-jobs-1st-scenario-building-workshop-5ft77"
+    },
+    "0ee273a8-58c6-44ab-aace-c86597500d2e": {
+      "builderId": "d3b666fe21bd41b19f90419d51ad4547",
+      "title": "Harvesting Change",
+      "slug": "/post/harvesting-change-6kmxb"
+    },
+    "0f63fbe1-4557-438d-a5c1-08c1e3c44d0d": {
+      "builderId": "31197756da0b4a0e97a77f2a9b3aea71",
+      "title": "Futures of Science for Policy in Europe",
+      "slug": "/post/futures-of-science-for-policy-in-europe-scenarios-and-policy-implications--845hp"
+    },
+    "0f77bb1a-9773-4c37-ab6b-ba7ce6d4cef4": {
+      "builderId": "5c652952e3824eada905e6a7ffe7ac76",
+      "title": "Second Eye of Europe Pilot in Fashion Futuring",
+      "slug": "/post/second-eye-of-europe-pilot-in-fashion-futuring-in-april-in-thessaloniki-gr-dt4f4"
+    },
+    "104deb10-13cb-4578-8d21-5cd3069e75b9": {
+      "builderId": "59e8231c96de4ac983cf1faad581e028",
+      "title": "An Interview with Eye of Europe's Project Coordinator",
+      "slug": "/post/an-interview-with-eye-of-europes-project-coordinator-kcyr5"
+    },
+    "10baad57-23db-41bd-abf8-afde749f02a6": {
+      "builderId": "023688c6065c4a84b14c0bc528260d6d",
+      "title": "Connected Factories and their pathways for a circular economy",
+      "slug": "/post/connected-factories-and-their-pathways-for-a-circular-economy-5njbt"
+    },
+    "10cf3eaf-ba3d-46af-b727-81b07588d88e": {
+      "builderId": "16a3fb972b28438896d0a73d809f9b1b",
+      "title": "Giving Future Generations a Voice - The Welsh Approach to Futures Thinking",
+      "slug": "/post/giving-future-generations-a-voice-the-welsh-approach-to-futures-thinking-5doja"
+    },
+    "11149096-cd15-4e78-a009-555c3795f931": {
+      "builderId": "a4ae9fa3b566427b87bfb2289c81d006",
+      "title": "Mission Area: Adaptation to\nClimate Change, Including\nSocietal Transformation",
+      "slug": "/post/mission-area-adaptation-toclimate-change-includingsocietal-transformation-fib9t"
+    },
+    "115b8e54-4745-46a5-8212-3014efdfd6e1": {
+      "builderId": "6c48b27bc4d14aa780879e5b22e2ef6c",
+      "title": "‘Going rural’",
+      "slug": "/post/going-rural-managing-land-access-and-use-to-support-rural-futures-kwbmp"
+    },
+    "13ec2933-4391-4ffb-a888-a81c4bbdd144": {
+      "builderId": "19caf18d30444a7490b508c048629d24",
+      "title": "Planetary Foresight and Ethics",
+      "slug": "/post/planetary-foresight-and-ethics-84pkc"
+    },
+    "13f876eb-34fb-4c83-bdf6-874c736699ed": {
+      "builderId": "65fad009052241d0b1a6ce62ac3fddc5",
+      "title": "ESPAS Horizon Scanning Issue 8",
+      "slug": "/post/espas-horizon-scanning-issue-8-j8meq"
+    },
+    "14335817-d529-49b7-b8ca-4b446f4200a1": {
+      "builderId": "a8d6ba9d76ce46dbb8da0b41eb7377b0",
+      "title": "FenRIAM full guide",
+      "slug": "/post/fenriam-full-guide-6c2ce"
+    },
+    "147d9560-ce56-4aa5-8ff0-04fb7820b01d": {
+      "builderId": "bb80dad039e64d3fb2a27a64f279bae9",
+      "title": "Alternative Climate Scenarios 2040",
+      "slug": "/post/alternative-climate-scenarios-2040-technological-fix-6ux9f"
+    },
+    "14ecc6f7-ca72-4dbd-8d5b-0d6c678530bc": {
+      "builderId": "51c006ee796f4f708e5646c24a3ac34b",
+      "title": "Democracy – a long-term project?",
+      "slug": "/post/democracy-a-long-term-project-f903g"
+    },
+    "152d492f-a199-4bcd-b016-11a997c9bc50": {
+      "builderId": "465dc60475ef45408a4d75c8221183fa",
+      "title": "Interview: The Changing Face of Public Protest",
+      "slug": "/post/interview-the-changing-face-of-public-protest-lmls7"
+    },
+    "1c56ac85-bc76-46f2-972b-753c4cf20217": {
+      "builderId": "52345b379416466ebc26eaddf3f5b959",
+      "title": "What is Emerging Technologies Scanning and how it fits into Futures Studies practices",
+      "slug": "/post/what-is-emerging-technologies-scanning-and-how-it-fits-into-futures-studies-practices-hz3sy"
+    },
+    "1e50ea3f-3984-482f-bff6-1a6be87561da": {
+      "builderId": "ddefaefd2edc4112b966ce187b9712bf",
+      "title": "S&T  Foresight - Energy",
+      "slug": "/post/st-foresight-publications-q7bjq"
+    },
+    "1ff98bf0-e5fa-43ee-bce2-54561b8af20e": {
+      "builderId": "c3c860f531a6458bb291ab73197ceb03",
+      "title": "Nature's Barcode",
+      "slug": "/post/natures-barcode-the-exciting-frontier-of-plant-tracking-qg5n7"
+    },
+    "223c9aad-3657-42b7-8e77-3dd456a25991": {
+      "builderId": "abb4549ac4bd4b84a6b50c567b956563",
+      "title": "Futures of Technologies",
+      "slug": "/post/futures-of-technologies-1znmy"
+    },
+    "226b2279-13ab-4b66-9696-acba93af5d0c": {
+      "builderId": "397373bb5ec144768a070600b066b49d",
+      "title": "HORIZON FUTURES WATCH WORKSHOP #4: Futures of interpenetration of criminal and lawful activities",
+      "slug": "/post/horizon-futures-watch-workshop-4-futures-of-interpenetration-of-criminal-and-lawful-activities-y76lu"
+    },
+    "22714e85-a9c2-4df9-aec7-02ffbf800f2d": {
+      "builderId": "4eb8a661d081477f9b2e94b6961f537a",
+      "title": "Alternative Climate Scenarios 2040",
+      "slug": "/post/alternative-climate-scenarios-2040-coalition-of-sustainable-communities-di78m"
+    },
+    "23685f76-e4a1-4890-ac59-90207482128d": {
+      "builderId": "68fe812c704640c08634dd151eefe845",
+      "title": "Futures of Using Nature in Rural and Marine Europe in 2050",
+      "slug": "/post/futures-of-using-nature-in-rural-and-marine-europe-in-2050-policy-implications-aciel"
+    },
+    "24420202-8899-4b4f-b281-9ee356909571": {
+      "builderId": "3f1c68812329439dbbd327207155194f",
+      "title": "ERA Industrial technology roadmap for low-carbon technologies in energy-intensive industries",
+      "slug": "/post/era-industrial-technology-roadmap-for-low-carbon-technologies-in-energy-intensive-industries-6rzy3"
+    },
+    "26861f71-8e4f-4acb-83c8-7a758275be0d": {
+      "builderId": "8e1baef20bdd4d5aaa4345b4e02ccd3c",
+      "title": "ESPAS Global Trends Report 2024",
+      "slug": "/post/espas-global-trends-report-2024-the-trends-the-uncertainties-and-challenges-for-choosing-europes-future-38hce"
+    },
+    "26936e3f-f0b0-46c7-96b9-797dfabe2c29": {
+      "builderId": "7b2e18af94d542ceb53ce6f0b54e5640",
+      "title": "Interview with Susanne Giesecke, Senior Researcher at the Austrian Institute of Technology",
+      "slug": "/post/interview-with-susanne-giesecke-senior-researcher-at-the-austrian-institute-of-technology-7g6nb"
+    },
+    "277aeb4f-7ad4-43fd-a5ac-06bfafbffe71": {
+      "builderId": "4b72292cf7984855a208013054d66e33",
+      "title": "Artificial General Intelligence Issues and Opportunities",
+      "slug": "/post/artificial-general-intelligence-issues-and-opportunities-snlm3"
+    },
+    "27cf7297-9887-4e28-a46a-ed3c35b9de07": {
+      "builderId": "2348b0d4d5784cc0ae5f8282c1988442",
+      "title": "Futures of Civic Resilience in Europe – 2040",
+      "slug": "/post/futures-of-civic-resilience-in-europe-2040-scenarios-and-policy-implications-op5hu"
+    },
+    "27d0da0f-22e6-4352-9095-794be9e233ad": {
+      "builderId": "339fa47a1d5e4bb6a4952e40a30639a8",
+      "title": "University of Turku Invites Applications for the Pentti Malaska Futures Award",
+      "slug": "/post/university-of-turku-invites-applications-for-the-pentti-malaska-futures-award-rjqwn"
+    },
+    "2895ad65-6467-485d-ab43-e9c5c368cd68": {
+      "builderId": "4080cb06433c4d03bf1e1bdf927b074a",
+      "title": "Horizon Futures Watch Newsletter #2",
+      "slug": "/post/horizon-futures-watch-issue-2-2gbzh"
+    },
+    "28bb3ac4-f3d1-4b41-9c52-2fe9e45429f1": {
+      "builderId": "d220530d87c649819fdd0165e08a2f56",
+      "title": "ORION",
+      "slug": "/post/orion-meet-your-co-pilot-in-horizon-scanning-8j1yx"
+    },
+    "29c79e14-a529-4da8-b3be-7a3a50a258b3": {
+      "builderId": "175b26180b404fb591bc59a188d1855e",
+      "title": "Impact of the COVID-19 pandemic on European Consumer Behaviour - Foresight Study - Final Report",
+      "slug": "/post/impact-of-the-covid-19-pandemic-on-european-consumer-behaviour-foresight-study-final-report-2yd7a"
+    },
+    "2a39bd31-2417-41a0-9df3-3888a2cdc5ad": {
+      "builderId": "ef236da3aeca4c09ab2c8f2db7f53611",
+      "title": "Connecting… Futures",
+      "slug": "/post/connecting-futures-the-road-to-6g-and-the-right-to-connectivity-nsbjw"
+    },
+    "2a6e223d-0976-4d89-9b04-884a824f4d51": {
+      "builderId": "4534c96c8fd947e7adac089ee76250cd",
+      "title": "From Reactive to Proactive",
+      "slug": "/post/from-reactive-to-proactive-cultivating-a-culture-of-foresight-for-post-pandemic-governance-z9jki"
+    },
+    "2a98fd44-9c49-46f6-a795-7d3f8c7f4fca": {
+      "builderId": "61e12cf3d8374292aa61c74be0aad478",
+      "title": "Applications for the 2025 Next Generation Foresight Practitioners Fellowship are now open!",
+      "slug": "/post/applications-for-the-2025-next-generation-foresight-practitioners-fellowship-are-now-open-nakad"
+    },
+    "2de7b3cc-f299-4d02-a120-90963469467d": {
+      "builderId": "2e86acb12bb3490494dba01b3c580d41",
+      "title": "Horizon Futures Watch Workshop #8: Futures of Civic Resilience",
+      "slug": "/post/horizon-futures-watch-workshop-8-the-futures-of-civic-resilience-bad7c"
+    },
+    "2e8db7b4-baf6-42b8-87f2-74dcfcd78099": {
+      "builderId": "2ee25dbde4a94d13982d3299c1b87ff8",
+      "title": "Futures of interpenetration of criminal and lawful economic activities - Workshop #3",
+      "slug": "/post/futures-of-interpenetration-of-criminal-and-lawful-economic-activities-workshop-3-gioh5"
+    },
+    "2ea41570-321b-4632-9bfc-42adfdfbb0b1": {
+      "builderId": "3cb2268f9bac439fb8bc8adce010ce1b",
+      "title": "Scenarios for the future of school education in the EU",
+      "slug": "/post/scenarios-for-the-future-of-school-education-in-the-eu-4y7za"
+    },
+    "340497a9-6bea-4b5e-a385-d5d4d75cacf1": {
+      "builderId": "6db86f9bed354d55aa0cdf302d684b22",
+      "title": "Shaping Norway’s Digital Future",
+      "slug": "/post/shaping-norways-digital-future-hntx4"
+    },
+    "35eb5229-1a85-4aca-bb5b-f745962a8bea": {
+      "builderId": "293aae7148634c7e85f32ac79e496635",
+      "title": "ERA Industrial technology roadmap",
+      "slug": "/post/era-industrial-technology-roadmap-for-circular-technologies-and-business-models-fc9oh"
+    },
+    "37af18e0-8f8e-4e70-bb4f-c93dee4baf24": {
+      "builderId": "5778c7c60d704dd08c794de41ea968bc",
+      "title": "Strategic Foresight for Sustainability (SF4S) - Synthesis Report",
+      "slug": "/post/strategic-foresight-for-sustainability-sf4s-synthesis-report-o3f2x"
+    },
+    "38544653-0a3b-4484-ae75-500f5dcc40aa": {
+      "builderId": "80288a7382bb4fe7bc9a272135942672",
+      "title": "Foresight and Societal Resilience: How FUTURESILIENCE walks the talk",
+      "slug": "/post/foresight-and-societal-resilience-how-futuresilience-walks-the-talk-tkrvf"
+    },
+    "3953d604-c6e0-4994-b771-d11fe2d91124": {
+      "builderId": "a435b0428572482086616b892a1eb978",
+      "title": "Threads of Tomorrow: Fashion as a Force for Change",
+      "slug": "/post/threads-of-tomorrow-fashion-as-a-force-for-change-49pqy"
+    },
+    "39611d66-eab3-43df-aaab-a034cf8a526c": {
+      "builderId": "2806a0c94bab45949d2d47190da0a835",
+      "title": "How to Be Good in a Crisis",
+      "slug": "/post/how-to-be-good-in-a-crisis-future-labs-that-turn-research-into-resilience-lbjd9"
+    },
+    "3ac490ce-bbec-4cb5-9fb2-47f19911634d": {
+      "builderId": "3fae3f14b17a48658cd70a8cbdc80594",
+      "title": "AI can’t replace human foresight, but it can help us see further, faster",
+      "slug": "/post/ai-cant-replace-human-foresight-but-it-can-help-us-see-further-faster-lob3k"
+    },
+    "3c212df8-791a-4f17-893b-081e465270a6": {
+      "builderId": "3e297cbc324c45e39b0ce6de03983850",
+      "title": "Mission Area: Adaptation to Climate Change, Including Societal Transformation",
+      "slug": "/post/mission-area-adaptation-toclimate-change-includingsocietal-transformation-jbidf"
+    },
+    "3d1b910e-ff24-4e70-8af7-f8f5d970f437": {
+      "builderId": "ae410da39a2b4657befebd82146ecb0e",
+      "title": "Future Days 2025",
+      "slug": "/post/future-days-2025-vikdy"
+    },
+    "3e065b54-bcdf-41aa-8d82-3b2e872cd8c5": {
+      "builderId": "94684f936f194a0886108b9520bad90a",
+      "title": "Emerging risks and opportunities for EU internal security stemming from new technologies",
+      "slug": "/post/emerging-risks-and-opportunities-for-eu-internal-security-stemming-from-new-technologies-skybe"
+    },
+    "3f038b2a-b668-4e6e-8959-f0e531188d16": {
+      "builderId": "cb7b69c66c134232b85c4c02c0fdd8df",
+      "title": "Socioeconomic and Socio-Political Scenarios Shaping the European Hydrogen Economy of 2040",
+      "slug": "/post/socioeconomic-and-socio-political-scenarios-shaping-the-european-hydrogen-economy-of-2040-esyzk"
+    },
+    "3f3e3a14-4b0e-4458-968b-6761a0d31c3a": {
+      "builderId": "f90179b95ff444458255b52a5981b208",
+      "title": "Workshop \"Foresight towards the 2nd Strategic Plan of Horizon Europe: towards a synthesis.\"",
+      "slug": "/post/workshop-foresight-towards-the-2nd-strategic-plan-of-horizon-europe-towards-a-synthesis-a36uz"
+    },
+    "412edd3a-bd46-4abb-8179-197455783f87": {
+      "builderId": "e8176c607a6e404c82a87ecd14ff0a3d",
+      "title": "Eye of Europe's second Mutual Learning Event",
+      "slug": "/post/eye-of-europes-second-mutual-learning-event-4pzed"
+    },
+    "4292e90e-dddb-412d-98eb-8430582475ff": {
+      "builderId": "c4590daee584437fbb6526b608b2d6eb",
+      "title": "L'avenir des compétences et des emplois verts en Europe en 2050",
+      "slug": "/post/lavenir-des-comptences-et-des-emplois-verts-en-europe-en-2050-v02gg"
+    },
+    "4378aac3-72a1-421a-96c2-77c38c2b67ee": {
+      "builderId": "01f13d26bac147a8ab9b4b54e217152e",
+      "title": "Foresight in the Field",
+      "slug": "/post/foresight-in-the-field-how-europol-uses-foresight-to-anticipate-the-criminals-of-the-future-zzm6p"
+    },
+    "446e47c0-c04f-4b89-868c-eecf84249205": {
+      "builderId": "a407b42da31948fea99d45800f65b270",
+      "title": "Eyes on the Future",
+      "slug": "/post/eyes-on-the-future-99pis"
+    },
+    "4518b10c-7f97-4284-8143-6bd784a6e1eb": {
+      "builderId": "24c3c001e3f0469b9c5a432d80bf1d20",
+      "title": "Alternative Climate Scenarios 2040",
+      "slug": "/post/alternative-climate-scenarios-2040-green-dream-623w2"
+    },
+    "46112567-9bc1-43bd-9666-2b112c4c09f1": {
+      "builderId": "97d7065c7ca24940930b61446101994e",
+      "title": "Reflections from the 2025 Futures Conference",
+      "slug": "/post/reflections-from-the-2025-futures-conference-97lei"
+    },
+    "46b51b60-a6be-4d07-8df6-cde5235b3cd5": {
+      "builderId": "d946eaad842e4ef587890afe98dcb97f",
+      "title": "Is Hydrogen That Good for the Climate?",
+      "slug": "/post/is-hydrogen-that-good-for-the-climate-pil4q"
+    },
+    "470e1212-3697-4f54-9754-a4202c857e82": {
+      "builderId": "2aa767a8377a42c1bfc2aec4b8bf3a9c",
+      "title": "Futures of Social Confrontations (Workshop)",
+      "slug": "/post/futures-of-social-confrontations-workshop-gi7wf"
+    },
+    "4792991b-ee29-40d7-a3ee-58a7680fd586": {
+      "builderId": "60684fb6d6ea41ce912f033df9e4d86b",
+      "title": "UN Summit of the Future: Risks on the horizon",
+      "slug": "/post/un-summit-of-the-future-risks-on-the-horizon-jlfnp"
+    },
+    "48a4ccb4-6b4b-49c7-b9ae-5735a6a1f52c": {
+      "builderId": "7a9ce2ed1cdf4774901d38ca00a4456d",
+      "title": "Mission Area: Healthy Oceans, Seas, and Coastal and Inland Waters",
+      "slug": "/post/mission-area-healthy-oceans-seas-and-coastal-and-inland-waters-5jnx1"
+    },
+    "48af8803-53c0-425b-9fa6-304696e55d7d": {
+      "builderId": "9c1b8efc6166417eadd46edda83f8041",
+      "title": "Reclaiming Spatial Justice in the Quest for a Resilient Future",
+      "slug": "/post/reclaiming-spatial-justice-in-the-quest-for-a-resilient-future-lgifs"
+    },
+    "48ef30bd-57c1-4562-9002-dfd8a0ac9a0e": {
+      "builderId": "fe05a905d5d642f9a7b74ad1bf635121",
+      "title": "From Leaf to Root - Deepening Conversations with Causal Layered Analysis",
+      "slug": "/post/from-leaf-to-root-deepening-conversations-with-causal-layered-analysis-9rif7"
+    },
+    "4aff5bd1-9ae5-41fb-b30e-476ad2d91d9a": {
+      "builderId": "d110cc3f6c2342cda4b91159fcee174e",
+      "title": "Showcasing Perspectives",
+      "slug": "/post/Showcasing_Perspectives__hjkqa"
+    },
+    "4be02b89-a597-4279-acd8-29ade102a497": {
+      "builderId": "c1726528f95841219a95d8f9e0ca5766",
+      "title": "S&T  Foresight - Models, Algorithms, and Data for the Future",
+      "slug": "/post/st-foresight-models-algorithms-and-data-for-the-future-22kl8"
+    },
+    "4c3cfa94-a348-43a9-9cce-b1da3a615122": {
+      "builderId": "dbf12221ecc54f08b21fc0606119fb1f",
+      "title": "Co-Creating Futures of Democracy in Europe",
+      "slug": "/post/co-create-the-future-of-european-democracy-g6rmi"
+    },
+    "4da90063-de77-4a40-8230-d8d3814ad46e": {
+      "builderId": "36ad203b81d94e8fbad365e0a3c6cf16",
+      "title": "Vision ECO2050: The Future of the Economy by 2050, following the example of Luxembourg",
+      "slug": "/post/vision-eco2050-the-future-of-the-economy-by-2050-following-the-example-of-luxembourg-xtb7n"
+    },
+    "4f7b4425-703e-4e8c-93d6-d557d2e165a1": {
+      "builderId": "3425e2f214d64e98b88e40afc4fd1d56",
+      "title": "Futures of Big Tech: 2nd Scenario Building Workshop",
+      "slug": "/post/futures-of-big-tech-2nd-scenario-building-workshop-3fzik"
+    },
+    "50eb70f5-92fc-4824-be7e-f82efb70c5bd": {
+      "builderId": "85be34e86e274983b4044fdc6c6309d8",
+      "title": "Addressing Underlying Assumptions",
+      "slug": "/post/addressing-underlying-assumptions-tips-and-tricks-on-horizon-scanning-1y7qv"
+    },
+    "513f2246-f793-49ca-88bf-85b3872b5ec1": {
+      "builderId": "bb5c39a8482f44e4a5400a2ed5a893b9",
+      "title": "Futures of Green Skills and Jobs: 2nd Scenario Building Workshop",
+      "slug": "/post/futures-of-green-skills-and-jobs-2nd-scenario-building-workshop-5ks02"
+    },
+    "51b29851-fa2b-42bc-971f-27de352aef79": {
+      "builderId": "0245217ad9d945008ca6db2a4fec0767",
+      "title": "Futures of Big Tech: 1st Scenario Building Workshop",
+      "slug": "/post/futures-of-big-tech-1st-scenario-building-workshop-656ft"
+    },
+    "525dd5e0-cbcb-407e-b365-5199efb0ccf7": {
+      "builderId": "28c7b15c92204526bd75a7bef9c1cf39",
+      "title": "Futures4Europe Conference | Book of Abstracts",
+      "slug": "/post/futures4europe-book-of-abstracts-t409a"
+    },
+    "531786de-8e3f-436a-bca8-f53b7e71d271": {
+      "builderId": "3b2d55020df24020b9bd5b2b3f2e8e64",
+      "title": "How to do Strategic Foresight",
+      "slug": "/post/how-to-do-strategic-foresight-8n53f"
+    },
+    "544d7bb0-c5da-41d1-a7ec-8c8ede32117d": {
+      "builderId": "7c44bde442684e6790fca8683ab4c944",
+      "title": "Manufacturing as a Service",
+      "slug": "/post/manufacturing-as-a-service-rpnff"
+    },
+    "550fccc1-b0c9-42a7-b398-d1b1be8e6254": {
+      "builderId": "eac3eba6853d43acbbf1ccb563fed0ba",
+      "title": "Institutionalising foresight capability (and creating wide foresight communities) in the R&I system",
+      "slug": "/post/institutionalising-foresight-capability-and-creating-wide-foresight-communities-in-the-ri-system-jt7a5"
+    },
+    "55807234-c4fd-492b-9b07-7a64086a74cb": {
+      "builderId": "a2837798ca63454a88aebe2106cf8ec9",
+      "title": "Horizon Futures Watch Workshop #7: Futures of Innovation and IP Regulation",
+      "slug": "/post/horizon-futures-watch-workshop-7-futures-of-innovation-and-ip-regulation--orxso"
+    },
+    "568d5ad0-4cbe-4d2b-b6a0-c9574fa53dc3": {
+      "builderId": "bdf663ab781b423fbe6cf05197acfa17",
+      "title": "Chem4EU\n",
+      "slug": "/post/chem4eu-g5j33"
+    },
+    "572f84fe-1b1f-48ee-b5b4-d8222cdec4ed": {
+      "builderId": "442f5104f3a24c3d983e327fcea53d64",
+      "title": "Webinar Platform driven horizon scanning in practice",
+      "slug": "/post/Webinar_Platform_driven_horizon_scanning_in_practice_6n0a2"
+    },
+    "5733cea0-3205-4f9b-9981-29a3a5ef1185": {
+      "builderId": "69ced883b1fc4bbe8643b04ae542cc35",
+      "title": "Eye of Europe Foresight Pilot Topics",
+      "slug": "/post/eye-of-europe-foresight-pilot-topics-ur2q3"
+    },
+    "57815a48-e7c9-4b7e-a40c-c2471012178b": {
+      "builderId": "91c7da5a32184df88e891421a98be2c1",
+      "title": "Linking futures thinking, probability-based forecasting and decision-making: FutureCtrl methodology",
+      "slug": "/post/linking-futures-thinking-probability-based-forecasting-and-decision-making-futurectrl-methodology-6bu0p"
+    },
+    "57adc40c-7913-4a4a-95ff-ee6c5fddc34e": {
+      "builderId": "75649c4d231846d68a4e2786f59992c5",
+      "title": "HORIZON FUTURES WATCH WORKSHOP #6: Futures of Big Tech",
+      "slug": "/post/horizon-futures-watch-workshop-6-futures-of-big-tech-5c957"
+    },
+    "58a876c5-ec0a-46a2-8291-f5d2412179ce": {
+      "builderId": "95dabc49ba174c9aa3920fa62adfc4d8",
+      "title": "ERA Industrial Technologies\nRoadmap on Human-Centric\nResearch and Innovation",
+      "slug": "/post/era-industrial-technologiesroadmap-on-human-centricresearch-and-innovation-4l4dg"
+    },
+    "59347665-32db-4a5a-b80b-95ca178d0169": {
+      "builderId": "a97bf11812bb4e0c9ed79db80790f48f",
+      "title": "HORIZON FUTURES WATCH WORKSHOP #7: Futures of Innovation and IP Regulation",
+      "slug": "/post/horizon-futures-watch-workshop-7-futures-of-innovation-and-ip-regulation-w2qss"
+    },
+    "5b397058-980b-4274-82d4-e9387eb65c90": {
+      "builderId": "c6effcdd78804604aea94cc8eeb0c28f",
+      "title": "Now Hiring: Low-Carbon Specialists for a Sustainable Europe",
+      "slug": "/post/now-hiring-low-carbon-specialists-for-a-sustainable-europe-2mba2"
+    },
+    "5bbed8e1-0de2-481e-9c18-cc7e0490432e": {
+      "builderId": "45ee0b3a80f44c25b6ac21329aad127c",
+      "title": "“Futures4Europe – a platform to connect Europe’s foresight community” - relaunch event",
+      "slug": "/post/futures4europe-a-platform-to-connect-europes-foresight-community-relaunch-event-mwtaf"
+    },
+    "5bd21877-ab87-43e1-a78b-58d6eceabf91": {
+      "builderId": "47aafb6362f046799650f09d8642c30e",
+      "title": "The upgraded futures4europe.eu is now launched!",
+      "slug": "/post/the-upgraded-futures4europeeu-is-now-launched-9f0p1"
+    },
+    "5ecfa330-f9bc-42aa-aa5b-d238203e8a2e": {
+      "builderId": "76e476f784ac4d939ef18e4abbcc48dd",
+      "title": "The National Strategy for Research Innovation and Smart Specialization 2022-2027",
+      "slug": "/post/the-national-strategy-for-research-innovation-and-smart-specialization-2022-2027-3bra5"
+    },
+    "60319135-ecdc-4f2d-ad6c-ab4527b7af86": {
+      "builderId": "b6caf6754d974fc884df29a607d32c87",
+      "title": "Identifying STI developments contributing to the capability of planetary ecosystems to flourish",
+      "slug": "/post/identifying-sti-developments-contributing-to-the-capability-of-planetary-ecosystems-to-flourish-buq8t"
+    },
+    "604ef2e9-a6e0-4ff8-bea6-974e035e3f86": {
+      "builderId": "c7e6be9a490d41c98b84237aa55b648f",
+      "title": "Everybody is looking into the future!",
+      "slug": "/post/everybody-is-looking-into-the-future-rj8pw"
+    },
+    "610b1c6b-00d9-40e7-9941-91d8de10a46b": {
+      "builderId": "e002c6e90fcf4881bdac6aef66499c97",
+      "title": "Playbook of Foresight",
+      "slug": "/post/playbook-of-foresight-mp7dn"
+    },
+    "620b68e3-42ae-4b2f-9a47-18f6a4d1a589": {
+      "builderId": "05ba6bacf7a248668e22622bd0592eab",
+      "title": "The EU in a Volatile New World",
+      "slug": "/post/the-eu-in-a-volatile-new-world-challenge-of-global-leadership-6yk13"
+    },
+    "6391e73f-58f3-412d-b377-df7add0760fc": {
+      "builderId": "1ba86834e7064817ad25c601b5dff9c5",
+      "title": "Futures of interpenetration of criminal and lawful economic activities - Workshop #1",
+      "slug": "/post/futures-of-interpenetration-of-criminal-and-lawful-economic-activities-workshop-1-gwnxl"
+    },
+    "63b6a17b-79f3-40bb-9a0d-d1f3f61139f0": {
+      "builderId": "c22d4654e1bc4e4eb468e3b9f8d4b9f4",
+      "title": "Scanning Deep Tech Horizons",
+      "slug": "/post/scanning-deep-tech-horizons-participatory-collection-and-assessment-of-signals-and-trends-n65ky"
+    },
+    "63be67e6-9b5e-44a0-865d-fe4a94db50b4": {
+      "builderId": "222dd70b0bd044a7843d6bf3219acc0b",
+      "title": "Suppressing Indoor Pathogen Transmission",
+      "slug": "/post/suppressing-indoor-pathogen-transmission-ijvv1"
+    },
+    "64755127-34ea-4cf0-bd16-1843c2612cfb": {
+      "builderId": "82e70238758d4f06bbeb56aaae061942",
+      "title": "Futures of Using Nature in Rural and Marine Europe in 2050",
+      "slug": "/post/futures-of-using-nature-in-rural-and-marine-europe-in-2050-scenarios-ysffw"
+    },
+    "648643c6-64a7-460c-996c-5db74466d5a8": {
+      "builderId": "f682a05170284c5c80b3d6abfae78d91",
+      "title": "Futures Thinking and\nStrategic Foresight in Action",
+      "slug": "/post/futures-thinking-andstrategic-foresight-in-action-46jjg"
+    },
+    "64fbee7c-3e8c-4b70-9f12-52fd6c7708df": {
+      "builderId": "245f0b2e8f0e4284967cf3358c61e100",
+      "title": "Futures of using nature: land and sea (2nd scenario workshop)",
+      "slug": "/post/futures-of-using-nature-land-and-sea-2nd-scenario-workshop-mmo8l"
+    },
+    "65b8267e-d55e-42ee-8bfe-eb10e83a09bc": {
+      "builderId": "89b42a24a82547e0a926ae192e7cafa0",
+      "title": "Futures of Big Tech: Policy Implications Workshop",
+      "slug": "/post/futures-of-big-tech-policy-implications-workshop-w0k80"
+    },
+    "66e5f5d1-a09d-4002-8070-c2ffe1a42180": {
+      "builderId": "eb22a68bb04545f1b315c3b5d88884dc",
+      "title": "Foresight at EASST-4S 2024 Conference in Amsterdam ",
+      "slug": "/post/foresight-at-easst-4s-2024-conference-in-amsterdam--ipl1m"
+    },
+    "6863f67b-d846-4f17-98a7-1c9f92bb94d3": {
+      "builderId": "ea7f36eb6820492ebae90e7ccb111de3",
+      "title": "Horizon Futures Watch Workshop 2",
+      "slug": "/post/horizon-futures-watch-workshop-2-future-of-land-and-sea-use-de8pw"
+    },
+    "69a10a7a-fc76-44c1-ae0b-f1c2543ade63": {
+      "builderId": "d0d5cce17b5d40aca9096e2d364bd13b",
+      "title": "Futures of Innovation and Intellectual Property Regulation in 2040",
+      "slug": "/post/futures-of-innovation-and-intellectual-property-regulation-in-2040-w71l3"
+    },
+    "6a149b7a-1e68-445e-b52a-2d58e71fb916": {
+      "builderId": "1fca8cd27beb43b3888e5cd2cb551488",
+      "title": "Foresight in the Filed",
+      "slug": "/post/foresight-in-the-field-initiatives-covering-the-future-of-ipr-vptnr"
+    },
+    "6b778f24-ca6e-4814-aadb-d6365ebfd7ce": {
+      "builderId": "bab55a2ee27b465db6b3027b67b7e66b",
+      "title": "Diplomacy in the Age of AGI",
+      "slug": "/post/diplomacy-in-the-age-of-agi-7ey9e"
+    },
+    "6b98373b-e2e5-45fc-ae58-a817c3a07d65": {
+      "builderId": "44c9c8e43c7f4d029d0944c128596e4f",
+      "title": "Global race on hydrogen",
+      "slug": "/post/global-race-on-hydrogen-r2qif"
+    },
+    "6bf1191c-3f7d-4f2e-9d3f-e9c94ba3e9f3": {
+      "builderId": "7c9bbefca6a144d6890e682674bccf5c",
+      "title": "The Future of Sustainable Fashion",
+      "slug": "/post/the-future-of-sustainable-fashion-yijr5"
+    },
+    "6c17d5f6-0806-434c-9edf-8d69f50e6a30": {
+      "builderId": "5418fe062ddd4186982ca2d09da3448d",
+      "title": "The Future of Social confrontations",
+      "slug": "/post/the-future-of-social-confrontations-policy-implications-fn6ve"
+    },
+    "6c9c4ba8-d8bd-46a5-bc73-483adef810c8": {
+      "builderId": "b17932e733364571a8bfe10b02dc555a",
+      "title": "The European Foresight Monitoring Network",
+      "slug": "/post/european-foresight-monitoring-network-v3813"
+    },
+    "6cd83c82-50df-4b52-8c19-2be76d09f3ed": {
+      "builderId": "70da7db855194dd3a58ef3df43c5b3b9",
+      "title": "Securing the Future",
+      "slug": "/post/securing-the-future-fpn73"
+    },
+    "6cfdbaba-c08f-44b1-9546-4a293b38930e": {
+      "builderId": "a7b3905b20d546d793ed0ef259b2ab16",
+      "title": "Futures of Science and Conflict",
+      "slug": "/post/futures-of-science-and-conflict-5k5vf"
+    },
+    "6d42ec0e-122a-45bb-9849-c5ec87706e57": {
+      "builderId": "7360487f194f45e2922b3566ed3c5558",
+      "title": "S&T  Foresight - Complexity",
+      "slug": "/post/st-foresight-complexity-pix1s"
+    },
+    "6d6cfcea-4f87-4e12-bd81-806958d15c53": {
+      "builderId": "2e1c545647eb4628a2ab8e3a5716de4e",
+      "title": "Tackling Security Concerns",
+      "slug": "/post/tackling-security-concerns-dkeii"
+    },
+    "6dbdc493-ab16-4a09-b275-7e939e87ad23": {
+      "builderId": "69ba48e1ce5345ee8155d33bf6e6fa2a",
+      "title": "HFW Workshop #2: Futures of using nature in rural and marine Europe in 2050",
+      "slug": "/post/hfw-workshop-2-futures-of-using-nature-in-rural-and-marine-europe-in-2050-dsm0j"
+    },
+    "6ded2e27-237c-456d-9788-510587221c08": {
+      "builderId": "0e454af3d72e420f95612779e805ea15",
+      "title": "Harvesting Hope",
+      "slug": "/post/harvesting-hope-future-proofing-plants-for-bountiful-2050-crop-yields-k2wtr"
+    },
+    "7001f87c-1997-4f3b-911f-11ebbadf7599": {
+      "builderId": "40acb2cef99c4ec58e5126c8bb3b96a1",
+      "title": "Innovation 2030",
+      "slug": "/post/innovation-2030-hsmjq"
+    },
+    "7208d99b-85d4-4c6c-991d-b062938fda58": {
+      "builderId": "00b75821444d47419befdf95a8580d7e",
+      "title": "26th World Futures Studies Federation World Conference 2025, Cape Town South Africa",
+      "slug": "/post/26th-world-futures-studies-federation-world-conference-2025-cape-town-south-africa-bdy7p"
+    },
+    "730a55bb-6efb-4aaf-b0f3-874d1a3617bc": {
+      "builderId": "fbb60dd18993427da73a97f230e4a5d9",
+      "title": "Emerging applications of neurotechnology and their implications for EU governance",
+      "slug": "/post/emerging-applications-of-neurotechnology-and-their-implications-for-eu-governance-f7bsq"
+    },
+    "73140d33-b29c-47f1-920e-ecb9196a92e5": {
+      "builderId": "c9eb13b0bfe444bbbe149ba853de3728",
+      "title": "Geopolitical & industrial decarbonisation scenarios to identify R&I opportunities for the EU",
+      "slug": "/post/geopolitical-industrial-decarbonisation-scenarios-to-identify-ri-opportunities-for-the-eu-f4575"
+    },
+    "73df60c5-749b-4708-8a40-9b8ac69df560": {
+      "builderId": "1eebd04052ae46e08e4930053fec0869",
+      "title": "Help shape a resilient, innovative, and sustainable EU Research & Innovation System",
+      "slug": "/post/help-shape-a-resilient-innovative-and-sustainable-eu-research-innovation-system-4ok0o"
+    },
+    "742c5eae-4623-4cad-a8ea-2d61217e5856": {
+      "builderId": "f58d309fc3ec4c75a9373a8266a6a3b6",
+      "title": "From Sewing Machines to Fashion NFTs",
+      "slug": "/post/from-sewing-machines-to-fashion-nfts-time-traveling-through-ipr-in-creative-industries-8joyh"
+    },
+    "748ffb74-39dd-4f5b-a3e4-502ee7fc28ca": {
+      "builderId": "ae48d979ac34433292c6c6d1720e7665",
+      "title": "Workshop on Risk Transfer Solutions for Climate Disasters",
+      "slug": "/post/workshop-on-risk-transfer-solutions-for-climate-disasters-4suz2"
+    },
+    "765c170c-398a-447a-a45b-3df1f948ea04": {
+      "builderId": "aa228befe81d4a3aa0664d9cb196149e",
+      "title": "Emerging challenges for global commons",
+      "slug": "/post/emerging-challenges-for-global-commons-m39mf"
+    },
+    "76aa8f2e-6407-4090-be71-26f6e82fa7ed": {
+      "builderId": "24dbe9efbf484cb7be9f59138716c0e0",
+      "title": "Stories from 2050",
+      "slug": "/post/stories-from-2050-p0wcs"
+    },
+    "76d66e89-35dd-4b8f-96df-5a0cf1923012": {
+      "builderId": "73a929d459394118928df535c8439814",
+      "title": "Eyes on the future Volume 3",
+      "slug": "/post/eyes-on-the-future-volume-3-sa8zi"
+    },
+    "775faa44-30fe-457e-9dcf-0bfa86f364a1": {
+      "builderId": "b970e2b3ece4438d84d12cd576ddca6b",
+      "title": "Mission Area: Climate-Neutral\nand Smart Cities",
+      "slug": "/post/mission-area-climate-neutraland-smart-cities-d3dem"
+    },
+    "790755ad-ec2c-4fa1-aac1-4efa46b95855": {
+      "builderId": "5e6d91a76833418bbafbbb44cc91c0ea",
+      "title": "Join the Nordic Foresight Network Initiative",
+      "slug": "/post/join-the-nordic-foresight-network-initiative-1vdc7"
+    },
+    "79aba6f6-4278-45dc-9fff-81483a993a4c": {
+      "builderId": "54bbd32197be4fd88d317f6935eada4c",
+      "title": "Future of Sustainable Fashion II",
+      "slug": "/post/future-of-sustainable-fashion-ii-5igdo"
+    },
+    "7a05e143-916c-44b9-a910-ff6dec2f127b": {
+      "builderId": "8dd0362cced2441eb1aa7c6a254dd863",
+      "title": "Geopolitical & industrial decarbonisation scenarios to identify R&I opportunities for the EU",
+      "slug": "/post/geopolitical-industrial-decarbonisation-scenarios-to-identify-ri-opportunities-for-the-eu-6yinr"
+    },
+    "7a108bad-291b-4dbf-8395-809536f361d6": {
+      "builderId": "a2f2bfd204044c53acd7489d659672f7",
+      "title": "Exploring Future Dimensions and Elements of Contextual Developments Relevant for EU R&I Policies",
+      "slug": "/post/exploring-future-dimensions-and-elements-of-contextual-developments-relevant-for-eu-ri-policies-vygbm"
+    },
+    "7aa0fbf0-a326-46e9-9be9-e621fdf3a8fb": {
+      "builderId": "e07db60388a74627a7dc69cc987b22b2",
+      "title": "Futures of using nature: land and sea (1st scenario workshop)",
+      "slug": "/post/futures-of-using-nature-land-and-sea-1st-scenario-workshop-1uopk"
+    },
+    "7aae4ef8-9feb-41db-86a4-bca1c334949f": {
+      "builderId": "9661d22bb554463c8bd0fa0515f1e2e3",
+      "title": "The Five Dimensions of Futures Consciousness",
+      "slug": "/post/the-five-dimensions-of-futures-consciousness-ybe3j"
+    },
+    "7b08c4cb-210e-4e6f-a21d-18186f4c4974": {
+      "builderId": "b6827c6467e04df7899beac7f55d54a1",
+      "title": "Mission Area: Soil Health and Food",
+      "slug": "/post/mission-area-soil-health-and-food-52nev"
+    },
+    "7b75ff7c-af33-4331-b98e-7237d8027a64": {
+      "builderId": "786a50c56f484b4dbcd8e581caf71c15",
+      "title": "Embedding Foresight in Next-Generation Transformative Innovation Policies",
+      "slug": "/post/embedding-foresight-in-next-generation-transformative-innovation-policies-ggwtl"
+    },
+    "7b782322-8ce2-42d1-bbe8-9c3312c5f0d4": {
+      "builderId": "4507c2c527874bf6900f36df72d605dd",
+      "title": "Presenting the EU Policy Lab's 'Foresight menu'",
+      "slug": "/post/presenting-the-eu-policy-labs-foresight-menu-ialat"
+    },
+    "7be734d4-ab92-496c-9e95-196f7f92f80b": {
+      "builderId": "1b352b62787f42868af7099d0b6f3dde",
+      "title": "Policy communication of foresight results ",
+      "slug": "/post/policy-oriented-communication-of-foresight-results-6g3io"
+    },
+    "7c41796e-ad2a-4403-b2cc-3ccee62a6ae3": {
+      "builderId": "a002b105603c4d2891715aaabf02aee2",
+      "title": "Horizon Futures Watch Workshop #4:",
+      "slug": "/post/horizon-futures-watch-workshop-4-future-of-interpenetration-of-criminal-and-lawful-economic-activities-5f62j"
+    },
+    "7c771eca-352d-4c7e-8ab4-93396860ade4": {
+      "builderId": "d2fa7d9cac2246d88aa0febde26b7c43",
+      "title": "HORIZON FUTURES WATCH WORKSHOP #1: Futures of social confrontations ",
+      "slug": "/post/horizon-futures-watch-workshop-1-futures-of-social-confrontations--f2nf8"
+    },
+    "7c8421d5-9eb5-48b0-a010-04115d54eb29": {
+      "builderId": "7434ede4c58b47b599211936b1b78ba5",
+      "title": "Mobilising the future",
+      "slug": "/post/mobilising-the-future-wjx8h"
+    },
+    "7da255e1-97c2-4596-8e20-ba92183ffbcf": {
+      "builderId": "53b28bc7f16d41e69741e91436997fad",
+      "title": "First Eye of Europe Pilot Workshop on Fashion Futuring is in the works!",
+      "slug": "/post/first-pilot-on-fashion-futuring-in-the-works-xzdxq"
+    },
+    "7e40ac2a-95b2-40cd-b97f-793dfd7ff333": {
+      "builderId": "a9c94e7550c94feb928c5b3485d517a2",
+      "title": "Futures of Green Skills and Jobs in Europe",
+      "slug": "/post/futures-of-green-skills-and-jobs-in-europe-in-2050-8phsp"
+    },
+    "7ee8e042-51b8-438c-92b9-b0ccb8cea076": {
+      "builderId": "18d2bcb1e5b74877a982e8957b46d9c5",
+      "title": "Futures of using nature: land and sea (policy implications workshop)",
+      "slug": "/post/futures-of-using-nature-land-and-sea-policy-implications-workshop-pfna0"
+    },
+    "7f410180-332a-4d0f-93a8-a5cd1ed53b9b": {
+      "builderId": "6cbfea5ad6b14f1bb3fe19a91f6587fa",
+      "title": "Eye of Europe´s third Mutual Learning Event",
+      "slug": "/post/eye-of-europes-third-mutual-learning-event-w637p"
+    },
+    "7f513dad-c101-4587-b077-3941bf6fd70e": {
+      "builderId": "22d42c81d5d94d75b88acb60ebfd4da6",
+      "title": "From Intuition to Immersion: The Resonant Future Self Framework Makes Foresight Felt",
+      "slug": "/post/from-intuition-to-immersion-the-resonant-future-self-framework-makes-foresight-felt-z46k3"
+    },
+    "7f7b1675-8579-4edb-a6c7-86480d25510b": {
+      "builderId": "f803c3372eba4c5eaf42b92ee8299287",
+      "title": "Foresight in the Field",
+      "slug": "/post/foresight-in-the-field-the-mutual-learning-exercise-9ixtp"
+    },
+    "7fc4f7ff-d4bf-4332-8188-1f920dc9059c": {
+      "builderId": "d8e7119165494dca939b9517e3503f80",
+      "title": "Emotion ecosystems 2040",
+      "slug": "/post/emotion-ecosystems-2040-rlmur"
+    },
+    "8063de8f-8780-47e7-87c5-191ec3ad55c3": {
+      "builderId": "23678c452b2446e9a64aa221f1e9e014",
+      "title": "Exploring Futures: Scenario Planning in Collective Consciousness",
+      "slug": "/post/exploring-futures-scenario-planning-in-collective-consciousness-nqx5a"
+    },
+    "80b17028-d0f6-45c0-aebe-256c7576b864": {
+      "builderId": "b4b3a5ed930c4563850bfdf71b3f8a8a",
+      "title": "The Interpenetration of Criminal and Lawful Economic Activities",
+      "slug": "/post/the-interpenetration-of-criminal-and-lawful-economic-activities-scenarios-policy-implications-vvunn"
+    },
+    "83913692-3ec8-453c-bc92-378b556c6bfc": {
+      "builderId": "00f922cf15f0463fa6b179b557427826",
+      "title": "Futureproofing Public Health Systems by Teaching Foresight",
+      "slug": "/post/futureproofing-public-health-systems-by-teaching-foresight--ladnw"
+    },
+    "852a3cfa-4e5b-407c-a79b-e5c84e435b0c": {
+      "builderId": "495ddb5080924576b0d603805aab46fc",
+      "title": "S&T  Foresight - Materials",
+      "slug": "/post/st-foresight-materials-6wvsq"
+    },
+    "8630abba-ba2d-445c-b973-fa56af5a52eb": {
+      "builderId": "0d61c460ea064ceca5ffe002cd66e3f1",
+      "title": "Co-Create the Strategy on Intergenerational Fairness with us!",
+      "slug": "/post/co-create-the-strategy-on-intergenerational-fairness-xruak"
+    },
+    "86b7490e-f4e8-477f-984a-d1ce72fbc619": {
+      "builderId": "c501c8be9d2e494884b47d8813f10b56",
+      "title": "Updating the national smart specializations in Romania",
+      "slug": "/post/updating-the-national-smart-specializations-in-romania-m4jfb"
+    },
+    "871cb10b-9fbd-4382-b01f-af8ab6ce4805": {
+      "builderId": "860313c105d94992bb4e4761f0d9c034",
+      "title": "Hydrogen Economy in \"Europe 2040\"",
+      "slug": "/post/hydrogen-economy-in-europe-2040-hhsl2"
+    },
+    "879b63d2-42de-4baa-af6d-b1eb22b46e95": {
+      "builderId": "757975f3b1ac402ab4aeffafb412c2d1",
+      "title": "Futures of Science for Policy in Europe",
+      "slug": "/post/futures-of-science-for-policyin-europe-zco8q"
+    },
+    "8854b651-052e-4a35-aab5-adacfb12ef25": {
+      "builderId": "50b40f0c25fe4de98ecbe2364f652c9e",
+      "title": "Futures of using nature in rural and marine Europe in 2050",
+      "slug": "/post/futures-of-using-nature-in-rural-and-marine-europe-in-2050-mlj8y"
+    },
+    "88a49bb1-494c-4e23-8094-b148dea17ec1": {
+      "builderId": "34e09b24ec4444e9b3a6ac4bf6bae70c",
+      "title": "Shaping futures, story by story",
+      "slug": "/post/shaping-futures-story-by-story-fe3qh"
+    },
+    "8907de4f-7105-471a-8041-21204bff4525": {
+      "builderId": "72d79747b328440f9719581416c6a29a",
+      "title": "Decolonizing the future: a condition for survival in the anthropocene",
+      "slug": "/post/decolonizing-the-future-a-condition-for-survival-in-the-anthropocene-0490s"
+    },
+    "8930913b-9a5b-44e5-9ad4-aae3993a71f2": {
+      "builderId": "482c2f2f271846d0ae3db42ec4b353fe",
+      "title": "On a Quest for a Better Informed Society in the Age of Misinformation",
+      "slug": "/post/on-a-quest-for-a-better-informed-society-in-the-age-of-misinformation-fjp70"
+    },
+    "89e89ca7-aa4a-45d8-82e3-7827b4141695": {
+      "builderId": "e8e0deb9a1884a26a542d1dd5576af55",
+      "title": "Workshop | Futures Wheels",
+      "slug": "/post/workshop-futures-wheels-grr8a"
+    },
+    "8a8d63ef-5512-45c7-b83f-77e11342bc73": {
+      "builderId": "f53fc8b8f90e46509f027d63931b5a8c",
+      "title": "Risks and merits of Decolonising futures",
+      "slug": "/post/risks-and-merits-of-decolonising-futures-0se5m"
+    },
+    "8aa27081-04b9-4fdc-a537-7f92d22ec5e1": {
+      "builderId": "3a4600645b264b10ad04105dbea15f13",
+      "title": "Scenarios of a Hydrogen Economy 2040",
+      "slug": "/post/scenarios-of-a-hydrogen-economy-2040-3hdu4"
+    },
+    "8bafcbcb-2303-453b-b092-906d0c2dbb02": {
+      "builderId": "13db4c173ce848458a1789b586b691d1",
+      "title": "OECD Contributions to the 2030 Agenda and Beyond",
+      "slug": "/post/oecd-contributions-to-the-2030-agenda-and-beyond-d9acc"
+    },
+    "8c31dcf9-152c-4dfa-b748-551617d3c3ed": {
+      "builderId": "997b5697abf2479ca3b2251ce63e0bfc",
+      "title": "Futures4Europe Gathering & Networking",
+      "slug": "/post/futures4europe-gathering-networking-mn86l"
+    },
+    "8c6dbd23-ec43-4d06-b81c-654bd4ba3ebe": {
+      "builderId": "cedd029ff0634ad492ffa1644a5514f0",
+      "title": "One-Week Foresight Training in Paris",
+      "slug": "/post/one-week-foresight-training-in-paris-pbkfi"
+    },
+    "8d76812c-7e4c-4360-b360-7b3ac0bedddb": {
+      "builderId": "4fa1748f9f434d0d9ab3fdf73df3c62c",
+      "title": "Mutual Learning Exercise on R&I Foresight: Dissemination Event",
+      "slug": "/post/mutual-learning-exercise-on-ri-foresight-dissemination-event-qkc44"
+    },
+    "8d7bc8f3-caec-4c9f-9f8d-a7aca7f1747f": {
+      "builderId": "ad71e3dbdfb2435dbefd10a46522f8c7",
+      "title": "S&T  Foresight - Health",
+      "slug": "/post/st-foresight-health-rur8g"
+    },
+    "8de4871e-1cdd-42a5-8ee8-a8ca222f5dc8": {
+      "builderId": "49ad179f93d24ad0b0077b9e42b31c25",
+      "title": "The Word on The Tweet",
+      "slug": "/post/the-word-on-the-tweet-social-media-signals-on-the-future-of-democracy-psvg2"
+    },
+    "9078ab2d-a0c9-4f0b-af80-de3060a17b93": {
+      "builderId": "66eb5774bf6b4941abff20bbe88e47d5",
+      "title": "Are you using Futures4Europe to showcase your foresight work?",
+      "slug": "/post/are-you-using-futures4europe-to-showcase-your-foresight-work-6j0pj"
+    },
+    "90fc0f96-0974-4024-b74e-11e540e60353": {
+      "builderId": "3b3e3b0d790a4fcdb4efeee139751559",
+      "title": "Global Trends to 2040",
+      "slug": "/post/global-trends-to-2040-qbgux"
+    },
+    "9102d083-5681-4089-82ed-8b71e3062f00": {
+      "builderId": "4da4cc628d0c4d0caac643387f3dc5fe",
+      "title": "Materialising the Future",
+      "slug": "/post/materialising-the-future-dv3wx"
+    },
+    "91e6dbc0-0ee5-4875-959d-d7c6c852ca38": {
+      "builderId": "2d7262ac40fe4d46b23e89e1fab27b8e",
+      "title": "Eye of Europe's first Mutual Learning Event",
+      "slug": "/post/eye-of-europes-first-mutual-learning-event-6cpaf"
+    },
+    "921a5896-8da7-469c-be25-51cbc782307c": {
+      "builderId": "0a9cfccfa52b4acc8463cfc7cdae72b0",
+      "title": "On engaging meaningfully with futures with Peter Bishop",
+      "slug": "/post/On_engaging_meaningfully_with_futures_2iaaa"
+    },
+    "929ebbb3-c2aa-4854-ab39-e3a6016f3187": {
+      "builderId": "43f57578514e482cb3a6019b9348a52c",
+      "title": "HORIZON FUTURES WATCH WORKSHOP #8: Futures of Civic Resilience",
+      "slug": "/post/horizon-futures-watch-workshop-8-futures-of-civic-resilience-owop9"
+    },
+    "92a62ebe-cecc-4196-b588-4867cf679c1c": {
+      "builderId": "d069ae1ee67e426e8ce5753b6b2ce478",
+      "title": "Futures of Green Skills and Jobs in Europe 2050: Scenarios and Policy Implications",
+      "slug": "/post/futures-of-green-skills-and-jobs-in-europe-2050-scenarios-and-policy-implications-nfswn"
+    },
+    "94e564e7-1b47-46b6-a466-c142c23c7548": {
+      "builderId": "5d7de3ad84554e3da5c42e5e0d17af36",
+      "title": "INSPIRE 2023",
+      "slug": "/post/inspire-2023-art-and-futures-biz58"
+    },
+    "953a8366-234d-426e-8cfe-c6bf91cc7e98": {
+      "builderId": "cf019efaddd545f8a8e6ca7114698473",
+      "title": "Stress-testing of Policy Options Using Foresight Scenarios",
+      "slug": "/post/stress-testing-of-policy-options-using-foresight-scenarios-7oajh"
+    },
+    "95611872-e76f-43fc-9162-b76dc512fc79": {
+      "builderId": "72811f2ae7714c4fb9babb4ca653d2d1",
+      "title": "Co-futuring: the art of interactive Future-Oriented Collective Intelligence building",
+      "slug": "/post/co-futuring-the-art-of-interactive-future-oriented-collective-intelligence-building-x1pfk"
+    },
+    "9713dfdd-7b9a-4ff6-85e1-ddf46452abc0": {
+      "builderId": "c3f3beb989cd4fa4b6430e1d15cf88e5",
+      "title": "Reference Foresight Scenarios",
+      "slug": "/post/reference-foresight-scenarios-78mn2"
+    },
+    "98468703-1890-49a4-bdeb-84a8f05a27f3": {
+      "builderId": "edd826f4c1284b77af1afb4e7a6aaf09",
+      "title": "Design Futures Art-Driven Methodology",
+      "slug": "/post/design-futures-art-driven-methodology-shaping-the-future-of-innovation-a7br9"
+    },
+    "99163552-0781-406c-b9a1-179accaf827b": {
+      "builderId": "af215b51f8d4436eb95b99bfef9d6395",
+      "title": "RISE OF AI CONFERENCE",
+      "slug": "/post/rise-of-ai-conference-64xej"
+    },
+    "9926b05b-7c78-4369-adb1-5f34db37f887": {
+      "builderId": "7faf0691e5114f2082665fe16364d200",
+      "title": "Future Professions 2030",
+      "slug": "/post/professions-of-the-future-2030-4c684"
+    },
+    "99a7ce80-e5d5-4695-88c0-388d52410f9e": {
+      "builderId": "470c49bf64ef47b99e5905f1e3e8c037",
+      "title": "The Strategic Foresight System of the Government of Flanders, Belgium",
+      "slug": "/post/the-strategic-foresight-system-of-the-government-of-flanders-belgium-zqvyb"
+    },
+    "9ae217fb-39e4-449d-8a04-f4e0911432b2": {
+      "builderId": "796805d9d49445dd824f160a242de9e9",
+      "title": "Future Topics for European Research Area",
+      "slug": "/post/future-topics-foreuropean-researcharea-2ufbs"
+    },
+    "9b3712e0-e46e-4c93-a0b8-bc5a761eb73b": {
+      "builderId": "1ebb4949d0fe46e88c2dfb0d90fe338d",
+      "title": "How will we disgust our descendants",
+      "slug": "/post/how-will-we-disgust-our-descendants-jkb5s"
+    },
+    "9b76eab4-7996-44bd-807f-c9e8b7b2883b": {
+      "builderId": "b384ef68e1944953a4ba37b5a6f24e29",
+      "title": "Présentation Intermédiaire Publique de la Vision Stratégique pour L'économie Luxembourgeoise en 2050",
+      "slug": "/post/prsentation-intermdiaire-publique-de-la-vision-stratgique-pour-lconomie-luxembourgeoise-en-2050-qobc1"
+    },
+    "9c32f1f1-a2ff-4d79-a282-2581a21130e6": {
+      "builderId": "4c7c4fa108af456fa0387a2d914453c8",
+      "title": "Interview: Putting Cities at the Centre",
+      "slug": "/post/interview-putting-cities-at-the-centre-7iei4"
+    },
+    "a1c8142c-c26e-4e07-8692-fba26ca6f6d4": {
+      "builderId": "59b57d0be47d4da498aca55f63fcfbc6",
+      "title": "Dealing with future selves & Extending human perception to new scales",
+      "slug": "/post/dealing-with-future-selves-extending-human-perception-to-new-scales-rjpcn"
+    },
+    "a26b8dec-bac3-4fcd-b172-7da201665c75": {
+      "builderId": "65413ba1b4774e9bb7f76d14fb7c8a59",
+      "title": "Signal Cards",
+      "slug": "/post/signal-cards-a10jc"
+    },
+    "a3b31161-1a40-4bca-9856-26bdc60cc7d2": {
+      "builderId": "1866278eaf894576822aeb7a69c3cb10",
+      "title": "Horizon Futures Watch Workshop #5: The Future of Green Skills and Jobs",
+      "slug": "/post/horizon-futures-watch-workshop-5-the-future-of-green-skills-and-jobs--rgrin"
+    },
+    "a57570c5-03d0-4312-98b2-afa1822f5fa0": {
+      "builderId": "eea4e80cd19a49a4885f9da050f27062",
+      "title": "Aging and Assisted Living Technologies",
+      "slug": "/post/aging-and-assisted-living-technologies-fnhc1"
+    },
+    "a5a0d43b-e6e3-41ec-bc37-4c6b74d8ca50": {
+      "builderId": "f547656825b340dabdb661d772aa5369",
+      "title": "Strategic Foresight Toolkit for Resilient Public Policy",
+      "slug": "/post/strategic-foresight-toolkit-for-resilient-public-policy-fvwwg"
+    },
+    "a702da1f-aa80-4de2-aa9e-6eebfe088b84": {
+      "builderId": "23e2e2b8e4bb470e8a6eeea487332749",
+      "title": "Foresight kit for entrepreneurial minds",
+      "slug": "/post/foresight-kit-for-entrepreneurial-minds-hz5en"
+    },
+    "a84c5a53-b907-4ea5-a4d2-996dfed1b5e2": {
+      "builderId": "c092e4b8fc014b1a98f27832c01a67c0",
+      "title": "Integrating societal aspects in electricity sector modelling",
+      "slug": "/post/integrating-societal-aspects-in-electricity-sector-modelling-vouy8"
+    },
+    "a84cc97b-c3f1-422c-9951-0bcf8a2408cc": {
+      "builderId": "d256c2a103014f5593a0aca30c349939",
+      "title": "Nordic Foresight Network Kick-off Event",
+      "slug": "/post/nordic-foresight-network-kick-off-event-3ymn3"
+    },
+    "a9345927-bdc3-4e2d-9451-c7929dcbc860": {
+      "builderId": "f559f40ac57747e5bd5dada29144bf54",
+      "title": "Foresight Menu",
+      "slug": "/post/foresight-menu-32s0t"
+    },
+    "a9c9be22-735f-442a-811c-59b225869e87": {
+      "builderId": "48ea73c5d119437eb296280ff4ae8033",
+      "title": "Foresight Europe Network (FEN) Summer 2024 Meeting",
+      "slug": "/post/foresight-europe-network-fen-summer-2024-meeting-kndio"
+    },
+    "aa155e37-27e8-47e2-b23d-7e5bc78f5622": {
+      "builderId": "9d1d02d618d04a709952032ff6450b9d",
+      "title": "Futures Literacy for Green Growth",
+      "slug": "/post/futures-literacy-for-green-growth-gzi5b"
+    },
+    "aa3641e5-d8b0-4b8a-9cd2-ce6b2be380b0": {
+      "builderId": "fe68b4fcd8474c5bbe75c1aafbf0e97e",
+      "title": "Backcasting the Future of Decentralized Education",
+      "slug": "/post/backcasting-the-future-of-decentralized-education-0u83u"
+    },
+    "aa64abae-5b5a-41d9-9249-32e7c77a59b7": {
+      "builderId": "e9ca8b26476b4c0590fbdb53709c7512",
+      "title": "Horizon scanning — tips and tricks",
+      "slug": "/post/horizon-scanning-tips-and-tricks-lstmp"
+    },
+    "abb31004-fc21-4750-9a0f-bb4ed610008f": {
+      "builderId": "f9345cba0de04d8593e1b43c4681f6bd",
+      "title": "Interview with Mikkel Knudsen, Project Specialist at Finland Futures Research Centre",
+      "slug": "/post/interview-with-mikkel-knudsen-project-specialist-at-finland-futures-research-centre-mrj5q"
+    },
+    "ac4bf917-1a36-42b0-aeb7-09571c25d0e1": {
+      "builderId": "88b205f6352d4b0f8fe38dcb3e9f4ca8",
+      "title": "\"The future of quantum computing: what matters now\"",
+      "slug": "/post/the-future-of-quantum-computing-what-matters-now-063sw"
+    },
+    "ad3b6072-0ac7-439a-b37b-f758232f7b52": {
+      "builderId": "8ed4b4d2ed6d44c999ec78540f2a9327",
+      "title": "With Big Tech comes Big (Ethical) Responsibility",
+      "slug": "/post/with-big-tech-comes-big-ethical-responsibility-ooc78"
+    },
+    "aef479e1-c9dd-4a9d-b4d4-5afc4add3b36": {
+      "builderId": "a334c43d04d64d7a8422557ec747b7f6",
+      "title": "Horizon Futures Watch Newsletter #3",
+      "slug": "/post/horizon-futures-watch-newsletter-3-w4n35"
+    },
+    "afc2a002-cf65-4c27-a0b9-d3c4fb1fd11c": {
+      "builderId": "9cd3030c06f5409eb65ba484847f6212",
+      "title": "The future of Europe: what do you imagine it will look like?",
+      "slug": "/post/The_future_of_Europe_what_do_you_imagine_it_will_look_like"
+    },
+    "b06c87d4-6ef0-4f8a-99cd-fa40a3985a8f": {
+      "builderId": "7092c1ed38514d30bb9f901501290963",
+      "title": "Horizon Futures Watch #4",
+      "slug": "/post/horizon-futures-watch-4-t7rg2"
+    },
+    "b0cedac5-3733-40fb-bb34-d63c39361b15": {
+      "builderId": "133cd1bdb9ed4a728c93b0c00396ea01",
+      "title": "Shaping Futures, Story by Story",
+      "slug": "/post/shaping-futures-story-by-story-ig7rm"
+    },
+    "b0e9cc1d-fff2-4b3d-96f2-b547434119f2": {
+      "builderId": "3cff9e5465a541f287899af29a6b410e",
+      "title": "Copyright Harmony to Unite in Diversity",
+      "slug": "/post/copyright-harmony-to-unite-in-diversity-1343y"
+    },
+    "b2518e03-1f26-48c4-848d-ee9c479ecb49": {
+      "builderId": "700033289f684d9c88692956dc367a3f",
+      "title": "Alternative Climate Scenarios 2040",
+      "slug": "/post/alternative-climate-scenarios-2040-deepening-divisions-vmua3"
+    },
+    "b2bdba8f-7476-4e5a-9bf2-7de6f840e2e4": {
+      "builderId": "24799e25a6324cee82401d5e7c64ed4c",
+      "title": "Futures4Europe Short talks #1",
+      "slug": "/post/futures4europe-talks-1-qafui"
+    },
+    "b32e6c82-6b70-4a6e-9578-e8c798d33cff": {
+      "builderId": "5c98c0d38a9c415bbe388e33ebb70890",
+      "title": "2025 Strategic Foresight Report",
+      "slug": "/post/2025-strategic-foresight-report-t03ov"
+    },
+    "b495ea5e-bd83-4c83-8bec-0aaea3f79fe1": {
+      "builderId": "d4622b207ae74bfdae50135027b627b2",
+      "title": "Curbing the Elusive Force of 'Modern Bigness'",
+      "slug": "/post/curbing-the-elusive-force-of-modern-bigness-tkn88"
+    },
+    "b509d90e-b3f9-4bc6-9e0d-2a06092df712": {
+      "builderId": "2f082ef0039744bbaea3d72a1dc0ed91",
+      "title": "Global Commons",
+      "slug": "/post/global-commons-definitions-concepts-and-perspectives-towards-a-taxonomy-pwjil"
+    },
+    "b532936d-a8d3-4bcd-92b2-da7b644d4728": {
+      "builderId": "ac02eb8ee1f84ecf923bbaca6b253539",
+      "title": "04 Mapping Ripple Effects - Exploring cascading consequences with the Futures Wheel",
+      "slug": "/post/04-mapping-ripple-effects-exploring-cascading-consequences-with-the-futures-wheel-rhpvf"
+    },
+    "b5badb5a-fcba-4c28-b705-9736e5106831": {
+      "builderId": "fbb7117066a64f1a8ca9a74ae2b8fbc5",
+      "title": "What will Research and Teaching look like in 2050? Take the survey !",
+      "slug": "/post/demographic-change-implications-and-opportunities-for-europes-ri-system-in-2050-oez73"
+    },
+    "b6a7b3d6-8b7f-4af0-b766-c61c870a937b": {
+      "builderId": "867688ee105445dbac3a414d83119d11",
+      "title": "Resilience - The future of Europe as seen by EU citizens",
+      "slug": "/post/resilience-the-future-of-europe-as-seen-by-eu-citizens-shqlg"
+    },
+    "b7c25fd3-6ee9-4af7-9874-6afa47d28f1e": {
+      "builderId": "1f9ce4cad7ec47e9988fdf9fc5d8d87b",
+      "title": "Knowledge Sharing | Future(s) of Foresight in Czechia",
+      "slug": "/post/knowledge-sharing-futures-of-foresight-in-czechia-jm69g"
+    },
+    "b7f04a54-dee7-4b3b-854a-e42d75ddc490": {
+      "builderId": "a62f670b814c4d459ad05e5b0e0a4201",
+      "title": "Navigating New Horizons",
+      "slug": "/post/navigating-new-horizons-ye9zc"
+    },
+    "b7fafb95-82e7-4448-9e02-6da93e01e3bb": {
+      "builderId": "a88eb39f9324414b89f76172b5738575",
+      "title": "Emotion ecosystems 2040",
+      "slug": "/post/emotion-ecosystems-2040-dlfwp"
+    },
+    "b800b449-07c2-48fe-af55-c710112bf8f0": {
+      "builderId": "432d21edc261475697567ca319319c45",
+      "title": "Healing the Future",
+      "slug": "/post/healing-the-future-y0ywt"
+    },
+    "b8e3da44-af14-4655-bf1f-1fa5eff8c64b": {
+      "builderId": "fecb0188a76148c482da2c8c2dd7964c",
+      "title": "Deep Dive: The emergence of global commons: A new opportunity for science, business, and governance",
+      "slug": "/post/deep-dive-the-emergence-of-global-commons-a-new-opportunity-for-science-business-and-governance-m3iwk"
+    },
+    "b910d4c5-c7a8-4923-a7da-7c2121122fbe": {
+      "builderId": "e07f819f8b1a4dcfa9d0ad842964f902",
+      "title": "Scenario workshops on the future of food",
+      "slug": "/post/scenario-workshops-on-the-future-of-food-gjyj6"
+    },
+    "bab54abe-152f-4a5c-8c59-821375f05023": {
+      "builderId": "05307c129dc4434583f8e180fde8e07e",
+      "title": "The Elephant in the Room Is Getting Old",
+      "slug": "/post/the-elephant-in-the-room-is-getting-old-08ywn"
+    },
+    "bb27c2d6-e9fc-43c1-9525-a81272226e5a": {
+      "builderId": "6741e726db5d4b57ab8f9721c3912778",
+      "title": "Portugal’s Path Forward",
+      "slug": "/post/portugals-path-forward-key-insights-from-recent-foresight-publications-u9mpt"
+    },
+    "bc3aea9d-2572-4064-959e-1109cf326fb2": {
+      "builderId": "2623406d6fce449e92d1766ff108104d",
+      "title": "Strategic Foresight Report",
+      "slug": "/post/strategic-foresight-report-wuvga"
+    },
+    "bc3b4b5c-8000-4253-b69d-d553e75a6b09": {
+      "builderId": "4e6400f774e6402bbcf5989e4e160a20",
+      "title": "Airthings Scenarios 2040",
+      "slug": "/post/airthings-scenarios-2040-ghjg5"
+    },
+    "bc672c75-7a24-44b8-90b4-d697ac1a7e18": {
+      "builderId": "70f52e3a97f74a32a704de057e1187e4",
+      "title": "Relația ta cu viitorul",
+      "slug": "/post/relaia-ta-cu-viitorul-06x8u"
+    },
+    "bc89a1e7-f6bf-4456-85dc-fa6991d55de7": {
+      "builderId": "71e3f912d92e4199b4c2c1cf1eb4e427",
+      "title": "Unleashing the Potential for Competitiveness",
+      "slug": "/post/unleashing-the-potential-for-competitiveness-zpjof"
+    },
+    "bce2f0e9-78fd-4c94-8ab6-8d138eb15c78": {
+      "builderId": "b3a6d7cbbf2943618b0f60b98529758b",
+      "title": "Future Directions and\nPossibilities for the University",
+      "slug": "/post/university-futures-possibilities-hopes-and-fears-icde9"
+    },
+    "bd24a62e-db1a-4cb5-bf45-e4d3e84b937c": {
+      "builderId": "e618c00f20de44f880580687e26c95fc",
+      "title": "S&T&I for 2050 Project Approach and Methodology",
+      "slug": "/post/sti-for-2050-project-approach-and-methodology-c93qa"
+    },
+    "bd984f41-c56b-4f14-8671-17b7c0ea31ac": {
+      "builderId": "885b221cd1e14fc0a0e80fd021c76e81",
+      "title": "German Call for Papers: Foresight in Theorie und Praxis",
+      "slug": "/post/german-call-for-papers-foresight-in-theorie-und-praxis-8i44y"
+    },
+    "be1d7f67-5cfb-448d-85da-396c1a29ddfd": {
+      "builderId": "0e92f81f906b4382ac77ea4d37df6286",
+      "title": "Nokia Corporation Hosted the LFF Consortium Meeting",
+      "slug": "/post/nokia-corporation-hosted-the-lff-consortium-meeting-hi7y8"
+    },
+    "be1f7ff4-8879-4443-b954-e9f150e7cc16": {
+      "builderId": "4c2b217855f9427a8b5cc58dfbfb16dd",
+      "title": "AI: The Global Green Deal | Virtual Conference 20+ Speakers 3k+ Attendees",
+      "slug": "/post/ai-the-global-green-deal-virtual-conference-20-speakers-3k-attendees-21yia"
+    },
+    "bf6e61ca-6e5c-45d8-8540-4d4c1e5ded11": {
+      "builderId": "7b9e628a5e0643a9a1140bbbc0e56dcd",
+      "title": "Democracy – a long term project?",
+      "slug": "/post/democracy-a-long-term-project-na1gk"
+    },
+    "bf87ae22-99af-4d78-8792-c09fe3576b75": {
+      "builderId": "3808e720ff184bc8bfa4ba13e41ec9f2",
+      "title": "World Futures Studies Federation\nWorld Conference 2025",
+      "slug": "/post/world-futures-studies-federationworld-conference-2025-403yw"
+    },
+    "c0b9a644-0432-4f01-bc42-791778228c9a": {
+      "builderId": "27581ed023e5459e9abed825ee5c2505",
+      "title": "Horizon Futures Watch Newsletter #1",
+      "slug": "/post/horizon-futures-watch-newsletter-issue-1-w4apj"
+    },
+    "c168f3bc-0c38-41c0-8b78-5c57d5794619": {
+      "builderId": "7f10831153114712bcff08df52b00a35",
+      "title": "Shaping Democracy’s Futures in Moldova",
+      "slug": "/post/shaping-democracys-futures-in-moldova-1gr80"
+    },
+    "c170be09-f2e8-49ee-9b9c-83e7d299c75f": {
+      "builderId": "41f64e7a94434f91bb3036d6873303c3",
+      "title": "HORIZON FUTURES WATCH WORKSHOP #5: Futures of Green Skills and Jobs",
+      "slug": "/post/horizon-futures-watch-workshop-5-futures-of-green-skills-and-jobs-f49z1"
+    },
+    "c1ae0682-73f7-4296-8632-3efcc0df7f9e": {
+      "builderId": "214c43b744a24951b95d660905cf21f7",
+      "title": "The Missing Architecture of Tomorrow",
+      "slug": "/post/the-missing-architecture-of-tomorrow-0xmvq"
+    },
+    "c1bfb0bd-5e8d-4c07-8714-63dca7382817": {
+      "builderId": "5a2310e61e6f4786810850cb50de7c62",
+      "title": "CLIMATE TRANSFORMATION Summit 2022",
+      "slug": "/post/climate-transformation-summit-2022--ag0am"
+    },
+    "c20ac00f-cc0e-4672-a3dc-525836a6224d": {
+      "builderId": "dd96ef2a91ba4aa5adb793d83d047617",
+      "title": "Foresight on Demand: “Foresight towards the 2nd Strategic Plan for Horizon Europe”",
+      "slug": "/post/foresight-on-demand-foresight-towards-the-2nd-strategic-plan-for-horizon-europe-8e47i"
+    },
+    "c276ddc2-7e7c-420b-9288-09174f8889fb": {
+      "builderId": "395bd419ed66428699aee6e016fcc541",
+      "title": "Futures of big tech in Europe",
+      "slug": "/post/futures-of-big-tech-in-europe-sciag"
+    },
+    "c2874e15-3d2e-4fc4-8884-b3521d9c7d0f": {
+      "builderId": "7005a0f0ab654daaa933d85ecb4b019c",
+      "title": "Horizon Futures Watch Workshop #3:Future of Science for Policy in Europe",
+      "slug": "/post/horizon-futures-watch-workshop-3-future-of-science-for-policy-in-europe-x4qeg"
+    },
+    "c35959cc-d112-44c5-bbde-990caa366eed": {
+      "builderId": "f147495c35424cf5829c7fa82bf76988",
+      "title": "The future of work in 2030",
+      "slug": "/post/the-future-of-work-in-2030-jjapk"
+    },
+    "c4040dce-b11a-4b69-9efa-e78f9baa1c92": {
+      "builderId": "1ec068e72e074581b449657e182dd41d",
+      "title": "Innovation Landscape 2040 in Central Macedonia, GR",
+      "slug": "/post/innovation-landscape-2040-in-central-macedonia-gr-x2rhp"
+    },
+    "c4887d1d-c58b-4021-8c11-1b0e0e446bdd": {
+      "builderId": "406505dea5784606ab37a06c2a00bfee",
+      "title": "Imagination and metacognition in Futures & Foresight process",
+      "slug": "/post/imagination-and-metacognition-in-futures-foresight-process-xs35w"
+    },
+    "c4d37fa1-bf9a-48d7-a997-76ba2d55806c": {
+      "builderId": "43245682ad85426995c251138af43f6e",
+      "title": "How Scenarios Could Support the Orientation of R&I Agendas",
+      "slug": "/post/how-scenarios-could-support-the-orientation-of-ri-agendas-eoqiz"
+    },
+    "c4e64a8c-8ae4-4a48-9ac6-6ebaf5f147a0": {
+      "builderId": "6ec559b9207a463198383b361e63b1bd",
+      "title": "Multi-country foresight",
+      "slug": "/post/multi-country-foresight-uijg2"
+    },
+    "c4f1ea12-9bb9-4077-a230-7d2c31446876": {
+      "builderId": "c9ef0ec4c245491a97842d96e18c3866",
+      "title": "GIZ‘s latest foresight work on geopolitics and sustainable development",
+      "slug": "/post/gizs-latest-foresight-work-on-geopolitics-and-sustainable-development-hnto7"
+    },
+    "c572d926-4fbe-463d-9078-5aef1df273e7": {
+      "builderId": "bdf75106597e4c879c3100cfe1022e1c",
+      "title": "Technology Foresight for Public Funding of Innovation",
+      "slug": "/post/technology-foresight-for-public-funding-of-innovation-bjjyf"
+    },
+    "c5b6224b-dedf-43cb-bb18-e8a92a8d222d": {
+      "builderId": "fe9628b58f4f48d9a77e176ed3aeea9b",
+      "title": "Futures of Civic Resilience in Europe 2040",
+      "slug": "/post/futures-of-civic-resilience-in-europe-2040-4zt8e"
+    },
+    "c62d8389-ba8f-4775-b665-b708afb1b471": {
+      "builderId": "848d7a7423c34a77818e3541ba80f753",
+      "title": "Open Discourse - AI and Transhumanism",
+      "slug": "/post/open-discourse-ai-and-transhumanism-xwpmh"
+    },
+    "c677f73b-4e5c-455a-9ec2-1283ed9ed6dc": {
+      "builderId": "e65d83394b0047f4951146e1cc017282",
+      "title": "𝗙𝗼𝗰𝘂𝘀 𝗼𝗻 𝗨𝗿𝗯𝗮𝗻 𝗔𝗴𝗿𝗶𝗰𝘂𝗹𝘁𝘂𝗿𝗲",
+      "slug": "/post/'--z8qac"
+    },
+    "c6a23be3-b432-48bf-bf8b-5abc9890a6ac": {
+      "builderId": "e7cd9daa690a4c5297ba7b3355bb30f6",
+      "title": "Scale Matters in Green-Hydrogen",
+      "slug": "/post/scale-matters-in-green-hydrogen-v5kaa"
+    },
+    "c6b89ccf-407b-4fe1-a624-4ab8742a310d": {
+      "builderId": "1060633a91ba4c4ab4d442352dba108b",
+      "title": "Czech Priorities",
+      "slug": "/post/czech-priorities-megatrends-and-grand-societal-challenges-summary-7z77v"
+    },
+    "c73db653-ba15-4008-a28d-fb073a1b6d5d": {
+      "builderId": "e67e344fcb584ad880432e371de15cc7",
+      "title": "Portugal in 2050 from the Perspective of Science and the Acceleration of Technological Development",
+      "slug": "/post/portugal-in-2050-from-the-perspective-of-science-and-the-acceleration-of-technological-development-85sph"
+    },
+    "c75ce05f-19f4-4974-948c-e84eeab32a80": {
+      "builderId": "e4fe6ed288b744ffaedf08371017b4e2",
+      "title": "Puglia 2040: visioni strategiche\nper un futuro possibile",
+      "slug": "/post/puglia-2040-visioni-strategicheper-un-futuro-possibile-lalay"
+    },
+    "c7ecf8bc-02d8-48aa-b717-cc03b556c1e4": {
+      "builderId": "7cf35533bf5c4ad39026ad4c20c20cac",
+      "title": "Understanding Foresight-Policy Interactions",
+      "slug": "/post/understanding-foresight-policy-interactions--jtxh7"
+    },
+    "c80f24aa-e181-4c40-ab9c-4c3e7398d296": {
+      "builderId": "8eecf6976496452f94c7af2e8e26f559",
+      "title": "The Future of Social Confrontations",
+      "slug": "/post/the-future-of-social-confrontations-the-scenarios-0xe24"
+    },
+    "c8654f10-0e5a-4212-ad05-a92feb08c66e": {
+      "builderId": "afffec5fd36b4af8bbbad62a2deebbca",
+      "title": "After the new normal: Scenarios for Europe in the post Covid-19 world",
+      "slug": "/post/after-the-new-normal-scenarios-for-europe-in-the-post-covid-19-world-weq4e"
+    },
+    "c8dc23e3-a9c7-461a-a302-67fa47f7c310": {
+      "builderId": "ba096c523a514990966a9135fdf58571",
+      "title": "Towards a Fair and Sustainable Europe 2050",
+      "slug": "/post/towards-a-fair-and-sustainable-europe-2050-u21kp"
+    },
+    "c8f28b42-011a-4d62-940c-f736e380c0ee": {
+      "builderId": "66ce5f0df21c451bb18d6a01f1956c60",
+      "title": "Aging and Assisted Living Technologies",
+      "slug": "/post/aging-and-assisted-living-technologies-wu085"
+    },
+    "ca6bcbdf-8d2e-408e-91ee-391efbbe2548": {
+      "builderId": "9f624c5e582e4e3b8da2c167854caa21",
+      "title": "Futures of R&I Foresight",
+      "slug": "/post/futures-of-ri-foresight-q87p4"
+    },
+    "cbcbe26a-ade2-4ae7-bca0-02451ff94e06": {
+      "builderId": "763ef7c48a994e7ab8641bd558d25038",
+      "title": "Project Links Result",
+      "slug": "/post/project-links-result-3yx2u"
+    },
+    "cbeda74b-edf3-4db7-a01e-bb4e4eff20e8": {
+      "builderId": "be36b8d2412c452f959b8e2482409024",
+      "title": "ESPAS Annual Conference: Europe Towards 2040",
+      "slug": "/post/espas-annual-conference-europe-towards-2040-b7xfe"
+    },
+    "cc006294-8300-48ed-b0ea-c4f85017abd3": {
+      "builderId": "1ab4a842ec1248b0aebdf360dc731a51",
+      "title": "Foresight Study on Fishers of the Future",
+      "slug": "/post/foresight-study-on-fishers-of-the-future-acxso"
+    },
+    "cc9184de-56a9-417d-bb89-bfcf07c40829": {
+      "builderId": "3028c829771e4964b2633dc730df965e",
+      "title": "Platform Kick-Off",
+      "slug": "/post/platform-kick-off-eybar"
+    },
+    "cd577951-efcb-4a16-a49a-2edaf6e63312": {
+      "builderId": "9cd82123c1fa4944ab0cacc92700480d",
+      "title": "Futures Literacy & Arts for Transformative Climate Action",
+      "slug": "/post/futures-literacy-arts-for-transformative-climate-action-s7h59"
+    },
+    "cf18e142-c981-4f45-8d84-a27fc3a9eb41": {
+      "builderId": "79f896d2f02c4e4fa3e144a983295f18",
+      "title": "Digital Transition",
+      "slug": "/post/digital-transition-u3r3n"
+    },
+    "d072c9fd-763e-4f80-a0ba-ae275f8454c1": {
+      "builderId": "91f1a8bf371f4255943a8d7480911a8f",
+      "title": "Foresight on Land and Sea Use",
+      "slug": "/post/foresight-on-land-and-sea-use-addressing-the-degradation-of-ecosystems-through-scenario-making--347tv"
+    },
+    "d15360b3-4e21-45b3-853c-38a8df85006e": {
+      "builderId": "986dcf70633d44bb85dacee069454f36",
+      "title": "Shaping the Skills Needed for the Future of Automated Mobility",
+      "slug": "/post/shaping-the-skills-needed-for-the-future-of-automated-mobility-f719l"
+    },
+    "d2951e07-a43a-453a-ad93-d649363c6ed8": {
+      "builderId": "5690789fdfc04162990617592928c4e1",
+      "title": "Mission Area: Cancer Foresight on Demand Brief in Support of the Horizon Europe Mission Board",
+      "slug": "/post/mission-area-cancer-foresight-on-demand-brief-in-support-of-the-horizon-europe-mission-board-ixbup"
+    },
+    "d2dcdccf-2245-4d4d-83e2-001d5bd4fc66": {
+      "builderId": "9b235518b95d42338d02fff2118c66ea",
+      "title": "The future of Europe: futures imagined by Greek citizens",
+      "slug": "/post/the-future-of-europe-futures-imagined-by-greek-citizens-bufnm"
+    },
+    "d485d3a3-02bd-40ae-99e1-e8bb4cd9a555": {
+      "builderId": "30fad33ae26c44fa94e84ef07ed0375a",
+      "title": "Eyes on the Future",
+      "slug": "/post/eyes-on-the-future-biped"
+    },
+    "d4e78ed3-f8a7-4cc7-8ef4-3bdc1b2deee8": {
+      "builderId": "ca74465bbb53415a9ed611038a203714",
+      "title": "Vision beyond consensus - The Delphi method for collective foresight",
+      "slug": "/post/03-vision-through-consensus-the-delphi-method-for-collective-foresight-bsnvi"
+    },
+    "d5d77f41-0abb-4118-9b45-0a178dd57c10": {
+      "builderId": "fa4545d999b04baaa7fec82f4cb422d5",
+      "title": "Futures Innovation LAB",
+      "slug": "/post/futures-innovation-lab-97nl8"
+    },
+    "d8246e1b-4bec-47dc-8043-19c284748b67": {
+      "builderId": "5f5ec687502c474981989b3f12f2a8c1",
+      "title": "Supporting the institutionalisation of future-oriented policymaking",
+      "slug": "/post/supporting-the-institutionalisation-of-future-oriented-policymaking-gawsp"
+    },
+    "da4bd460-05f7-4eb2-9bf2-a3580d004c95": {
+      "builderId": "9aaf40110e394ea697ece3338a76a15b",
+      "title": "Imagining a sustainable Europe in 2050",
+      "slug": "/post/imagining-a-sustainable-europe-in-2050-hq6wv"
+    },
+    "db67196f-19ab-4547-b67a-592839d70c4a": {
+      "builderId": "1ab4edc198a0451cb9f0f3bce893d3f7",
+      "title": "Strenthening foresight and the role of future generations in Finnish lawmaking",
+      "slug": "/post/strengthening-foresight-and-therole-of-future-generations-infinnish-lawmaking-rzzow"
+    },
+    "dc84b4b6-322f-4a78-ba64-07d1428f1bd7": {
+      "builderId": "c6cdb002a7df44d09adbaaa7fa1b18d7",
+      "title": "Embodying the future",
+      "slug": "/post/embodying-the-future-bsfeh"
+    },
+    "dccc4241-a063-4b98-b9fa-6d5461566d8b": {
+      "builderId": "1117009a41fb48f9acda0f8f90d33791",
+      "title": "Global Hydrogen Justice",
+      "slug": "/post/global-hydrogen-justice-how-can-green-hydrogen-contribute-to-a-just-energy-transition-for-all-8odzb"
+    },
+    "ddb4f22e-5532-4eac-afbe-5f45ce79f235": {
+      "builderId": "6a7be23d23324cdea28d223242cd869f",
+      "title": "Eye of Europe Mutual Learning Event",
+      "slug": "/post/eye-of-europe-mutual-learning-event-avdpa"
+    },
+    "ddf80694-75b5-45bf-8e75-5837faf0c49e": {
+      "builderId": "f154f3a891b245a58cc9b7f9a39e4424",
+      "title": "Global Futures of Climate",
+      "slug": "/post/global-futures-of-climate-vv1f2"
+    },
+    "ded259c3-c001-4e5c-95d0-08b4c8e524b8": {
+      "builderId": "fe5a4c81fbeb4ecb92fef8ee27656c35",
+      "title": "Deep Dive: Transhumanist Revolutions",
+      "slug": "/post/deep-dive-transhumanist-revolutions-r7n0x"
+    },
+    "dedc7484-4f3f-4c01-af99-61156686dfbe": {
+      "builderId": "63cff8ec430747c99c17c1d15997aff7",
+      "title": "Navigating the Future of CCIs: A Backcasting Approach to Career Design",
+      "slug": "/post/navigating-the-future-of-ccis-a-backcasting-approach-to-career-design-imw34"
+    },
+    "def0d5f2-4dba-4234-b23f-ae54e78e3c1c": {
+      "builderId": "8beee7ce77a94a8dbc5a9706bb4a9a75",
+      "title": "Futures4Europe Conference 2025",
+      "slug": "/post/eye-of-europe-conference-foresight-and-ri-wjyxd"
+    },
+    "df4aed6f-624c-4faf-9224-d4a78d940627": {
+      "builderId": "7c381ede1df54e4280cb1b4acccd9a30",
+      "title": "Augmented foresight",
+      "slug": "/post/augmented-foresight-gzoyd"
+    },
+    "dfeb9629-4da5-4629-b706-078f3f8cb1c3": {
+      "builderId": "133fedeedc4f4b4c88e9be6bb68030e0",
+      "title": "Futures4Europe Gathering & Networking",
+      "slug": "/post/futures4europe-gathering-networking-fye4y"
+    },
+    "e3e5ecf6-746a-46dc-9eaf-111302e15e7a": {
+      "builderId": "5adc3f84ec0d4bf2ab5370d6e2689bf0",
+      "title": "S&T&I for 2050",
+      "slug": "/post/sti-for-2050-deep-sea-mining-and-ecosystem-performance-fr4ct"
+    },
+    "e4a224a5-abba-4ff9-be25-862b935a5302": {
+      "builderId": "74bda672968f43ccbed0bcd87b2cb7fe",
+      "title": "Ethics Framework and Guidelines",
+      "slug": "/post/ethics-framework-and-guidelines-c9bjy"
+    },
+    "e57ee931-6584-4cc3-97d0-57fc84490e79": {
+      "builderId": "730a268ce9354dad9de010ee6268a646",
+      "title": "Shaping the Future of AI in Policing",
+      "slug": "/post/shaping-the-future-of-ai-in-policing-aligners-pragmatic-approach-fwkok"
+    },
+    "e59c898c-5660-40bd-9c8e-00281ee0d99a": {
+      "builderId": "979c138748a149d09eb6199ca9d45256",
+      "title": "How to integrate strategic foresight into your organisation - Blueprint from Flanders",
+      "slug": "/post/how-to-integrate-strategic-foresight-into-your-organisation-blueprint-from-flanders-8sw4o"
+    },
+    "e5e6e608-14dd-4d8a-b3b2-a6bbf99618be": {
+      "builderId": "08d7d33676984839a395fea26bdd1b97",
+      "title": "INNOVATION LANDSCAPE 2040",
+      "slug": "/post/innovation-landscape-2040-za24l"
+    },
+    "e5ed4961-cf26-43a4-9a88-67d9415645bd": {
+      "builderId": "1b9f26a4b3c74917a31b2bffdca1dbf2",
+      "title": "IMAGING THE FUTURE",
+      "slug": "/post/imaging-the-future-675jl"
+    },
+    "e62012f0-1d2f-4ba7-9cd8-46b12039b1b0": {
+      "builderId": "a1689ec15aaf4acaaceefc51ac1c47d1",
+      "title": "Futures of interpenetration of criminal and lawful economic activities - Workshop #4",
+      "slug": "/post/futures-of-interpenetration-of-criminal-and-lawful-economic-activities-workshop-4-mdvie"
+    },
+    "e67128f0-7394-4fbb-9d12-c98f63a307f6": {
+      "builderId": "a344b93f1f1945edb5a3e4fb3e31d9f3",
+      "title": "Participatory Foresight on Next Generation Online Platforms",
+      "slug": "/post/participatory-foresight-on-next-generation-online-platforms-2pj55"
+    },
+    "e6c3e568-41df-43b7-ab02-86bc00060533": {
+      "builderId": "94d0e303652848859405d6b45e68e6d6",
+      "title": "Eye of Europe Mutual Learning Event: Policy Oriented Communication of Foresight Results",
+      "slug": "/post/eye-of-europe-mutual-learning-event-policy-oriented-communication-of-foresight-results-8mrw0"
+    },
+    "e6c85555-40c8-468d-8398-2ddcc909f9e5": {
+      "builderId": "9fe1f88672b8424886075ff9a3c4b12e",
+      "title": "Help shape Europe’s future!",
+      "slug": "/post/help-shape-europes-future-unwd1"
+    },
+    "e7142ca0-1c01-43af-be0d-12b8f412aa4f": {
+      "builderId": "f99f440dfb804a9eac395dadcaf9493f",
+      "title": "Discussing Future Hydrogen Geographies in Europe",
+      "slug": "/post/discussing-future-hydrogen-geographies-in-europe-a-conversation-that-is-overdue-8ywmk"
+    },
+    "e72919cf-1b1f-40b1-8f52-3a71556aae38": {
+      "builderId": "33c221eaa057484284a453fc8da3b283",
+      "title": "HORIZON FUTURES WATCH WORKSHOP #3: Futures of science for policy in Europe",
+      "slug": "/post/horizon-futures-watch-workshop-3-futures-of-science-for-policy-in-europe-xh7ia"
+    },
+    "e72a11aa-b5aa-4bc5-a529-5842a9242e28": {
+      "builderId": "fe85bb0a206f4125962cd197f119ff73",
+      "title": "Mission Area: Climate-Neutral and Smart Cities",
+      "slug": "/post/mission-area-climate-neutral-and-smart-cities-lwcmb"
+    },
+    "e79f688d-9a7c-4f94-8d06-2ec4c7d8f40f": {
+      "builderId": "511c88d54f8c4c149e3e7f20c8b804f6",
+      "title": "MUSAE Factory Model",
+      "slug": "/post/musae-factory-model-4j8cx"
+    },
+    "e8a695f7-59ad-4487-8468-208a71c065b0": {
+      "builderId": "09750170817849ecb6237b9b5b32858b",
+      "title": "Foresight Starter Videos",
+      "slug": "/post/foresight-starter-videos-preparing-participants-for-foresight-workshops-with-short-videos-elwne"
+    },
+    "e8d78a56-aa42-4ff2-bc2b-ca42c4411401": {
+      "builderId": "70fa3f60e9694bbf8c938c0b00e94fc9",
+      "title": "Interview with Pierfrancesco Moretti, Coordinator of the National Research Council of Italy",
+      "slug": "/post/interview-with-eye-of-europes-consortium-member-pierfrancesco-moretti-exxi8"
+    },
+    "e96302e5-8460-44e0-9808-1ce531bd007c": {
+      "builderId": "f79fa358dc6e498cba949ae418ec19f1",
+      "title": "OECD Strategic Foresight Toolkit for Resilient Public Policy just released",
+      "slug": "/post/oecd-strategic-foresight-toolkit-for-resilient-public-policy-just-released-0pip1"
+    },
+    "e9a21d9c-f2ba-41c6-98d0-410e230f909b": {
+      "builderId": "0ad933a20666445fa1553aca33422481",
+      "title": "Being Human in 2035",
+      "slug": "/post/being-human-in-2035-cobzu"
+    },
+    "eb5bb1d5-fc0c-48f1-9552-b4cb38df9452": {
+      "builderId": "9c27ff91cb324199aaef5288160cacb8",
+      "title": "Sustainability, temporalities and and futures",
+      "slug": "/post/sustainability-temporalities-and-and-futures-7nv8h"
+    },
+    "ebb7e1a8-ab7d-4988-90ef-89b9638b6c8b": {
+      "builderId": "606a9e488dbb4a23b48e3b78f7730aa8",
+      "title": "(DIS)ENTANGLING THE FUTURE",
+      "slug": "/post/disentangling-the-future-ta4f7"
+    },
+    "ec986e84-a40e-483b-95bf-75ef6996bcb6": {
+      "builderId": "92e68085b42c42b8929879f2523f2041",
+      "title": "Deep Dive: The Hydrogen Economy: A Radical Alternative",
+      "slug": "/post/futures-of-social-confrontationsand-effects-on-european-democracies-2040-dxn1c"
+    },
+    "ecaddeae-e3af-49f2-bcda-4240b52af319": {
+      "builderId": "98a76f04226941e79de5e3864a91f4e0",
+      "title": "The Future of Sustainability in a Post-Global World",
+      "slug": "/post/the-future-of-sustainability-in-a-post-global-world-8aeyy"
+    },
+    "ed042723-d12f-4a8d-b62c-4a0952c396e9": {
+      "builderId": "3608348b040c4c94a6cb085952a8e0d6",
+      "title": "Stories shape futures",
+      "slug": "/post/stories-shape-futures-ei9c3"
+    },
+    "ee21fa57-939e-4dbf-b423-388ba86713fc": {
+      "builderId": "da0178b0c3ef4dc7bdd58ae2e851d9ea",
+      "title": "Identifying Future Critical Technologies for Space, Defence and Related Civil Industries",
+      "slug": "/post/identifying-future-critical-technologies-for-space-defence-and-related-civil-industries--kkl6l"
+    },
+    "eef8ab3a-90ab-41b1-8018-0b7a29831847": {
+      "builderId": "a72e3387702347f2ab3f59b0d668ee32",
+      "title": "Choosing Europe's Future",
+      "slug": "/post/choosing-europes-future-n1p5z"
+    },
+    "ef1ae5df-ba45-4898-9a36-daefef610ebe": {
+      "builderId": "7897adf47b1b4599bce599c5a7a5ed44",
+      "title": "CIFS’ 10 Principles\nfor Strategic Foresight",
+      "slug": "/post/cifs-10-principlesfor-strategic-foresight-2fgq1"
+    },
+    "efa778a0-202b-4b6a-b23a-13f3f2bc4a31": {
+      "builderId": "683ee2f8753b4278abef2a27a5d529c6",
+      "title": "Foresight and Policy: Future-Proofing the Assumptions Behind Policies for a Greener Europe",
+      "slug": "/post/foresight-and-policy-f9pjk"
+    },
+    "efdf0792-a7c0-4ab4-a748-1caeec34b5db": {
+      "builderId": "1a6e386461b34e7c9e06d0bbf3fb3518",
+      "title": "Navigating the Future",
+      "slug": "/post/navigating-the-future-the-power-of-tri-scope-synthesis-3pzb6"
+    },
+    "f148be2f-8ef0-4718-b6fd-1ec270c03257": {
+      "builderId": "124f77e4c0204b1fbb81202304da7497",
+      "title": "Futures of Social Confrontations and Effects on European Democracies 2040",
+      "slug": "/post/futures-of-social-confrontationsand-effects-on-european-democracies-2040-y4hhz"
+    },
+    "f38c8921-0d5a-4a1a-9458-e551f538f4a1": {
+      "builderId": "3b333203b3804549bc5e9be3986b2fac",
+      "title": "Eye of Europe Mutual Learning Event 5",
+      "slug": "/post/eye-of-europe-mutual-learning-event-5-4a8ms"
+    },
+    "f468bf5a-9ecb-4fe2-aabd-0aabe336c15d": {
+      "builderId": "fc92b000ab834b13865fcd38f4df5970",
+      "title": "S&T&I for 2050 Perspectives on Ecosystem Performance",
+      "slug": "/post/sti-for-2050-perspectives-on-ecosystem-performance-qbht6"
+    },
+    "f611dbc2-6c33-4ca8-b05c-c13e91a1e0f5": {
+      "builderId": "faf19c0067c740328c0ff296089b3f60",
+      "title": "Suppressing indoor pathogen transmission",
+      "slug": "/post/suppressing-indoor-pathogen-transmission-1tkhp"
+    },
+    "f61bc7bf-6857-4d30-b6d6-ad496a394e54": {
+      "builderId": "6eeff8ce6b9747ca9fbbabf7104bd6da",
+      "title": "Knowledge Sharing | Youth Futures",
+      "slug": "/post/knowledge-sharing-youth-futures-paz0k"
+    },
+    "f6b69fc7-7747-441f-a8e7-31e1759bdefc": {
+      "builderId": "10c6208767654bb6bff2fba296c02aa4",
+      "title": "Strategic Foresight in the Western Balkans",
+      "slug": "/post/strategic-foresight-in-the-western-balkans-ajeo2"
+    },
+    "f7520c5c-261f-4edb-b4f9-c8995f0c6abf": {
+      "builderId": "ab51f3b164d8460db55222c02499e9f1",
+      "title": "#EUGreenWeek - Loops 2.0: a dialogue with DIGIPRIME and EFPF",
+      "slug": "/post/eugreenweek-loops-20-a-dialogue-with-digiprime-and-efpf-jf04k"
+    },
+    "f752c177-f3b9-43ed-80c3-0d73f5861cf5": {
+      "builderId": "be9e295aca3749dd98e8e8ca552e2805",
+      "title": "Making the Future More Tangible for Citizens Through ‘Fridays of Knowledge’",
+      "slug": "/post/making-the-future-more-tangible-for-citizens-through-fridays-of-knowledge-hnwsn"
+    },
+    "f85f7ba3-0d92-4964-9ddd-f74c504c9ff2": {
+      "builderId": "c65a4fa41b354c1ca036928919045334",
+      "title": "Final Report: S&T&I 2050",
+      "slug": "/post/final-report-sti-2050-857in"
+    },
+    "f9a400bd-9b36-4b86-8c70-4a2f3a9389fe": {
+      "builderId": "f0dfeb9f0b60450785c3780b55b21a55",
+      "title": "S&T  Foresight - Water",
+      "slug": "/post/st-foresight-water-lxb33"
+    },
+    "fa44893b-0efd-4e10-84e2-9fc862644ea1": {
+      "builderId": "2df651eae83344b2a6edbb8f0af678b5",
+      "title": "Foresight on the scientific, technological and societal conditions for the end of the COVID crisis",
+      "slug": "/post/foresight-on-the-scientific-technological-and-societal-conditions-for-the-end-of-the-covid-crisis-5wv8s"
+    },
+    "fb43de61-0b72-4e15-bda0-a2b112e70c5f": {
+      "builderId": "19535e65ef1b4a4eb78534dd1bc5f660",
+      "title": "Geopolitical Reconfiguration: The EU in a volatile new World - the challenge of global leadership",
+      "slug": "/post/futures-of-social-confrontationsand-effects-on-european-democracies-2040-p0i8i"
+    },
+    "fc676b46-b059-4f94-8edf-5fc44f4cec0d": {
+      "builderId": "cd7dde5664564be284b7cbe1c1511c66",
+      "title": "Future professions 2030",
+      "slug": "/post/future-professions-2030-sw03j"
+    },
+    "fdca3685-ae0e-4dc4-9f62-fd2de2046be1": {
+      "builderId": "c40a9f926c4845558dee1a3858f0c059",
+      "title": "Deep Dive: Climate & Geo-Engineering",
+      "slug": "/post/deep-dive-climate-geo-engineering-jhbrh"
+    },
+    "fee9f4cb-9811-4fc4-9788-b3b0e73d532f": {
+      "builderId": "7811a9fb4a4a4b60b91d9fef17aff536",
+      "title": "The Knowledge of our Civilization in 2040",
+      "slug": "/post/the-knowledge-of-our-civilization-in-2040-o1dxk"
+    },
+    "ffc3eee2-1311-4aad-baef-c4b1fdaef59a": {
+      "builderId": "843576b81f5c44439724f9be148f96b4",
+      "title": "Global Scenarios 2035",
+      "slug": "/post/global-scenarios-2035-tco7v"
+    }
+  },
+  "builderToWix": {
+    "70176ae6b2954815bd1cdc3369a34d8f": "0008b057-94fd-4ca6-9825-8adca7f7bd67",
+    "06618505235844e88cecb79a223fdae8": "0015b464-5039-49bd-a48c-9e93545dc8ed",
+    "029111247fda4c819b9c63da5145ca56": "00bda2a0-aa21-48e6-9258-78c23d8cc49f",
+    "d4902708f3fe444496d9aff72143677e": "00d23bd1-823a-42a6-9f06-394103f5439f",
+    "f363cebdb8bd4f5093dc4f83c1f74e80": "01aa392a-7336-4d02-8dc1-4507852301a7",
+    "905c1cdde2e543bf987ae43cd5e79386": "020c9ef4-c9dd-4d6f-aa3d-b33aec97babc",
+    "064d2a8b7b5647e7a382843c5186e04d": "02810a2b-0ef4-4cef-896a-4467c4e1b9b8",
+    "36e309e352934128883fe85cd4598e97": "065409cd-1aef-4dca-a3b3-5ee4aa200c72",
+    "1dd932a2d7c549e4b283f09a127fe75a": "065efc46-7736-407b-aaaa-6fc1ee1bebf2",
+    "af4c92ef4332428db4550b3a013fd99d": "0660827e-760a-47b5-8c64-e4d588341de1",
+    "e647e037e18a4c2fab25f808ec06ae6c": "070ef4d2-35ba-4909-9aca-82e9910b1652",
+    "f55aee4440594d259977bef93b5c5b24": "077c11b4-1619-4487-8917-2e716032fa2c",
+    "56395fde906746dcb37eced5aa0f6322": "07a84ef4-f85d-4f7f-9d6e-7a930c06893d",
+    "3d8c5e05685247a29815a18d0860d6d1": "087b33fd-9170-4bf3-b030-31e6c46c0c66",
+    "d864548193b54791981c47843188da13": "09f494a8-6475-4710-803b-117d1af4ad6c",
+    "da01ff1485864d7a854ecb54c8787b07": "0a248500-6030-44e4-ae4e-6d2601413160",
+    "7f44539bb89f479f973772cd83c66624": "0bbb5b2b-7688-4b2d-b889-86b24354cec5",
+    "c6ff3dc1776846418a14e4359eaf7add": "0c1c650f-1817-4d4c-b8ae-46849ed56970",
+    "fb432e66c5d14979a32070887e3e3b83": "0cf6ed67-f660-46b9-b6f3-cbb5818d50b1",
+    "2a2d2d1645744561aa61645f3e3fd912": "0d609e35-ac2a-407a-9d4d-be019c1d59ae",
+    "3fca42dceca34732b5b36b81c0e5d559": "0e24992c-86a5-4c4b-a6ea-d896bded7b00",
+    "d3b666fe21bd41b19f90419d51ad4547": "0ee273a8-58c6-44ab-aace-c86597500d2e",
+    "31197756da0b4a0e97a77f2a9b3aea71": "0f63fbe1-4557-438d-a5c1-08c1e3c44d0d",
+    "5c652952e3824eada905e6a7ffe7ac76": "0f77bb1a-9773-4c37-ab6b-ba7ce6d4cef4",
+    "59e8231c96de4ac983cf1faad581e028": "104deb10-13cb-4578-8d21-5cd3069e75b9",
+    "023688c6065c4a84b14c0bc528260d6d": "10baad57-23db-41bd-abf8-afde749f02a6",
+    "16a3fb972b28438896d0a73d809f9b1b": "10cf3eaf-ba3d-46af-b727-81b07588d88e",
+    "a4ae9fa3b566427b87bfb2289c81d006": "11149096-cd15-4e78-a009-555c3795f931",
+    "6c48b27bc4d14aa780879e5b22e2ef6c": "115b8e54-4745-46a5-8212-3014efdfd6e1",
+    "19caf18d30444a7490b508c048629d24": "13ec2933-4391-4ffb-a888-a81c4bbdd144",
+    "65fad009052241d0b1a6ce62ac3fddc5": "13f876eb-34fb-4c83-bdf6-874c736699ed",
+    "a8d6ba9d76ce46dbb8da0b41eb7377b0": "14335817-d529-49b7-b8ca-4b446f4200a1",
+    "bb80dad039e64d3fb2a27a64f279bae9": "147d9560-ce56-4aa5-8ff0-04fb7820b01d",
+    "51c006ee796f4f708e5646c24a3ac34b": "14ecc6f7-ca72-4dbd-8d5b-0d6c678530bc",
+    "465dc60475ef45408a4d75c8221183fa": "152d492f-a199-4bcd-b016-11a997c9bc50",
+    "52345b379416466ebc26eaddf3f5b959": "1c56ac85-bc76-46f2-972b-753c4cf20217",
+    "ddefaefd2edc4112b966ce187b9712bf": "1e50ea3f-3984-482f-bff6-1a6be87561da",
+    "c3c860f531a6458bb291ab73197ceb03": "1ff98bf0-e5fa-43ee-bce2-54561b8af20e",
+    "abb4549ac4bd4b84a6b50c567b956563": "223c9aad-3657-42b7-8e77-3dd456a25991",
+    "397373bb5ec144768a070600b066b49d": "226b2279-13ab-4b66-9696-acba93af5d0c",
+    "4eb8a661d081477f9b2e94b6961f537a": "22714e85-a9c2-4df9-aec7-02ffbf800f2d",
+    "68fe812c704640c08634dd151eefe845": "23685f76-e4a1-4890-ac59-90207482128d",
+    "3f1c68812329439dbbd327207155194f": "24420202-8899-4b4f-b281-9ee356909571",
+    "8e1baef20bdd4d5aaa4345b4e02ccd3c": "26861f71-8e4f-4acb-83c8-7a758275be0d",
+    "7b2e18af94d542ceb53ce6f0b54e5640": "26936e3f-f0b0-46c7-96b9-797dfabe2c29",
+    "4b72292cf7984855a208013054d66e33": "277aeb4f-7ad4-43fd-a5ac-06bfafbffe71",
+    "2348b0d4d5784cc0ae5f8282c1988442": "27cf7297-9887-4e28-a46a-ed3c35b9de07",
+    "339fa47a1d5e4bb6a4952e40a30639a8": "27d0da0f-22e6-4352-9095-794be9e233ad",
+    "4080cb06433c4d03bf1e1bdf927b074a": "2895ad65-6467-485d-ab43-e9c5c368cd68",
+    "d220530d87c649819fdd0165e08a2f56": "28bb3ac4-f3d1-4b41-9c52-2fe9e45429f1",
+    "175b26180b404fb591bc59a188d1855e": "29c79e14-a529-4da8-b3be-7a3a50a258b3",
+    "ef236da3aeca4c09ab2c8f2db7f53611": "2a39bd31-2417-41a0-9df3-3888a2cdc5ad",
+    "4534c96c8fd947e7adac089ee76250cd": "2a6e223d-0976-4d89-9b04-884a824f4d51",
+    "61e12cf3d8374292aa61c74be0aad478": "2a98fd44-9c49-46f6-a795-7d3f8c7f4fca",
+    "2e86acb12bb3490494dba01b3c580d41": "2de7b3cc-f299-4d02-a120-90963469467d",
+    "2ee25dbde4a94d13982d3299c1b87ff8": "2e8db7b4-baf6-42b8-87f2-74dcfcd78099",
+    "3cb2268f9bac439fb8bc8adce010ce1b": "2ea41570-321b-4632-9bfc-42adfdfbb0b1",
+    "6db86f9bed354d55aa0cdf302d684b22": "340497a9-6bea-4b5e-a385-d5d4d75cacf1",
+    "293aae7148634c7e85f32ac79e496635": "35eb5229-1a85-4aca-bb5b-f745962a8bea",
+    "5778c7c60d704dd08c794de41ea968bc": "37af18e0-8f8e-4e70-bb4f-c93dee4baf24",
+    "80288a7382bb4fe7bc9a272135942672": "38544653-0a3b-4484-ae75-500f5dcc40aa",
+    "a435b0428572482086616b892a1eb978": "3953d604-c6e0-4994-b771-d11fe2d91124",
+    "2806a0c94bab45949d2d47190da0a835": "39611d66-eab3-43df-aaab-a034cf8a526c",
+    "3fae3f14b17a48658cd70a8cbdc80594": "3ac490ce-bbec-4cb5-9fb2-47f19911634d",
+    "3e297cbc324c45e39b0ce6de03983850": "3c212df8-791a-4f17-893b-081e465270a6",
+    "ae410da39a2b4657befebd82146ecb0e": "3d1b910e-ff24-4e70-8af7-f8f5d970f437",
+    "94684f936f194a0886108b9520bad90a": "3e065b54-bcdf-41aa-8d82-3b2e872cd8c5",
+    "cb7b69c66c134232b85c4c02c0fdd8df": "3f038b2a-b668-4e6e-8959-f0e531188d16",
+    "f90179b95ff444458255b52a5981b208": "3f3e3a14-4b0e-4458-968b-6761a0d31c3a",
+    "e8176c607a6e404c82a87ecd14ff0a3d": "412edd3a-bd46-4abb-8179-197455783f87",
+    "c4590daee584437fbb6526b608b2d6eb": "4292e90e-dddb-412d-98eb-8430582475ff",
+    "01f13d26bac147a8ab9b4b54e217152e": "4378aac3-72a1-421a-96c2-77c38c2b67ee",
+    "a407b42da31948fea99d45800f65b270": "446e47c0-c04f-4b89-868c-eecf84249205",
+    "24c3c001e3f0469b9c5a432d80bf1d20": "4518b10c-7f97-4284-8143-6bd784a6e1eb",
+    "97d7065c7ca24940930b61446101994e": "46112567-9bc1-43bd-9666-2b112c4c09f1",
+    "d946eaad842e4ef587890afe98dcb97f": "46b51b60-a6be-4d07-8df6-cde5235b3cd5",
+    "2aa767a8377a42c1bfc2aec4b8bf3a9c": "470e1212-3697-4f54-9754-a4202c857e82",
+    "60684fb6d6ea41ce912f033df9e4d86b": "4792991b-ee29-40d7-a3ee-58a7680fd586",
+    "7a9ce2ed1cdf4774901d38ca00a4456d": "48a4ccb4-6b4b-49c7-b9ae-5735a6a1f52c",
+    "9c1b8efc6166417eadd46edda83f8041": "48af8803-53c0-425b-9fa6-304696e55d7d",
+    "fe05a905d5d642f9a7b74ad1bf635121": "48ef30bd-57c1-4562-9002-dfd8a0ac9a0e",
+    "d110cc3f6c2342cda4b91159fcee174e": "4aff5bd1-9ae5-41fb-b30e-476ad2d91d9a",
+    "c1726528f95841219a95d8f9e0ca5766": "4be02b89-a597-4279-acd8-29ade102a497",
+    "dbf12221ecc54f08b21fc0606119fb1f": "4c3cfa94-a348-43a9-9cce-b1da3a615122",
+    "36ad203b81d94e8fbad365e0a3c6cf16": "4da90063-de77-4a40-8230-d8d3814ad46e",
+    "3425e2f214d64e98b88e40afc4fd1d56": "4f7b4425-703e-4e8c-93d6-d557d2e165a1",
+    "85be34e86e274983b4044fdc6c6309d8": "50eb70f5-92fc-4824-be7e-f82efb70c5bd",
+    "bb5c39a8482f44e4a5400a2ed5a893b9": "513f2246-f793-49ca-88bf-85b3872b5ec1",
+    "0245217ad9d945008ca6db2a4fec0767": "51b29851-fa2b-42bc-971f-27de352aef79",
+    "28c7b15c92204526bd75a7bef9c1cf39": "525dd5e0-cbcb-407e-b365-5199efb0ccf7",
+    "3b2d55020df24020b9bd5b2b3f2e8e64": "531786de-8e3f-436a-bca8-f53b7e71d271",
+    "7c44bde442684e6790fca8683ab4c944": "544d7bb0-c5da-41d1-a7ec-8c8ede32117d",
+    "eac3eba6853d43acbbf1ccb563fed0ba": "550fccc1-b0c9-42a7-b398-d1b1be8e6254",
+    "a2837798ca63454a88aebe2106cf8ec9": "55807234-c4fd-492b-9b07-7a64086a74cb",
+    "bdf663ab781b423fbe6cf05197acfa17": "568d5ad0-4cbe-4d2b-b6a0-c9574fa53dc3",
+    "442f5104f3a24c3d983e327fcea53d64": "572f84fe-1b1f-48ee-b5b4-d8222cdec4ed",
+    "69ced883b1fc4bbe8643b04ae542cc35": "5733cea0-3205-4f9b-9981-29a3a5ef1185",
+    "91c7da5a32184df88e891421a98be2c1": "57815a48-e7c9-4b7e-a40c-c2471012178b",
+    "75649c4d231846d68a4e2786f59992c5": "57adc40c-7913-4a4a-95ff-ee6c5fddc34e",
+    "95dabc49ba174c9aa3920fa62adfc4d8": "58a876c5-ec0a-46a2-8291-f5d2412179ce",
+    "a97bf11812bb4e0c9ed79db80790f48f": "59347665-32db-4a5a-b80b-95ca178d0169",
+    "c6effcdd78804604aea94cc8eeb0c28f": "5b397058-980b-4274-82d4-e9387eb65c90",
+    "45ee0b3a80f44c25b6ac21329aad127c": "5bbed8e1-0de2-481e-9c18-cc7e0490432e",
+    "47aafb6362f046799650f09d8642c30e": "5bd21877-ab87-43e1-a78b-58d6eceabf91",
+    "76e476f784ac4d939ef18e4abbcc48dd": "5ecfa330-f9bc-42aa-aa5b-d238203e8a2e",
+    "b6caf6754d974fc884df29a607d32c87": "60319135-ecdc-4f2d-ad6c-ab4527b7af86",
+    "c7e6be9a490d41c98b84237aa55b648f": "604ef2e9-a6e0-4ff8-bea6-974e035e3f86",
+    "e002c6e90fcf4881bdac6aef66499c97": "610b1c6b-00d9-40e7-9941-91d8de10a46b",
+    "05ba6bacf7a248668e22622bd0592eab": "620b68e3-42ae-4b2f-9a47-18f6a4d1a589",
+    "1ba86834e7064817ad25c601b5dff9c5": "6391e73f-58f3-412d-b377-df7add0760fc",
+    "c22d4654e1bc4e4eb468e3b9f8d4b9f4": "63b6a17b-79f3-40bb-9a0d-d1f3f61139f0",
+    "222dd70b0bd044a7843d6bf3219acc0b": "63be67e6-9b5e-44a0-865d-fe4a94db50b4",
+    "82e70238758d4f06bbeb56aaae061942": "64755127-34ea-4cf0-bd16-1843c2612cfb",
+    "f682a05170284c5c80b3d6abfae78d91": "648643c6-64a7-460c-996c-5db74466d5a8",
+    "245f0b2e8f0e4284967cf3358c61e100": "64fbee7c-3e8c-4b70-9f12-52fd6c7708df",
+    "89b42a24a82547e0a926ae192e7cafa0": "65b8267e-d55e-42ee-8bfe-eb10e83a09bc",
+    "eb22a68bb04545f1b315c3b5d88884dc": "66e5f5d1-a09d-4002-8070-c2ffe1a42180",
+    "ea7f36eb6820492ebae90e7ccb111de3": "6863f67b-d846-4f17-98a7-1c9f92bb94d3",
+    "d0d5cce17b5d40aca9096e2d364bd13b": "69a10a7a-fc76-44c1-ae0b-f1c2543ade63",
+    "1fca8cd27beb43b3888e5cd2cb551488": "6a149b7a-1e68-445e-b52a-2d58e71fb916",
+    "bab55a2ee27b465db6b3027b67b7e66b": "6b778f24-ca6e-4814-aadb-d6365ebfd7ce",
+    "44c9c8e43c7f4d029d0944c128596e4f": "6b98373b-e2e5-45fc-ae58-a817c3a07d65",
+    "7c9bbefca6a144d6890e682674bccf5c": "6bf1191c-3f7d-4f2e-9d3f-e9c94ba3e9f3",
+    "5418fe062ddd4186982ca2d09da3448d": "6c17d5f6-0806-434c-9edf-8d69f50e6a30",
+    "b17932e733364571a8bfe10b02dc555a": "6c9c4ba8-d8bd-46a5-bc73-483adef810c8",
+    "70da7db855194dd3a58ef3df43c5b3b9": "6cd83c82-50df-4b52-8c19-2be76d09f3ed",
+    "a7b3905b20d546d793ed0ef259b2ab16": "6cfdbaba-c08f-44b1-9546-4a293b38930e",
+    "7360487f194f45e2922b3566ed3c5558": "6d42ec0e-122a-45bb-9849-c5ec87706e57",
+    "2e1c545647eb4628a2ab8e3a5716de4e": "6d6cfcea-4f87-4e12-bd81-806958d15c53",
+    "69ba48e1ce5345ee8155d33bf6e6fa2a": "6dbdc493-ab16-4a09-b275-7e939e87ad23",
+    "0e454af3d72e420f95612779e805ea15": "6ded2e27-237c-456d-9788-510587221c08",
+    "40acb2cef99c4ec58e5126c8bb3b96a1": "7001f87c-1997-4f3b-911f-11ebbadf7599",
+    "00b75821444d47419befdf95a8580d7e": "7208d99b-85d4-4c6c-991d-b062938fda58",
+    "fbb60dd18993427da73a97f230e4a5d9": "730a55bb-6efb-4aaf-b0f3-874d1a3617bc",
+    "c9eb13b0bfe444bbbe149ba853de3728": "73140d33-b29c-47f1-920e-ecb9196a92e5",
+    "1eebd04052ae46e08e4930053fec0869": "73df60c5-749b-4708-8a40-9b8ac69df560",
+    "f58d309fc3ec4c75a9373a8266a6a3b6": "742c5eae-4623-4cad-a8ea-2d61217e5856",
+    "ae48d979ac34433292c6c6d1720e7665": "748ffb74-39dd-4f5b-a3e4-502ee7fc28ca",
+    "aa228befe81d4a3aa0664d9cb196149e": "765c170c-398a-447a-a45b-3df1f948ea04",
+    "24dbe9efbf484cb7be9f59138716c0e0": "76aa8f2e-6407-4090-be71-26f6e82fa7ed",
+    "73a929d459394118928df535c8439814": "76d66e89-35dd-4b8f-96df-5a0cf1923012",
+    "b970e2b3ece4438d84d12cd576ddca6b": "775faa44-30fe-457e-9dcf-0bfa86f364a1",
+    "5e6d91a76833418bbafbbb44cc91c0ea": "790755ad-ec2c-4fa1-aac1-4efa46b95855",
+    "54bbd32197be4fd88d317f6935eada4c": "79aba6f6-4278-45dc-9fff-81483a993a4c",
+    "8dd0362cced2441eb1aa7c6a254dd863": "7a05e143-916c-44b9-a910-ff6dec2f127b",
+    "a2f2bfd204044c53acd7489d659672f7": "7a108bad-291b-4dbf-8395-809536f361d6",
+    "e07db60388a74627a7dc69cc987b22b2": "7aa0fbf0-a326-46e9-9be9-e621fdf3a8fb",
+    "9661d22bb554463c8bd0fa0515f1e2e3": "7aae4ef8-9feb-41db-86a4-bca1c334949f",
+    "b6827c6467e04df7899beac7f55d54a1": "7b08c4cb-210e-4e6f-a21d-18186f4c4974",
+    "786a50c56f484b4dbcd8e581caf71c15": "7b75ff7c-af33-4331-b98e-7237d8027a64",
+    "4507c2c527874bf6900f36df72d605dd": "7b782322-8ce2-42d1-bbe8-9c3312c5f0d4",
+    "1b352b62787f42868af7099d0b6f3dde": "7be734d4-ab92-496c-9e95-196f7f92f80b",
+    "a002b105603c4d2891715aaabf02aee2": "7c41796e-ad2a-4403-b2cc-3ccee62a6ae3",
+    "d2fa7d9cac2246d88aa0febde26b7c43": "7c771eca-352d-4c7e-8ab4-93396860ade4",
+    "7434ede4c58b47b599211936b1b78ba5": "7c8421d5-9eb5-48b0-a010-04115d54eb29",
+    "53b28bc7f16d41e69741e91436997fad": "7da255e1-97c2-4596-8e20-ba92183ffbcf",
+    "a9c94e7550c94feb928c5b3485d517a2": "7e40ac2a-95b2-40cd-b97f-793dfd7ff333",
+    "18d2bcb1e5b74877a982e8957b46d9c5": "7ee8e042-51b8-438c-92b9-b0ccb8cea076",
+    "6cbfea5ad6b14f1bb3fe19a91f6587fa": "7f410180-332a-4d0f-93a8-a5cd1ed53b9b",
+    "22d42c81d5d94d75b88acb60ebfd4da6": "7f513dad-c101-4587-b077-3941bf6fd70e",
+    "f803c3372eba4c5eaf42b92ee8299287": "7f7b1675-8579-4edb-a6c7-86480d25510b",
+    "d8e7119165494dca939b9517e3503f80": "7fc4f7ff-d4bf-4332-8188-1f920dc9059c",
+    "23678c452b2446e9a64aa221f1e9e014": "8063de8f-8780-47e7-87c5-191ec3ad55c3",
+    "b4b3a5ed930c4563850bfdf71b3f8a8a": "80b17028-d0f6-45c0-aebe-256c7576b864",
+    "00f922cf15f0463fa6b179b557427826": "83913692-3ec8-453c-bc92-378b556c6bfc",
+    "495ddb5080924576b0d603805aab46fc": "852a3cfa-4e5b-407c-a79b-e5c84e435b0c",
+    "0d61c460ea064ceca5ffe002cd66e3f1": "8630abba-ba2d-445c-b973-fa56af5a52eb",
+    "c501c8be9d2e494884b47d8813f10b56": "86b7490e-f4e8-477f-984a-d1ce72fbc619",
+    "860313c105d94992bb4e4761f0d9c034": "871cb10b-9fbd-4382-b01f-af8ab6ce4805",
+    "757975f3b1ac402ab4aeffafb412c2d1": "879b63d2-42de-4baa-af6d-b1eb22b46e95",
+    "50b40f0c25fe4de98ecbe2364f652c9e": "8854b651-052e-4a35-aab5-adacfb12ef25",
+    "34e09b24ec4444e9b3a6ac4bf6bae70c": "88a49bb1-494c-4e23-8094-b148dea17ec1",
+    "72d79747b328440f9719581416c6a29a": "8907de4f-7105-471a-8041-21204bff4525",
+    "482c2f2f271846d0ae3db42ec4b353fe": "8930913b-9a5b-44e5-9ad4-aae3993a71f2",
+    "e8e0deb9a1884a26a542d1dd5576af55": "89e89ca7-aa4a-45d8-82e3-7827b4141695",
+    "f53fc8b8f90e46509f027d63931b5a8c": "8a8d63ef-5512-45c7-b83f-77e11342bc73",
+    "3a4600645b264b10ad04105dbea15f13": "8aa27081-04b9-4fdc-a537-7f92d22ec5e1",
+    "13db4c173ce848458a1789b586b691d1": "8bafcbcb-2303-453b-b092-906d0c2dbb02",
+    "997b5697abf2479ca3b2251ce63e0bfc": "8c31dcf9-152c-4dfa-b748-551617d3c3ed",
+    "cedd029ff0634ad492ffa1644a5514f0": "8c6dbd23-ec43-4d06-b81c-654bd4ba3ebe",
+    "4fa1748f9f434d0d9ab3fdf73df3c62c": "8d76812c-7e4c-4360-b360-7b3ac0bedddb",
+    "ad71e3dbdfb2435dbefd10a46522f8c7": "8d7bc8f3-caec-4c9f-9f8d-a7aca7f1747f",
+    "49ad179f93d24ad0b0077b9e42b31c25": "8de4871e-1cdd-42a5-8ee8-a8ca222f5dc8",
+    "66eb5774bf6b4941abff20bbe88e47d5": "9078ab2d-a0c9-4f0b-af80-de3060a17b93",
+    "3b3e3b0d790a4fcdb4efeee139751559": "90fc0f96-0974-4024-b74e-11e540e60353",
+    "4da4cc628d0c4d0caac643387f3dc5fe": "9102d083-5681-4089-82ed-8b71e3062f00",
+    "2d7262ac40fe4d46b23e89e1fab27b8e": "91e6dbc0-0ee5-4875-959d-d7c6c852ca38",
+    "0a9cfccfa52b4acc8463cfc7cdae72b0": "921a5896-8da7-469c-be25-51cbc782307c",
+    "43f57578514e482cb3a6019b9348a52c": "929ebbb3-c2aa-4854-ab39-e3a6016f3187",
+    "d069ae1ee67e426e8ce5753b6b2ce478": "92a62ebe-cecc-4196-b588-4867cf679c1c",
+    "5d7de3ad84554e3da5c42e5e0d17af36": "94e564e7-1b47-46b6-a466-c142c23c7548",
+    "cf019efaddd545f8a8e6ca7114698473": "953a8366-234d-426e-8cfe-c6bf91cc7e98",
+    "72811f2ae7714c4fb9babb4ca653d2d1": "95611872-e76f-43fc-9162-b76dc512fc79",
+    "c3f3beb989cd4fa4b6430e1d15cf88e5": "9713dfdd-7b9a-4ff6-85e1-ddf46452abc0",
+    "edd826f4c1284b77af1afb4e7a6aaf09": "98468703-1890-49a4-bdeb-84a8f05a27f3",
+    "af215b51f8d4436eb95b99bfef9d6395": "99163552-0781-406c-b9a1-179accaf827b",
+    "7faf0691e5114f2082665fe16364d200": "9926b05b-7c78-4369-adb1-5f34db37f887",
+    "470c49bf64ef47b99e5905f1e3e8c037": "99a7ce80-e5d5-4695-88c0-388d52410f9e",
+    "796805d9d49445dd824f160a242de9e9": "9ae217fb-39e4-449d-8a04-f4e0911432b2",
+    "1ebb4949d0fe46e88c2dfb0d90fe338d": "9b3712e0-e46e-4c93-a0b8-bc5a761eb73b",
+    "b384ef68e1944953a4ba37b5a6f24e29": "9b76eab4-7996-44bd-807f-c9e8b7b2883b",
+    "4c7c4fa108af456fa0387a2d914453c8": "9c32f1f1-a2ff-4d79-a282-2581a21130e6",
+    "59b57d0be47d4da498aca55f63fcfbc6": "a1c8142c-c26e-4e07-8692-fba26ca6f6d4",
+    "65413ba1b4774e9bb7f76d14fb7c8a59": "a26b8dec-bac3-4fcd-b172-7da201665c75",
+    "1866278eaf894576822aeb7a69c3cb10": "a3b31161-1a40-4bca-9856-26bdc60cc7d2",
+    "eea4e80cd19a49a4885f9da050f27062": "a57570c5-03d0-4312-98b2-afa1822f5fa0",
+    "f547656825b340dabdb661d772aa5369": "a5a0d43b-e6e3-41ec-bc37-4c6b74d8ca50",
+    "23e2e2b8e4bb470e8a6eeea487332749": "a702da1f-aa80-4de2-aa9e-6eebfe088b84",
+    "c092e4b8fc014b1a98f27832c01a67c0": "a84c5a53-b907-4ea5-a4d2-996dfed1b5e2",
+    "d256c2a103014f5593a0aca30c349939": "a84cc97b-c3f1-422c-9951-0bcf8a2408cc",
+    "f559f40ac57747e5bd5dada29144bf54": "a9345927-bdc3-4e2d-9451-c7929dcbc860",
+    "48ea73c5d119437eb296280ff4ae8033": "a9c9be22-735f-442a-811c-59b225869e87",
+    "9d1d02d618d04a709952032ff6450b9d": "aa155e37-27e8-47e2-b23d-7e5bc78f5622",
+    "fe68b4fcd8474c5bbe75c1aafbf0e97e": "aa3641e5-d8b0-4b8a-9cd2-ce6b2be380b0",
+    "e9ca8b26476b4c0590fbdb53709c7512": "aa64abae-5b5a-41d9-9249-32e7c77a59b7",
+    "f9345cba0de04d8593e1b43c4681f6bd": "abb31004-fc21-4750-9a0f-bb4ed610008f",
+    "88b205f6352d4b0f8fe38dcb3e9f4ca8": "ac4bf917-1a36-42b0-aeb7-09571c25d0e1",
+    "8ed4b4d2ed6d44c999ec78540f2a9327": "ad3b6072-0ac7-439a-b37b-f758232f7b52",
+    "a334c43d04d64d7a8422557ec747b7f6": "aef479e1-c9dd-4a9d-b4d4-5afc4add3b36",
+    "9cd3030c06f5409eb65ba484847f6212": "afc2a002-cf65-4c27-a0b9-d3c4fb1fd11c",
+    "7092c1ed38514d30bb9f901501290963": "b06c87d4-6ef0-4f8a-99cd-fa40a3985a8f",
+    "133cd1bdb9ed4a728c93b0c00396ea01": "b0cedac5-3733-40fb-bb34-d63c39361b15",
+    "3cff9e5465a541f287899af29a6b410e": "b0e9cc1d-fff2-4b3d-96f2-b547434119f2",
+    "700033289f684d9c88692956dc367a3f": "b2518e03-1f26-48c4-848d-ee9c479ecb49",
+    "24799e25a6324cee82401d5e7c64ed4c": "b2bdba8f-7476-4e5a-9bf2-7de6f840e2e4",
+    "5c98c0d38a9c415bbe388e33ebb70890": "b32e6c82-6b70-4a6e-9578-e8c798d33cff",
+    "d4622b207ae74bfdae50135027b627b2": "b495ea5e-bd83-4c83-8bec-0aaea3f79fe1",
+    "2f082ef0039744bbaea3d72a1dc0ed91": "b509d90e-b3f9-4bc6-9e0d-2a06092df712",
+    "ac02eb8ee1f84ecf923bbaca6b253539": "b532936d-a8d3-4bcd-92b2-da7b644d4728",
+    "fbb7117066a64f1a8ca9a74ae2b8fbc5": "b5badb5a-fcba-4c28-b705-9736e5106831",
+    "867688ee105445dbac3a414d83119d11": "b6a7b3d6-8b7f-4af0-b766-c61c870a937b",
+    "1f9ce4cad7ec47e9988fdf9fc5d8d87b": "b7c25fd3-6ee9-4af7-9874-6afa47d28f1e",
+    "a62f670b814c4d459ad05e5b0e0a4201": "b7f04a54-dee7-4b3b-854a-e42d75ddc490",
+    "a88eb39f9324414b89f76172b5738575": "b7fafb95-82e7-4448-9e02-6da93e01e3bb",
+    "432d21edc261475697567ca319319c45": "b800b449-07c2-48fe-af55-c710112bf8f0",
+    "fecb0188a76148c482da2c8c2dd7964c": "b8e3da44-af14-4655-bf1f-1fa5eff8c64b",
+    "e07f819f8b1a4dcfa9d0ad842964f902": "b910d4c5-c7a8-4923-a7da-7c2121122fbe",
+    "05307c129dc4434583f8e180fde8e07e": "bab54abe-152f-4a5c-8c59-821375f05023",
+    "6741e726db5d4b57ab8f9721c3912778": "bb27c2d6-e9fc-43c1-9525-a81272226e5a",
+    "2623406d6fce449e92d1766ff108104d": "bc3aea9d-2572-4064-959e-1109cf326fb2",
+    "4e6400f774e6402bbcf5989e4e160a20": "bc3b4b5c-8000-4253-b69d-d553e75a6b09",
+    "70f52e3a97f74a32a704de057e1187e4": "bc672c75-7a24-44b8-90b4-d697ac1a7e18",
+    "71e3f912d92e4199b4c2c1cf1eb4e427": "bc89a1e7-f6bf-4456-85dc-fa6991d55de7",
+    "b3a6d7cbbf2943618b0f60b98529758b": "bce2f0e9-78fd-4c94-8ab6-8d138eb15c78",
+    "e618c00f20de44f880580687e26c95fc": "bd24a62e-db1a-4cb5-bf45-e4d3e84b937c",
+    "885b221cd1e14fc0a0e80fd021c76e81": "bd984f41-c56b-4f14-8671-17b7c0ea31ac",
+    "0e92f81f906b4382ac77ea4d37df6286": "be1d7f67-5cfb-448d-85da-396c1a29ddfd",
+    "4c2b217855f9427a8b5cc58dfbfb16dd": "be1f7ff4-8879-4443-b954-e9f150e7cc16",
+    "7b9e628a5e0643a9a1140bbbc0e56dcd": "bf6e61ca-6e5c-45d8-8540-4d4c1e5ded11",
+    "3808e720ff184bc8bfa4ba13e41ec9f2": "bf87ae22-99af-4d78-8792-c09fe3576b75",
+    "27581ed023e5459e9abed825ee5c2505": "c0b9a644-0432-4f01-bc42-791778228c9a",
+    "7f10831153114712bcff08df52b00a35": "c168f3bc-0c38-41c0-8b78-5c57d5794619",
+    "41f64e7a94434f91bb3036d6873303c3": "c170be09-f2e8-49ee-9b9c-83e7d299c75f",
+    "214c43b744a24951b95d660905cf21f7": "c1ae0682-73f7-4296-8632-3efcc0df7f9e",
+    "5a2310e61e6f4786810850cb50de7c62": "c1bfb0bd-5e8d-4c07-8714-63dca7382817",
+    "dd96ef2a91ba4aa5adb793d83d047617": "c20ac00f-cc0e-4672-a3dc-525836a6224d",
+    "395bd419ed66428699aee6e016fcc541": "c276ddc2-7e7c-420b-9288-09174f8889fb",
+    "7005a0f0ab654daaa933d85ecb4b019c": "c2874e15-3d2e-4fc4-8884-b3521d9c7d0f",
+    "f147495c35424cf5829c7fa82bf76988": "c35959cc-d112-44c5-bbde-990caa366eed",
+    "1ec068e72e074581b449657e182dd41d": "c4040dce-b11a-4b69-9efa-e78f9baa1c92",
+    "406505dea5784606ab37a06c2a00bfee": "c4887d1d-c58b-4021-8c11-1b0e0e446bdd",
+    "43245682ad85426995c251138af43f6e": "c4d37fa1-bf9a-48d7-a997-76ba2d55806c",
+    "6ec559b9207a463198383b361e63b1bd": "c4e64a8c-8ae4-4a48-9ac6-6ebaf5f147a0",
+    "c9ef0ec4c245491a97842d96e18c3866": "c4f1ea12-9bb9-4077-a230-7d2c31446876",
+    "bdf75106597e4c879c3100cfe1022e1c": "c572d926-4fbe-463d-9078-5aef1df273e7",
+    "fe9628b58f4f48d9a77e176ed3aeea9b": "c5b6224b-dedf-43cb-bb18-e8a92a8d222d",
+    "848d7a7423c34a77818e3541ba80f753": "c62d8389-ba8f-4775-b665-b708afb1b471",
+    "e65d83394b0047f4951146e1cc017282": "c677f73b-4e5c-455a-9ec2-1283ed9ed6dc",
+    "e7cd9daa690a4c5297ba7b3355bb30f6": "c6a23be3-b432-48bf-bf8b-5abc9890a6ac",
+    "1060633a91ba4c4ab4d442352dba108b": "c6b89ccf-407b-4fe1-a624-4ab8742a310d",
+    "e67e344fcb584ad880432e371de15cc7": "c73db653-ba15-4008-a28d-fb073a1b6d5d",
+    "e4fe6ed288b744ffaedf08371017b4e2": "c75ce05f-19f4-4974-948c-e84eeab32a80",
+    "7cf35533bf5c4ad39026ad4c20c20cac": "c7ecf8bc-02d8-48aa-b717-cc03b556c1e4",
+    "8eecf6976496452f94c7af2e8e26f559": "c80f24aa-e181-4c40-ab9c-4c3e7398d296",
+    "afffec5fd36b4af8bbbad62a2deebbca": "c8654f10-0e5a-4212-ad05-a92feb08c66e",
+    "ba096c523a514990966a9135fdf58571": "c8dc23e3-a9c7-461a-a302-67fa47f7c310",
+    "66ce5f0df21c451bb18d6a01f1956c60": "c8f28b42-011a-4d62-940c-f736e380c0ee",
+    "9f624c5e582e4e3b8da2c167854caa21": "ca6bcbdf-8d2e-408e-91ee-391efbbe2548",
+    "763ef7c48a994e7ab8641bd558d25038": "cbcbe26a-ade2-4ae7-bca0-02451ff94e06",
+    "be36b8d2412c452f959b8e2482409024": "cbeda74b-edf3-4db7-a01e-bb4e4eff20e8",
+    "1ab4a842ec1248b0aebdf360dc731a51": "cc006294-8300-48ed-b0ea-c4f85017abd3",
+    "3028c829771e4964b2633dc730df965e": "cc9184de-56a9-417d-bb89-bfcf07c40829",
+    "9cd82123c1fa4944ab0cacc92700480d": "cd577951-efcb-4a16-a49a-2edaf6e63312",
+    "79f896d2f02c4e4fa3e144a983295f18": "cf18e142-c981-4f45-8d84-a27fc3a9eb41",
+    "91f1a8bf371f4255943a8d7480911a8f": "d072c9fd-763e-4f80-a0ba-ae275f8454c1",
+    "986dcf70633d44bb85dacee069454f36": "d15360b3-4e21-45b3-853c-38a8df85006e",
+    "5690789fdfc04162990617592928c4e1": "d2951e07-a43a-453a-ad93-d649363c6ed8",
+    "9b235518b95d42338d02fff2118c66ea": "d2dcdccf-2245-4d4d-83e2-001d5bd4fc66",
+    "30fad33ae26c44fa94e84ef07ed0375a": "d485d3a3-02bd-40ae-99e1-e8bb4cd9a555",
+    "ca74465bbb53415a9ed611038a203714": "d4e78ed3-f8a7-4cc7-8ef4-3bdc1b2deee8",
+    "fa4545d999b04baaa7fec82f4cb422d5": "d5d77f41-0abb-4118-9b45-0a178dd57c10",
+    "5f5ec687502c474981989b3f12f2a8c1": "d8246e1b-4bec-47dc-8043-19c284748b67",
+    "9aaf40110e394ea697ece3338a76a15b": "da4bd460-05f7-4eb2-9bf2-a3580d004c95",
+    "1ab4edc198a0451cb9f0f3bce893d3f7": "db67196f-19ab-4547-b67a-592839d70c4a",
+    "c6cdb002a7df44d09adbaaa7fa1b18d7": "dc84b4b6-322f-4a78-ba64-07d1428f1bd7",
+    "1117009a41fb48f9acda0f8f90d33791": "dccc4241-a063-4b98-b9fa-6d5461566d8b",
+    "6a7be23d23324cdea28d223242cd869f": "ddb4f22e-5532-4eac-afbe-5f45ce79f235",
+    "f154f3a891b245a58cc9b7f9a39e4424": "ddf80694-75b5-45bf-8e75-5837faf0c49e",
+    "fe5a4c81fbeb4ecb92fef8ee27656c35": "ded259c3-c001-4e5c-95d0-08b4c8e524b8",
+    "63cff8ec430747c99c17c1d15997aff7": "dedc7484-4f3f-4c01-af99-61156686dfbe",
+    "8beee7ce77a94a8dbc5a9706bb4a9a75": "def0d5f2-4dba-4234-b23f-ae54e78e3c1c",
+    "7c381ede1df54e4280cb1b4acccd9a30": "df4aed6f-624c-4faf-9224-d4a78d940627",
+    "133fedeedc4f4b4c88e9be6bb68030e0": "dfeb9629-4da5-4629-b706-078f3f8cb1c3",
+    "5adc3f84ec0d4bf2ab5370d6e2689bf0": "e3e5ecf6-746a-46dc-9eaf-111302e15e7a",
+    "74bda672968f43ccbed0bcd87b2cb7fe": "e4a224a5-abba-4ff9-be25-862b935a5302",
+    "730a268ce9354dad9de010ee6268a646": "e57ee931-6584-4cc3-97d0-57fc84490e79",
+    "979c138748a149d09eb6199ca9d45256": "e59c898c-5660-40bd-9c8e-00281ee0d99a",
+    "08d7d33676984839a395fea26bdd1b97": "e5e6e608-14dd-4d8a-b3b2-a6bbf99618be",
+    "1b9f26a4b3c74917a31b2bffdca1dbf2": "e5ed4961-cf26-43a4-9a88-67d9415645bd",
+    "a1689ec15aaf4acaaceefc51ac1c47d1": "e62012f0-1d2f-4ba7-9cd8-46b12039b1b0",
+    "a344b93f1f1945edb5a3e4fb3e31d9f3": "e67128f0-7394-4fbb-9d12-c98f63a307f6",
+    "94d0e303652848859405d6b45e68e6d6": "e6c3e568-41df-43b7-ab02-86bc00060533",
+    "9fe1f88672b8424886075ff9a3c4b12e": "e6c85555-40c8-468d-8398-2ddcc909f9e5",
+    "f99f440dfb804a9eac395dadcaf9493f": "e7142ca0-1c01-43af-be0d-12b8f412aa4f",
+    "33c221eaa057484284a453fc8da3b283": "e72919cf-1b1f-40b1-8f52-3a71556aae38",
+    "fe85bb0a206f4125962cd197f119ff73": "e72a11aa-b5aa-4bc5-a529-5842a9242e28",
+    "511c88d54f8c4c149e3e7f20c8b804f6": "e79f688d-9a7c-4f94-8d06-2ec4c7d8f40f",
+    "09750170817849ecb6237b9b5b32858b": "e8a695f7-59ad-4487-8468-208a71c065b0",
+    "70fa3f60e9694bbf8c938c0b00e94fc9": "e8d78a56-aa42-4ff2-bc2b-ca42c4411401",
+    "f79fa358dc6e498cba949ae418ec19f1": "e96302e5-8460-44e0-9808-1ce531bd007c",
+    "0ad933a20666445fa1553aca33422481": "e9a21d9c-f2ba-41c6-98d0-410e230f909b",
+    "9c27ff91cb324199aaef5288160cacb8": "eb5bb1d5-fc0c-48f1-9552-b4cb38df9452",
+    "606a9e488dbb4a23b48e3b78f7730aa8": "ebb7e1a8-ab7d-4988-90ef-89b9638b6c8b",
+    "92e68085b42c42b8929879f2523f2041": "ec986e84-a40e-483b-95bf-75ef6996bcb6",
+    "98a76f04226941e79de5e3864a91f4e0": "ecaddeae-e3af-49f2-bcda-4240b52af319",
+    "3608348b040c4c94a6cb085952a8e0d6": "ed042723-d12f-4a8d-b62c-4a0952c396e9",
+    "da0178b0c3ef4dc7bdd58ae2e851d9ea": "ee21fa57-939e-4dbf-b423-388ba86713fc",
+    "a72e3387702347f2ab3f59b0d668ee32": "eef8ab3a-90ab-41b1-8018-0b7a29831847",
+    "7897adf47b1b4599bce599c5a7a5ed44": "ef1ae5df-ba45-4898-9a36-daefef610ebe",
+    "683ee2f8753b4278abef2a27a5d529c6": "efa778a0-202b-4b6a-b23a-13f3f2bc4a31",
+    "1a6e386461b34e7c9e06d0bbf3fb3518": "efdf0792-a7c0-4ab4-a748-1caeec34b5db",
+    "124f77e4c0204b1fbb81202304da7497": "f148be2f-8ef0-4718-b6fd-1ec270c03257",
+    "3b333203b3804549bc5e9be3986b2fac": "f38c8921-0d5a-4a1a-9458-e551f538f4a1",
+    "fc92b000ab834b13865fcd38f4df5970": "f468bf5a-9ecb-4fe2-aabd-0aabe336c15d",
+    "faf19c0067c740328c0ff296089b3f60": "f611dbc2-6c33-4ca8-b05c-c13e91a1e0f5",
+    "6eeff8ce6b9747ca9fbbabf7104bd6da": "f61bc7bf-6857-4d30-b6d6-ad496a394e54",
+    "10c6208767654bb6bff2fba296c02aa4": "f6b69fc7-7747-441f-a8e7-31e1759bdefc",
+    "ab51f3b164d8460db55222c02499e9f1": "f7520c5c-261f-4edb-b4f9-c8995f0c6abf",
+    "be9e295aca3749dd98e8e8ca552e2805": "f752c177-f3b9-43ed-80c3-0d73f5861cf5",
+    "c65a4fa41b354c1ca036928919045334": "f85f7ba3-0d92-4964-9ddd-f74c504c9ff2",
+    "f0dfeb9f0b60450785c3780b55b21a55": "f9a400bd-9b36-4b86-8c70-4a2f3a9389fe",
+    "2df651eae83344b2a6edbb8f0af678b5": "fa44893b-0efd-4e10-84e2-9fc862644ea1",
+    "19535e65ef1b4a4eb78534dd1bc5f660": "fb43de61-0b72-4e15-bda0-a2b112e70c5f",
+    "cd7dde5664564be284b7cbe1c1511c66": "fc676b46-b059-4f94-8edf-5fc44f4cec0d",
+    "c40a9f926c4845558dee1a3858f0c059": "fdca3685-ae0e-4dc4-9f62-fd2de2046be1",
+    "7811a9fb4a4a4b60b91d9fef17aff536": "fee9f4cb-9811-4fc4-9788-b3b0e73d532f",
+    "843576b81f5c44439724f9be148f96b4": "ffc3eee2-1311-4aad-baef-c4b1fdaef59a"
+  },
+  "migratedCount": 342,
+  "lastMigrated": "2025-12-01T15:12:29.561Z"
+}

@@ -71,11 +71,11 @@ This project uses Next.js structure:
 - [x] T020 [US1] Implement `dryRun(count)` function that validates CSV parsing, tag mapping lookups, and transformation without calling Builder.io API in `scripts/migrations/migrate-affiliations.js`
 - [x] T021 [US1] Implement `main()` CLI handler with argument parsing (count, --verify, --dry-run) and usage help in `scripts/migrations/migrate-affiliations.js`
 - [x] T022 [US1] Test dry-run mode: `node scripts/migrations/migrate-affiliations.js 10 --dry-run` (validates without creating)
-- [ ] T023 [US1] Test migration with 10 records: `node scripts/migrations/migrate-affiliations.js 10`
-- [ ] T024 [US1] Verify migrated records in Builder.io admin console
-- [ ] T025 [US1] Run verification mode: `node scripts/migrations/migrate-affiliations.js --verify 5`
-- [ ] T026 [US1] Execute full migration: `node scripts/migrations/migrate-affiliations.js all`
-- [ ] T027 [US1] Verify `data/mappings/affiliation-migration-mapping.json` is generated with complete mappings
+- [x] T023 [US1] Test migration with 10 records: `node scripts/migrations/migrate-affiliations.js 10`
+- [x] T024 [US1] Verify migrated records in Builder.io admin console
+- [x] T025 [US1] Run verification mode: `node scripts/migrations/migrate-affiliations.js --verify 5`
+- [x] T026 [US1] Execute full migration: `node scripts/migrations/migrate-affiliations.js all`
+- [x] T027 [US1] Verify `data/mappings/affiliation-migration-mapping.json` is generated with complete mappings
 
 **Checkpoint**: User Story 1 complete - ~1,826 affiliations migrated to Builder.io with mapping file generated
 
