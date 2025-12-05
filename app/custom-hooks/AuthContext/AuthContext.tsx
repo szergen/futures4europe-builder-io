@@ -130,21 +130,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // #region Fetch affiliations
   const [refreshAffiliations, setRefreshAffiliations] = useState(false);
-  const { affiliations: fetchedAffiliations, affiliationsFetched } =
-    useFetchAffiliations(
-      refreshAffiliations
-      // setIsLoadingInProgress
-    );
+  const {
+    affiliations: fetchedAffiliations,
+    affiliationsFetched: fetchedAffiliationsFetched,
+  } = useFetchAffiliations(
+    refreshAffiliations
+    // setIsLoadingInProgress
+  );
 
   // Store affiliations in local state so we can update it without full refetch
   const [affiliations, setAffiliations] = useState<any[]>([]);
+  const [affiliationsFetched, setAffiliationsFetched] = useState(false);
 
-  // Sync fetched affiliations to local state
+  // Sync fetched affiliations to local state when fetch completes
   useEffect(() => {
-    if (fetchedAffiliations && fetchedAffiliations.length > 0) {
+    if (fetchedAffiliationsFetched && fetchedAffiliations) {
+      console.log(
+        `[AuthContext] Syncing ${fetchedAffiliations.length} affiliations to state`
+      );
       setAffiliations(fetchedAffiliations);
+      setAffiliationsFetched(true);
     }
-  }, [fetchedAffiliations]);
+  }, [fetchedAffiliations, fetchedAffiliationsFetched]);
 
   const handleAffiliationCreated = () => {
     setRefreshAffiliations((prev) => !prev); // Toggle the refresh state to trigger re-fetch
