@@ -68,6 +68,7 @@ export async function getBuilderContentByUrl(
         url,
         userAttributes: options.userAttributes,
         query: options.query,
+        cachebust: true,
       })
       .toPromise();
 
@@ -88,6 +89,7 @@ export async function getAllBuilderContent(
       query: options.query,
       limit: options.limit || 50,
       offset: options.offset || 0,
+      cachebust: true,
       options: {
         includeRefs: true, // Ensure references are enriched
       },

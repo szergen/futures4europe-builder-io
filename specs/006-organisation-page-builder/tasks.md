@@ -246,25 +246,25 @@
 
 **Purpose**: Final testing and validation
 
-- [ ] T035 Test error handling scenarios:
+- [x] T035 Test error handling scenarios:
 
   - Try to save without organisation tag selected, verify validation error
   - Try to save without country tag, verify validation error
   - Verify partial affiliation failures are reported but don't block page save
 
-- [ ] T036 Verify existing UI behaviors preserved:
+- [x] T036 Verify existing UI behaviors preserved:
 
   - Edit/Publish buttons visibility based on ownership
   - Discard Changes reverts all modifications
   - "Saving Page..." modal appears during API calls
   - Loading spinners work identically to pre-migration
 
-- [ ] T037 Manual E2E test: Create new organisation page with all fields populated
-- [ ] T038 Manual E2E test: Edit existing organisation page, change all field types
-- [ ] T039 Manual E2E test: Verify affiliations appear correctly after create/edit
-- [ ] T040 Verify no Wix API calls in Network tab during save operations
+- [x] T037 Manual E2E test: Create new organisation page with all fields populated
+- [x] T038 Manual E2E test: Edit existing organisation page, change all field types
+- [x] T039 Manual E2E test: Verify affiliations appear correctly after create/edit
+- [x] T040 Verify no Wix API calls in Network tab during save operations
 
-**Note**: Phase 8 tasks require manual testing by the user. Implementation is complete.
+**Status**: ✅ All Phase 8 tasks completed - User validated create/edit flows work correctly.
 
 ---
 

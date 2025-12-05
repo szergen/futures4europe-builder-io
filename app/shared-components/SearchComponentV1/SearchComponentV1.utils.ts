@@ -1,13 +1,13 @@
-import { match } from 'assert';
-import Fuse from 'fuse.js';
+import { match } from "assert";
+import Fuse from "fuse.js";
 
 export const FieldTypes = [
-  'activity-domain',
-  'author',
-  'people',
-  'participant',
-  'speaker',
-  'coordinator',
+  "activity-domain",
+  "author",
+  "people",
+  "participant",
+  "speaker",
+  "coordinator",
 ];
 
 export type Tags = {
@@ -61,27 +61,27 @@ export type InitialData = {
 };
 
 export const sortResultBySortTags = (
-  results: InitialData['pages'],
+  results: InitialData["pages"],
   selectedSortTag: string
 ) => {
   switch (selectedSortTag) {
-    case 'by begin date':
+    case "by begin date":
       return results.sort(
         (a, b) => new Date(a?.beginDate) - new Date(b?.beginDate)
       );
-    case 'by end date':
+    case "by end date":
       return results.sort(
         (a, b) => new Date(a?.endDate) - new Date(b?.endDate)
       );
-    case 'by publication date':
+    case "by publication date":
       return results.sort(
         (a, b) => new Date(a?.publicationDate) - new Date(b?.publicationDate)
       );
-    case 'by established date':
+    case "by established date":
       return results.sort(
         (a, b) => new Date(a?.establishedDate) - new Date(b?.establishedDate)
       );
-    case 'by date':
+    case "by date":
       return results.sort(
         (a, b) => new Date(a?.eventDate) - new Date(b?.eventDate)
       );
@@ -174,7 +174,7 @@ export const highlightMatches = (text: string, matches: any[]) => {
         match &&
         match?.indices !== null &&
         match?.value?.toLowerCase() ===
-          highlightedText?.toLowerCase().replace(/<mark>|<\/mark>/g, '')
+          highlightedText?.toLowerCase().replace(/<mark>|<\/mark>/g, "")
       ) {
         // console.log('debug7->match', match);
         const start = match?.indices[0] + offset;
@@ -184,9 +184,9 @@ export const highlightMatches = (text: string, matches: any[]) => {
         // console.log('debug2->highlightedText before', highlightedText);
         highlightedText =
           highlightedText?.slice(0, start) +
-          '<mark>' +
+          "<mark>" +
           highlightedText?.slice(start, end) +
-          '</mark>' +
+          "</mark>" +
           highlightedText?.slice(end);
         // console.log('debug7->highlightedText after', highlightedText);
         // offset = offset + '<mark></mark>'.length; // Length of '<mark></mark>'
@@ -202,18 +202,18 @@ export const updateFilteredDataBasedOnClickedSuggestion = (
   filteredData: InitialData
 ) => {
   // console.log('deb1-> INSIDE updateFilteredDataBasedOnClickedSuggestion');
-  if (clickedSuggestion && clickedSuggestion.includes(':')) {
+  if (clickedSuggestion && clickedSuggestion.includes(":")) {
     const [field, tagName] = clickedSuggestion
-      ?.split(':')
+      ?.split(":")
       .map((str) => str.trim());
 
     const fieldToKeysMapping: Record<string, string[]> = {
-      author: ['author'],
-      people: ['people'],
-      activity: ['activity'],
-      participant: ['projectParticipantTeam'],
-      coordinator: ['projectCoordinator'],
-      speaker: ['speaker'],
+      author: ["author"],
+      people: ["people"],
+      activity: ["activity"],
+      participant: ["projectParticipantTeam"],
+      coordinator: ["projectCoordinator"],
+      speaker: ["speaker"],
     };
 
     const keysToCheck = fieldToKeysMapping[field] || [];
@@ -308,7 +308,7 @@ export const updateFilteredDataBasedOnClickedSuggestion = (
 export const prioritizeTagInResults = (
   results,
   targetTagName,
-  tagType = ''
+  tagType = ""
 ) => {
   if (!targetTagName || !results?.length) return results;
 
@@ -316,15 +316,15 @@ export const prioritizeTagInResults = (
     // Define priority levels for different array fields based on tag type
     const getPriority = (item) => {
       // Skip checking these properties
-      const excludeKeys = ['pageOwner'];
+      const excludeKeys = ["pageOwner"];
       // Define high priority arrays based on tag type
       let highPriorityArrays = [];
-      if (tagType === 'person') {
-        highPriorityArrays = ['person'];
-      } else if (tagType === 'organisation') {
-        highPriorityArrays = ['organisation'];
-      } else if (tagType === 'project') {
-        highPriorityArrays = ['Project'];
+      if (tagType === "person") {
+        highPriorityArrays = ["person"];
+      } else if (tagType === "organisation") {
+        highPriorityArrays = ["organisation"];
+      } else if (tagType === "project") {
+        highPriorityArrays = ["Project"];
       }
 
       // Check high priority arrays first
@@ -341,10 +341,10 @@ export const prioritizeTagInResults = (
 
       // Check other tag arrays next
       const mediumPriorityArrays = [
-        'domains',
-        'methods',
-        'countryTag',
-        'primaryTags',
+        "domains",
+        "methods",
+        "countryTag",
+        "primaryTags",
       ];
       for (const key of mediumPriorityArrays) {
         if (
@@ -393,7 +393,7 @@ export const updateFilteredDataBasedOnClickedTag = (
     (tag) => tag?.name?.toLowerCase() === clickedTag?.toLowerCase()
   );
 
-  const tagType = tagObj?.tagType || '';
+  const tagType = tagObj?.tagType || "";
 
   // const matchedPages = filteredData.assignments
   //   .filter((assignment) => assignment.tagName === clickedTag)
@@ -415,7 +415,7 @@ export const updateFilteredDataBasedOnClickedTag = (
   //   matchingTagIds?.includes(page.pageId)
   // );
 
-  const excludeKeys = ['pageOwner'];
+  const excludeKeys = ["pageOwner"];
 
   const matchedPages =
     matchingTagIds?.length > 0
@@ -435,9 +435,9 @@ export const updateFilteredDataBasedOnClickedTag = (
 
   const matchedAffiliations = filteredData?.affiliations?.filter(
     (affiliation: any) =>
-      matchingTagIds.includes(affiliation.personTag) ||
-      matchingTagIds.includes(affiliation.projectTag) ||
-      matchingTagIds.includes(affiliation.organisationTag)
+      matchingTagIds.includes(affiliation?.personTag) ||
+      matchingTagIds.includes(affiliation?.projectTag) ||
+      matchingTagIds.includes(affiliation?.organisationTag)
   );
 
   // console.log('deb1111->matchedAffiliations', matchedAffiliations);
@@ -501,7 +501,7 @@ export const removeSearchedItem = (
   initialData: InitialData,
   filteredSearchItems: {
     searchItem: string;
-    searchItemType: 'text' | 'tag' | 'field-tag' | 'sortby';
+    searchItemType: "text" | "tag" | "field-tag" | "sortby";
   }[],
   inputText: string
 ) => {
@@ -514,12 +514,12 @@ export const removeSearchedItem = (
   if (filteredSearchItems.length !== 0) {
     filteredSearchItems.forEach((item) => {
       let matchedData = {
-        pages: [] as InitialData['pages'],
-        tags: [] as InitialData['tags'],
-        assignments: [] as InitialData['assignments'],
+        pages: [] as InitialData["pages"],
+        tags: [] as InitialData["tags"],
+        assignments: [] as InitialData["assignments"],
       };
 
-      if (item.searchItemType === 'field-tag') {
+      if (item.searchItemType === "field-tag") {
         const {
           matchedPages,
           matchedTagsBasedOnPages,
@@ -529,11 +529,11 @@ export const removeSearchedItem = (
           filteredSearchItems?.length > 1 ? updatedFilteredData : initialData
         );
         matchedData = {
-          pages: matchedPages as InitialData['pages'],
+          pages: matchedPages as InitialData["pages"],
           tags: matchedTagsBasedOnPages,
           assignments: matchedAssignmentsBasedOnPages,
         };
-      } else if (item.searchItemType === 'tag') {
+      } else if (item.searchItemType === "tag") {
         const {
           matchedPages,
           // matchedTagsBasedOnPages,
@@ -543,16 +543,16 @@ export const removeSearchedItem = (
           filteredSearchItems?.length > 1 ? updatedFilteredData : initialData
         );
         matchedData = {
-          pages: matchedPages.map((page) => page.item) as InitialData['pages'],
+          pages: matchedPages.map((page) => page.item) as InitialData["pages"],
           tags: initialData.tags,
           assignments: initialData.assignments,
         };
-      } else if (item.searchItemType === 'text') {
+      } else if (item.searchItemType === "text") {
         const fusePagesOptions = {
-          keys: ['title', 'subttile', 'description'],
+          keys: ["title", "subttile", "description"],
           threshold: 0.1,
           minMatchCharLength: Math.min(
-            ...inputText?.split(' ')?.map((word) => word.length)
+            ...inputText?.split(" ")?.map((word) => word.length)
           ),
           includeMatches: true,
           ignoreLocation: true,
@@ -563,8 +563,8 @@ export const removeSearchedItem = (
         // console.log('debug3->matchedPages', matchedPages);
         matchedData.pages = matchedPages.map(
           (page) => page.item
-        ) as InitialData['pages'];
-      } else if (item.searchItemType === 'sortby') {
+        ) as InitialData["pages"];
+      } else if (item.searchItemType === "sortby") {
         matchedData.pages = sortResultBySortTags(
           updatedFilteredData.pages,
           item.searchItem
@@ -586,7 +586,7 @@ export const wordByWordSearch = (
 ) => {
   if (!input || !data || !keys) return [];
 
-  const words = input.split(' ');
+  const words = input.split(" ");
   // console.log('debug3->words Length', words.length);
 
   return data
