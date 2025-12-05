@@ -141,7 +141,7 @@ A user can upload and manage media files (documents, images) attached to the pro
 - **FR-006**: System MUST generate unique slug using existing `sanitizeTitleForSlug(projectTag.name)` function + unique hash for new project pages with `/project/` prefix
 - **FR-007**: System MUST set `author` and `pageOwner` reference fields to the logged-in user's tag ID when creating new project pages
 - **FR-008**: System MUST set `project` reference field (mapped to `Project` in Wix format) to link the info-page to the project tag
-- **FR-009**: System MUST validate required fields (project tag at minimum) before allowing save/publish
+- **FR-009**: System MUST validate required fields (project tag at minimum) before allowing save/publish (implemented in component integration tasks T014/T017)
 - **FR-010**: System MUST display "Saving Page..." modal during API calls to prevent duplicate submissions
 - **FR-011**: System MUST redirect user to `/project/{slug}` after successful new project page creation
 - **FR-012**: System MUST call `invalidateProjectPageCache(slug)` after successful Builder.io save and before user redirect
@@ -264,8 +264,9 @@ The following mappings from `builderInfoPageUtils.ts` MUST be followed for refer
 
 - `POST /api/builder/info-page`: Create new info-page (server-side with private API key)
 - `PUT /api/builder/info-page/[id]`: Update existing info-page
-- `POST /api/builder/affiliations/create`: Create new affiliation (server-side)
-- `DELETE /api/builder/affiliations/[id]`: Delete affiliation (server-side)
+- `POST /api/builder/affiliations`: Create new affiliation(s) - supports bulk creation (server-side)
+- `DELETE /api/builder/affiliations/[id]`: Delete single affiliation (server-side)
+- `POST /api/builder/affiliations/bulk-delete`: Delete multiple affiliations in batch (server-side)
 
 ## Out of Scope
 

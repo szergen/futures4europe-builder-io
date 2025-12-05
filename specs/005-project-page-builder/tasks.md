@@ -159,7 +159,11 @@
   - Use `extraIdentifier: "projectOrganisationRole"`
   - Include `role` field
 
-- [ ] T026 [US4] Update affiliation handling in `createNewProjectPage` (same patterns as update)
+- [ ] T026 [US4] Update affiliation handling in `createNewProjectPage`:
+  - Call `bulkCreateAffiliations` for coordinators with `extraIdentifier: "coordination"`
+  - Call `bulkCreateAffiliations` for participants with `extraIdentifier: "participation"`
+  - Call `bulkCreateAffiliations` for organisations with `extraIdentifier: "projectOrganisationRole"` and `role` field
+  - Note: No delete needed for create - only create new affiliations
 
 **Checkpoint**: Affiliations work with Builder.io - replace pattern (delete old, create new) functional
 
@@ -189,11 +193,19 @@
 - [ ] T031 Remove unused Wix-related imports from component file
 - [ ] T032 Verify `refetchTags()`, `refetchInfoPages()`, `refetchAffiliations()` are NOT called during save
 - [ ] T033 Add console logging for Builder.io operations (start, success, failure)
-- [ ] T034 Test error handling - disconnect network, verify graceful error message
-- [ ] T035 Manual E2E test: Create new project page with all fields populated
-- [ ] T036 Manual E2E test: Edit existing project page, change all field types
-- [ ] T037 Manual E2E test: Verify affiliations appear correctly after create/edit
-- [ ] T038 Verify no Wix API calls in Network tab during save operations
+- [ ] T034 Test error handling scenarios:
+  - Disconnect network during save, verify graceful error message
+  - Try to save without project tag selected, verify validation error
+  - Verify partial affiliation failures are reported but don't block page save
+- [ ] T035 Verify existing UI behaviors preserved:
+  - Edit/Publish buttons visibility based on ownership
+  - Discard Changes reverts all modifications
+  - "Saving Page..." modal appears during API calls
+  - Loading spinners work identically to pre-migration
+- [ ] T036 Manual E2E test: Create new project page with all fields populated
+- [ ] T037 Manual E2E test: Edit existing project page, change all field types
+- [ ] T038 Manual E2E test: Verify affiliations appear correctly after create/edit
+- [ ] T039 Verify no Wix API calls in Network tab during save operations
 
 ---
 
@@ -218,10 +230,13 @@ Phase 2 (API Routes)
    ┌───┴───┐
    ↓       ↓
   US1     US3 (Tag - uses existing API)
+   │
+   ├── Note: T012-T013 (affiliation utilities) start in US1
+   │         for use in createNewProjectPage
    ↓
   US2 (shares utilities with US1)
    ↓
-  US4 (needs affiliation utilities)
+  US4 (extends affiliation handling for update flow)
    ↓
 US5/US6 (verification)
    ↓
@@ -291,5 +306,5 @@ Execute in strict order:
 - US2 builds on US1 utilities
 - US3/US4 are integrated into US1/US2 but tracked separately
 - US5/US6 are already handled by transform function, just need verification
-- Total estimated tasks: 38
+- Total estimated tasks: 39
 - Parallel opportunities: 14 tasks can run in parallel within their phases
