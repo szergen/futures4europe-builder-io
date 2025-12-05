@@ -5,6 +5,14 @@
 **Status**: Draft  
 **Input**: User description: "Similar to how we migrated the post-page creation from Wix to Builder.io, we need to do the same for the project-page. Currently it uses everything to create a new page and update a new page from Wix, but now it should do that in Builder. The data is already migrated and the model name is info-page."
 
+## Clarifications
+
+### Session 2025-12-05
+
+- Q: Affiliations are migrated to Builder.io for reading. What should happen to the affiliation create/update/delete code that currently uses Wix? → A: Migrate affiliation write operations to Builder.io - create/update/delete affiliations in Builder.io instead of Wix
+- Q: What should happen when two users edit the same project page simultaneously and both try to save? → A: Last write wins - second save overwrites first, no conflict detection (Builder.io default behavior)
+- Q: Should this spec also cover person-page and organisation-page write migrations, or just project-page? → A: Project-page only - person-page and organisation-page will have separate specs
+
 ## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - User Creates New Project Page (Priority: P1)
@@ -59,7 +67,25 @@ When a user creates or updates a project page with a new or modified project tag
 
 ---
 
-### User Story 4 - Project Date and Link Management (Priority: P2)
+### User Story 4 - Affiliation Management During Page Save (Priority: P1)
+
+When a user adds or removes coordinators, participants, or organisation roles on a project page, the system creates, updates, or deletes the corresponding affiliation records in Builder.io.
+
+**Why this priority**: Affiliations are core to project pages - they define who coordinates, participates in, and which organisations are involved in the project. These relationships must be correctly managed in Builder.io.
+
+**Independent Test**: Can be tested by editing a project page, adding a coordinator person tag, saving, and verifying a new affiliation record is created in Builder.io with `extraIdentifier: "coordination"`. Then remove the coordinator, save, and verify the affiliation is deleted from Builder.io.
+
+**Acceptance Scenarios**:
+
+1. **Given** a user is editing a project page, **When** they add a coordinator, **Then** a new affiliation is created in Builder.io with `projectTag`, `personTag`, `extraIdentifier: "coordination"`, and appropriate title
+2. **Given** a user is editing a project page, **When** they add a participant, **Then** a new affiliation is created in Builder.io with `projectTag`, `personTag`, `extraIdentifier: "participation"`, and appropriate title
+3. **Given** a user is editing a project page, **When** they add an organisation with a role, **Then** a new affiliation is created in Builder.io with `projectTag`, `organisationTag`, `role`, `extraIdentifier: "projectOrganisationRole"`, and appropriate title
+4. **Given** a user is editing a project page, **When** they remove a coordinator/participant/organisation, **Then** the corresponding affiliation record is deleted from Builder.io
+5. **Given** affiliations are modified, **When** the operation completes, **Then** the affiliations cache is updated (not fully invalidated) to reflect the changes
+
+---
+
+### User Story 5 - Project Date and Link Management (Priority: P2)
 
 A user can set and edit project-specific fields like start date, end date, LinkedIn link, and website link.
 
@@ -74,7 +100,7 @@ A user can set and edit project-specific fields like start date, end date, Linke
 
 ---
 
-### User Story 5 - Media Files Management (Priority: P2)
+### User Story 6 - Media Files Management (Priority: P2)
 
 A user can upload and manage media files (documents, images) attached to the project page.
 
@@ -99,6 +125,9 @@ A user can upload and manage media files (documents, images) attached to the pro
 - **Duplicate slug generation**: When a generated slug already exists in Builder.io, the system appends a unique hash to ensure slug uniqueness (using existing generateUniqueHash function)
 - **Tag update failure**: When the project tag update fails after page save, the page is still saved correctly but the user is notified that tag linking may be incomplete
 - **Cache update failure**: When cache update fails after save, the system logs a warning but does not fail the operation (graceful degradation)
+- **Affiliation create failure**: When an affiliation create fails after page save, the page is still saved correctly but the user is notified that some relationships may be incomplete
+- **Partial affiliation update**: When some affiliations succeed and others fail during a batch operation, the system should report which failed and continue with successful ones
+- **Concurrent edits**: When two users edit the same project page simultaneously, the last save wins (Builder.io default behavior) - no conflict detection or locking is implemented
 
 ## Requirements _(mandatory)_
 
@@ -132,6 +161,17 @@ A user can upload and manage media files (documents, images) attached to the pro
 - **FR-026**: System MUST handle API errors gracefully with user-friendly error messages
 - **FR-027**: System MUST log save operations to browser console including operation start, success/failure status, and error details
 
+### Affiliation Requirements
+
+- **FR-028**: System MUST replace Wix `bulkInsertItems("Affiliations", ...)` calls with Builder.io Write API calls to `affiliations` model
+- **FR-029**: System MUST replace Wix `bulkRemoveItems("Affiliations", ...)` calls with Builder.io Delete API calls to `affiliations` model
+- **FR-030**: System MUST create coordination affiliations in Builder.io with fields: `projectTag` (reference), `personTag` (reference), `extraIdentifier: "coordination"`, `title`
+- **FR-031**: System MUST create participation affiliations in Builder.io with fields: `projectTag` (reference), `personTag` (reference), `extraIdentifier: "participation"`, `title`
+- **FR-032**: System MUST create organisation role affiliations in Builder.io with fields: `projectTag` (reference), `organisationTag` (reference), `role`, `extraIdentifier: "projectOrganisationRole"`, `title`
+- **FR-033**: System MUST delete old affiliations before creating new ones when coordinators/participants/organisations change (replace pattern)
+- **FR-034**: System MUST update affiliations cache after successful create/delete operations (append new records, remove deleted records)
+- **FR-035**: System MUST NOT fully invalidate affiliations cache - instead update cache entries directly
+
 ### Reference Field Mapping
 
 The following mappings from `builderInfoPageUtils.ts` MUST be followed for reference fields:
@@ -154,6 +194,7 @@ The following mappings from `builderInfoPageUtils.ts` MUST be followed for refer
 
 - **Project Info-Page**: Core content entity stored in Builder.io `info-page` model with title, description, slug, 10 rich text content sections, 10 images, metadata, and multiple reference fields
 - **Project Tag**: Tag of type "project" that has a bidirectional relationship with the project info-page via `tagPageLink` and `project` reference
+- **Affiliation**: Relationship record stored in Builder.io `affiliations` model linking a project to persons (coordinators/participants) or organisations with roles
 - **Reference Field**: Link to other Builder.io content (tags) stored as Builder.io Reference objects with wrapper keys, `@type`, `id`, and `model` properties
 - **Page Owner**: User who created the page and has edit permissions, stored as reference to person tag
 
@@ -171,6 +212,8 @@ The following mappings from `builderInfoPageUtils.ts` MUST be followed for refer
 - **SC-008**: All existing UI behaviors (edit mode, discard changes, loading spinners) work identically to pre-migration state
 - **SC-009**: 100% of reference fields are correctly saved and retrievable after project page creation/update
 - **SC-010**: No full tag refetch or cache invalidation occurs during save - only targeted cache updates (verified by checking network requests and logs)
+- **SC-011**: Affiliations for coordinators, participants, and organisations are correctly created/deleted in Builder.io `affiliations` model
+- **SC-012**: No Wix API calls remain in the project page save flow - all operations use Builder.io
 
 ## API Design Requirements
 
@@ -193,25 +236,52 @@ The following mappings from `builderInfoPageUtils.ts` MUST be followed for refer
 - **Endpoint**: `PUT /api/builder/tag/{id}` (Next.js API route)
 - **Request Body**: `{ name, tagPageLink, ... }`
 
+**Create Affiliation API**:
+
+- **Endpoint**: `POST https://builder.io/api/v1/write/affiliations`
+- **Headers**: `Authorization: Bearer {BUILDER_PRIVATE_API_KEY}`, `Content-Type: application/json`
+- **Request Body**: `{ name, data: { projectTag, personTag/organisationTag, role, extraIdentifier, title }, published: "published" }`
+
+**Delete Affiliation API**:
+
+- **Endpoint**: `DELETE https://builder.io/api/v1/write/affiliations/{id}` (or unpublish via PUT)
+- **Headers**: `Authorization: Bearer {BUILDER_PRIVATE_API_KEY}`
+
 **Utility Functions** (to be created in `app/utils/builderInfoPageUtils.ts`):
 
 - `createBuilderProjectPage(projectData, contentText, contentImages)`: Creates new project info-page in Builder.io
 - `updateBuilderProjectPage(pageId, projectData, contentText, contentImages)`: Updates existing project info-page
 - `transformProjectDataForBuilder(projectData, contentText, contentImages)`: Converts component state to Builder.io API format with correct wrapper keys
 
-**API Route** (to be created):
+**Utility Functions** (to be created in `app/utils/builderAffiliationUtils.ts`):
+
+- `createBuilderAffiliation(affiliationData)`: Creates new affiliation in Builder.io
+- `deleteBuilderAffiliation(affiliationId)`: Deletes affiliation from Builder.io
+- `bulkCreateAffiliations(affiliations)`: Creates multiple affiliations
+- `bulkDeleteAffiliations(affiliationIds)`: Deletes multiple affiliations
+
+**API Routes** (to be created):
 
 - `POST /api/builder/info-page`: Create new info-page (server-side with private API key)
 - `PUT /api/builder/info-page/[id]`: Update existing info-page
+- `POST /api/builder/affiliations/create`: Create new affiliation (server-side)
+- `DELETE /api/builder/affiliations/[id]`: Delete affiliation (server-side)
+
+## Out of Scope
+
+- **Person-page migration**: Person info-page create/update/delete operations will be handled in a separate spec
+- **Organisation-page migration**: Organisation info-page create/update/delete operations will be handled in a separate spec
+- **Info-page reading**: Already migrated to Builder.io - this spec focuses on write operations only
 
 ## Assumptions
 
 1. Builder.io `info-page` model is already configured with all required fields (verified - data is migrated)
-2. Builder.io Private API key is available in environment as `BUILDER_PRIVATE_API_KEY`
-3. User authentication and `useAuth` hook provide user details including user tag ID
-4. Tag migration is complete and all tags exist in Builder.io with correct IDs
-5. Existing `transformBuilderInfoPageToWixFormat` function correctly transforms data for reading
-6. The reference field wrapper key pattern from `builderInfoPageUtils.ts` is the correct format for writes
-7. Cache invalidation utility `invalidateProjectPageCache` is already implemented
-8. Existing `updateBuilderTag` utility and `/api/builder/tag/[id]` route work correctly for tag updates
-9. Affiliations are NOT migrated yet (the code comments out affiliation operations and returns empty array)
+2. Builder.io `affiliations` model is already configured and data is migrated from Wix
+3. Builder.io Private API key is available in environment as `BUILDER_PRIVATE_API_KEY`
+4. User authentication and `useAuth` hook provide user details including user tag ID
+5. Tag migration is complete and all tags exist in Builder.io with correct IDs
+6. Existing `transformBuilderInfoPageToWixFormat` function correctly transforms data for reading
+7. The reference field wrapper key pattern from `builderInfoPageUtils.ts` is the correct format for writes
+8. Cache invalidation utility `invalidateProjectPageCache` is already implemented
+9. Existing `updateBuilderTag` utility and `/api/builder/tag/[id]` route work correctly for tag updates
+10. Existing `fetchAffiliationsWithRefs` and related read utilities work correctly for affiliations
