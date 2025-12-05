@@ -1,23 +1,19 @@
 "use client";
 import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
-import { items } from "@wix/data";
-import { useWixModules } from "@wix/sdk-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
 import Link from "next/link";
 import { extractInfoPageTypeBasedOnTag } from "@app/utils/parse-utils";
 import classNames from "classnames";
-import { members } from "@wix/members";
 import NavDashboard from "@app/shared-components/Layout/NavDashboard/NavDashboard";
 import SubNavDashboard from "@app/shared-components/Layout/NavDashboard/SubNavDashboard";
 import style from "../pageDashboard.module.css";
-import { Avatar, Button } from "flowbite-react";
+import { Button } from "flowbite-react";
 import SpriteSvg from "@app/shared-components/SpriteSvg/SpriteSvg";
-import Tag from "../../shared-components/Tag/Tag";
 import MiniPagePost from "@app/shared-components/MiniPagePost/MiniPagePost";
 import Typography from "@app/shared-components/Typography/Typography";
-import { PLACEHOLDER_IMAGE } from "../../constants"; // Adjust the path as needed
+import { PLACEHOLDER_IMAGE } from "../../constants";
 
 export default function DashboardProjects() {
   const [isLoadingDeletePostPage, setIsLoadingDeletePostPage] = useState("");
@@ -39,17 +35,21 @@ export default function DashboardProjects() {
   } = useAuth();
 
   const router = useRouter();
-  const { removeDataItem } = useWixModules(items);
-  // const { updateMember } = useWixModules(members);
 
   const handleDeleteInfoPage = async (infoPageId: string) => {
     setIsLoadingDeletePostPage(infoPageId);
     try {
-      // Replace with your actual delete logic
-      await removeDataItem(infoPageId, {
-        dataCollectionId: "InfoPages",
+      // Delete info page from Builder.io
+      const response = await fetch(`/api/builder/info-page/${infoPageId}`, {
+        method: "DELETE",
       });
-      // TODO: Refresh Owned Pages
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to delete info page");
+      }
+
+      console.log("[Builder.io] Info page deleted successfully");
     } catch (error) {
       console.error("Failed to delete info page:", error);
     } finally {

@@ -1,14 +1,10 @@
 "use client";
 import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
-import { items } from "@wix/data";
-import { useWixModules } from "@wix/sdk-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
 import Link from "next/link";
-import { extractInfoPageTypeBasedOnTag } from "@app/utils/parse-utils";
 import classNames from "classnames";
-import { members } from "@wix/members";
 import NavDashboard from "@app/shared-components/Layout/NavDashboard/NavDashboard";
 import SubNavDashboard from "@app/shared-components/Layout/NavDashboard/SubNavDashboard";
 import stylefile from "./pageDashboardSecurity.module.css";
@@ -35,8 +31,6 @@ export default function DashboardSecurity() {
   // console.log('Dashboard isLoggedIn', isLoggedIn);
 
   const router = useRouter();
-  const { removeDataItem } = useWixModules(items);
-  // const { updateMember } = useWixModules(members);
 
   const handleCreatePost = async () => {
     router.push(`/post/New_Post`);
@@ -66,16 +60,22 @@ export default function DashboardSecurity() {
     router.push(`/organisation/New_Organisation`);
   };
 
-  const handleDeletePostPage = async (infoPageId: string) => {
-    setIsLoadingDeletePostPage(infoPageId);
+  const handleDeletePostPage = async (postPageId: string) => {
+    setIsLoadingDeletePostPage(postPageId);
     try {
-      // Replace with your actual delete logic
-      await removeDataItem(infoPageId, {
-        dataCollectionId: "PostPages",
+      // Delete post page from Builder.io
+      const response = await fetch(`/api/builder/post/${postPageId}`, {
+        method: "DELETE",
       });
-      // TODO: Refresh Owned Pages
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to delete post page");
+      }
+
+      console.log("[Builder.io] Post page deleted successfully");
     } catch (error) {
-      console.error("Failed to delete info page:", error);
+      console.error("Failed to delete post page:", error);
     } finally {
       setIsLoadingDeletePostPage("");
       handleUserDataRefresh();
@@ -85,11 +85,17 @@ export default function DashboardSecurity() {
   const handleDeleteInfoPage = async (infoPageId: string) => {
     setIsLoadingDeletePostPage(infoPageId);
     try {
-      // Replace with your actual delete logic
-      await removeDataItem(infoPageId, {
-        dataCollectionId: "InfoPages",
+      // Delete info page from Builder.io
+      const response = await fetch(`/api/builder/info-page/${infoPageId}`, {
+        method: "DELETE",
       });
-      // TODO: Refresh Owned Pages
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to delete info page");
+      }
+
+      console.log("[Builder.io] Info page deleted successfully");
     } catch (error) {
       console.error("Failed to delete info page:", error);
     } finally {
