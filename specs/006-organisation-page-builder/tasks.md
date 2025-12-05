@@ -26,14 +26,14 @@
 
 **Purpose**: Verify environment and existing code from 005-project-page-builder is available
 
-- [ ] T001 Verify `BUILDER_PRIVATE_API_KEY` is set in `.env.local`
-- [ ] T002 [P] Verify existing `/api/builder/info-page/route.ts` works (created in 005)
-- [ ] T003 [P] Verify existing `/api/builder/info-page/[id]/route.ts` works (created in 005)
-- [ ] T004 [P] Verify existing `/api/builder/affiliations/*` routes work (created in 005)
-- [ ] T005 [P] Verify `bulkCreateAffiliations` exists in `app/utils/builderAffiliationUtils.ts`
-- [ ] T006 [P] Verify `bulkDeleteAffiliations` exists in `app/utils/builderAffiliationUtils.ts`
-- [ ] T007 [P] Verify `updateTag` function exists in `app/custom-hooks/AuthContext/AuthContext.tsx`
-- [ ] T008 Review `transformProjectDataForBuilder` in `app/utils/builderInfoPageUtils.ts` as pattern for organisation
+- [x] T001 Verify `BUILDER_PRIVATE_API_KEY` is set in `.env.local`
+- [x] T002 [P] Verify existing `/api/builder/info-page/route.ts` works (created in 005)
+- [x] T003 [P] Verify existing `/api/builder/info-page/[id]/route.ts` works (created in 005)
+- [x] T004 [P] Verify existing `/api/builder/affiliations/*` routes work (created in 005)
+- [x] T005 [P] Verify `bulkCreateAffiliations` exists in `app/utils/builderAffiliationUtils.ts`
+- [x] T006 [P] Verify `bulkDeleteAffiliations` exists in `app/utils/builderAffiliationUtils.ts`
+- [x] T007 [P] Verify `updateTag` function exists in `app/custom-hooks/AuthContext/AuthContext.tsx`
+- [x] T008 Review `transformProjectDataForBuilder` in `app/utils/builderInfoPageUtils.ts` as pattern for organisation
 
 **Checkpoint**: All prerequisites verified - utility functions can be implemented
 
@@ -47,7 +47,7 @@
 
 ### Utility Functions for US1
 
-- [ ] T009 [US1] Add `transformOrganisationDataForBuilder` function in `app/utils/builderInfoPageUtils.ts`:
+- [x] T009 [US1] Add `transformOrganisationDataForBuilder` function in `app/utils/builderInfoPageUtils.ts`:
 
   - Transform component state to Builder.io format
   - Handle all 11 reference fields with correct wrapper keys (see Reference Field Mapping in spec):
@@ -60,7 +60,7 @@
   - Handle `mediaFiles` array
   - Pattern: Follow `transformProjectDataForBuilder` from same file
 
-- [ ] T010 [US1] Add `createBuilderOrganisationPage` function in `app/utils/builderInfoPageUtils.ts`:
+- [x] T010 [US1] Add `createBuilderOrganisationPage` function in `app/utils/builderInfoPageUtils.ts`:
   - Accept `organisationData`, `contentText`, `contentImages` parameters
   - Call `transformOrganisationDataForBuilder` to build payload
   - POST to `/api/builder/info-page`
@@ -68,7 +68,7 @@
 
 ### Component Integration for US1
 
-- [ ] T011 [US1] Replace `createNewOrganisationPage` function in `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
+- [x] T011 [US1] Replace `createNewOrganisationPage` function in `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
 
   - Generate unique slug using `sanitizeTitleForSlug(organisationTag.name) + "-" + generateUniqueHash()`
   - Call `createBuilderOrganisationPage` instead of Wix `insertDataItem`
@@ -80,13 +80,13 @@
   - Call `handleUserDataRefresh()`
   - Redirect to `/organisation/{slug}`
 
-- [ ] T012 [US1] Remove Wix imports from `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
+- [x] T012 [US1] Remove Wix imports from `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
 
   - Remove `useWixModules` import
   - Remove `items` import from `@wix/data`
   - Remove `insertDataItem` destructuring
 
-- [ ] T013 [US1] Add Builder.io imports to `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
+- [x] T013 [US1] Add Builder.io imports to `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
   - Import `createBuilderOrganisationPage`, `updateBuilderOrganisationPage` from `@app/utils/builderInfoPageUtils`
   - Import `bulkCreateAffiliations`, `bulkDeleteAffiliations` from `@app/utils/builderAffiliationUtils`
 
@@ -102,7 +102,7 @@
 
 ### Utility Functions for US2
 
-- [ ] T014 [US2] Add `updateBuilderOrganisationPage` function in `app/utils/builderInfoPageUtils.ts`:
+- [x] T014 [US2] Add `updateBuilderOrganisationPage` function in `app/utils/builderInfoPageUtils.ts`:
   - Accept `pageId`, `organisationData`, `contentText`, `contentImages` parameters
   - Call `transformOrganisationDataForBuilder` to build payload
   - PUT to `/api/builder/info-page/${pageId}`
@@ -110,7 +110,7 @@
 
 ### Component Integration for US2
 
-- [ ] T015 [US2] Replace `updateDataToServer` function in `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
+- [x] T015 [US2] Replace `updateDataToServer` function in `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
 
   - Remove Wix `updateDataItem` call for info-page
   - Remove all Wix `replaceDataItemReferences` calls
@@ -119,7 +119,7 @@
   - Handle people affiliation updates (same pattern)
   - Call `invalidateOrganisationPageCache(slug)`
 
-- [ ] T016 [US2] Remove remaining Wix imports from `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
+- [x] T016 [US2] Remove remaining Wix imports from `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
   - Remove `updateDataItem` import from `@app/wixUtils/client-side`
   - Remove `replaceDataItemReferences` import
   - Remove `bulkInsertItems` import
@@ -138,13 +138,13 @@
 
 ### Implementation for US3
 
-- [ ] T017 [US3] **VERIFY** organisation tag update in `createNewOrganisationPage` (already implemented in T011):
+- [x] T017 [US3] **VERIFY** organisation tag update in `createNewOrganisationPage` (already implemented in T011):
 
   - Confirm `tagPageLink` update via `/api/builder/tag/[id]` works correctly
   - Verify tag API returns success and tag is updated in Builder.io
   - Note: Implementation is in T011; this task is verification only
 
-- [ ] T018 [US3] Update tag update logic in `updateDataToServer` in `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
+- [x] T018 [US3] Update tag update logic in `updateDataToServer` in `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
   - Replace Wix `updateDataItem("Tags", ...)` with fetch to `/api/builder/tag/[id]`
   - Call `updateTag()` from AuthContext after successful tag update
   - Preserve other tag properties (picture, tagLine) when updating name
@@ -161,7 +161,7 @@
 
 ### Component Integration for US4
 
-- [ ] T019 [US4] Update project affiliation handling in `updateDataToServer`:
+- [x] T019 [US4] Update project affiliation handling in `updateDataToServer`:
 
   - Get old project affiliations from `organisation.affiliationsItems` with `extraIdentifier: "projectOrganisationRole"`
   - Delete old affiliations using `bulkDeleteAffiliations`
@@ -172,7 +172,7 @@
     - `extraIdentifier`: `"projectOrganisationRole"`
     - `title`: `"{organisationName} -to- {projectName}"`
 
-- [ ] T020 [US4] Update people affiliation handling in `updateDataToServer`:
+- [x] T020 [US4] Update people affiliation handling in `updateDataToServer`:
 
   - Get old people affiliations from `organisation.affiliationsItems` with `extraIdentifier: "current"`
   - Delete old affiliations using `bulkDeleteAffiliations`
@@ -183,7 +183,7 @@
     - `extraIdentifier`: `"current"`
     - `title`: `"{organisationName} -to- {personName}"`
 
-- [ ] T021 [US4] **VERIFY** affiliation handling in `createNewOrganisationPage` (already implemented in T011):
+- [x] T021 [US4] **VERIFY** affiliation handling in `createNewOrganisationPage` (already implemented in T011):
   - Confirm `bulkCreateAffiliations` is called for projects with `extraIdentifier: "projectOrganisationRole"`
   - Confirm `bulkCreateAffiliations` is called for people with `extraIdentifier: "current"`
   - Verify affiliations appear in Builder.io after page creation
@@ -201,13 +201,13 @@
 
 ### Implementation (Covered in transform function)
 
-- [ ] T022 [US5] Verify `transformOrganisationDataForBuilder` handles `organisationEstablishedDate`
-- [ ] T023 [US5] Verify `transformOrganisationDataForBuilder` handles `organisationType` reference with `organisationTypeItem` wrapper
-- [ ] T024 [US5] Verify `transformOrganisationDataForBuilder` handles `organisationHasMember` reference with `organisationHasMemberItem` wrapper
-- [ ] T025 [US5] Verify `transformOrganisationDataForBuilder` handles `organisationMemberOf` reference with `organisationMemberOfItem` wrapper
-- [ ] T026 [US5] Verify `transformOrganisationDataForBuilder` handles `activity` reference with `activityItem` wrapper
-- [ ] T027 [US5] Verify `transformOrganisationDataForBuilder` handles `linkedinLink` and `websiteLink`
-- [ ] T028 [US6] Verify `transformOrganisationDataForBuilder` handles `mediaFiles` array with url, displayName, thumbnail
+- [x] T022 [US5] Verify `transformOrganisationDataForBuilder` handles `organisationEstablishedDate`
+- [x] T023 [US5] Verify `transformOrganisationDataForBuilder` handles `organisationType` reference with `organisationTypeItem` wrapper
+- [x] T024 [US5] Verify `transformOrganisationDataForBuilder` handles `organisationHasMember` reference with `organisationHasMemberItem` wrapper
+- [x] T025 [US5] Verify `transformOrganisationDataForBuilder` handles `organisationMemberOf` reference with `organisationMemberOfItem` wrapper
+- [x] T026 [US5] Verify `transformOrganisationDataForBuilder` handles `activity` reference with `activityItem` wrapper
+- [x] T027 [US5] Verify `transformOrganisationDataForBuilder` handles `linkedinLink` and `websiteLink`
+- [x] T028 [US6] Verify `transformOrganisationDataForBuilder` handles `mediaFiles` array with url, displayName, thumbnail
 
 **Checkpoint**: All metadata fields save correctly
 
@@ -219,24 +219,24 @@
 
 ### Critical Fixes (from 005 learnings)
 
-- [ ] T029 Remove `handleTagCreated()` call on component mount in `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
+- [x] T029 Remove `handleTagCreated()` call on component mount in `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
 
   - Delete the useEffect that calls `handleTagCreated()` when `isNewPage` is true (around line 987-989)
   - This prevents full Redis cache invalidation on page load
 
-- [ ] T030 Add `updateTag` to useAuth destructuring in `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
+- [x] T030 Add `updateTag` to useAuth destructuring in `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
 
   - Add `updateTag` to the destructured values from `useAuth()`
 
-- [ ] T031 Ensure `updateTag()` is called after successful tag update in both:
+- [x] T031 Ensure `updateTag()` is called after successful tag update in both:
   - `createNewOrganisationPage` function
   - `updateDataToServer` function
 
 ### Cleanup
 
-- [ ] T032 Remove all commented-out Wix code from `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`
-- [ ] T033 Verify `refetchTags()`, `refetchInfoPages()`, `refetchAffiliations()` are NOT called during save
-- [ ] T034 Add console logging for Builder.io operations (start, success, failure)
+- [x] T032 Remove all commented-out Wix code from `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`
+- [x] T033 Verify `refetchTags()`, `refetchInfoPages()`, `refetchAffiliations()` are NOT called during save
+- [x] T034 Add console logging for Builder.io operations (start, success, failure)
 
 **Checkpoint**: Cache optimization applied - no full cache invalidation during save
 
@@ -263,6 +263,8 @@
 - [ ] T038 Manual E2E test: Edit existing organisation page, change all field types
 - [ ] T039 Manual E2E test: Verify affiliations appear correctly after create/edit
 - [ ] T040 Verify no Wix API calls in Network tab during save operations
+
+**Note**: Phase 8 tasks require manual testing by the user. Implementation is complete.
 
 ---
 
