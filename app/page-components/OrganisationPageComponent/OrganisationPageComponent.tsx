@@ -56,6 +56,8 @@ function OrganisationPageComponent({
     postPages,
     infoPages,
     updateTag,
+    appendAffiliations,
+    removeAffiliations,
   } = useAuth();
 
   const [isPageOwnedByUser, setIsPageOwnedByUser] = useState(false);
@@ -310,6 +312,10 @@ function OrganisationPageComponent({
             "[Builder.io] Deleted old project affiliations:",
             deleteResult
           );
+          // Update React state
+          if (deleteResult.deleted?.length > 0) {
+            removeAffiliations(deleteResult.deleted);
+          }
         }
 
         // Create new project affiliations
@@ -334,6 +340,10 @@ function OrganisationPageComponent({
               "[Builder.io] Created new project affiliations:",
               createResult
             );
+            // Update React state
+            if (createResult.created?.length > 0) {
+              appendAffiliations(createResult.created);
+            }
           }
         }
       }
@@ -360,6 +370,10 @@ function OrganisationPageComponent({
             "[Builder.io] Deleted old people affiliations:",
             deleteResult
           );
+          // Update React state
+          if (deleteResult.deleted?.length > 0) {
+            removeAffiliations(deleteResult.deleted);
+          }
         }
 
         // Create new people affiliations
@@ -388,6 +402,10 @@ function OrganisationPageComponent({
               "[Builder.io] Created new people affiliations:",
               createResult
             );
+            // Update React state
+            if (createResult.created?.length > 0) {
+              appendAffiliations(createResult.created);
+            }
           }
         }
       }
@@ -517,6 +535,10 @@ function OrganisationPageComponent({
             "[Builder.io] Created project affiliations:",
             createResult
           );
+          // Update React state
+          if (createResult.created?.length > 0) {
+            appendAffiliations(createResult.created);
+          }
         }
       }
       // #endregion
@@ -548,6 +570,10 @@ function OrganisationPageComponent({
             "[Builder.io] Created people affiliations:",
             createResult
           );
+          // Update React state
+          if (createResult.created?.length > 0) {
+            appendAffiliations(createResult.created);
+          }
         }
       }
       // #endregion

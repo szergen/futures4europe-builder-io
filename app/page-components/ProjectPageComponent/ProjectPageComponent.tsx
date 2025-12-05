@@ -52,6 +52,8 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     handleUserDataRefresh,
     postPages,
     updateTag,
+    appendAffiliations,
+    removeAffiliations,
   } = useAuth();
 
   const [isPageOwnedByUser, setIsPageOwnedByUser] = useState(false);
@@ -287,9 +289,13 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
           (item: any) => item?.extraIdentifier === "projectOrganisationRole"
         );
         if (oldOrgAffiliations?.length > 0) {
-          await bulkDeleteAffiliations(
+          const deleteResult = await bulkDeleteAffiliations(
             oldOrgAffiliations.map((item: any) => item._id)
           );
+          // Update React state
+          if (deleteResult.deleted?.length > 0) {
+            removeAffiliations(deleteResult.deleted);
+          }
         }
         if (projectData.organisations?.length > 0) {
           const orgAffiliations = projectData.organisations
@@ -301,7 +307,11 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
               extraIdentifier: "projectOrganisationRole",
             }));
           if (orgAffiliations.length > 0) {
-            await bulkCreateAffiliations(orgAffiliations);
+            const createResult = await bulkCreateAffiliations(orgAffiliations);
+            // Update React state
+            if (createResult.created?.length > 0) {
+              appendAffiliations(createResult.created);
+            }
           }
         }
       }
@@ -318,9 +328,13 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
           (item: any) => item?.extraIdentifier === "coordination"
         );
         if (oldCoordAffiliations?.length > 0) {
-          await bulkDeleteAffiliations(
+          const deleteResult = await bulkDeleteAffiliations(
             oldCoordAffiliations.map((item: any) => item._id)
           );
+          // Update React state
+          if (deleteResult.deleted?.length > 0) {
+            removeAffiliations(deleteResult.deleted);
+          }
         }
         if (projectData.coordinators?.length > 0) {
           const coordAffiliations = projectData.coordinators
@@ -331,7 +345,13 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
               extraIdentifier: "coordination",
             }));
           if (coordAffiliations.length > 0) {
-            await bulkCreateAffiliations(coordAffiliations);
+            const createResult = await bulkCreateAffiliations(
+              coordAffiliations
+            );
+            // Update React state
+            if (createResult.created?.length > 0) {
+              appendAffiliations(createResult.created);
+            }
           }
         }
       }
@@ -348,9 +368,13 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
           (item: any) => item?.extraIdentifier === "participation"
         );
         if (oldPartAffiliations?.length > 0) {
-          await bulkDeleteAffiliations(
+          const deleteResult = await bulkDeleteAffiliations(
             oldPartAffiliations.map((item: any) => item._id)
           );
+          // Update React state
+          if (deleteResult.deleted?.length > 0) {
+            removeAffiliations(deleteResult.deleted);
+          }
         }
         if (projectData.participants?.length > 0) {
           const partAffiliations = projectData.participants
@@ -361,7 +385,11 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
               extraIdentifier: "participation",
             }));
           if (partAffiliations.length > 0) {
-            await bulkCreateAffiliations(partAffiliations);
+            const createResult = await bulkCreateAffiliations(partAffiliations);
+            // Update React state
+            if (createResult.created?.length > 0) {
+              appendAffiliations(createResult.created);
+            }
           }
         }
       }
@@ -466,6 +494,10 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
             "[Builder.io] Coordinator affiliations created:",
             coordResult.created.length
           );
+          // Update React state
+          if (coordResult.created?.length > 0) {
+            appendAffiliations(coordResult.created);
+          }
         }
       }
 
@@ -486,6 +518,10 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
             "[Builder.io] Participant affiliations created:",
             partResult.created.length
           );
+          // Update React state
+          if (partResult.created?.length > 0) {
+            appendAffiliations(partResult.created);
+          }
         }
       }
 
@@ -505,6 +541,10 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
             "[Builder.io] Organisation affiliations created:",
             orgResult.created.length
           );
+          // Update React state
+          if (orgResult.created?.length > 0) {
+            appendAffiliations(orgResult.created);
+          }
         }
       }
 
