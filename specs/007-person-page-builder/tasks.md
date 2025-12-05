@@ -30,16 +30,16 @@
 
 **Purpose**: Confirm all required infrastructure from 005/006 is in place
 
-- [ ] T001 Verify `/api/builder/info-page/route.ts` exists and handles POST requests
-- [ ] T002 Verify `/api/builder/info-page/[id]/route.ts` exists and handles PUT requests
-- [ ] T003 Verify `/api/builder/affiliations/route.ts` exists for bulk create
-- [ ] T004 Verify `/api/builder/affiliations/bulk-delete/route.ts` exists
-- [ ] T005 Verify `/api/builder/tag/[id]/route.ts` exists for tag updates
-- [ ] T006 Verify `bulkCreateAffiliations` function exists in `app/utils/builderAffiliationUtils.ts`
-- [ ] T007 Verify `bulkDeleteAffiliations` function exists in `app/utils/builderAffiliationUtils.ts`
-- [ ] T008 Verify `updateTag`, `appendAffiliations`, `removeAffiliations` exist in `app/custom-hooks/AuthContext/AuthContext.tsx`
+- [x] T001 Verify `/api/builder/info-page/route.ts` exists and handles POST requests
+- [x] T002 Verify `/api/builder/info-page/[id]/route.ts` exists and handles PUT requests
+- [x] T003 Verify `/api/builder/affiliations/route.ts` exists for bulk create
+- [x] T004 Verify `/api/builder/affiliations/bulk-delete/route.ts` exists
+- [x] T005 Verify `/api/builder/tag/[id]/route.ts` exists for tag updates
+- [x] T006 Verify `bulkCreateAffiliations` function exists in `app/utils/builderAffiliationUtils.ts`
+- [x] T007 Verify `bulkDeleteAffiliations` function exists in `app/utils/builderAffiliationUtils.ts`
+- [x] T008 Verify `updateTag`, `appendAffiliations`, `removeAffiliations` exist in `app/custom-hooks/AuthContext/AuthContext.tsx`
 
-**Checkpoint**: All prerequisites verified - can proceed with implementation
+**Checkpoint**: All prerequisites verified ✅ - can proceed with implementation
 
 ---
 
@@ -49,7 +49,7 @@
 
 **Independent Test**: Functions can be unit tested by calling with mock data
 
-- [ ] T009 [US1] Create `transformPersonDataForBuilder` function in `app/utils/builderInfoPageUtils.ts`:
+- [x] T009 [US1] Create `transformPersonDataForBuilder` function in `app/utils/builderInfoPageUtils.ts`:
 
   - Map all 8 reference fields with wrapper keys:
     - `personTag` → `person` (personItem)
@@ -63,16 +63,16 @@
   - Handle person-specific fields: `linkedinLink`, `websiteLink`, `researchGateLink`, `orcidLink`, `mediaFiles`
   - Follow pattern from `transformOrganisationDataForBuilder`
 
-- [ ] T010 [US1] Create `createBuilderPersonPage` function in `app/utils/builderInfoPageUtils.ts`:
+- [x] T010 [US1] Create `createBuilderPersonPage` function in `app/utils/builderInfoPageUtils.ts`:
 
   - Call POST `/api/builder/info-page` with transformed data
   - Follow pattern from `createBuilderOrganisationPage`
 
-- [ ] T011 [US1] Create `updateBuilderPersonPage` function in `app/utils/builderInfoPageUtils.ts`:
+- [x] T011 [US1] Create `updateBuilderPersonPage` function in `app/utils/builderInfoPageUtils.ts`:
   - Call PUT `/api/builder/info-page/[id]` with transformed data
   - Follow pattern from `updateBuilderOrganisationPage`
 
-**Checkpoint**: Utility functions ready - can proceed with component integration
+**Checkpoint**: Utility functions ready ✅ - can proceed with component integration
 
 ---
 
@@ -82,26 +82,26 @@
 
 **Independent Test**: Edit an existing person page, verify changes save to Builder.io
 
-- [ ] T012 [US2] Remove Wix CMS imports from `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
+- [x] T012 [US2] Remove Wix CMS imports from `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
 
   - Remove: `useWixModules`, `items` from `@wix/data`
   - Remove: `bulkInsertItems`, `bulkRemoveItems`, `replaceDataItemReferences`, `updateDataItem` from `@app/wixUtils/client-side`
-  - **KEEP**: `updateMember` from `@app/wixUtils/client-side` (CRITICAL - DO NOT REMOVE)
+  - **KEEP**: `updateMember` from `@app/wixUtils/client-side` (CRITICAL - DO NOT REMOVE) ✅
 
-- [ ] T013 [US2] Add Builder.io imports to `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
+- [x] T013 [US2] Add Builder.io imports to `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
 
   - Add: `createBuilderPersonPage`, `updateBuilderPersonPage` from `@app/utils/builderInfoPageUtils`
   - Add: `bulkCreateAffiliations`, `bulkDeleteAffiliations` from `@app/utils/builderAffiliationUtils`
 
-- [ ] T014 [US2] Add AuthContext imports to `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
+- [x] T014 [US2] Add AuthContext imports to `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
 
   - Add to useAuth() destructuring: `updateTag`, `appendAffiliations`, `removeAffiliations`
 
-- [ ] T015 [US2] Replace `updateDataToServer` function in `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
+- [x] T015 [US2] Replace `updateDataToServer` function in `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
   - Replace Wix `updateDataItem` with `updateBuilderPersonPage`
   - Replace Wix `replaceDataItemReferences` calls - fields now included in transform function
   - Replace Wix `bulkInsertItems`/`bulkRemoveItems` for affiliations with `bulkCreateAffiliations`/`bulkDeleteAffiliations`
-  - **KEEP** `updateMember(userDetails.contactId, nickName)` call for Wix nickname sync
+  - **KEEP** `updateMember(userDetails.contactId, nickName)` call for Wix nickname sync ✅
   - Add `updateTag()` call after tag update in Builder.io
   - Add `appendAffiliations()` / `removeAffiliations()` calls after affiliation changes
   - Call `invalidatePersonPageCache(personData.slug)` after successful save
@@ -116,14 +116,14 @@
 
 **Independent Test**: Create a new person page, verify it saves to Builder.io
 
-- [ ] T016 [US1] Replace `createNewPersonPage` function in `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
+- [x] T016 [US1] Replace `createNewPersonPage` function in `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
 
   - Generate slug: `sanitizeTitleForSlug(personTag.name) + "-" + generateUniqueHash()` with `/person/` prefix
   - Replace Wix `insertDataItem` with `createBuilderPersonPage`
   - Replace all Wix `replaceDataItemReferences` calls - fields now in transform
   - Set `author`, `pageOwner`, and `person` references to user's tag
   - Replace affiliation creation with `bulkCreateAffiliations`
-  - **KEEP** `updateMember()` call for Wix nickname sync on create
+  - **KEEP** `updateMember()` call for Wix nickname sync on create ✅
   - Update person tag's `tagPageLink` via `/api/builder/tag/[id]`
   - Call `updateTag()` after tag update
   - Call `appendAffiliations()` after creating affiliations
@@ -132,8 +132,8 @@
   - Add console.log statements to track save operations (FR-017)
   - Redirect to `/person/{slug}` after success
 
-- [ ] T017 [US1] VERIFY: Tag update logic uses `/api/builder/tag/[id]` route for tagPageLink update in create flow
-- [ ] T018 [US4] VERIFY: Affiliation creation uses `bulkCreateAffiliations` with correct fields:
+- [x] T017 [US1] VERIFY: Tag update logic uses `/api/builder/tag/[id]` route for tagPageLink update in create flow
+- [x] T018 [US4] VERIFY: Affiliation creation uses `bulkCreateAffiliations` with correct fields:
   - Current affiliations: `personTag`, `organisationTag`, `role`, `extraIdentifier: "current"`, `title`
   - Former affiliations: `personTag`, `organisationTag`, `role`, `extraIdentifier: "former"`, `title`
   - Coordination: `personTag`, `projectTag`, `extraIdentifier: "coordination"`, `title`
@@ -147,19 +147,19 @@
 
 **Independent Test**: Change person name, verify tag updates in Builder.io AND Wix nickname updates
 
-- [ ] T019 [US3] VERIFY: Person tag name change updates tag in Builder.io via `/api/builder/tag/[id]`:
+- [x] T019 [US3] VERIFY: Person tag name change updates tag in Builder.io via `/api/builder/tag/[id]`:
 
   - Update `name` field with new name
   - Update `tagPageLink` if creating new page
   - Preserve other tag fields (`tagLine`, `picture`, etc.)
 
-- [ ] T020 [US3] VERIFY: `updateMember(contactId, newName)` is called when person tag name changes:
+- [x] T020 [US3] VERIFY: `updateMember(contactId, newName)` is called when person tag name changes:
 
-  - Check this call is RETAINED in both `createNewPersonPage` and `updateDataToServer`
-  - Verify `updateUserDetails()` is called to update local React state
+  - Check this call is RETAINED in both `createNewPersonPage` and `updateDataToServer` ✅
+  - Verify `updateUserDetails()` is called to update local React state ✅
 
-- [ ] T021 [US3] VERIFY: `updateTag()` from AuthContext is called after successful Builder.io tag update:
-  - NOT `handleTagCreated()` - that causes full cache invalidation
+- [x] T021 [US3] VERIFY: `updateTag()` from AuthContext is called after successful Builder.io tag update:
+  - NOT `handleTagCreated()` - that causes full cache invalidation ✅
 
 ---
 
@@ -169,17 +169,17 @@
 
 **Independent Test**: Add/remove each affiliation type, verify records in Builder.io
 
-- [ ] T022 [US4] VERIFY: Current affiliations (`extraIdentifier: "current"`) create/delete correctly:
+- [x] T022 [US4] VERIFY: Current affiliations (`extraIdentifier: "current"`) create/delete correctly:
 
-  - Delete old affiliations via `bulkDeleteAffiliations`
-  - Create new affiliations via `bulkCreateAffiliations`
-  - Call `removeAffiliations()` and `appendAffiliations()` to update React state
+  - Delete old affiliations via `bulkDeleteAffiliations` ✅
+  - Create new affiliations via `bulkCreateAffiliations` ✅
+  - Call `removeAffiliations()` and `appendAffiliations()` to update React state ✅
 
-- [ ] T023 [US4] VERIFY: Former affiliations (`extraIdentifier: "former"`) create/delete correctly
+- [x] T023 [US4] VERIFY: Former affiliations (`extraIdentifier: "former"`) create/delete correctly ✅
 
-- [ ] T024 [US4] VERIFY: Coordination affiliations (`extraIdentifier: "coordination"`) create/delete correctly
+- [x] T024 [US4] VERIFY: Coordination affiliations (`extraIdentifier: "coordination"`) create/delete correctly ✅
 
-- [ ] T025 [US4] VERIFY: Participation affiliations (`extraIdentifier: "participation"`) create/delete correctly
+- [x] T025 [US4] VERIFY: Participation affiliations (`extraIdentifier: "participation"`) create/delete correctly ✅
 
 ---
 
@@ -189,12 +189,12 @@
 
 **Independent Test**: Set metadata/media fields, verify saved in Builder.io
 
-- [ ] T026 [US5] VERIFY: Country tag reference saved correctly with `countryTagItem` wrapper
-- [ ] T027 [US5] VERIFY: Methods array saved correctly with `methodsItem` wrapper
-- [ ] T028 [US5] VERIFY: Domains array saved correctly with `domainsItem` wrapper
-- [ ] T029 [US5] VERIFY: Activity array saved correctly with `activityItem` wrapper
-- [ ] T030 [US5] VERIFY: Link fields saved: `linkedinLink`, `websiteLink`, `researchGateLink`, `orcidLink`
-- [ ] T031 [US6] VERIFY: Media files array saved with `url`, `displayName`, `thumbnail` properties
+- [x] T026 [US5] VERIFY: Country tag reference saved correctly with `countryTagItem` wrapper ✅
+- [x] T027 [US5] VERIFY: Methods array saved correctly with `methodsItem` wrapper ✅
+- [x] T028 [US5] VERIFY: Domains array saved correctly with `domainsItem` wrapper ✅
+- [x] T029 [US5] VERIFY: Activity array saved correctly with `activityItem` wrapper ✅
+- [x] T030 [US5] VERIFY: Link fields saved: `linkedinLink`, `websiteLink`, `researchGateLink`, `orcidLink` ✅
+- [x] T031 [US6] VERIFY: Media files array saved with `url`, `displayName`, `thumbnail` properties ✅
 
 ---
 
@@ -202,23 +202,23 @@
 
 **Goal**: Remove full cache invalidation, use granular updates
 
-- [ ] T032 Remove `handleTagCreated()` call on component mount in `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
+- [x] T032 Remove `handleTagCreated()` call on component mount in `app/page-components/PersonPageComponent/PersonPageComponent.tsx`:
 
-  - Find and remove the useEffect around line ~1114 that calls `handleTagCreated()` for new pages
-  - This prevents full Redis cache invalidation on page load
+  - Find and remove the useEffect around line ~1114 that calls `handleTagCreated()` for new pages ✅ (already commented out)
+  - This prevents full Redis cache invalidation on page load ✅
 
-- [ ] T033 VERIFY: No `refetchTags()`, `refetchInfoPages()`, `refetchAffiliations()` calls remain in save flow
+- [x] T033 VERIFY: No `refetchTags()`, `refetchInfoPages()`, `refetchAffiliations()` calls remain in save flow ✅
 
-- [ ] T034 VERIFY: Cache updates use granular functions:
-  - `updateTag()` for tag changes
-  - `appendAffiliations()` for new affiliations
-  - `removeAffiliations()` for deleted affiliations
+- [x] T034 VERIFY: Cache updates use granular functions:
+  - `updateTag()` for tag changes ✅
+  - `appendAffiliations()` for new affiliations ✅
+  - `removeAffiliations()` for deleted affiliations ✅
 
 ---
 
 ## Phase 9: Polish & Validation
 
-**Purpose**: Final testing and validation
+**Purpose**: Final testing and validation - **REQUIRES MANUAL TESTING**
 
 - [ ] T035 Test error handling scenarios:
 
@@ -239,7 +239,7 @@
 - [ ] T040 Verify no Wix CMS API calls in Network tab during save (only `updateMember` allowed)
 - [ ] T041 Verify Wix nickname syncs when person tag name changes
 
-**Note**: Phase 9 tasks require manual testing by the user. Implementation is complete after Phase 8.
+**Note**: Phase 9 tasks require manual testing by the user. **Implementation is complete after Phase 8** ✅
 
 ---
 

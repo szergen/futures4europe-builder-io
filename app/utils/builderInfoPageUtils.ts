@@ -857,3 +857,254 @@ export async function updateBuilderOrganisationPage(
     throw error;
   }
 }
+
+// ============================================================================
+// WRITE API UTILITIES (FOR CREATING/UPDATING PERSON PAGES)
+// ============================================================================
+
+/**
+ * Transform component state to Builder.io API payload for person pages
+ * Uses wrapper keys for reference fields as required by Builder.io list fields
+ *
+ * @param personData - Person data from component state
+ * @param contentText - Array of rich text content sections (10 sections)
+ * @param contentImages - Array of image objects (10 images)
+ * @returns Builder.io API data payload
+ */
+export function transformPersonDataForBuilder(
+  personData: any,
+  contentText: string[],
+  contentImages: any[]
+): any {
+  const data: any = {
+    // Basic fields
+    title: personData.personTag?.name || "",
+    description: personData.description || "",
+    slug: personData.slug || "",
+
+    // Content sections (10 rich text fields)
+    postContentRIch1: contentText[0] || "",
+    postContentRIch2: contentText[1] || "",
+    postContentRIch3: contentText[2] || "",
+    postContentRIch4: contentText[3] || "",
+    postContentRIch5: contentText[4] || "",
+    postContentRIch6: contentText[5] || "",
+    postContentRIch7: contentText[6] || "",
+    postContentRIch8: contentText[7] || "",
+    postContentRIch9: contentText[8] || "",
+    postContentRIch10: contentText[9] || "",
+
+    // Images (10 image fields)
+    postImage1: contentImages[0] || {},
+    postImage2: contentImages[1] || {},
+    postImage3: contentImages[2] || {},
+    postImage4: contentImages[3] || {},
+    postImage5: contentImages[4] || {},
+    postImage6: contentImages[5] || {},
+    postImage7: contentImages[6] || {},
+    postImage8: contentImages[7] || {},
+    postImage9: contentImages[8] || {},
+    postImage10: contentImages[9] || {},
+
+    // Person-specific link fields
+    linkedinLink: personData.linkedinLink || "",
+    websiteLink: personData.websiteLink || "",
+    researchGateLink: personData.researchGateLink || "",
+    orcidLink: personData.orcidLink || "",
+    mediaFiles: personData.mediaFiles || [],
+
+    // Reference fields - WRAPPED format for Builder.io list fields
+    // Main person tag reference
+    person: transformReferencesForBuilderCreate(
+      personData.personTag ? [personData.personTag] : [],
+      "tag",
+      "personItem"
+    ),
+
+    // Page ownership and authorship
+    pageOwner: transformReferencesForBuilderCreate(
+      personData.pageOwner,
+      "tag",
+      "pageOwnerItem"
+    ),
+    author: transformReferencesForBuilderCreate(
+      personData.author,
+      "tag",
+      "authorItem"
+    ),
+
+    // Page type
+    pageTypes: transformReferencesForBuilderCreate(
+      personData.pageType ? [personData.pageType] : [],
+      "tag",
+      "pageTypeItem"
+    ),
+
+    // Country tag (REQUIRED field) - array with wrapper key
+    countryTag: transformReferencesForBuilderCreate(
+      personData.countryTag ? [personData.countryTag] : [],
+      "tag",
+      "countryTagItem"
+    ),
+
+    // Classification tags
+    methods: transformReferencesForBuilderCreate(
+      personData.methods,
+      "tag",
+      "methodsItem"
+    ),
+    domains: transformReferencesForBuilderCreate(
+      personData.domains,
+      "tag",
+      "domainsItem"
+    ),
+
+    // Activity field
+    activity: transformReferencesForBuilderCreate(
+      personData.activity,
+      "tag",
+      "activityItem"
+    ),
+  };
+
+  // Remove undefined fields to keep payload clean
+  Object.keys(data).forEach((key) => {
+    if (data[key] === undefined) {
+      delete data[key];
+    }
+  });
+
+  return data;
+}
+
+/**
+ * Create a new person info-page in Builder.io
+ *
+ * @param personData - Person data from component state
+ * @param contentText - Array of rich text content sections
+ * @param contentImages - Array of image objects
+ * @returns Builder.io API response with created page data
+ */
+export async function createBuilderPersonPage(
+  personData: any,
+  contentText: string[],
+  contentImages: any[]
+): Promise<any> {
+  try {
+    const data = transformPersonDataForBuilder(
+      personData,
+      contentText,
+      contentImages
+    );
+
+    const payload = {
+      name: personData.personTag?.name || "Untitled Person",
+      data,
+      published: "published",
+    };
+
+    console.log("[Builder.io] Creating new person page:", {
+      slug: data.slug,
+      title: data.title,
+    });
+
+    // Call Next.js API route (server-side) instead of Builder.io directly
+    const response = await fetch(INFO_PAGE_API_ROUTE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("[Builder.io] Create person page failed:", {
+        status: response.status,
+        error: errorData,
+      });
+      throw new Error(
+        errorData.error || `Failed to create person page: ${response.status}`
+      );
+    }
+
+    const result = await response.json();
+    console.log("[Builder.io] Person page created successfully:", {
+      id: result.id,
+      slug: result.data?.slug,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("[Builder.io] Error creating person page:", error);
+    throw error;
+  }
+}
+
+/**
+ * Update an existing person info-page in Builder.io
+ *
+ * @param pageId - Builder.io content ID
+ * @param personData - Person data from component state
+ * @param contentText - Array of rich text content sections
+ * @param contentImages - Array of image objects
+ * @returns Builder.io API response with updated page data
+ */
+export async function updateBuilderPersonPage(
+  pageId: string,
+  personData: any,
+  contentText: string[],
+  contentImages: any[]
+): Promise<any> {
+  try {
+    const data = transformPersonDataForBuilder(
+      personData,
+      contentText,
+      contentImages
+    );
+
+    const payload = {
+      name: personData.personTag?.name || "Untitled Person",
+      data,
+      published: "published",
+    };
+
+    console.log("[Builder.io] Updating person page:", {
+      id: pageId,
+      slug: data.slug,
+      title: data.title,
+    });
+
+    // Call Next.js API route (server-side) instead of Builder.io directly
+    const response = await fetch(`${INFO_PAGE_API_ROUTE}/${pageId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("[Builder.io] Update person page failed:", {
+        id: pageId,
+        status: response.status,
+        error: errorData,
+      });
+      throw new Error(
+        errorData.error || `Failed to update person page: ${response.status}`
+      );
+    }
+
+    const result = await response.json();
+    console.log("[Builder.io] Person page updated successfully:", {
+      id: result.id,
+      slug: result.data?.slug,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("[Builder.io] Error updating person page:", error);
+    throw error;
+  }
+}
