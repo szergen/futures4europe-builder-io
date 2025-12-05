@@ -35,7 +35,7 @@ export async function generateMetadata({
 
   console.log("[Builder.io] Generating metadata for project:", params.slug);
 
-  const primaryImage = projectPageItem.data?.project?.[0]?.picture;
+  const primaryImage = projectPageItem.data?.Project?.[0]?.picture;
   const secondaryImage =
     projectPageItem.data?.contentImages?.[0]?.url !== " "
       ? projectPageItem.data?.contentImages?.[0]?.url
@@ -88,16 +88,20 @@ export default async function ProjectPage({ params }: any) {
   }
 
   const infoPageItem = transformBuilderInfoPageToWixFormat(builderInfoPage);
-  const tagIdForProjectPage = infoPageItem?.data?.project?.[0]?._id;
+  // console.log("debug111->infoPageItem", infoPageItem);
+  const tagIdForProjectPage = infoPageItem?.data?.Project?.[0]?._id;
+  // console.log("debug111->tagIdForProjectPage", tagIdForProjectPage);
 
   // Get affiliations (currently returns empty array until affiliations are migrated)
   const affiliations = await getBuilderAffiliationsByProjectTag(
     tagIdForProjectPage
   );
 
+  // console.log("debug111->affiliations", affiliations);
+
   const infoPageItemWithAffiliations = {
     ...infoPageItem,
-    affiliationsItems: affiliations.map((affiliation: any) => affiliation.data),
+    affiliationsItems: affiliations,
   };
 
   console.log("[Builder.io] ✅ Rendering project page:", params.slug);

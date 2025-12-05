@@ -115,7 +115,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       (projectTag: any, index: number, self: any[]) =>
         index === self.findIndex((pt) => pt.name === projectTag.name)
     );
-  console.log("debug111->projectsParticipation", projectsParticipation);
+  // console.log("debug111->projectsParticipation", projectsParticipation);
 
   const organisations = project?.affiliationsItems
     ?.filter((item: any) => item?.extraIdentifier === "projectOrganisationRole")
