@@ -93,16 +93,16 @@ This project uses Next.js structure:
 - [x] T029 [P] [US2] Implement `transformBuilderAffiliationToWixFormat()` function in `app/utils/builderAffiliationUtils.ts` to convert Builder.io format to `{ data: { ... } }` wrapper
 - [x] T030 [US2] Implement `getAllBuilderAffiliations()` function with pagination (100 per page) in `app/utils/builderAffiliationUtils.ts`
 - [x] T031 [US2] Add retry logic with exponential backoff to `getAllBuilderAffiliations()` in `app/utils/builderAffiliationUtils.ts`
-- [ ] T032 [US2] Update GET handler in `app/api/affiliations/route.ts` to import from builderAffiliationUtils instead of Wix client
-- [ ] T033 [US2] Update GET handler in `app/api/affiliations/route.ts` to call `getAllBuilderAffiliations()` on cache miss
-- [ ] T034 [US2] Update GET handler in `app/api/affiliations/route.ts` to transform response using `transformBuilderAffiliationToWixFormat()`
-- [ ] T035 [US2] Update POST handler in `app/api/affiliations/route.ts` to refresh cache from Builder.io instead of Wix
-- [ ] T036 [US2] Remove Wix client import (`getWixClientServerData`) from `app/api/affiliations/route.ts`
-- [ ] T037 [US2] Update `app/utils/tags.utls.ts` to remove Wix ID translation in `calculatePopularity()` for affiliations (Builder.io IDs used directly now)
+- [x] T032 [US2] Update GET handler in `app/api/affiliations/route.ts` to import from builderAffiliationUtils instead of Wix client
+- [x] T033 [US2] Update GET handler in `app/api/affiliations/route.ts` to call `getAllBuilderAffiliations()` on cache miss
+- [x] T034 [US2] Update GET handler in `app/api/affiliations/route.ts` to transform response using `transformBuilderAffiliationToWixFormat()`
+- [x] T035 [US2] Update POST handler in `app/api/affiliations/route.ts` to refresh cache from Builder.io instead of Wix
+- [x] T036 [US2] Remove Wix client import (`getWixClientServerData`) from `app/api/affiliations/route.ts`
+- [x] T037 [US2] Update `app/utils/tags.utls.ts` to remove Wix ID translation in `calculatePopularity()` for affiliations (Builder.io IDs used directly now)
 - [ ] T038 [US2] Test GET endpoint: `curl http://localhost:3000/api/affiliations | jq '.length'`
 - [ ] T039 [US2] Test POST endpoint: `curl -X POST http://localhost:3000/api/affiliations`
 - [ ] T040 [US2] Verify tag popularity calculation still works: `curl http://localhost:3000/api/tags-with-popularity | jq '.[0]'`
-- [ ] T041 [US2] Verify no Wix dependencies: `grep -r "wixClient.*Affiliations\|queryDataItems.*Affiliations" app/`
+- [x] T041 [US2] Verify no Wix dependencies: `grep -r "wixClient.*Affiliations\|queryDataItems.*Affiliations" app/`
 
 **Checkpoint**: User Story 2 complete - application fetches affiliations from Builder.io with backwards-compatible format
 
@@ -114,9 +114,9 @@ This project uses Next.js structure:
 
 - [ ] T042 Run quickstart.md Phase 1 validation checklist
 - [ ] T043 Run quickstart.md Phase 2 validation checklist
-- [ ] T044 Verify `app/services/cacheWarmer.ts` uses `/api/affiliations` endpoint (no code changes needed - it already calls the API which now uses Builder.io)
+- [x] T044 Verify `app/services/cacheWarmer.ts` uses `/api/affiliations` endpoint (no code changes needed - it already calls the API which now uses Builder.io)
 - [ ] T045 Clear Redis cache and verify fresh fetch from Builder.io works
-- [ ] T046 Compare affiliation count: Wix CSV rows vs Builder.io entries vs API response
+- [x] T046 Compare affiliation count: Wix CSV rows vs Builder.io entries vs API response
 
 ---
 
