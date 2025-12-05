@@ -50,7 +50,11 @@
 - [ ] T009 [US1] Add `transformOrganisationDataForBuilder` function in `app/utils/builderInfoPageUtils.ts`:
 
   - Transform component state to Builder.io format
-  - Handle all 11 reference fields with correct wrapper keys (see Reference Field Mapping in spec)
+  - Handle all 11 reference fields with correct wrapper keys (see Reference Field Mapping in spec):
+    - `organisationTag` → `organisation` with `organisationItem` wrapper
+    - `countryTag` → `countryTag` with `countryTagItem` wrapper (REQUIRED field)
+    - `pageOwner`, `author`, `pageTypes`, `methods`, `domains`, `organisationType`, `activity`
+    - `organisationHasMember`, `organisationMemberOf` (member relationships)
   - Handle `organisationEstablishedDate`, `linkedinLink`, `websiteLink`
   - Handle all 10 content sections (`postContentRIch1-10`) and images (`postImage1-10`)
   - Handle `mediaFiles` array
@@ -83,7 +87,7 @@
   - Remove `insertDataItem` destructuring
 
 - [ ] T013 [US1] Add Builder.io imports to `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
-  - Import `createBuilderOrganisationPage` from `@app/utils/builderInfoPageUtils`
+  - Import `createBuilderOrganisationPage`, `updateBuilderOrganisationPage` from `@app/utils/builderInfoPageUtils`
   - Import `bulkCreateAffiliations`, `bulkDeleteAffiliations` from `@app/utils/builderAffiliationUtils`
 
 **Checkpoint**: New organisation page creation works with Builder.io - can be tested independently
@@ -134,10 +138,11 @@
 
 ### Implementation for US3
 
-- [ ] T017 [US3] Add organisation tag update logic to `createNewOrganisationPage`:
+- [ ] T017 [US3] **VERIFY** organisation tag update in `createNewOrganisationPage` (already implemented in T011):
 
-  - After page creation, update organisation tag's `tagPageLink` via `/api/builder/tag/[id]`
-  - Verify tag update uses existing tag API route
+  - Confirm `tagPageLink` update via `/api/builder/tag/[id]` works correctly
+  - Verify tag API returns success and tag is updated in Builder.io
+  - Note: Implementation is in T011; this task is verification only
 
 - [ ] T018 [US3] Update tag update logic in `updateDataToServer` in `app/page-components/OrganisationPageComponent/OrganisationPageComponent.tsx`:
   - Replace Wix `updateDataItem("Tags", ...)` with fetch to `/api/builder/tag/[id]`
@@ -178,10 +183,11 @@
     - `extraIdentifier`: `"current"`
     - `title`: `"{organisationName} -to- {personName}"`
 
-- [ ] T021 [US4] Update affiliation handling in `createNewOrganisationPage`:
-  - Call `bulkCreateAffiliations` for projects with `extraIdentifier: "projectOrganisationRole"`
-  - Call `bulkCreateAffiliations` for people with `extraIdentifier: "current"`
-  - Note: No delete needed for create - only create new affiliations
+- [ ] T021 [US4] **VERIFY** affiliation handling in `createNewOrganisationPage` (already implemented in T011):
+  - Confirm `bulkCreateAffiliations` is called for projects with `extraIdentifier: "projectOrganisationRole"`
+  - Confirm `bulkCreateAffiliations` is called for people with `extraIdentifier: "current"`
+  - Verify affiliations appear in Builder.io after page creation
+  - Note: Implementation is in T011; this task is verification only
 
 **Checkpoint**: Affiliations work with Builder.io - replace pattern (delete old, create new) functional
 
@@ -343,11 +349,12 @@ Execute in strict order:
 
 - [P] tasks = different files, no dependencies
 - [Story] label maps task to specific user story for traceability
+- **VERIFY** tasks = verification of implementation done in earlier tasks (no new code)
 - US1 is the MVP - fully functional create flow
 - US2 builds on US1 utilities
-- US3/US4 are integrated into US1/US2 but tracked separately
+- US3/US4 are integrated into US1/US2 but tracked separately (T017, T021 are verification)
 - US5/US6 are already handled by transform function, just need verification
-- Total estimated tasks: 40
+- Total estimated tasks: 40 (includes verification tasks)
 - Parallel opportunities: 16 tasks can run in parallel within their phases
 - **Estimated total time: ~1.75 hours** (70% faster than 005 due to code reuse)
 
