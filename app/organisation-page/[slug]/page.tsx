@@ -97,7 +97,7 @@ export default async function OrganisationPage({ params }: any) {
 
   const infoPageItemWithAffiliations = {
     ...infoPageItem,
-    affiliationsItems: affiliations.map((affiliation: any) => affiliation.data),
+    affiliationsItems: affiliations,
   };
 
   console.log("[Builder.io] ✅ Rendering organisation page:", params.slug);

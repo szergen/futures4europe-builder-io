@@ -1,17 +1,17 @@
-'use client';
-import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import style from './PersonPageComponent.module.css';
-import Tag, { TagProps } from '@app/shared-components/Tag/Tag';
-import Typography from '@app/shared-components/Typography/Typography';
-import HeaderComponent from './components/HeaderComponent/HeaderComponent';
-import PersonDescriptionComponent from '../shared-page-components/DescriptionComponent/DescriptionComponent';
-import AffiliationsComponent from './components/AffiliationsComponent/AffiliationsComponent';
-import TagListComponent from '../shared-page-components/TagListComponent/TagListComponent';
-import FilesComponent from '../shared-page-components/FilesComponent/FilesComponent';
-import { mockPerson } from '@app/mocks/pagesMocks';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
+"use client";
+import classNames from "classnames";
+import React, { useEffect, useState } from "react";
+import style from "./PersonPageComponent.module.css";
+import Tag, { TagProps } from "@app/shared-components/Tag/Tag";
+import Typography from "@app/shared-components/Typography/Typography";
+import HeaderComponent from "./components/HeaderComponent/HeaderComponent";
+import PersonDescriptionComponent from "../shared-page-components/DescriptionComponent/DescriptionComponent";
+import AffiliationsComponent from "./components/AffiliationsComponent/AffiliationsComponent";
+import TagListComponent from "../shared-page-components/TagListComponent/TagListComponent";
+import FilesComponent from "../shared-page-components/FilesComponent/FilesComponent";
+import { mockPerson } from "@app/mocks/pagesMocks";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
 import {
   // bulkInsertDataItemReferences,
   bulkInsertItems,
@@ -20,23 +20,23 @@ import {
   revalidateDataItem,
   updateDataItem,
   updateMember,
-} from '@app/wixUtils/client-side';
+} from "@app/wixUtils/client-side";
 import {
   checkIfArrayNeedsUpdateForTags,
   generateUniqueHash,
-} from '../PostPageComponent/PostPageComponent.utils';
-import { useWixModules } from '@wix/sdk-react';
-import { items } from '@wix/data';
-import MiniPagesListComponentPost from '../shared-page-components/MiniPagesListComponentPost/MiniPagesListComponentPost';
+} from "../PostPageComponent/PostPageComponent.utils";
+import { useWixModules } from "@wix/sdk-react";
+import { items } from "@wix/data";
+import MiniPagesListComponentPost from "../shared-page-components/MiniPagesListComponentPost/MiniPagesListComponentPost";
 import {
   arraysEqual,
   deepEqual,
   sanitizeTitleForSlug,
-} from '../PageComponents.utils';
-import { Modal } from 'flowbite-react';
-import LoadingSpinner from '@app/shared-components/LoadingSpinner/LoadingSpinner';
-import { invalidatePersonPageCache } from '@app/utils/cache-utils';
-import OgImage from '@app/shared-components/OgImage';
+} from "../PageComponents.utils";
+import { Modal } from "flowbite-react";
+import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
+import { invalidatePersonPageCache } from "@app/utils/cache-utils";
+import OgImage from "@app/shared-components/OgImage";
 
 function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
   // person = person || mockPerson(pageTitle);
@@ -100,7 +100,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
   // console.log('debug111->person.affiliationsItems', person?.affiliationsItems);
 
   const projectsCoordindation = person?.affiliationsItems
-    ?.filter((item: any) => item?.extraIdentifier === 'coordination')
+    ?.filter((item: any) => item?.extraIdentifier === "coordination")
     .map((item: any) => item?.projectTag)
     .filter(
       (projectTag: any, index: number, self: any[]) =>
@@ -108,7 +108,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     );
 
   const projectsParticipation = person?.affiliationsItems
-    ?.filter((item: any) => item?.extraIdentifier === 'participation')
+    ?.filter((item: any) => item?.extraIdentifier === "participation")
     .map((item: any) => item?.projectTag)
     .filter(
       (projectTag: any, index: number, self: any[]) =>
@@ -117,7 +117,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
   // console.log('debug111->projectsParticipation', projectsParticipation);
 
   const currentAfiliations = person?.affiliationsItems
-    ?.filter((item: any) => item?.extraIdentifier === 'current')
+    ?.filter((item: any) => item?.extraIdentifier === "current")
     .map((item: any) => {
       return {
         ...item?.organisationTag,
@@ -128,9 +128,10 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       (projectTag: any, index: number, self: any[]) =>
         index === self.findIndex((pt) => pt.name === projectTag.name)
     );
+  console.log("debug111->currentAfiliations", currentAfiliations);
 
   const formerAfiliations = person?.affiliationsItems
-    ?.filter((item: any) => item?.extraIdentifier === 'former')
+    ?.filter((item: any) => item?.extraIdentifier === "former")
     .map((item: any) => {
       return {
         ...item?.organisationTag,
@@ -213,8 +214,8 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
 
   // #region validation state
   const [validationState, setValidationState] = useState({
-    title: '',
-    subtitle: '',
+    title: "",
+    subtitle: "",
   });
 
   const updateValidationState = (newData: any) => {
@@ -233,7 +234,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
 
   const updateDataToServer = async () => {
     console.log(
-      'Updating Page from',
+      "Updating Page from",
       personData.dataCollectionId,
       personData._id
     );
@@ -242,23 +243,23 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     // #region Update Person Tag
     // Check if object personTag has changed
     if (!deepEqual(personData.personTag, defaultPersonData.personTag)) {
-      console.log('personTag has changed');
+      console.log("personTag has changed");
       const updatedPersonTag = await updateDataItem(
-        'Tags',
+        "Tags",
         personData.personTag._id,
         {
           _id: personData.personTag._id,
           ...personData.personTag,
         }
       );
-      console.log('updatedPersonTag', updatedPersonTag);
+      console.log("updatedPersonTag", updatedPersonTag);
       const nickName = personData?.personTag?.name;
-      console.log('nickName', nickName);
+      console.log("nickName", nickName);
       if (
         nickName !== userDetails.userName &&
-        nickName !== 'Angela Cristina Plescan'
+        nickName !== "Angela Cristina Plescan"
       ) {
-        console.log('Updating Nickname');
+        console.log("Updating Nickname");
         const member = await updateMember(userDetails.contactId, nickName);
         updateUserDetails((prevData: any) => ({
           ...prevData,
@@ -267,7 +268,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
             ...personData.personTag,
           },
         }));
-        console.log('gotMember', member);
+        console.log("gotMember", member);
       }
     }
     // #endregion
@@ -327,7 +328,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
           orcidLink: personData?.orcidLink,
         }
       );
-      console.log('updatedItem', updatedItem);
+      console.log("updatedItem", updatedItem);
     }
 
     // Update personOrganisation
@@ -351,17 +352,17 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       //   personData._id
       // );
       // console.log('updatedOrganisations', updatedOrganisations);
-      console.log('debug111-> updating current affiliations');
+      console.log("debug111-> updating current affiliations");
       const oldAffiliations = person?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'current'
+        (item: any) => item?.extraIdentifier === "current"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (personData.currentAfiliations?.length > 0) {
@@ -372,21 +373,21 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
                 personTag: personData.personTag,
                 organisationTag: item,
                 role: item.arole,
-                extraIdentifier: 'current',
+                extraIdentifier: "current",
                 title: `${personData.personTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.organisationTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.organisationTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedOrganisationsCurrent = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedOrganisationsCurrent',
+            "debug111->updatedOrganisationsCurrent",
             updatedOrganisationsCurrent
           );
         }
@@ -408,17 +409,17 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       //   'personOrganisationFormer',
       //   personData._id
       // );
-      console.log('debug111-> updating former affiliations');
+      console.log("debug111-> updating former affiliations");
       const oldAffiliations = person?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'former'
+        (item: any) => item?.extraIdentifier === "former"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (personData.formerAfiliations?.length > 0) {
@@ -429,21 +430,21 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
                 personTag: personData.personTag,
                 organisationTag: item,
                 role: item.arole,
-                extraIdentifier: 'former',
+                extraIdentifier: "former",
                 title: `${personData.personTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.organisationTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.organisationTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedOrganisationsFormer = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedOrganisationsFormer',
+            "debug111->updatedOrganisationsFormer",
             updatedOrganisationsFormer
           );
         }
@@ -453,12 +454,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     // Update Country Tag
     if (personData.countryTag?._id !== defaultPersonData.countryTag?._id) {
       const updatedCountryTag = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [personData.countryTag?._id],
-        'countryTag',
+        "countryTag",
         personData._id
       );
-      console.log('updatedCountryTag', updatedCountryTag);
+      console.log("updatedCountryTag", updatedCountryTag);
     }
 
     // Update Foresight Methods
@@ -472,12 +473,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         (method: any) => method._id
       );
       const updatedMethods = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         validMethods?.map((method: any) => method._id),
-        'methods',
+        "methods",
         personData._id
       );
-      console.log('updatedMethods', updatedMethods);
+      console.log("updatedMethods", updatedMethods);
     }
     // Update Domains
     if (
@@ -490,12 +491,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         (domain: any) => domain._id
       );
       const updatedDomains = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         validDomains?.map((domain: any) => domain._id),
-        'domains',
+        "domains",
         personData._id
       );
-      console.log('updatedDomains', updatedDomains);
+      console.log("updatedDomains", updatedDomains);
     }
     // Update Activity
     if (
@@ -508,12 +509,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         (activity: any) => activity._id
       );
       const updateAcvitiy = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         validActivity?.map((activity: any) => activity._id),
-        'activity',
+        "activity",
         personData._id
       );
-      console.log('updateAcvitiy', updateAcvitiy);
+      console.log("updateAcvitiy", updateAcvitiy);
     }
 
     // Update projectsCoordindation
@@ -530,17 +531,17 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       //   personData._id
       // );
       // console.log('updateProjectsCoordindation', updateProjectsCoordindation);
-      console.log('debug111-> updating project Coordination');
+      console.log("debug111-> updating project Coordination");
       const oldAffiliations = person?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'coordination'
+        (item: any) => item?.extraIdentifier === "coordination"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (personData.projectsCoordindation?.length > 0) {
@@ -550,21 +551,21 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
               data: {
                 personTag: personData.personTag,
                 projectTag: item,
-                extraIdentifier: 'coordination',
+                extraIdentifier: "coordination",
                 title: `${personData.personTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.projectTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.projectTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedProjectsCoordonation = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedProjectsCoordonation',
+            "debug111->updatedProjectsCoordonation",
             updatedProjectsCoordonation
           );
         }
@@ -585,17 +586,17 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       //   personData._id
       // );
       // console.log('updateProjectsParticipation', updateProjectsParticipation);
-      console.log('debug111-> updating project participation');
+      console.log("debug111-> updating project participation");
       const oldAffiliations = person?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'participation'
+        (item: any) => item?.extraIdentifier === "participation"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (personData.projectsParticipation?.length > 0) {
@@ -605,21 +606,21 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
               data: {
                 personTag: personData.personTag,
                 projectTag: item,
-                extraIdentifier: 'participation',
+                extraIdentifier: "participation",
                 title: `${personData.personTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.projectTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.projectTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedProjectsParticipation = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedProjectsParticipation',
+            "debug111->updatedProjectsParticipation",
             updatedProjectsParticipation
           );
         }
@@ -671,12 +672,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
   const { insertDataItem } = useWixModules(items);
 
   const createNewPersonPage = async () => {
-    console.log('Creating New Person Info Page');
+    console.log("Creating New Person Info Page");
     setIsSaveInProgress(true);
 
     // Create new person info page
     const newPersonInfo = await insertDataItem({
-      dataCollectionId: 'InfoPages',
+      dataCollectionId: "InfoPages",
       dataItem: {
         data: {
           title: personData?.personTag?.name,
@@ -704,7 +705,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
           orcidLink: personData?.orcidLink,
           slug:
             sanitizeTitleForSlug(personData?.personTag?.name) +
-            '-' +
+            "-" +
             generateUniqueHash(),
           // subtitle: personData.personTag.tagLine,
         },
@@ -713,53 +714,53 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
 
     const newPersonInfoId = await newPersonInfo?.dataItem?._id;
     const newPersonInfoSlug = await newPersonInfo?.dataItem?.data?.slug;
-    console.log('New page created: ', newPersonInfoId);
-    console.log('New page slug: ', newPersonInfoSlug);
+    console.log("New page created: ", newPersonInfoId);
+    console.log("New page slug: ", newPersonInfoSlug);
 
-    console.log('Looking for personTag', personData.personTag);
+    console.log("Looking for personTag", personData.personTag);
 
     // #region Update Author Tag and Person Tag
     const personTag = tags.find(
       (tag) => tag._id === personData?.personTag?._id
     );
-    console.log('personTag', personTag);
+    console.log("personTag", personTag);
 
     if (newPersonInfoId && personTag && personTag._id) {
-      console.log('Updating Author Tag');
+      console.log("Updating Author Tag");
       const updatedAuthor = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [personTag?._id],
-        'Author',
+        "Author",
         newPersonInfoId
       );
-      console.log('updatedAuthor', updatedAuthor);
+      console.log("updatedAuthor", updatedAuthor);
 
-      console.log('Updating Person Tag');
+      console.log("Updating Person Tag");
       const updatedPersonTag = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [personTag?._id],
-        'person',
+        "person",
         newPersonInfoId
       );
-      console.log('updatedPersonTag', updatedPersonTag);
+      console.log("updatedPersonTag", updatedPersonTag);
 
-      console.log('Updating Page Owner');
+      console.log("Updating Page Owner");
       const updatedPageOwner = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [personTag?._id],
-        'pageOwner',
+        "pageOwner",
         newPersonInfoId
       );
-      console.log('updatedPageOwner', updatedPageOwner);
+      console.log("updatedPageOwner", updatedPageOwner);
 
       const nickName = personData?.personTag?.name;
       if (
         nickName !== userDetails.userName &&
-        nickName !== 'Angela Cristina Plescan'
+        nickName !== "Angela Cristina Plescan"
       ) {
-        console.log('Updating member nickname');
+        console.log("Updating member nickname");
         const member = await updateMember(userDetails.contactId, nickName);
-        console.log('updatedMember ', member);
+        console.log("updatedMember ", member);
       }
     }
     // #endregion
@@ -767,12 +768,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     // #region Update Page Type Tag
     if (personData.pageType?._id && newPersonInfoId) {
       const updatedPageTypes = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [personData.pageType?._id],
-        'pageTypes',
+        "pageTypes",
         newPersonInfoId
       );
-      console.log('updatedPageTypes', updatedPageTypes);
+      console.log("updatedPageTypes", updatedPageTypes);
     }
     // #endregion
 
@@ -787,17 +788,17 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       //   newPersonInfoId
       // );
       // console.log('updatedOrganisations', updatedOrganisations);
-      console.log('debug111-> updating current affiliations');
+      console.log("debug111-> updating current affiliations");
       const oldAffiliations = person?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'current'
+        (item: any) => item?.extraIdentifier === "current"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (personData.currentAfiliations?.length > 0) {
@@ -808,21 +809,21 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
                 personTag: personData.personTag,
                 organisationTag: item,
                 role: item.arole,
-                extraIdentifier: 'current',
+                extraIdentifier: "current",
                 title: `${personData.personTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.organisationTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.organisationTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedOrganisationsCurrent = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedOrganisationsCurrent',
+            "debug111->updatedOrganisationsCurrent",
             updatedOrganisationsCurrent
           );
         }
@@ -841,17 +842,17 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       //   newPersonInfoId
       // );
       // console.log('updatedOrganisationsFormer', updatedOrganisationsFormer);
-      console.log('debug111-> updating former affiliations');
+      console.log("debug111-> updating former affiliations");
       const oldAffiliations = person?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'former'
+        (item: any) => item?.extraIdentifier === "former"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (personData.formerAfiliations?.length > 0) {
@@ -862,21 +863,21 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
                 personTag: personData.personTag,
                 organisationTag: item,
                 role: item.arole,
-                extraIdentifier: 'former',
+                extraIdentifier: "former",
                 title: `${personData.personTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.organisationTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.organisationTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedOrganisationsFormer = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedOrganisationsFormer',
+            "debug111->updatedOrganisationsFormer",
             updatedOrganisationsFormer
           );
         }
@@ -887,12 +888,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     // #region Update Country Tag
     if (personData.countryTag?._id && newPersonInfoId) {
       const updatedCountryTag = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         [personData.countryTag?._id],
-        'countryTag',
+        "countryTag",
         newPersonInfoId
       );
-      console.log('updatedCountryTag', updatedCountryTag);
+      console.log("updatedCountryTag", updatedCountryTag);
     }
     // #endregion
 
@@ -902,12 +903,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         (method: any) => method && method._id
       );
       const updatedMethods = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         validMethods.map((method: any) => method._id),
-        'methods',
+        "methods",
         newPersonInfoId
       );
-      console.log('updatedMethods', updatedMethods);
+      console.log("updatedMethods", updatedMethods);
     }
     // #endregion
 
@@ -918,12 +919,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       );
 
       const updatedDomains = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         validDomains.map((domain: any) => domain._id),
-        'domains',
+        "domains",
         newPersonInfoId
       );
-      console.log('updatedDomains', updatedDomains);
+      console.log("updatedDomains", updatedDomains);
     }
     // #endregion
 
@@ -933,12 +934,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         (activity: any) => activity && activity._id
       );
       const updateAcvitiy = await replaceDataItemReferences(
-        'InfoPages',
+        "InfoPages",
         validActivity.map((activity: any) => activity._id),
-        'activity',
+        "activity",
         newPersonInfoId
       );
-      console.log('updateAcvitiy', updateAcvitiy);
+      console.log("updateAcvitiy", updateAcvitiy);
     }
     // #endregion
 
@@ -951,17 +952,17 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       //   newPersonInfoId
       // );
       // console.log('updateProjectsCoordindation', updateProjectsCoordindation);
-      console.log('debug111-> updating project Coordination');
+      console.log("debug111-> updating project Coordination");
       const oldAffiliations = person?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'coordination'
+        (item: any) => item?.extraIdentifier === "coordination"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (personData.projectsCoordindation?.length > 0) {
@@ -971,21 +972,21 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
               data: {
                 personTag: personData.personTag,
                 projectTag: item,
-                extraIdentifier: 'coordination',
+                extraIdentifier: "coordination",
                 title: `${personData.personTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.projectTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.projectTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedProjectsCoordonation = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedProjectsCoordonation',
+            "debug111->updatedProjectsCoordonation",
             updatedProjectsCoordonation
           );
         }
@@ -1002,17 +1003,17 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       //   newPersonInfoId
       // );
       // console.log('updateProjectsParticipation', updateProjectsParticipation);
-      console.log('debug111-> updating project participation');
+      console.log("debug111-> updating project participation");
       const oldAffiliations = person?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'participation'
+        (item: any) => item?.extraIdentifier === "participation"
       );
-      console.log('debug111->oldAffiliation', oldAffiliations);
+      console.log("debug111->oldAffiliation", oldAffiliations);
       if (oldAffiliations && oldAffiliations?.length > 0) {
         const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
+          "Affiliations",
           oldAffiliations?.map((item: any) => item._id)
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        console.log("debug111->removeOldAffiliations", removeOldAffiliations);
       }
 
       if (personData.projectsParticipation?.length > 0) {
@@ -1022,21 +1023,21 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
               data: {
                 personTag: personData.personTag,
                 projectTag: item,
-                extraIdentifier: 'participation',
+                extraIdentifier: "participation",
                 title: `${personData.personTag?.name} -to- ${item.name}`,
               },
             };
           })
-          ?.filter((item: any) => item?.data?.projectTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
+          ?.filter((item: any) => item?.data?.projectTag?.name !== "");
+        console.log("debug111->newAffiliationsObject", newAffiliationsObject);
         if (newAffiliationsObject?.length > 0) {
           const updatedProjectsParticipation = await bulkInsertItems(
-            'Affiliations',
+            "Affiliations",
             newAffiliationsObject
           );
 
           console.log(
-            'debug111->updatedProjectsParticipation',
+            "debug111->updatedProjectsParticipation",
             updatedProjectsParticipation
           );
         }
@@ -1047,17 +1048,17 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     // #region Update Person Tag
     // Check if object personTag has changed
     if (!deepEqual(personData.personTag, defaultPersonData.personTag)) {
-      console.log('personTag changed');
+      console.log("personTag changed");
       const updatedPersonTag = await updateDataItem(
-        'Tags',
+        "Tags",
         personData.personTag._id,
         {
           _id: personData.personTag._id,
           ...personData.personTag,
-          tagPageLink: '/person/' + newPersonInfoSlug,
+          tagPageLink: "/person/" + newPersonInfoSlug,
         }
       );
-      console.log('updatedPersonTag', updatedPersonTag);
+      console.log("updatedPersonTag", updatedPersonTag);
     }
     // #endregion
 
@@ -1073,7 +1074,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       userName: personData?.personTag?.name,
       userTag: {
         ...personTag,
-        tagPageLink: '/person/' + newPersonInfoSlug,
+        tagPageLink: "/person/" + newPersonInfoSlug,
       },
     }));
     // await revalidateDataItem(`/person/${newPersonInfoSlug}`);
@@ -1099,12 +1100,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       const personTag = tags.find((tag) => tag.name === userDetails?.userName);
       // console.log('debug1->personTag', personTag);
       if (personTag) {
-        updatePersonDataOnKeyValue('personTag', personTag);
+        updatePersonDataOnKeyValue("personTag", personTag);
       }
-      const personInfoTag = tags.find((tag) => tag.name === 'person info');
+      const personInfoTag = tags.find((tag) => tag.name === "person info");
       // console.log('debug1->personInfoTag', personInfoTag);
       if (personInfoTag) {
-        updatePersonDataOnKeyValue('pageType', personInfoTag);
+        updatePersonDataOnKeyValue("pageType", personInfoTag);
       }
     }
   }, [userDetails, tags]);
@@ -1119,7 +1120,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       {!isNewPage && (
         <OgImage
           primaryImage={personData.personTag?.picture}
-          secondaryImage={'https://futures4europe.eu/images/placeholder.webp'}
+          secondaryImage={"https://futures4europe.eu/images/placeholder.webp"}
           title={personData.title}
           description={personData.description}
           url={`https://futures4europe.eu/person/${personData.slug}`}
@@ -1135,15 +1136,15 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
             }}
             disabled={isEditModeOn && checkValidationErrors()}
             className={classNames(
-              'btn btn-save',
-              isEditModeOn && checkValidationErrors() && 'bg-gray-400'
+              "btn btn-save",
+              isEditModeOn && checkValidationErrors() && "bg-gray-400"
             )}
           >
             {!isEditModeOn
-              ? 'Edit Page'
+              ? "Edit Page"
               : isNewPage
-              ? 'Publish Page'
-              : 'Save & publish'}
+              ? "Publish Page"
+              : "Save & publish"}
           </button>
           {isEditModeOn && (
             <button
@@ -1172,13 +1173,13 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         </div>
       )}
       {/* Page Type Tag NON editable*/}
-      <div className={classNames('py-3', style.preHeader)}>
+      <div className={classNames("py-3", style.preHeader)}>
         <Tag {...personData.pageType} />
         {/* Timestamp */}
         <section className="post-meta">
           <Typography tag="p" className="text-sm text-gray-400">
-            Edited{' '}
-            {new Date(personData?.updatedDate?.['$date']).toLocaleString()}
+            Edited{" "}
+            {new Date(personData?.updatedDate?.["$date"]).toLocaleString()}
           </Typography>
           {/* Additional meta content */}
         </section>
@@ -1195,11 +1196,11 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       />
       {/* Person Description */}
       <PersonDescriptionComponent
-        placeholder={'Type or paste a short description of yourself'} // TODO: Placeholder @alex
+        placeholder={"Type or paste a short description of yourself"} // TODO: Placeholder @alex
         description={personData.description}
         isEditModeOn={isEditModeOn}
         handleUpdate={(value) =>
-          updatePersonDataOnKeyValue('description', value)
+          updatePersonDataOnKeyValue("description", value)
         }
       />
 
@@ -1210,9 +1211,9 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         current
         isEditModeOn={isEditModeOn}
         updatePersonDataAffiliations={(value) =>
-          updatePersonDataOnKeyValue('currentAfiliations', value)
+          updatePersonDataOnKeyValue("currentAfiliations", value)
         }
-        tags={tags?.filter((tag) => tag?.tagType === 'organisation')}
+        tags={tags?.filter((tag) => tag?.tagType === "organisation")}
         handleTagCreated={handleTagCreated}
         tagType="organisation"
       />
@@ -1223,9 +1224,9 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
           tagListTitle="Former Affiliations"
           isEditModeOn={isEditModeOn}
           updatePersonDataAffiliations={(value) =>
-            updatePersonDataOnKeyValue('formerAfiliations', value)
+            updatePersonDataOnKeyValue("formerAfiliations", value)
           }
-          tags={tags?.filter((tag) => tag?.tagType === 'organisation')}
+          tags={tags?.filter((tag) => tag?.tagType === "organisation")}
           handleTagCreated={handleTagCreated}
           tagType="organisation"
         />
@@ -1236,9 +1237,9 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         tagListTitle="Foresight Methods"
         placeholder="Add one or more foresight method tags"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'foresight method')}
+        tags={tags?.filter((tag) => tag?.tagType === "foresight method")}
         selectedValues={personData.methods?.map((method: any) => method?.name)}
-        updatePostData={(value) => updatePersonDataOnKeyValue('methods', value)}
+        updatePostData={(value) => updatePersonDataOnKeyValue("methods", value)}
         tagType="foresight method"
         handleTagCreated={handleTagCreated}
       />
@@ -1248,9 +1249,9 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         tagListTitle="Domains"
         placeholder="Add one or more domain tags relevant to you"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'domain')}
+        tags={tags?.filter((tag) => tag?.tagType === "domain")}
         selectedValues={personData.domains?.map((domain: any) => domain?.name)}
-        updatePostData={(value) => updatePersonDataOnKeyValue('domains', value)}
+        updatePostData={(value) => updatePersonDataOnKeyValue("domains", value)}
         tagType="domain"
         handleTagCreated={handleTagCreated}
       />
@@ -1260,12 +1261,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         tagList={personData.projectsCoordindation}
         tagListTitle="Project Coordination"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'project')}
+        tags={tags?.filter((tag) => tag?.tagType === "project")}
         selectedValues={personData.projectsCoordindation?.map(
           (project: any) => project?.name
         )}
         updatePostData={(value) =>
-          updatePersonDataOnKeyValue('projectsCoordindation', value)
+          updatePersonDataOnKeyValue("projectsCoordindation", value)
         }
         tagType="project"
       />
@@ -1275,12 +1276,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         tagList={personData.projectsParticipation}
         tagListTitle="Project Participation"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'project')}
+        tags={tags?.filter((tag) => tag?.tagType === "project")}
         selectedValues={personData.projectsParticipation?.map(
           (project: any) => project?.name
         )}
         updatePostData={(value) =>
-          updatePersonDataOnKeyValue('projectsParticipation', value)
+          updatePersonDataOnKeyValue("projectsParticipation", value)
         }
         tagType="project"
       />

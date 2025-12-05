@@ -95,10 +95,11 @@ export default async function PersonPage({ params }: any) {
   if (tagIdForPersonPage) {
     affiliations = await getBuilderAffiliationsByPersonTag(tagIdForPersonPage);
   }
+  console.log("debug111->affiliations", affiliations);
 
   const infoPageItemWithAffiliations = {
     ...infoPageItem,
-    affiliationsItems: affiliations.map((affiliation: any) => affiliation.data),
+    affiliationsItems: affiliations,
   };
 
   console.log("[Builder.io] ✅ Rendering person page:", params.slug);

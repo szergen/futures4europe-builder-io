@@ -6,7 +6,8 @@ import {
 
 /**
  * Helper function to check if an ID matches, considering both Builder.io and Wix formats
- * For affiliations (which still use Wix IDs), translates to Builder.io ID for comparison
+ * Supports direct Builder.io ID comparison (used by affiliations and tags) with fallback
+ * to Wix ID translation for legacy data during migration period.
  */
 export const idsMatch = (
   id1: string | undefined | null,
@@ -57,12 +58,12 @@ export const containsId = (obj: { [x: string]: any } | null, id: any) => {
  * Calculate popularity (mentions) for tags from Builder.io
  *
  * Counts tag occurrences in infoPages, postPages, and allAffiliations.
- * Uses ID translation for affiliations (which still use Wix IDs) via mapping file.
+ * Both tags and affiliations now use Builder.io IDs directly.
  *
- * @param tags - Array of tags (already transformed from Builder.io to Wix format)
+ * @param tags - Array of tags (from Builder.io)
  * @param infoPages - All info pages
  * @param postPages - All post pages
- * @param allAffiliations - All affiliations (still using Wix tag IDs)
+ * @param allAffiliations - All affiliations (using Builder.io tag IDs)
  * @returns Array of tags with mentions count added
  */
 export function calculatePopularity(
@@ -94,7 +95,7 @@ export function calculatePopularity(
       }
     });
 
-    // Match affiliations using ID translation (affiliations still use Wix IDs)
+    // Match affiliations (now using Builder.io IDs directly)
     const allAffilationMentiones = allAffiliations.filter(
       (affiliation: any) =>
         (affiliation.personTag && idsMatch(tag?._id, affiliation.personTag)) ||
@@ -111,7 +112,7 @@ export function calculatePopularity(
               idsMatch(tag?.masterTag, affiliation.organisationTag))))
     );
 
-    // Match affiliation pages using ID translation
+    // Match affiliation pages
     const affiliationPages = infoPages
       .filter((page: any) => {
         return allAffilationMentiones.find((affiliation: any) => {

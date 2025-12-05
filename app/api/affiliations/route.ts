@@ -1,91 +1,38 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getWixClientServerData } from '@app/hooks/useWixClientServer';
-import { RedisCacheService } from '@app/services/redisCache';
+import { NextRequest, NextResponse } from "next/server";
+import {
+  getAllAffiliations,
+  refreshAffiliationsCache,
+} from "@app/utils/builderAffiliationUtils";
 
-export const revalidate = 0; // 5 minutes
+export const revalidate = 0;
 
 export const GET = async (req: NextRequest) => {
-  const cacheKey = 'affiliations.json';
-
   try {
-    const cachedData = await RedisCacheService.getFromCache(cacheKey);
-    if (cachedData) {
-      return NextResponse.json(cachedData);
-    }
-
-    const wixClient = await getWixClientServerData();
-
-    let allItems = [] as any[];
-    let skip = 0;
-    const limit = 1000;
-    let totalCount = 0;
-
-    do {
-      const result = await wixClient.items
-        .queryDataItems({
-          dataCollectionId: 'Affiliations',
-          // referencedItemOptions: referencedItemOptions,
-          returnTotalCount: true,
-        })
-        .skip(skip)
-        .limit(limit)
-        .find();
-      allItems = [...allItems, ...result.items];
-      totalCount = result.totalCount || 0;
-      skip = limit + skip;
-    } while (skip < totalCount);
-    // console.log('allItems', allItems);
-
-    await RedisCacheService.saveToCache(cacheKey, allItems, 4 * 60 * 60 * 1000);
-    return NextResponse.json(allItems);
+    // Get affiliations (from cache or fetch with refs)
+    const affiliations = await getAllAffiliations();
+    return NextResponse.json(affiliations);
   } catch (error) {
-    console.error('Error fetching affiliations:', error);
+    console.error("Error fetching affiliations:", error);
     return NextResponse.json(
-      { message: 'Error fetching affiliations' },
+      { message: "Error fetching affiliations" },
       { status: 500 }
     );
   }
 };
 
 export const POST = async (req: NextRequest) => {
-  const cacheKey = 'affiliations.json';
-
   try {
-    const wixClient = await getWixClientServerData();
-
-    let allItems = [] as any[];
-    let skip = 0;
-    const limit = 1000;
-    let totalCount = 0;
-
-    do {
-      const result = await wixClient.items
-        .queryDataItems({
-          dataCollectionId: 'Affiliations',
-          // referencedItemOptions: referencedItemOptions,
-          returnTotalCount: true,
-        })
-        .skip(skip)
-        .limit(limit)
-        .find();
-      allItems = [...allItems, ...result.items];
-      totalCount = result.totalCount || 0;
-      skip = limit + skip;
-    } while (skip < totalCount);
-    // console.log('allItems', allItems);
-
-    await RedisCacheService.saveToCache(cacheKey, allItems, 4 * 60 * 60 * 1000);
+    // Refresh cache from Builder.io
+    await refreshAffiliationsCache();
     return NextResponse.json(
-      { message: 'Cache updated successfully.' },
+      { message: "Cache updated successfully." },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error updating cache:', error);
+    console.error("Error updating cache:", error);
     return NextResponse.json(
-      { message: 'Failed to update cache' },
-      {
-        status: 500,
-      }
+      { message: "Failed to update cache" },
+      { status: 500 }
     );
   }
 };
