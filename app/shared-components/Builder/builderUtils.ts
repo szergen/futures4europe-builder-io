@@ -92,6 +92,7 @@ export async function getAllBuilderContent(
       cachebust: true,
       options: {
         includeRefs: true, // Ensure references are enriched
+        noTargeting: true, // Disable targeting to get all content regardless of targeting rules
       },
     });
 

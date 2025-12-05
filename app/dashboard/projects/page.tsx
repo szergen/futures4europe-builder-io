@@ -1,32 +1,19 @@
 "use client";
 import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
-import { items } from "@wix/data";
-import { useWixModules } from "@wix/sdk-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
 import Link from "next/link";
-import {
-  extractInfoPageTypeBasedOnTag,
-  filterDuplicateAffiliations,
-} from "@app/utils/parse-utils";
+import { extractInfoPageTypeBasedOnTag } from "@app/utils/parse-utils";
 import classNames from "classnames";
-import { members } from "@wix/members";
 import NavDashboard from "@app/shared-components/Layout/NavDashboard/NavDashboard";
 import SubNavDashboard from "@app/shared-components/Layout/NavDashboard/SubNavDashboard";
 import style from "../pageDashboard.module.css";
 import { Button } from "flowbite-react";
 import Typography from "@app/shared-components/Typography/Typography";
 import SpriteSvg from "@app/shared-components/SpriteSvg/SpriteSvg";
-import Tag from "../../shared-components/Tag/Tag";
 import MiniPagePost from "@app/shared-components/MiniPagePost/MiniPagePost";
-import { PLACEHOLDER_IMAGE } from "../../constants"; // Adjust the path as needed
-import {
-  bulkInsertItems,
-  getContactsItem,
-  getContactsItemByEmail,
-  updateMember,
-} from "@app/wixUtils/client-side";
+import { PLACEHOLDER_IMAGE } from "../../constants";
 
 export default function DashboardProjects() {
   const [isLoadingDeletePostPage, setIsLoadingDeletePostPage] = useState("");
@@ -48,45 +35,35 @@ export default function DashboardProjects() {
     infoPages,
   } = useAuth();
 
-  const wixModules = useWixModules(items);
   const router = useRouter();
-
-  interface UserDetails {
-    contactId: string;
-    isAdmin: boolean;
-  }
-
-  interface InfoPage {
-    _id: string;
-    _owner: string;
-  }
 
   // Add check for admin status
   const isWixAdmin = userDetails?.isAdmin || false;
 
-  async function handleDeleteInfoPage(infoPageId: InfoPage["_id"]) {
+  async function handleDeleteInfoPage(infoPageId: string) {
     setIsLoadingDeletePostPage(infoPageId);
 
     try {
       const userId = userDetails?.contactId;
 
-      if (userDetails?.isAdmin !== true && infoPageId?._owner !== userId) {
-        console.error("debug2->Unauthorized to delete info page");
+      if (userDetails?.isAdmin !== true) {
+        console.error("Unauthorized to delete info page");
         return;
       }
 
-      // console.log(
-      //   'debug2->Proceeding with info page delete for ID:',
-      //   infoPageId
-      // );
-
-      await wixModules.removeDataItem(infoPageId, {
-        dataCollectionId: "InfoPages",
+      // Delete info page from Builder.io
+      const response = await fetch(`/api/builder/info-page/${infoPageId}`, {
+        method: "DELETE",
       });
 
-      // console.log("debug2->Delete info page successful");
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to delete info page");
+      }
+
+      console.log("[Builder.io] Info page deleted successfully");
     } catch (error) {
-      console.error("debug2->Failed to delete info page:", error);
+      console.error("Failed to delete info page:", error);
     } finally {
       setIsLoadingDeletePostPage("");
       handleUserDataRefresh();
