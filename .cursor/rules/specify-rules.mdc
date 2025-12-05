@@ -6,6 +6,7 @@ Auto-generated from all feature plans. Last updated: 2025-12-01
 - TypeScript 5.x, Next.js 14 (App Router) + Builder.io SDK, React 18, Wix SDK (auth only), Redis (Upstash) (005-project-page-builder)
 - Builder.io CMS (info-page, affiliations, tag models), Redis cache (005-project-page-builder)
 - TypeScript, Next.js 13.4.9 (App Router) + Builder.io SDK, React 18, Wix SDK (auth only), Redis (Upstash) (005-project-page-builder)
+- TypeScript, Next.js 13.4.9 (App Router) + Builder.io SDK, React 18, Wix SDK (auth + member nickname), Redis (Upstash) (007-person-page-builder)
 
 - Node.js 18+, TypeScript 5.x (Next.js 13.4) + `@builder.io/sdk`, `csv-parse`, `node-fetch`, `dotenv` (005-affiliations-migration)
 - Builder.io CMS (affiliations model), Redis (Upstash) for caching (005-affiliations-migration)
@@ -31,9 +32,9 @@ npm test && npm run lint
 TypeScript 4.8.4 / Next.js 13.4.9 (App Router): Follow standard conventions
 
 ## Recent Changes
+- 007-person-page-builder: Added TypeScript, Next.js 13.4.9 (App Router) + Builder.io SDK, React 18, Wix SDK (auth + member nickname), Redis (Upstash)
 - 006-organisation-page-builder: Added TypeScript, Next.js 13.4.9 (App Router) + Builder.io SDK, React 18, Wix SDK (auth only), Redis (Upstash)
 - 005-project-page-builder: Added TypeScript, Next.js 13.4.9 (App Router) + Builder.io SDK, React 18, Wix SDK (auth only), Redis (Upstash)
-- 005-project-page-builder: Added TypeScript 5.x, Next.js 14 (App Router) + Builder.io SDK, React 18, Wix SDK (auth only), Redis (Upstash)
 
 
 
