@@ -64,9 +64,21 @@ export const GET = async (req: NextRequest) => {
       transformBuilderInfoPageToWixFormat(page)
     );
 
-    // Cache the results
-    await RedisCacheService.saveToCache(CACHE_KEY, transformedPages, CACHE_TTL);
-    console.log(`[Cache] Saved ${transformedPages.length} info pages to cache`);
+    // Only cache if we got results - don't cache empty arrays
+    if (transformedPages.length > 0) {
+      await RedisCacheService.saveToCache(
+        CACHE_KEY,
+        transformedPages,
+        CACHE_TTL
+      );
+      console.log(
+        `[Cache] Saved ${transformedPages.length} info pages to cache`
+      );
+    } else {
+      // Invalidate any existing empty cache to force fresh fetch next time
+      await RedisCacheService.invalidateCache(CACHE_KEY);
+      console.log(`[Cache] No info pages fetched, cache invalidated`);
+    }
 
     return NextResponse.json(transformedPages);
   } catch (error) {

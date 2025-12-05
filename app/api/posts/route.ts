@@ -63,9 +63,19 @@ export const GET = async (req: NextRequest) => {
       .map((post) => transformBuilderPostToWixFormat(post))
       .filter((post) => post !== null);
 
-    // Cache the results
-    await RedisCacheService.saveToCache(CACHE_KEY, transformedPosts, CACHE_TTL);
-    console.log(`[Cache] Saved ${transformedPosts.length} posts to cache`);
+    // Only cache if we got results - don't cache empty arrays
+    if (transformedPosts.length > 0) {
+      await RedisCacheService.saveToCache(
+        CACHE_KEY,
+        transformedPosts,
+        CACHE_TTL
+      );
+      console.log(`[Cache] Saved ${transformedPosts.length} posts to cache`);
+    } else {
+      // Invalidate any existing empty cache to force fresh fetch next time
+      await RedisCacheService.invalidateCache(CACHE_KEY);
+      console.log(`[Cache] No posts fetched, cache invalidated`);
+    }
 
     return NextResponse.json(transformedPosts);
   } catch (error) {
