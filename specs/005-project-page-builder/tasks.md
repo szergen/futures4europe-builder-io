@@ -193,19 +193,19 @@
 - [x] T031 Remove unused Wix-related imports from component file
 - [x] T032 Verify `refetchTags()`, `refetchInfoPages()`, `refetchAffiliations()` are NOT called during save
 - [x] T033 Add console logging for Builder.io operations (start, success, failure)
-- [ ] T034 Test error handling scenarios:
+- [x] T034 Test error handling scenarios:
   - Disconnect network during save, verify graceful error message
   - Try to save without project tag selected, verify validation error
   - Verify partial affiliation failures are reported but don't block page save
-- [ ] T035 Verify existing UI behaviors preserved:
+- [x] T035 Verify existing UI behaviors preserved:
   - Edit/Publish buttons visibility based on ownership
   - Discard Changes reverts all modifications
   - "Saving Page..." modal appears during API calls
   - Loading spinners work identically to pre-migration
-- [ ] T036 Manual E2E test: Create new project page with all fields populated
-- [ ] T037 Manual E2E test: Edit existing project page, change all field types
-- [ ] T038 Manual E2E test: Verify affiliations appear correctly after create/edit
-- [ ] T039 Verify no Wix API calls in Network tab during save operations
+- [x] T036 Manual E2E test: Create new project page with all fields populated
+- [x] T037 Manual E2E test: Edit existing project page, change all field types
+- [x] T038 Manual E2E test: Verify affiliations appear correctly after create/edit
+- [x] T039 Verify no Wix API calls in Network tab during save operations
 
 ---
 
@@ -298,6 +298,36 @@ Execute in strict order:
 
 ---
 
+## Additional Fixes (Post-Implementation)
+
+The following issues were discovered and fixed during testing:
+
+### Fix 1: countryTag Reference Format
+
+- **Issue**: countryTag was being saved as a single reference object
+- **Fix**: Changed to array with wrapper key (`countryTagItem`) to match existing data format
+- **File**: `app/utils/builderInfoPageUtils.ts`
+
+### Fix 2: Cache Invalidation on New Page
+
+- **Issue**: `handleTagCreated()` was called on component mount, triggering full Redis cache invalidation
+- **Fix**: Removed the automatic `handleTagCreated()` call - tags are already available from AuthContext
+- **File**: `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`
+
+### Fix 3: Cache Optimization for Tag Creation
+
+- **Issue**: `handleTagCreated()` in AuthContext called `invalidateAllCache()` even though `createBuilderTag` already appends to cache
+- **Fix**: Removed `invalidateAllCache()` from the refresh flow - cache is already updated
+- **File**: `app/custom-hooks/AuthContext/AuthContext.tsx`
+
+### Fix 4: Tag Editing Optimization
+
+- **Issue**: When editing a project tag, the React state wasn't updated (only Builder.io and Redis)
+- **Fix**: Added `updateTag()` function to AuthContext and called it after successful tag update
+- **Files**: `app/custom-hooks/AuthContext/AuthContext.tsx`, `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`
+
+---
+
 ## Notes
 
 - [P] tasks = different files, no dependencies
@@ -308,3 +338,11 @@ Execute in strict order:
 - US5/US6 are already handled by transform function, just need verification
 - Total estimated tasks: 39
 - Parallel opportunities: 14 tasks can run in parallel within their phases
+
+---
+
+## Completion Status
+
+✅ **ALL TASKS COMPLETE** - Validated 2025-12-05
+
+All 39 tasks completed and manually validated. Project page create/update now uses Builder.io instead of Wix.
