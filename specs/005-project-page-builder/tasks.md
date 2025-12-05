@@ -24,10 +24,10 @@
 
 **Purpose**: Verify environment and existing code before implementation
 
-- [ ] T001 Verify `BUILDER_PRIVATE_API_KEY` is set in `.env.local`
-- [ ] T002 [P] Verify existing `/api/builder/post/route.ts` works as reference pattern
-- [ ] T003 [P] Verify existing `/api/builder/tag/[id]/route.ts` works for tag updates
-- [ ] T004 [P] Review `app/utils/builderPostUtils.ts` for `transformReferencesForBuilderCreate` function to reuse
+- [x] T001 Verify `BUILDER_PRIVATE_API_KEY` is set in `.env.local`
+- [x] T002 [P] Verify existing `/api/builder/post/route.ts` works as reference pattern
+- [x] T003 [P] Verify existing `/api/builder/tag/[id]/route.ts` works for tag updates
+- [x] T004 [P] Review `app/utils/builderPostUtils.ts` for `transformReferencesForBuilderCreate` function to reuse
 
 ---
 
@@ -37,11 +37,11 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 [P] Create info-page POST route in `app/api/builder/info-page/route.ts` (follow post route pattern)
-- [ ] T006 [P] Create info-page PUT route in `app/api/builder/info-page/[id]/route.ts`
-- [ ] T007 [P] Create affiliations bulk POST route in `app/api/builder/affiliations/route.ts`
-- [ ] T008 [P] Create affiliations DELETE route in `app/api/builder/affiliations/[id]/route.ts`
-- [ ] T009 [P] Create affiliations bulk DELETE route in `app/api/builder/affiliations/bulk-delete/route.ts`
+- [x] T005 [P] Create info-page POST route in `app/api/builder/info-page/route.ts` (follow post route pattern)
+- [x] T006 [P] Create info-page PUT route in `app/api/builder/info-page/[id]/route.ts`
+- [x] T007 [P] Create affiliations bulk POST route in `app/api/builder/affiliations/route.ts`
+- [x] T008 [P] Create affiliations DELETE route in `app/api/builder/affiliations/[id]/route.ts`
+- [x] T009 [P] Create affiliations bulk DELETE route in `app/api/builder/affiliations/bulk-delete/route.ts`
 
 **Checkpoint**: API routes ready - utility functions can now be implemented
 
@@ -55,14 +55,14 @@
 
 ### Utility Functions for US1
 
-- [ ] T010 [US1] Add `transformProjectDataForBuilder` function in `app/utils/builderInfoPageUtils.ts` - transform component state to Builder.io format with all wrapper keys
-- [ ] T011 [US1] Add `createBuilderProjectPage` function in `app/utils/builderInfoPageUtils.ts` - calls POST /api/builder/info-page
-- [ ] T012 [P] [US1] Add `bulkCreateAffiliations` function in `app/utils/builderAffiliationUtils.ts` - creates affiliations with cache update
-- [ ] T013 [P] [US1] Add `appendToAffiliationsCache` helper in `app/utils/builderAffiliationUtils.ts` - appends to cache without full refetch
+- [x] T010 [US1] Add `transformProjectDataForBuilder` function in `app/utils/builderInfoPageUtils.ts` - transform component state to Builder.io format with all wrapper keys
+- [x] T011 [US1] Add `createBuilderProjectPage` function in `app/utils/builderInfoPageUtils.ts` - calls POST /api/builder/info-page
+- [x] T012 [P] [US1] Add `bulkCreateAffiliations` function in `app/utils/builderAffiliationUtils.ts` - creates affiliations with cache update
+- [x] T013 [P] [US1] Add `appendToAffiliationsCache` helper in `app/utils/builderAffiliationUtils.ts` - appends to cache without full refetch
 
 ### Component Integration for US1
 
-- [ ] T014 [US1] Replace `createNewProjectPage` function in `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`:
+- [x] T014 [US1] Replace `createNewProjectPage` function in `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`:
 
   - Remove Wix `insertDataItem` call
   - Remove Wix `replaceDataItemReferences` calls
@@ -72,7 +72,7 @@
   - Call `invalidateProjectPageCache` and `handleUserDataRefresh`
   - Redirect to new page URL
 
-- [ ] T015 [US1] Remove Wix imports from `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`:
+- [x] T015 [US1] Remove Wix imports from `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`:
   - Remove `useWixModules` import
   - Remove `items` import from `@wix/data`
   - Remove `insertDataItem` destructuring
@@ -89,11 +89,11 @@
 
 ### Utility Functions for US2
 
-- [ ] T016 [US2] Add `updateBuilderProjectPage` function in `app/utils/builderInfoPageUtils.ts` - calls PUT /api/builder/info-page/[id]
+- [x] T016 [US2] Add `updateBuilderProjectPage` function in `app/utils/builderInfoPageUtils.ts` - calls PUT /api/builder/info-page/[id]
 
 ### Component Integration for US2
 
-- [ ] T017 [US2] Replace `updateDataToServer` function in `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`:
+- [x] T017 [US2] Replace `updateDataToServer` function in `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`:
 
   - Remove Wix `updateDataItem` call
   - Remove Wix `replaceDataItemReferences` calls
@@ -102,7 +102,7 @@
   - Handle affiliation updates (delete old, create new)
   - Call `invalidateProjectPageCache`
 
-- [ ] T018 [US2] Remove remaining Wix imports from `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`:
+- [x] T018 [US2] Remove remaining Wix imports from `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`:
   - Remove `updateDataItem` import
   - Remove `replaceDataItemReferences` import
   - Remove `bulkInsertItems` import
@@ -120,8 +120,8 @@
 
 ### Implementation for US3
 
-- [ ] T019 [US3] Verify tag update integration in `createNewProjectPage` - calls `/api/builder/tag/[id]` with `tagPageLink`
-- [ ] T020 [US3] Update tag update logic in `updateDataToServer` in `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`:
+- [x] T019 [US3] Verify tag update integration in `createNewProjectPage` - calls `/api/builder/tag/[id]` with `tagPageLink`
+- [x] T020 [US3] Update tag update logic in `updateDataToServer` in `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`:
   - Replace Wix `updateDataItem("Tags", ...)` with fetch to `/api/builder/tag/[id]`
   - Ensure cache is updated (not invalidated) via existing tag utility
 
@@ -137,29 +137,29 @@
 
 ### Utility Functions for US4
 
-- [ ] T021 [P] [US4] Add `bulkDeleteAffiliations` function in `app/utils/builderAffiliationUtils.ts` - deletes affiliations with cache update
-- [ ] T022 [P] [US4] Add `removeFromAffiliationsCache` helper in `app/utils/builderAffiliationUtils.ts` - removes from cache without full refetch
+- [x] T021 [P] [US4] Add `bulkDeleteAffiliations` function in `app/utils/builderAffiliationUtils.ts` - deletes affiliations with cache update
+- [x] T022 [P] [US4] Add `removeFromAffiliationsCache` helper in `app/utils/builderAffiliationUtils.ts` - removes from cache without full refetch
 
 ### Component Integration for US4
 
-- [ ] T023 [US4] Update coordinator affiliation handling in `updateDataToServer`:
+- [x] T023 [US4] Update coordinator affiliation handling in `updateDataToServer`:
 
   - Replace Wix `bulkRemoveItems` with `bulkDeleteAffiliations`
   - Replace Wix `bulkInsertItems` with `bulkCreateAffiliations`
   - Use `extraIdentifier: "coordination"`
 
-- [ ] T024 [US4] Update participant affiliation handling in `updateDataToServer`:
+- [x] T024 [US4] Update participant affiliation handling in `updateDataToServer`:
 
   - Same pattern as coordinators
   - Use `extraIdentifier: "participation"`
 
-- [ ] T025 [US4] Update organisation affiliation handling in `updateDataToServer`:
+- [x] T025 [US4] Update organisation affiliation handling in `updateDataToServer`:
 
   - Same pattern as coordinators
   - Use `extraIdentifier: "projectOrganisationRole"`
   - Include `role` field
 
-- [ ] T026 [US4] Update affiliation handling in `createNewProjectPage`:
+- [x] T026 [US4] Update affiliation handling in `createNewProjectPage`:
   - Call `bulkCreateAffiliations` for coordinators with `extraIdentifier: "coordination"`
   - Call `bulkCreateAffiliations` for participants with `extraIdentifier: "participation"`
   - Call `bulkCreateAffiliations` for organisations with `extraIdentifier: "projectOrganisationRole"` and `role` field
@@ -177,9 +177,9 @@
 
 ### Implementation (Already covered in transform function)
 
-- [ ] T027 [US5] Verify `transformProjectDataForBuilder` handles `projectStartDate` and `projectEndDate`
-- [ ] T028 [US5] Verify `transformProjectDataForBuilder` handles `linkedinLink` and `websiteLink`
-- [ ] T029 [US6] Verify `transformProjectDataForBuilder` handles `mediaFiles` array with url, displayName, thumbnail
+- [x] T027 [US5] Verify `transformProjectDataForBuilder` handles `projectStartDate` and `projectEndDate`
+- [x] T028 [US5] Verify `transformProjectDataForBuilder` handles `linkedinLink` and `websiteLink`
+- [x] T029 [US6] Verify `transformProjectDataForBuilder` handles `mediaFiles` array with url, displayName, thumbnail
 
 **Checkpoint**: All metadata fields save correctly
 
@@ -189,10 +189,10 @@
 
 **Purpose**: Final cleanup and validation
 
-- [ ] T030 Remove all commented-out Wix code from `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`
-- [ ] T031 Remove unused Wix-related imports from component file
-- [ ] T032 Verify `refetchTags()`, `refetchInfoPages()`, `refetchAffiliations()` are NOT called during save
-- [ ] T033 Add console logging for Builder.io operations (start, success, failure)
+- [x] T030 Remove all commented-out Wix code from `app/page-components/ProjectPageComponent/ProjectPageComponent.tsx`
+- [x] T031 Remove unused Wix-related imports from component file
+- [x] T032 Verify `refetchTags()`, `refetchInfoPages()`, `refetchAffiliations()` are NOT called during save
+- [x] T033 Add console logging for Builder.io operations (start, success, failure)
 - [ ] T034 Test error handling scenarios:
   - Disconnect network during save, verify graceful error message
   - Try to save without project tag selected, verify validation error
