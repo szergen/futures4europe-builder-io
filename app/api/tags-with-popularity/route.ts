@@ -66,11 +66,15 @@ export const GET = async (req: NextRequest) => {
 
     // Calculate popularity using Builder.io tags and affiliations
     // Note: Tags from /api/tags are already in Wix format (flat structure)
-    // Affiliations now use Builder.io IDs directly (no translation needed)
+    // Affiliations now have full tag objects, extract IDs for popularity calculation
     const tagsWithMentions = tags; // Already in correct format
-    const affiliationsWithMentions = await affiliations.map(
-      (affiliation: any) => affiliation.data
-    );
+    const affiliationsWithMentions = affiliations.map((affiliation: any) => ({
+      personTag: affiliation.personTag?._id || null,
+      projectTag: affiliation.projectTag?._id || null,
+      organisationTag: affiliation.organisationTag?._id || null,
+      extraIdentifier: affiliation.extraIdentifier || "",
+      role: affiliation.role || "",
+    }));
 
     console.log(
       "Calculating popularity with Builder.io tags and affiliations..."

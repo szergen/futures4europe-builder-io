@@ -197,26 +197,16 @@ export function extractSlugFromPath(path: string): string | null {
 
 /**
  * Get affiliations by organisation tag ID from Builder.io
- * Fetches all affiliations and filters by organisationTag or extraOrganisationTag
+ * Uses cached affiliations with full tag objects
  */
 export async function getBuilderAffiliationsByOrgTag(
   organisationTagId: string
 ) {
   try {
-    const { fetchAffiliationsFromBuilder } = await import(
+    const { getAffiliationsByOrgTag } = await import(
       "@app/utils/builderAffiliationUtils"
     );
-    const allAffiliations = await fetchAffiliationsFromBuilder();
-
-    // Filter affiliations where organisationTag or extraOrganisationTag matches
-    const filtered = allAffiliations.filter(
-      (affiliation) =>
-        affiliation.data.organisationTag === organisationTagId ||
-        affiliation.data.extraOrganisationTag === organisationTagId
-    );
-
-    // Return just the data portion (matching expected format)
-    return filtered.map((a) => a.data);
+    return getAffiliationsByOrgTag(organisationTagId);
   } catch (error) {
     console.error(
       "[Builder.io] Error fetching affiliations for org:",
@@ -265,22 +255,14 @@ export async function getAllBuilderPersonPages() {
 
 /**
  * Get affiliations by person tag ID from Builder.io
- * Fetches all affiliations and filters by personTag
+ * Uses cached affiliations with full tag objects
  */
 export async function getBuilderAffiliationsByPersonTag(personTagId: string) {
   try {
-    const { fetchAffiliationsFromBuilder } = await import(
+    const { getAffiliationsByPersonTag } = await import(
       "@app/utils/builderAffiliationUtils"
     );
-    const allAffiliations = await fetchAffiliationsFromBuilder();
-
-    // Filter affiliations where personTag matches
-    const filtered = allAffiliations.filter(
-      (affiliation) => affiliation.data.personTag === personTagId
-    );
-
-    // Return just the data portion (matching expected format)
-    return filtered.map((a) => a.data);
+    return getAffiliationsByPersonTag(personTagId);
   } catch (error) {
     console.error(
       "[Builder.io] Error fetching affiliations for person:",
@@ -329,22 +311,14 @@ export async function getAllBuilderProjectPages() {
 
 /**
  * Get affiliations by project tag ID from Builder.io
- * Fetches all affiliations and filters by projectTag
+ * Uses cached affiliations with full tag objects
  */
 export async function getBuilderAffiliationsByProjectTag(projectTagId: string) {
   try {
-    const { fetchAffiliationsFromBuilder } = await import(
+    const { getAffiliationsByProjectTag } = await import(
       "@app/utils/builderAffiliationUtils"
     );
-    const allAffiliations = await fetchAffiliationsFromBuilder();
-
-    // Filter affiliations where projectTag matches
-    const filtered = allAffiliations.filter(
-      (affiliation) => affiliation.data.projectTag === projectTagId
-    );
-
-    // Return just the data portion (matching expected format)
-    return filtered.map((a) => a.data);
+    return getAffiliationsByProjectTag(projectTagId);
   } catch (error) {
     console.error(
       "[Builder.io] Error fetching affiliations for project:",

@@ -99,7 +99,7 @@ export default async function PersonPage({ params }: any) {
 
   const infoPageItemWithAffiliations = {
     ...infoPageItem,
-    affiliationsItems: affiliations.map((affiliation: any) => affiliation.data),
+    affiliationsItems: affiliations,
   };
 
   console.log("[Builder.io] ✅ Rendering person page:", params.slug);

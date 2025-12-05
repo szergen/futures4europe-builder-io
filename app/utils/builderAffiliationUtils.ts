@@ -1,183 +1,192 @@
 /**
  * Builder.io Affiliation Utilities
  *
- * Provides functions for fetching affiliations from Builder.io and
- * transforming them to the Wix-compatible format for backwards compatibility.
+ * Provides functions for fetching affiliations from Builder.io with resolved
+ * tag references, for use by info pages (person, organisation, project).
  */
 
-import { builder } from "@builder.io/sdk";
+import { getAllBuilderContent } from "@app/shared-components/Builder";
+import { RedisCacheService } from "@app/services/redisCache";
 
-// Initialize Builder with API key
-const BUILDER_API_KEY = process.env.NEXT_PUBLIC_BUILDER_API_KEY || "";
+// Cache key for affiliations with full ref data
+const AFFILIATIONS_CACHE_KEY = "affiliations_builder.json";
 
-// Builder.io Reference type
-export interface BuilderReference {
-  "@type": "@builder.io/core:Reference";
-  id: string;
-  model: string;
-  value?: any;
-}
-
-// Builder.io Affiliation (raw format from Builder.io)
-export interface BuilderAffiliation {
-  id: string;
-  name: string;
-  published?: "published" | "draft";
-  createdDate?: number;
-  lastUpdated?: number;
-  data: {
-    title?: string;
-    projectTag?: BuilderReference;
-    organisationTag?: BuilderReference;
-    extraOrganisationTag?: BuilderReference;
-    personTag?: BuilderReference;
-    role?: string;
-    extraIdentifier?: string;
-    wixId?: string;
-  };
-}
-
-// Wix-compatible Affiliation (transformed format for API response)
-export interface WixCompatibleAffiliation {
-  data: {
-    title?: string;
-    projectTag?: string | null;
-    organisationTag?: string | null;
-    extraOrganisationTag?: string | null;
-    personTag?: string | null;
-    role?: string;
-    extraIdentifier?: string;
-    _id?: string;
-    _createdDate?: { $date: string };
-    _updatedDate?: { $date: string };
-  };
-}
+// Cache TTL: 4 hours
+const CACHE_TTL = 4 * 60 * 60 * 1000;
 
 /**
- * Extract the ID from a Builder.io reference field
- * @param ref - Builder.io reference object or undefined
- * @returns The reference ID or null
+ * Transform a Builder.io reference to a flat tag object
+ * Handles the nested reference structure from Builder.io
  */
-function extractReferenceId(ref: BuilderReference | undefined): string | null {
+function transformTagReference(ref: any): any {
   if (!ref) return null;
-  return ref.id || null;
+
+  // Handle Builder.io reference format with resolved value
+  if (ref["@type"] === "@builder.io/core:Reference" && ref.value) {
+    const refData = ref.value.data || {};
+    return {
+      _id: ref.id,
+      name: refData.name || ref.value.name || "",
+      tagType: refData.tagType || "",
+      tagLine: refData.tagLine || "",
+      picture: refData.picture || "",
+      tagPageLink: refData.tagPageLink || "",
+    };
+  }
+
+  // Handle reference without resolved value (just ID)
+  if (ref["@type"] === "@builder.io/core:Reference" && ref.id) {
+    return { _id: ref.id };
+  }
+
+  // Handle if ref itself has the structure (alternative format)
+  if (ref.value && ref.value.data) {
+    const refData = ref.value.data;
+    return {
+      _id: ref.id || ref.value.id,
+      name: refData.name || ref.value.name || "",
+      tagType: refData.tagType || "",
+      tagLine: refData.tagLine || "",
+      picture: refData.picture || "",
+      tagPageLink: refData.tagPageLink || "",
+    };
+  }
+
+  return null;
 }
 
 /**
- * Transform a Builder.io affiliation to Wix-compatible format
- *
- * This maintains backwards compatibility with existing consumers that expect
- * the Wix response format with the `{ data: { ... } }` wrapper.
- *
- * @param builderAffiliation - Raw affiliation from Builder.io
- * @returns Transformed affiliation in Wix-compatible format
+ * Transform a raw Builder.io affiliation to the format expected by info pages
+ * This includes full tag objects resolved from references
  */
-export function transformBuilderAffiliationToWixFormat(
-  builderAffiliation: BuilderAffiliation
-): WixCompatibleAffiliation {
-  const data = builderAffiliation.data || {};
+function transformAffiliationForInfoPage(affiliation: any): any {
+  const data = affiliation.data || {};
 
   return {
-    data: {
-      title: data.title || builderAffiliation.name || "",
-      projectTag: extractReferenceId(data.projectTag),
-      organisationTag: extractReferenceId(data.organisationTag),
-      extraOrganisationTag: extractReferenceId(data.extraOrganisationTag),
-      personTag: extractReferenceId(data.personTag),
-      role: data.role || "",
-      extraIdentifier: data.extraIdentifier || "",
-      _id: builderAffiliation.id,
-      _createdDate: builderAffiliation.createdDate
-        ? { $date: new Date(builderAffiliation.createdDate).toISOString() }
-        : undefined,
-      _updatedDate: builderAffiliation.lastUpdated
-        ? { $date: new Date(builderAffiliation.lastUpdated).toISOString() }
-        : undefined,
-    },
+    _id: affiliation.id,
+    title: data.title || affiliation.name || "",
+    projectTag: transformTagReference(data.projectTag),
+    organisationTag: transformTagReference(data.organisationTag),
+    extraOrganisationTag: transformTagReference(data.extraOrganisationTag),
+    personTag: transformTagReference(data.personTag),
+    role: data.role || "",
+    extraIdentifier: data.extraIdentifier || "",
   };
 }
 
 /**
- * Fetch all affiliations from Builder.io with pagination
+ * Fetch all affiliations from Builder.io WITH resolved tag references
+ * Uses getAllBuilderContent which includes refs automatically
+ * Results are cached in Redis for performance
  *
- * Builder.io has a limit of 100 items per request, so this function
- * handles pagination automatically.
- *
- * @param options - Optional configuration
- * @param options.cachebust - Whether to bypass Builder.io CDN cache
- * @returns Array of all affiliations from Builder.io
+ * @param options.cachebust - Force fresh fetch from Builder.io
+ * @returns Array of affiliations with full tag objects
  */
-export async function getAllBuilderAffiliations(options?: {
+export async function fetchAffiliationsWithRefs(options?: {
   cachebust?: boolean;
-}): Promise<BuilderAffiliation[]> {
-  const allAffiliations: BuilderAffiliation[] = [];
-  const limit = 100;
-  let offset = 0;
-  let hasMore = true;
-  let retryCount = 0;
-  const maxRetries = 3;
-
-  // Initialize builder with API key
-  builder.init(BUILDER_API_KEY);
-
-  while (hasMore) {
-    try {
-      const results = await builder.getAll("affiliations", {
-        limit,
-        offset,
-        cachebust: options?.cachebust ?? false,
-        options: {
-          noTargeting: true,
-        },
-      });
-
-      if (results && results.length > 0) {
-        allAffiliations.push(...(results as BuilderAffiliation[]));
-        offset += limit;
-        retryCount = 0; // Reset retry count on success
-
-        // If we got fewer results than the limit, we've reached the end
-        if (results.length < limit) {
-          hasMore = false;
-        }
-      } else {
-        hasMore = false;
-      }
-    } catch (error) {
-      retryCount++;
-      console.error(
-        `Error fetching affiliations (attempt ${retryCount}/${maxRetries}):`,
-        error
-      );
-
-      if (retryCount >= maxRetries) {
-        throw new Error(
-          `Failed to fetch affiliations after ${maxRetries} attempts`
-        );
-      }
-
-      // Exponential backoff: 1s, 2s, 4s
-      const waitTime = Math.pow(2, retryCount) * 1000;
-      await new Promise((resolve) => setTimeout(resolve, waitTime));
+}): Promise<any[]> {
+  // Check cache first (unless cachebust)
+  if (!options?.cachebust) {
+    const cached = await RedisCacheService.getFromCache(AFFILIATIONS_CACHE_KEY);
+    if (cached) {
+      return cached;
     }
   }
 
-  return allAffiliations;
+  // Fetch all affiliations using getAllBuilderContent (which has includeRefs: true)
+  const allAffiliations: any[] = [];
+  const limit = 100;
+  let offset = 0;
+  let hasMore = true;
+
+  while (hasMore) {
+    const results = await getAllBuilderContent("affiliations", {
+      limit,
+      offset,
+    });
+
+    if (results && results.length > 0) {
+      allAffiliations.push(...results);
+      offset += limit;
+
+      if (results.length < limit) {
+        hasMore = false;
+      }
+    } else {
+      hasMore = false;
+    }
+  }
+
+  // Transform to format with full tag objects
+  const transformed = allAffiliations.map(transformAffiliationForInfoPage);
+
+  // Cache the result
+  await RedisCacheService.saveToCache(
+    AFFILIATIONS_CACHE_KEY,
+    transformed,
+    CACHE_TTL
+  );
+
+  console.log(
+    `[Builder.io] Cached ${transformed.length} affiliations with refs`
+  );
+
+  return transformed;
 }
 
 /**
- * Fetch all affiliations from Builder.io and transform to Wix-compatible format
- *
- * This is the main function used by the API endpoint to replace Wix fetching.
- *
- * @param options - Optional configuration
- * @param options.cachebust - Whether to bypass Builder.io CDN cache
- * @returns Array of affiliations in Wix-compatible format
+ * Get all cached affiliations, or fetch if not cached
+ * This is the main entry point for getting affiliations
  */
-export async function fetchAffiliationsFromBuilder(options?: {
-  cachebust?: boolean;
-}): Promise<WixCompatibleAffiliation[]> {
-  const builderAffiliations = await getAllBuilderAffiliations(options);
+export async function getAllAffiliations(): Promise<any[]> {
+  // Try cache first
+  const cached = await RedisCacheService.getFromCache(AFFILIATIONS_CACHE_KEY);
+  if (cached) {
+    return cached;
+  }
 
-  return builderAffiliations.map(transformBuilderAffiliationToWixFormat);
+  // Fetch and cache
+  return fetchAffiliationsWithRefs();
+}
+
+/**
+ * Get affiliations filtered by person tag ID
+ */
+export async function getAffiliationsByPersonTag(
+  personTagId: string
+): Promise<any[]> {
+  const all = await getAllAffiliations();
+  return all.filter((aff) => aff.personTag?._id === personTagId);
+}
+
+/**
+ * Get affiliations filtered by organisation tag ID
+ */
+export async function getAffiliationsByOrgTag(
+  organisationTagId: string
+): Promise<any[]> {
+  const all = await getAllAffiliations();
+  return all.filter(
+    (aff) =>
+      aff.organisationTag?._id === organisationTagId ||
+      aff.extraOrganisationTag?._id === organisationTagId
+  );
+}
+
+/**
+ * Get affiliations filtered by project tag ID
+ */
+export async function getAffiliationsByProjectTag(
+  projectTagId: string
+): Promise<any[]> {
+  const all = await getAllAffiliations();
+  return all.filter((aff) => aff.projectTag?._id === projectTagId);
+}
+
+/**
+ * Refresh affiliations cache
+ * Called by POST /api/affiliations
+ */
+export async function refreshAffiliationsCache(): Promise<any[]> {
+  return fetchAffiliationsWithRefs({ cachebust: true });
 }
