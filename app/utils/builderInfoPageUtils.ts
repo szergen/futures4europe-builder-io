@@ -430,15 +430,12 @@ export function transformProjectDataForBuilder(
       "projectFundedItem"
     ),
 
-    // Single reference field (countryTag) - not wrapped
-    countryTag:
-      projectData.countryTag && projectData.countryTag._id
-        ? {
-            "@type": "@builder.io/core:Reference",
-            id: projectData.countryTag._id,
-            model: "tag",
-          }
-        : undefined,
+    // countryTag - array with wrapper key (same format as other reference fields)
+    countryTag: transformReferencesForBuilderCreate(
+      projectData.countryTag ? [projectData.countryTag] : [],
+      "tag",
+      "countryTagItem"
+    ),
   };
 
   // Remove undefined fields to keep payload clean

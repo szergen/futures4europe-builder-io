@@ -541,9 +541,8 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     }
   }, [userDetails, tags]);
 
-  useEffect(() => {
-    isNewPage && handleTagCreated();
-  }, []);
+  // NOTE: Removed handleTagCreated() call on mount - it was causing full Redis cache invalidation
+  // Tags are already available from AuthContext when the component mounts
 
   return (
     <div className={classNames(style.personContainer)}>
