@@ -36,14 +36,16 @@ export async function warmCache() {
       4 * 60 * 60 * 1000
     );
 
-    // Fetch and cache all affiliations
+    // Fetch and cache all affiliations from Builder.io
+    console.log("Fetching affiliations from Builder.io for cache warming...");
     const affiliationsResponse = await fetch(`${baseUrl}/api/affiliations`);
     const affiliations = await affiliationsResponse.json();
     await RedisCacheService.saveToCache(
-      "affiliations.json",
+      "affiliations_builder.json",
       affiliations,
       4 * 60 * 60 * 1000
     );
+    console.log(`✓ Cached ${affiliations.length} affiliations from Builder.io`);
 
     // Now fetch and cache the calculated data
     const popularTagsResponse = await fetch(

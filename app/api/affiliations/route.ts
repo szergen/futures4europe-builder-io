@@ -5,7 +5,7 @@ import { fetchAffiliationsFromBuilder } from "@app/utils/builderAffiliationUtils
 export const revalidate = 0;
 
 export const GET = async (req: NextRequest) => {
-  const cacheKey = "affiliations.json";
+  const cacheKey = "affiliations_builder.json"; // Builder.io implementation cache
 
   try {
     const cachedData = await RedisCacheService.getFromCache(cacheKey);
@@ -32,7 +32,7 @@ export const GET = async (req: NextRequest) => {
 };
 
 export const POST = async (req: NextRequest) => {
-  const cacheKey = "affiliations.json";
+  const cacheKey = "affiliations_builder.json"; // Builder.io implementation cache
 
   try {
     // Fetch fresh affiliations from Builder.io (bypass CDN cache)
