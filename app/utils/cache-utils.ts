@@ -85,7 +85,10 @@ export const invalidateProjectPageCache = async (
 export const invalidateOrganisationPageCache = async (
   slug: string
 ): Promise<Response[]> => {
-  return Promise.all([revalidatePath(`/organisation/${slug}`)]);
+  return Promise.all([
+    revalidatePath(`/organisation/${slug}`),
+    revalidatePath(`/organisation-page/${slug}`),
+  ]);
 };
 
 export const invalidatePostPageCache = async (

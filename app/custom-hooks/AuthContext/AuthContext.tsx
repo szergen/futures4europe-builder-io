@@ -57,6 +57,8 @@ interface AuthContextType {
   affiliations: any[];
   affiliationsFetched: boolean;
   handleAffiliationCreated: () => void;
+  appendAffiliations: (newAffiliations: any[]) => void;
+  removeAffiliations: (affiliationIds: string[]) => void;
   handleInfoPageCreated: () => void;
   isLoadingInProgress: boolean;
   setIsLoadingInProgress: (value: boolean) => void;
@@ -128,12 +130,65 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // #region Fetch affiliations
   const [refreshAffiliations, setRefreshAffiliations] = useState(false);
-  const { affiliations, affiliationsFetched } = useFetchAffiliations(
+  const {
+    affiliations: fetchedAffiliations,
+    affiliationsFetched: fetchedAffiliationsFetched,
+  } = useFetchAffiliations(
     refreshAffiliations
     // setIsLoadingInProgress
   );
+
+  // Store affiliations in local state so we can update it without full refetch
+  const [affiliations, setAffiliations] = useState<any[]>([]);
+  const [affiliationsFetched, setAffiliationsFetched] = useState(false);
+
+  // Sync fetched affiliations to local state when fetch completes
+  useEffect(() => {
+    if (fetchedAffiliationsFetched && fetchedAffiliations) {
+      console.log(
+        `[AuthContext] Syncing ${fetchedAffiliations.length} affiliations to state`
+      );
+      setAffiliations(fetchedAffiliations);
+      setAffiliationsFetched(true);
+    }
+  }, [fetchedAffiliations, fetchedAffiliationsFetched]);
+
   const handleAffiliationCreated = () => {
     setRefreshAffiliations((prev) => !prev); // Toggle the refresh state to trigger re-fetch
+  };
+
+  // OPTIMIZATION: Append new affiliations to state without full refresh
+  const appendAffiliations = (newAffiliations: any[]) => {
+    if (!newAffiliations || newAffiliations.length === 0) return;
+    setAffiliations((prev) => {
+      // Filter out duplicates based on _id
+      const existingIds = new Set(prev.map((a) => a._id));
+      const uniqueNew = newAffiliations.filter((a) => !existingIds.has(a._id));
+      if (uniqueNew.length === 0) {
+        console.log("All affiliations already exist in state, skipping append");
+        return prev;
+      }
+      console.log(
+        `✓ ${uniqueNew.length} affiliations appended to AuthContext state`
+      );
+      return [...prev, ...uniqueNew];
+    });
+  };
+
+  // OPTIMIZATION: Remove affiliations from state without full refresh
+  const removeAffiliations = (affiliationIds: string[]) => {
+    if (!affiliationIds || affiliationIds.length === 0) return;
+    setAffiliations((prev) => {
+      const idsToRemove = new Set(affiliationIds);
+      const filtered = prev.filter((a) => !idsToRemove.has(a._id));
+      const removedCount = prev.length - filtered.length;
+      if (removedCount > 0) {
+        console.log(
+          `✓ ${removedCount} affiliations removed from AuthContext state`
+        );
+      }
+      return filtered;
+    });
   };
   // #endregion
 
@@ -481,6 +536,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         affiliations,
         affiliationsFetched,
         handleAffiliationCreated,
+        appendAffiliations,
+        removeAffiliations,
       }}
     >
       {children}

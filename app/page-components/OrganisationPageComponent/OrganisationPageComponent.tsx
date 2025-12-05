@@ -1,46 +1,41 @@
-'use client';
-import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import style from './OrganisationPageComponent.module.css';
-import Tag, { TagProps } from '@app/shared-components/Tag/Tag';
-import Typography from '@app/shared-components/Typography/Typography';
-import HeaderComponent from './components/HeaderComponent/HeaderComponent';
-import TagListComponent from '../shared-page-components/TagListComponent/TagListComponent';
-import AffiliationsComponent from '../PersonPageComponent/components/AffiliationsComponent/AffiliationsComponent';
-import FilesComponent from '../shared-page-components/FilesComponent/FilesComponent';
-import { mockOrganisation } from '../../mocks/pagesMocks';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
-import OgImage from '@app/shared-components/OgImage';
+"use client";
+import classNames from "classnames";
+import React, { useEffect, useState } from "react";
+import style from "./OrganisationPageComponent.module.css";
+import Tag, { TagProps } from "@app/shared-components/Tag/Tag";
+import Typography from "@app/shared-components/Typography/Typography";
+import HeaderComponent from "./components/HeaderComponent/HeaderComponent";
+import TagListComponent from "../shared-page-components/TagListComponent/TagListComponent";
+import AffiliationsComponent from "../PersonPageComponent/components/AffiliationsComponent/AffiliationsComponent";
+import FilesComponent from "../shared-page-components/FilesComponent/FilesComponent";
+import { mockOrganisation } from "../../mocks/pagesMocks";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
+import OgImage from "@app/shared-components/OgImage";
 import {
   arraysEqual,
   deepEqual,
   sanitizeTitleForSlug,
-} from '../PageComponents.utils';
-import {
-  bulkInsertItems,
-  bulkRemoveItems,
-  replaceDataItemReferences,
-  revalidateDataItem,
-  updateDataItem,
-} from '@app/wixUtils/client-side';
+} from "../PageComponents.utils";
 import {
   checkIfArrayNeedsUpdateForStrings,
   checkIfArrayNeedsUpdateForTags,
   generateUniqueHash,
-} from '../PostPageComponent/PostPageComponent.utils';
-import MiniPagesListComponentPost from '../shared-page-components/MiniPagesListComponentPost/MiniPagesListComponentPost';
-import { useWixModules } from '@wix/sdk-react';
-import { items } from '@wix/data';
-import { Modal } from 'flowbite-react';
-import LoadingSpinner from '@app/shared-components/LoadingSpinner/LoadingSpinner';
+} from "../PostPageComponent/PostPageComponent.utils";
+import MiniPagesListComponentPost from "../shared-page-components/MiniPagesListComponentPost/MiniPagesListComponentPost";
+import { Modal } from "flowbite-react";
+import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
+import ContentComponent from "../PostPageComponent/components/ContentComponent/ContentComponent";
+import { invalidateOrganisationPageCache } from "@app/utils/cache-utils";
+// Builder.io imports
 import {
-  refetchAffiliations,
-  refetchInfoPages,
-  refetchTags,
-} from '@app/utils/refetch-utils';
-import ContentComponent from '../PostPageComponent/components/ContentComponent/ContentComponent';
-import { invalidateOrganisationPageCache } from '@app/utils/cache-utils';
+  createBuilderOrganisationPage,
+  updateBuilderOrganisationPage,
+} from "@app/utils/builderInfoPageUtils";
+import {
+  bulkCreateAffiliations,
+  bulkDeleteAffiliations,
+} from "@app/utils/builderAffiliationUtils";
 
 function OrganisationPageComponent({
   pageTitle,
@@ -60,6 +55,9 @@ function OrganisationPageComponent({
     handleUserDataRefresh,
     postPages,
     infoPages,
+    updateTag,
+    appendAffiliations,
+    removeAffiliations,
   } = useAuth();
 
   const [isPageOwnedByUser, setIsPageOwnedByUser] = useState(false);
@@ -104,12 +102,12 @@ function OrganisationPageComponent({
 
   // #region Handle affiliations
   console.log(
-    'debug111->person.affiliationsItems',
+    "debug111->person.affiliationsItems",
     organisation?.affiliationsItems
   );
 
   const projects = organisation?.affiliationsItems
-    ?.filter((item: any) => item?.extraIdentifier === 'projectOrganisationRole')
+    ?.filter((item: any) => item?.extraIdentifier === "projectOrganisationRole")
     .map((item: any) => {
       return {
         ...item?.projectTag,
@@ -125,7 +123,7 @@ function OrganisationPageComponent({
     );
 
   const people = organisation?.affiliationsItems
-    ?.filter((item: any) => item?.extraIdentifier === 'current')
+    ?.filter((item: any) => item?.extraIdentifier === "current")
     .map((item: any) => {
       return {
         ...item?.personTag,
@@ -146,7 +144,7 @@ function OrganisationPageComponent({
     ...organisation,
     title: organisation?.data?.title, // done
     pageType: organisation?.data?.pageTypes[0],
-    registrationDate: organisation?.data?._createdDate['$date'], //done - system field
+    registrationDate: organisation?.data?._createdDate["$date"], //done - system field
     organisationTag: organisation?.data?.organisation[0], //done
     organisationEstablishedDate:
       organisation?.data?.organisationEstablishedDate, //done
@@ -225,8 +223,8 @@ function OrganisationPageComponent({
 
   // #region validation state
   const [validationState, setValidationState] = useState({
-    title: '',
-    subtitle: '',
+    title: "",
+    subtitle: "",
   });
 
   const updateValidationState = (newData: any) => {
@@ -243,360 +241,182 @@ function OrganisationPageComponent({
   const [isSaveInProgress, setIsSaveInProgress] = useState(false);
 
   const updateDataToServer = async () => {
-    console.log(
-      'Updating Page from',
-      organisationData.dataCollectionId,
-      organisationData._id
-    );
+    console.log("[Builder.io] Updating Organisation Page:", organisation.id);
     setIsSaveInProgress(true);
 
-    // #region Update Organisation Tag
-    // Check if object personTag has changed
-    if (
-      !deepEqual(
-        organisationData.organisationTag,
-        defaultOrganisationData.organisationTag
-      )
-    ) {
-      console.log('personTag has not changed');
-      const updatedOrganisationTag = await updateDataItem(
-        'Tags',
-        organisationData.organisationTag._id,
-        {
-          _id: organisationData.organisationTag._id,
-          ...organisationData.organisationTag,
+    try {
+      // #region Update Organisation Tag in Builder.io if changed
+      if (
+        !deepEqual(
+          organisationData.organisationTag,
+          defaultOrganisationData.organisationTag
+        )
+      ) {
+        console.log("[Builder.io] Organisation tag has changed, updating...");
+        const tagUpdateResponse = await fetch(
+          `/api/builder/tag/${organisationData.organisationTag._id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: organisationData.organisationTag.name,
+              data: {
+                name: organisationData.organisationTag.name,
+                tagType: organisationData.organisationTag.tagType,
+                picture: organisationData.organisationTag.picture,
+                tagLine: organisationData.organisationTag.tagLine,
+                tagPageLink: organisationData.organisationTag.tagPageLink,
+              },
+            }),
+          }
+        );
+        if (tagUpdateResponse.ok) {
+          const updatedTagData = await tagUpdateResponse.json();
+          console.log("[Builder.io] Organisation tag updated:", updatedTagData);
+          // Update local state to reflect the change
+          updateTag(organisationData.organisationTag);
+        } else {
+          console.error("[Builder.io] Failed to update organisation tag");
         }
-      );
-      console.log('updatedOrganisationTag', updatedOrganisationTag);
-    }
-    // #endregion
+      }
+      // #endregion
 
-    const hasDifferentMedia = organisationData?.mediaFiles?.some(
-      (file: any, index: number) =>
-        file.url !== defaultOrganisationData?.mediaFiles?.[index]?.url ||
-        file.displayName !==
-          defaultOrganisationData?.mediaFiles?.[index]?.displayName
-    );
-
-    // #region Update page fields
-    if (
-      organisationData.description !== defaultOrganisationData.description ||
-      !arraysEqual(
-        organisationData.organisationProject,
-        defaultOrganisationData.organisationProject
-      ) ||
-      checkIfArrayNeedsUpdateForStrings(
+      // #region Update organisation page in Builder.io
+      await updateBuilderOrganisationPage(
+        organisation.id,
+        organisationData,
         organisationData.contentText,
-        defaultOrganisationData.contentText
-      ) ||
-      checkIfArrayNeedsUpdateForTags(
-        organisationData.contentImages,
-        defaultOrganisationData.contentImages
-      ) ||
-      checkIfArrayNeedsUpdateForStrings(
-        organisationData.contentImages,
-        defaultOrganisationData.contentImages
-      ) ||
-      hasDifferentMedia ||
-      !arraysEqual(
-        organisationData.organisationPeople,
-        defaultOrganisationData.organisationPeople
-      ) ||
-      organisationData?.organisationTag?.name !==
-        defaultOrganisationData?.organisationTag?.name ||
-      organisationData?.organisationEstablishedDate !==
-        defaultOrganisationData?.organisationEstablishedDate ||
-      organisationData?.linkedinLink !==
-        defaultOrganisationData?.linkedinLink ||
-      organisationData?.websiteLink !== defaultOrganisationData?.websiteLink
-    ) {
-      const updatedItem = await updateDataItem(
-        organisationData.dataCollectionId,
-        organisationData._id,
-        {
-          _id: organisationData._id,
-          ...organisationData.data,
-          title: organisationData.organisationTag.name,
-          description: organisationData?.description,
-          organisationEstablishedDate:
-            organisationData?.organisationEstablishedDate,
-          postContentRIch1: organisationData?.contentText[0],
-          postContentRIch2: organisationData?.contentText[1],
-          postContentRIch3: organisationData?.contentText[2],
-          postContentRIch4: organisationData?.contentText[3],
-          postContentRIch5: organisationData?.contentText[4],
-          postContentRIch6: organisationData?.contentText[5],
-          postContentRIch7: organisationData?.contentText[6],
-          postContentRIch8: organisationData?.contentText[7],
-          postContentRIch9: organisationData?.contentText[8],
-          postContentRIch10: organisationData?.contentText[9],
-          postImage1: organisationData?.contentImages[0],
-          postImage2: organisationData?.contentImages[1],
-          postImage3: organisationData?.contentImages[2],
-          postImage4: organisationData?.contentImages[3],
-          postImage5: organisationData?.contentImages[4],
-          postImage6: organisationData?.contentImages[5],
-          postImage7: organisationData?.contentImages[6],
-          postImage8: organisationData?.contentImages[7],
-          postImage9: organisationData?.contentImages[8],
-          postImage10: organisationData?.contentImages[9],
-          // organisationProjectRoles: organisationData.projects.map(
-          //   (project: any) => {
-          //     return {
-          //       project: project.name,
-          //       role: project.arole,
-          //     };
-          //   }
-          // ),
-          // organisationPeopleRoles: organisationData.people.map(
-          //   (person: any) => {
-          //     return {
-          //       person: person.name,
-          //       role: person.arole,
-          //     };
-          //   }
-          // ),
-          mediaFiles: organisationData.mediaFiles,
-          linkedinLink: organisationData?.linkedinLink,
-          websiteLink: organisationData?.websiteLink,
-        }
+        organisationData.contentImages
       );
-      console.log('updatedItem', updatedItem);
-    }
+      console.log("[Builder.io] Organisation page updated successfully");
+      // #endregion
 
-    // Update projects
-    if (
-      checkIfArrayNeedsUpdateForTags(
-        organisationData.projects,
-        defaultOrganisationData.projects
-      )
-    ) {
-      // const updatedProjects = await replaceDataItemReferences(
-      //   'InfoPages',
-      //   organisationData.projects
-      //     ?.map((proj: any) => proj._id)
-      //     .filter((id: any) => id),
-      //   'organisationProject',
-      //   organisationData._id
-      // );
-      // console.log('updated organisationProject', updatedProjects);
-      console.log('debug111-> updating projects');
-      const oldAffiliations = organisation?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'projectOrganisationRole'
-      );
-      console.log('debug111->oldAffiliation', oldAffiliations);
-      if (oldAffiliations && oldAffiliations?.length > 0) {
-        const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
-          oldAffiliations?.map((item: any) => item._id)
+      // #region Update project affiliations in Builder.io
+      if (
+        checkIfArrayNeedsUpdateForTags(
+          organisationData.projects,
+          defaultOrganisationData.projects
+        )
+      ) {
+        console.log("[Builder.io] Updating project affiliations...");
+
+        // Delete old project affiliations
+        const oldProjectAffiliations = organisation?.affiliationsItems?.filter(
+          (item: any) => item?.extraIdentifier === "projectOrganisationRole"
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
-      }
-
-      if (organisationData.projects?.length > 0) {
-        const newAffiliationsObject = organisationData.projects
-          ?.map((item: any) => {
-            return {
-              data: {
-                organisationTag: organisationData.organisationTag,
-                projectTag: item,
-                role: item.arole,
-                extraIdentifier: 'projectOrganisationRole',
-                title: `${organisationData?.organisationTag?.name} -to- ${item.name}`,
-              },
-            };
-          })
-          ?.filter((item: any) => item?.data?.projectTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
-        if (newAffiliationsObject?.length > 0) {
-          const updatedOrganisationsProjects = await bulkInsertItems(
-            'Affiliations',
-            newAffiliationsObject
+        if (oldProjectAffiliations && oldProjectAffiliations.length > 0) {
+          const deleteResult = await bulkDeleteAffiliations(
+            oldProjectAffiliations.map((item: any) => item._id)
           );
-
           console.log(
-            'debug111->updatedOrganisationsProjects',
-            updatedOrganisationsProjects
+            "[Builder.io] Deleted old project affiliations:",
+            deleteResult
           );
+          // Update React state
+          if (deleteResult.deleted?.length > 0) {
+            removeAffiliations(deleteResult.deleted);
+          }
+        }
+
+        // Create new project affiliations
+        if (organisationData.projects?.length > 0) {
+          const newProjectAffiliations = organisationData.projects
+            .filter((item: any) => item?.name && item.name !== "")
+            .map((item: any) => ({
+              projectTag: { _id: item._id, name: item.name },
+              organisationTag: {
+                _id: organisationData.organisationTag._id,
+                name: organisationData.organisationTag.name,
+              },
+              role: item.arole || "",
+              extraIdentifier: "projectOrganisationRole",
+            }));
+
+          if (newProjectAffiliations.length > 0) {
+            const createResult = await bulkCreateAffiliations(
+              newProjectAffiliations
+            );
+            console.log(
+              "[Builder.io] Created new project affiliations:",
+              createResult
+            );
+            // Update React state
+            if (createResult.created?.length > 0) {
+              appendAffiliations(createResult.created);
+            }
+          }
         }
       }
-    }
+      // #endregion
 
-    // Update people
-    if (
-      checkIfArrayNeedsUpdateForTags(
-        organisationData.people,
-        defaultOrganisationData.people
-      )
-    ) {
-      // const updatedPeople = await replaceDataItemReferences(
-      //   'InfoPages',
-      //   organisationData.people
-      //     ?.map((person: any) => person._id)
-      //     .filter((id: any) => id),
-      //   'organisationPeople',
-      //   organisationData._id
-      // );
-      // console.log('updated organisationPeople', updatedPeople);
-      console.log('debug111-> updating people');
-      const oldAffiliations = organisation?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'current'
-      );
-      console.log('debug111->oldAffiliation', oldAffiliations);
-      if (oldAffiliations && oldAffiliations?.length > 0) {
-        const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
-          oldAffiliations?.map((item: any) => item._id)
+      // #region Update people affiliations in Builder.io
+      if (
+        checkIfArrayNeedsUpdateForTags(
+          organisationData.people,
+          defaultOrganisationData.people
+        )
+      ) {
+        console.log("[Builder.io] Updating people affiliations...");
+
+        // Delete old people affiliations
+        const oldPeopleAffiliations = organisation?.affiliationsItems?.filter(
+          (item: any) => item?.extraIdentifier === "current"
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
-      }
-
-      if (organisationData.people?.length > 0) {
-        const newAffiliationsObject = organisationData.people
-          ?.map((item: any) => {
-            return {
-              data: {
-                organisationTag: organisationData.organisationTag,
-                personTag: item,
-                role: item.arole,
-                extraIdentifier: 'current',
-                title: `${organisationData?.organisationTag?.name} -to- ${item.name}`,
-              },
-            };
-          })
-          ?.filter((item: any) => item?.data?.personTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
-        if (newAffiliationsObject?.length > 0) {
-          const updatedOrganisationsPeople = await bulkInsertItems(
-            'Affiliations',
-            newAffiliationsObject
+        if (oldPeopleAffiliations && oldPeopleAffiliations.length > 0) {
+          const deleteResult = await bulkDeleteAffiliations(
+            oldPeopleAffiliations.map((item: any) => item._id)
           );
-
           console.log(
-            'debug111->updatedOrganisationsPeople',
-            updatedOrganisationsPeople
+            "[Builder.io] Deleted old people affiliations:",
+            deleteResult
           );
+          // Update React state
+          if (deleteResult.deleted?.length > 0) {
+            removeAffiliations(deleteResult.deleted);
+          }
+        }
+
+        // Create new people affiliations
+        if (organisationData.people?.length > 0) {
+          const newPeopleAffiliations = organisationData.people
+            .filter((item: any) => item?.name && item.name !== "")
+            .map((item: any) => ({
+              projectTag: {
+                _id: organisationData.organisationTag._id,
+                name: organisationData.organisationTag.name,
+              },
+              personTag: { _id: item._id, name: item.name },
+              organisationTag: {
+                _id: organisationData.organisationTag._id,
+                name: organisationData.organisationTag.name,
+              },
+              role: item.arole || "",
+              extraIdentifier: "current",
+            }));
+
+          if (newPeopleAffiliations.length > 0) {
+            const createResult = await bulkCreateAffiliations(
+              newPeopleAffiliations
+            );
+            console.log(
+              "[Builder.io] Created new people affiliations:",
+              createResult
+            );
+            // Update React state
+            if (createResult.created?.length > 0) {
+              appendAffiliations(createResult.created);
+            }
+          }
         }
       }
+      // #endregion
+
+      // Invalidate cache for the organisation page
+      await invalidateOrganisationPageCache(organisationData.slug);
+      console.log("[Builder.io] Organisation page save completed");
+    } catch (error) {
+      console.error("[Builder.io] Error updating organisation page:", error);
     }
-
-    // Update Organisation Type
-    if (
-      !deepEqual(
-        organisationData.organisationType,
-        defaultOrganisationData.organisationType
-      )
-    ) {
-      const updatedOrganisationType = await replaceDataItemReferences(
-        'InfoPages',
-        organisationData?.organisationType?.map((type: any) => type._id),
-        'organisationType',
-        organisationData._id
-      );
-      console.log('updatedOrganisationType', updatedOrganisationType);
-    }
-
-    // Update Country Tag
-    if (
-      !arraysEqual(
-        organisationData.countryTag,
-        defaultOrganisationData.countryTag
-      )
-    ) {
-      const updatedCountryTag = await replaceDataItemReferences(
-        'InfoPages',
-        [organisationData.countryTag?._id],
-        'countryTag',
-        organisationData._id
-      );
-      console.log('updatedCountryTag', updatedCountryTag);
-    }
-
-    // Update domains
-    if (
-      !arraysEqual(organisationData.domains, defaultOrganisationData.domains)
-    ) {
-      const validatedDomains = organisationData.domains?.filter(
-        (domain: any) => domain?._id
-      );
-      const updatedDomains = await replaceDataItemReferences(
-        'InfoPages',
-        validatedDomains?.map((domain: any) => domain._id),
-        'domains',
-        organisationData._id
-      );
-      console.log('updated domains', updatedDomains);
-    }
-
-    // Update foresight methods
-    if (
-      !arraysEqual(organisationData.methods, defaultOrganisationData.methods)
-    ) {
-      const validatedMethods = organisationData.methods?.filter(
-        (method: any) => method?._id
-      );
-      const updatedMethods = await replaceDataItemReferences(
-        'InfoPages',
-        validatedMethods?.map((method: any) => method._id),
-        'methods',
-        organisationData._id
-      );
-      console.log('updated methods', updatedMethods);
-    }
-
-    // Update member organisations
-    if (
-      !arraysEqual(
-        organisationData.memberOrganisations,
-        defaultOrganisationData.memberOrganisations
-      )
-    ) {
-      const updatedMemberOrgs = await replaceDataItemReferences(
-        'InfoPages',
-        organisationData.memberOrganisations?.map((org: any) => org._id),
-        'organisationHasMember',
-        organisationData._id
-      );
-      console.log('updated member organisations', updatedMemberOrgs);
-    }
-
-    // Update member of organisations
-    if (
-      !arraysEqual(
-        organisationData.memberOfOrganisations,
-        defaultOrganisationData.memberOfOrganisations
-      )
-    ) {
-      const updatedMemberOfOrgs = await replaceDataItemReferences(
-        'InfoPages',
-        organisationData.memberOfOrganisations?.map((org: any) => org._id),
-        'organisationMemberOf',
-        organisationData._id
-      );
-      console.log('updated member of organisations', updatedMemberOfOrgs);
-    }
-
-    // Update Activity
-    if (
-      !arraysEqual(organisationData.activity, defaultOrganisationData.activity)
-    ) {
-      const updatedActivity = await replaceDataItemReferences(
-        'InfoPages',
-        organisationData.activity?.map((activity: any) => activity._id),
-        'activity',
-        organisationData._id
-      );
-      console.log('updatedActivity', updatedActivity);
-    }
-
-    // Revalidate the cache for the page
-    // await refetchTags();
-    // await refetchInfoPages();
-    // await refetchAffiliations();
-    // handleTagCreated();
-    // await revalidateDataItem(`/organisation/${organisationData.slug}`);
-
-    await invalidateOrganisationPageCache(organisationData.slug);
 
     setIsSaveInProgress(false);
   };
@@ -612,353 +432,164 @@ function OrganisationPageComponent({
       );
     })
     ?.map((link) => link?.data);
-  console.log('internalLinks', internalLinks);
+  console.log("internalLinks", internalLinks);
   // #endregion
 
   // #region handle save or create new page
-  const { insertDataItem } = useWixModules(items);
-
   const createNewOrganisationPage = async () => {
-    console.log('Creating New Person Info Page');
+    console.log("[Builder.io] Creating New Organisation Info Page");
     setIsSaveInProgress(true);
 
-    // Create new project info page
-    const newOrganisationInfo = await insertDataItem({
-      dataCollectionId: 'InfoPages',
-      dataItem: {
-        data: {
-          title: organisationData?.organisationTag?.name,
-          description: organisationData?.description,
-          organisationEstablishedDate:
-            organisationData?.organisationEstablishedDate,
-          // organisationProjectRoles: organisationData.projects.map(
-          //   (project: any) => {
-          //     return {
-          //       project: project.name,
-          //       role: project.arole,
-          //     };
-          //   }
-          // ),
-          // organisationPeopleRoles: organisationData.people.map(
-          //   (person: any) => {
-          //     return {
-          //       person: person.name,
-          //       role: person.arole,
-          //     };
-          //   }
-          // ),
-          postContentRIch1: organisationData?.contentText[0],
-          postContentRIch2: organisationData?.contentText[1],
-          postContentRIch3: organisationData?.contentText[2],
-          postContentRIch4: organisationData?.contentText[3],
-          postContentRIch5: organisationData?.contentText[4],
-          postContentRIch6: organisationData?.contentText[5],
-          postContentRIch7: organisationData?.contentText[6],
-          postContentRIch8: organisationData?.contentText[7],
-          postContentRIch9: organisationData?.contentText[8],
-          postContentRIch10: organisationData?.contentText[9],
-          postImage1: organisationData?.contentImages[0],
-          postImage2: organisationData?.contentImages[1],
-          postImage3: organisationData?.contentImages[2],
-          postImage4: organisationData?.contentImages[3],
-          postImage5: organisationData?.contentImages[4],
-          postImage6: organisationData?.contentImages[5],
-          postImage7: organisationData?.contentImages[6],
-          postImage8: organisationData?.contentImages[7],
-          postImage9: organisationData?.contentImages[8],
-          postImage10: organisationData?.contentImages[9],
-          mediaFiles: organisationData.mediaFiles,
-          linkedinLink: organisationData?.linkedinLink,
-          websiteLink: organisationData?.websiteLink,
-          slug:
-            sanitizeTitleForSlug(organisationData?.organisationTag?.name) +
-            '-' +
-            generateUniqueHash(),
-        },
-      },
-    });
+    try {
+      // Generate unique slug
+      const newSlug =
+        sanitizeTitleForSlug(organisationData?.organisationTag?.name) +
+        "-" +
+        generateUniqueHash();
 
-    const newOrganisationInfoId = newOrganisationInfo?.dataItem?._id;
-    const newOrganisationInfoSlug = newOrganisationInfo?.dataItem?.data?.slug;
+      // Get user tag for author/pageOwner
+      const userTag = tags.find((tag) => tag.name === userDetails?.userName);
 
-    // #region Update Author Tag and Organisation Tag
-    const organisationTag = organisationData?.organisationTag;
-    const userTag = tags.find((tag) => tag.name === userDetails?.userName);
+      // Prepare organisation data with all references
+      const organisationDataForBuilder = {
+        ...organisationData,
+        slug: `/organisation/${newSlug}`,
+        author: userTag ? [userTag] : [],
+        pageOwner: userTag ? [userTag] : [],
+      };
 
-    if (newOrganisationInfoId && organisationTag && userTag) {
-      const updatedAuthor = await replaceDataItemReferences(
-        'InfoPages',
-        [userTag?._id],
-        'Author',
-        newOrganisationInfoId
+      // Create organisation page in Builder.io
+      const newOrganisationInfo = await createBuilderOrganisationPage(
+        organisationDataForBuilder,
+        organisationData.contentText,
+        organisationData.contentImages
       );
-      console.log('updatedAuthor', updatedAuthor);
 
-      const updatedOrganisationTag = await replaceDataItemReferences(
-        'InfoPages',
-        [organisationTag?._id],
-        'organisation',
-        newOrganisationInfoId
-      );
-      console.log('updatedOrganisationTag', updatedOrganisationTag);
+      const newOrganisationInfoId = newOrganisationInfo?.id;
+      const newOrganisationInfoSlug = newSlug;
 
-      const updatedPageOwner = await replaceDataItemReferences(
-        'InfoPages',
-        [userTag?._id],
-        'pageOwner',
-        newOrganisationInfoId
-      );
-      console.log('updatedPageOwner', updatedPageOwner);
-    }
-    // #endregion
+      console.log("[Builder.io] Organisation page created:", {
+        id: newOrganisationInfoId,
+        slug: newOrganisationInfoSlug,
+      });
 
-    // #region Update Page Type Tag
-    if (organisationData.pageType?._id && newOrganisationInfoId) {
-      const updatedPageTypes = await replaceDataItemReferences(
-        'InfoPages',
-        [organisationData.pageType?._id],
-        'pageTypes',
-        newOrganisationInfoId
-      );
-      console.log('updatedPageTypes', updatedPageTypes);
-    }
-    // #endregion
-
-    // #region Update Organisation Type
-    if (organisationData.organisationType?._id && newOrganisationInfoId) {
-      const updatedOrganisationType = await replaceDataItemReferences(
-        'InfoPages',
-        [organisationData.organisationType?._id],
-        'organisationType',
-        newOrganisationInfoId
-      );
-      console.log('updatedOrganisationType', updatedOrganisationType);
-    }
-    // #endregion
-
-    // #region Update Country Tag
-    if (organisationData.countryTag?._id && newOrganisationInfoId) {
-      const updatedCountryTag = await replaceDataItemReferences(
-        'InfoPages',
-        [organisationData.countryTag?._id],
-        'countryTag',
-        newOrganisationInfoId
-      );
-      console.log('updatedCountryTag', updatedCountryTag);
-    }
-    // #endregion
-
-    // #region Update Foresight Methods
-    if (organisationData.methods && newOrganisationInfoId) {
-      const validatedMethods = organisationData.methods?.filter(
-        (method: any) => method?._id
-      );
-      const updatedMethods = await replaceDataItemReferences(
-        'InfoPages',
-        validatedMethods?.map((method: any) => method._id),
-        'methods',
-        newOrganisationInfoId
-      );
-      console.log('updatedMethods', updatedMethods);
-    }
-    // #endregion
-
-    // #region Update Domains
-    if (organisationData.domains && newOrganisationInfoId) {
-      const validatedDomains = organisationData.domains?.filter(
-        (domain: any) => domain?._id
-      );
-      const updatedDomains = await replaceDataItemReferences(
-        'InfoPages',
-        validatedDomains?.map((domain: any) => domain._id),
-        'domains',
-        newOrganisationInfoId
-      );
-      console.log('updatedDomains', updatedDomains);
-    }
-    // #endregion
-
-    // #region Update activity
-    if (organisationData.activity && newOrganisationInfoId) {
-      const validatedActivity = organisationData.activity?.filter(
-        (activity: any) => activity?._id
-      );
-      const updatedActivity = await replaceDataItemReferences(
-        'InfoPages',
-        validatedActivity?.map((activity: any) => activity._id),
-        'activity',
-        newOrganisationInfoId
-      );
-      console.log('updatedActivity', updatedActivity);
-    }
-    // #endregion
-
-    // #region Update Projects
-
-    if (organisationData.projects && newOrganisationInfoId) {
-      // const updatedProjects = await replaceDataItemReferences(
-      //   'InfoPages',
-      //   organisationData.projects
-      //     ?.map((org: any) => org._id)
-      //     .filter((id: any) => id),
-      //   'organisationProject',
-      //   newOrganisationInfoId
-      // );
-      // console.log('updatedProjects', updatedProjects);
-      console.log('debug111-> updating projects');
-      const oldAffiliations = organisation?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'projectOrganisationRole'
-      );
-      console.log('debug111->oldAffiliation', oldAffiliations);
-      if (oldAffiliations && oldAffiliations?.length > 0) {
-        const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
-          oldAffiliations?.map((item: any) => item._id)
+      // #region Update Organisation Tag with tagPageLink in Builder.io
+      if (organisationData?.organisationTag?._id) {
+        console.log(
+          "[Builder.io] Updating organisation tag with tagPageLink..."
         );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
+        const tagUpdateResponse = await fetch(
+          `/api/builder/tag/${organisationData.organisationTag._id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: organisationData.organisationTag.name,
+              data: {
+                name: organisationData.organisationTag.name,
+                tagType: organisationData.organisationTag.tagType,
+                picture: organisationData.organisationTag.picture,
+                tagLine: organisationData.organisationTag.tagLine,
+                tagPageLink: "/organisation/" + newOrganisationInfoSlug,
+              },
+            }),
+          }
+        );
+        if (tagUpdateResponse.ok) {
+          const updatedTagData = await tagUpdateResponse.json();
+          console.log(
+            "[Builder.io] Organisation tag updated with tagPageLink:",
+            updatedTagData
+          );
+          // Update local state
+          updateTag({
+            ...organisationData.organisationTag,
+            tagPageLink: "/organisation/" + newOrganisationInfoSlug,
+          });
+        } else {
+          console.error("[Builder.io] Failed to update organisation tag");
+        }
       }
+      // #endregion
 
+      // #region Create Project Affiliations in Builder.io
       if (organisationData.projects?.length > 0) {
-        const newAffiliationsObject = organisationData.projects
-          ?.map((item: any) => {
-            return {
-              data: {
-                organisationTag: organisationData.organisationTag,
-                projectTag: item,
-                role: item.arole,
-                extraIdentifier: 'projectOrganisationRole',
-                title: `${organisationData?.organisationTag?.name} -to- ${item.name}`,
-              },
-            };
-          })
-          ?.filter((item: any) => item?.data?.organisationTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
-        if (newAffiliationsObject?.length > 0) {
-          const updatedOrganisationsProjects = await bulkInsertItems(
-            'Affiliations',
-            newAffiliationsObject
-          );
+        console.log("[Builder.io] Creating project affiliations...");
+        const newProjectAffiliations = organisationData.projects
+          .filter((item: any) => item?.name && item.name !== "")
+          .map((item: any) => ({
+            projectTag: { _id: item._id, name: item.name },
+            organisationTag: {
+              _id: organisationData.organisationTag._id,
+              name: organisationData.organisationTag.name,
+            },
+            role: item.arole || "",
+            extraIdentifier: "projectOrganisationRole",
+          }));
 
-          console.log(
-            'debug111->updatedOrganisationsProjects',
-            updatedOrganisationsProjects
+        if (newProjectAffiliations.length > 0) {
+          const createResult = await bulkCreateAffiliations(
+            newProjectAffiliations
           );
+          console.log(
+            "[Builder.io] Created project affiliations:",
+            createResult
+          );
+          // Update React state
+          if (createResult.created?.length > 0) {
+            appendAffiliations(createResult.created);
+          }
         }
       }
-    }
-    // #endregion
+      // #endregion
 
-    // #region Update People
-    if (organisationData.people && newOrganisationInfoId) {
-      // const updatedPeople = await replaceDataItemReferences(
-      //   'InfoPages',
-      //   organisationData.people
-      //     ?.map((org: any) => org._id)
-      //     .filter((id: any) => id),
-      //   'organisationPeople',
-      //   newOrganisationInfoId
-      // );
-      // console.log('updatedPeople', updatedPeople);
-      console.log('debug111-> updating people');
-      const oldAffiliations = organisation?.affiliationsItems?.filter(
-        (item: any) => item?.extraIdentifier === 'current'
-      );
-      console.log('debug111->oldAffiliation', oldAffiliations);
-      if (oldAffiliations && oldAffiliations?.length > 0) {
-        const removeOldAffiliations = await bulkRemoveItems(
-          'Affiliations',
-          oldAffiliations?.map((item: any) => item._id)
-        );
-        console.log('debug111->removeOldAffiliations', removeOldAffiliations);
-      }
-
+      // #region Create People Affiliations in Builder.io
       if (organisationData.people?.length > 0) {
-        const newAffiliationsObject = organisationData.people
-          ?.map((item: any) => {
-            return {
-              data: {
-                organisationTag: organisationData.organisationTag,
-                personTag: item,
-                role: item.arole,
-                extraIdentifier: 'current',
-                title: `${organisationData?.organisationTag?.name} -to- ${item.name}`,
-              },
-            };
-          })
-          ?.filter((item: any) => item?.data?.organisationTag?.name !== '');
-        console.log('debug111->newAffiliationsObject', newAffiliationsObject);
-        if (newAffiliationsObject?.length > 0) {
-          const updatedOrganisationsPeople = await bulkInsertItems(
-            'Affiliations',
-            newAffiliationsObject
-          );
+        console.log("[Builder.io] Creating people affiliations...");
+        const newPeopleAffiliations = organisationData.people
+          .filter((item: any) => item?.name && item.name !== "")
+          .map((item: any) => ({
+            projectTag: {
+              _id: organisationData.organisationTag._id,
+              name: organisationData.organisationTag.name,
+            },
+            personTag: { _id: item._id, name: item.name },
+            organisationTag: {
+              _id: organisationData.organisationTag._id,
+              name: organisationData.organisationTag.name,
+            },
+            role: item.arole || "",
+            extraIdentifier: "current",
+          }));
 
-          console.log(
-            'debug111->updatedOrganisationsPeople',
-            updatedOrganisationsPeople
+        if (newPeopleAffiliations.length > 0) {
+          const createResult = await bulkCreateAffiliations(
+            newPeopleAffiliations
           );
+          console.log(
+            "[Builder.io] Created people affiliations:",
+            createResult
+          );
+          // Update React state
+          if (createResult.created?.length > 0) {
+            appendAffiliations(createResult.created);
+          }
         }
       }
-    }
-    // #endregion
+      // #endregion
 
-    // #region Update Member Organisations
-    if (organisationData.memberOrganisations && newOrganisationInfoId) {
-      const updatedMemberOrgs = await replaceDataItemReferences(
-        'InfoPages',
-        organisationData.memberOrganisations?.map((org: any) => org._id),
-        'organisationHasMember',
-        newOrganisationInfoId
-      );
-      console.log('updatedMemberOrgs', updatedMemberOrgs);
-    }
-    // #endregion
+      // #region Refresh and redirect
+      handleUserDataRefresh();
+      await invalidateOrganisationPageCache(newOrganisationInfoSlug);
+      router.push(`/organisation/${newOrganisationInfoSlug}`);
+      // #endregion
 
-    // #region Update Member of Organisations
-    if (organisationData.memberOfOrganisations && newOrganisationInfoId) {
-      const updatedMemberOfOrgs = await replaceDataItemReferences(
-        'InfoPages',
-        organisationData.memberOfOrganisations?.map((org: any) => org._id),
-        'organisationMemberOf',
-        newOrganisationInfoId
-      );
-      console.log('updatedMemberOfOrgs', updatedMemberOfOrgs);
+      console.log("[Builder.io] Organisation page creation completed");
+    } catch (error) {
+      console.error("[Builder.io] Error creating organisation page:", error);
     }
-    // #endregion
 
-    // #region Update Organisation Tag
-    // Check if object Organisation has changed
-    if (
-      !deepEqual(
-        organisationData?.organisationTag,
-        defaultOrganisationData?.organisationTag
-      )
-    ) {
-      console.log('organisation Tag has changed');
-      const updatedOrganisationTag = await updateDataItem(
-        'Tags',
-        organisationData?.organisationTag?._id,
-        {
-          _id: organisationData.organisationTag._id,
-          ...organisationData.organisationTag,
-          tagPageLink: '/organisation/' + newOrganisationInfoSlug,
-        }
-      );
-      console.log('updatedOrganisationTag', updatedOrganisationTag);
-    }
-    // #endregion
-
-    // #region Revalidate the cache for the page
-    // await refetchInfoPages();
-    // await refetchTags();
-    // await refetchAffiliations();
-    // await revalidateDataItem(`/organisation/${newOrganisationInfoSlug}`);
-    // handleTagCreated();
-    handleUserDataRefresh();
-    await invalidateOrganisationPageCache(newOrganisationInfoSlug);
-    router.push(`/organisation/${newOrganisationInfoSlug}`);
     setIsSaveInProgress(false);
-    // #endregion
   };
 
   const saveOrCreateHandler = isNewPage
@@ -975,18 +606,17 @@ function OrganisationPageComponent({
       //   updatePersonDataOnKeyValue('personTag', personTag);
       // }
       const organisationInfoTag = tags.find(
-        (tag) => tag.name === 'organisation info'
+        (tag) => tag.name === "organisation info"
       );
       // console.log('debug1->projectInfoTag', organisationInfoTag);
       if (organisationInfoTag) {
-        updateOrganisationDataOnKeyValue('pageType', organisationInfoTag);
+        updateOrganisationDataOnKeyValue("pageType", organisationInfoTag);
       }
     }
   }, [userDetails, tags]);
 
-  useEffect(() => {
-    isNewPage && handleTagCreated();
-  }, []);
+  // NOTE: Removed handleTagCreated() on mount to prevent full Redis cache invalidation
+  // This was causing performance issues - tags should be updated individually via updateTag()
 
   // Save required fields
 
@@ -1005,7 +635,7 @@ function OrganisationPageComponent({
       {!isNewPage && (
         <OgImage
           primaryImage={organisationData.organisationTag?.picture}
-          secondaryImage={'https://futures4europe.eu/images/placeholder.webp'}
+          secondaryImage={"https://futures4europe.eu/images/placeholder.webp"}
           title={organisationData.title}
           description={organisationData.description}
           url={`https://futures4europe.eu/organisation/${organisationData.slug}`}
@@ -1026,17 +656,17 @@ function OrganisationPageComponent({
               isEditModeOn && (checkValidationErrors() || checkRequiredFields())
             }
             className={classNames(
-              'btn btn-save',
+              "btn btn-save",
               isEditModeOn &&
                 (checkValidationErrors() || checkRequiredFields()) &&
-                'bg-gray-400'
+                "bg-gray-400"
             )}
           >
             {!isEditModeOn
-              ? 'Edit Page'
+              ? "Edit Page"
               : isNewPage
-              ? 'Publish Page'
-              : 'Save&Publish Changes'}
+              ? "Publish Page"
+              : "Save&Publish Changes"}
           </button>
           {isEditModeOn && (
             <button
@@ -1065,7 +695,7 @@ function OrganisationPageComponent({
         </div>
       )}
       {/* Page Type Tag */}
-      <div className={classNames('py-3', style.preHeader)}>
+      <div className={classNames("py-3", style.preHeader)}>
         <Tag {...organisationData.pageType} />
         {/* Timestamp */}
         <section className="post-meta">
@@ -1085,7 +715,7 @@ function OrganisationPageComponent({
         isNewPage={isNewPage}
         handleTagCreated={handleTagCreated}
         setValidationState={updateValidationState}
-        requiredFields={['name', 'country']} // Add this new prop
+        requiredFields={["name", "country"]} // Add this new prop
       />
       {/* Organisation Description */}
       {/* <PersonDescriptionComponent
@@ -1123,9 +753,9 @@ function OrganisationPageComponent({
         tagListTitle="Affiliates"
         isEditModeOn={isEditModeOn}
         updatePersonDataAffiliations={(value) =>
-          updateOrganisationDataOnKeyValue('people', value)
+          updateOrganisationDataOnKeyValue("people", value)
         }
-        tags={tags?.filter((tag) => tag?.tagType === 'person')}
+        tags={tags?.filter((tag) => tag?.tagType === "person")}
         handleTagCreated={handleTagCreated}
         tagType="person"
       />
@@ -1135,12 +765,12 @@ function OrganisationPageComponent({
         tagList={organisationData.methods}
         tagListTitle="Foresight Methods"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'foresight method')}
+        tags={tags?.filter((tag) => tag?.tagType === "foresight method")}
         selectedValues={organisationData.methods?.map(
           (method: any) => method?.name
         )}
         updatePostData={(value) =>
-          updateOrganisationDataOnKeyValue('methods', value)
+          updateOrganisationDataOnKeyValue("methods", value)
         }
         tagType="foresight method"
         handleTagCreated={handleTagCreated}
@@ -1151,12 +781,12 @@ function OrganisationPageComponent({
         tagList={organisationData.domains}
         tagListTitle="Domains"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'domain')}
+        tags={tags?.filter((tag) => tag?.tagType === "domain")}
         selectedValues={organisationData.domains?.map(
           (domain: any) => domain?.name
         )}
         updatePostData={(value) =>
-          updateOrganisationDataOnKeyValue('domains', value)
+          updateOrganisationDataOnKeyValue("domains", value)
         }
         tagType="domain"
         handleTagCreated={handleTagCreated}
@@ -1169,9 +799,9 @@ function OrganisationPageComponent({
         tagListTitle="Projects"
         isEditModeOn={isEditModeOn}
         updatePersonDataAffiliations={(value) =>
-          updateOrganisationDataOnKeyValue('projects', value)
+          updateOrganisationDataOnKeyValue("projects", value)
         }
-        tags={tags?.filter((tag) => tag?.tagType === 'project')}
+        tags={tags?.filter((tag) => tag?.tagType === "project")}
         handleTagCreated={handleTagCreated}
         tagType="project"
       />
@@ -1181,12 +811,12 @@ function OrganisationPageComponent({
         tagList={organisationData.memberOrganisations}
         tagListTitle="Members"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'organisation')}
+        tags={tags?.filter((tag) => tag?.tagType === "organisation")}
         selectedValues={organisationData.memberOrganisations?.map(
           (domain: any) => domain?.name
         )}
         updatePostData={(value) =>
-          updateOrganisationDataOnKeyValue('memberOrganisations', value)
+          updateOrganisationDataOnKeyValue("memberOrganisations", value)
         }
         tagType="organisation"
         handleTagCreated={handleTagCreated}
@@ -1197,12 +827,12 @@ function OrganisationPageComponent({
         tagList={organisationData.memberOfOrganisations}
         tagListTitle="Member of"
         isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === 'organisation')}
+        tags={tags?.filter((tag) => tag?.tagType === "organisation")}
         selectedValues={organisationData.memberOfOrganisations?.map(
           (domain: any) => domain?.name
         )}
         updatePostData={(value) =>
-          updateOrganisationDataOnKeyValue('memberOfOrganisations', value)
+          updateOrganisationDataOnKeyValue("memberOfOrganisations", value)
         }
         tagType="organisation"
         handleTagCreated={handleTagCreated}
@@ -1213,7 +843,7 @@ function OrganisationPageComponent({
         isEditModeOn={isEditModeOn}
         title="Content related to this Organisation"
         handleUpdatePostData={(value) =>
-          updateOrganisationDataOnKeyValue('internalLinks', value)
+          updateOrganisationDataOnKeyValue("internalLinks", value)
         }
       />
       {/* Files */}

@@ -97,7 +97,7 @@ export default async function ProjectPage({ params }: any) {
     tagIdForProjectPage
   );
 
-  // console.log("debug111->affiliations", affiliations);
+  console.log("debug111->affiliations", affiliations);
 
   const infoPageItemWithAffiliations = {
     ...infoPageItem,

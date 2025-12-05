@@ -120,16 +120,21 @@ export async function fetchAffiliationsWithRefs(options?: {
   // Transform to format with full tag objects
   const transformed = allAffiliations.map(transformAffiliationForInfoPage);
 
-  // Cache the result
-  await RedisCacheService.saveToCache(
-    AFFILIATIONS_CACHE_KEY,
-    transformed,
-    CACHE_TTL
-  );
-
-  console.log(
-    `[Builder.io] Cached ${transformed.length} affiliations with refs`
-  );
+  // Only cache if we got results (don't cache empty array)
+  if (transformed.length > 0) {
+    await RedisCacheService.saveToCache(
+      AFFILIATIONS_CACHE_KEY,
+      transformed,
+      CACHE_TTL
+    );
+    console.log(
+      `[Builder.io] Cached ${transformed.length} affiliations with refs`
+    );
+  } else {
+    console.warn(
+      "[Builder.io] No affiliations fetched from Builder.io - not caching empty result"
+    );
+  }
 
   return transformed;
 }
@@ -139,13 +144,17 @@ export async function fetchAffiliationsWithRefs(options?: {
  * This is the main entry point for getting affiliations
  */
 export async function getAllAffiliations(): Promise<any[]> {
-  // Try cache first
+  // Try cache first - but only use it if it has data
+  // (empty array [] is truthy but means cache was corrupted/emptied)
   const cached = await RedisCacheService.getFromCache(AFFILIATIONS_CACHE_KEY);
-  if (cached) {
+  if (cached && Array.isArray(cached) && cached.length > 0) {
     return cached;
   }
 
-  // Fetch and cache
+  // Fetch and cache (will also fix empty cache)
+  console.log(
+    "[Builder.io] Cache empty or missing, fetching affiliations from Builder.io..."
+  );
   return fetchAffiliationsWithRefs();
 }
 
@@ -406,14 +415,23 @@ export async function removeFromAffiliationsCache(
     if (cached && Array.isArray(cached)) {
       const idSet = new Set(affiliationIds);
       const filtered = cached.filter((aff) => !idSet.has(aff._id));
-      await RedisCacheService.saveToCache(
-        AFFILIATIONS_CACHE_KEY,
-        filtered,
-        CACHE_TTL
-      );
-      console.log(
-        `[Builder.io] Removed ${affiliationIds.length} affiliations from cache (remaining: ${filtered.length})`
-      );
+
+      // If cache would be empty, invalidate it instead so next read triggers a fresh fetch
+      if (filtered.length === 0) {
+        console.log(
+          `[Builder.io] Cache would be empty after removal, invalidating to trigger fresh fetch`
+        );
+        await RedisCacheService.invalidateCache(AFFILIATIONS_CACHE_KEY);
+      } else {
+        await RedisCacheService.saveToCache(
+          AFFILIATIONS_CACHE_KEY,
+          filtered,
+          CACHE_TTL
+        );
+        console.log(
+          `[Builder.io] Removed ${affiliationIds.length} affiliations from cache (remaining: ${filtered.length})`
+        );
+      }
     }
   } catch (error) {
     console.warn(
