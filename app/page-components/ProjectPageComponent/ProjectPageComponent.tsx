@@ -51,6 +51,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     handleTagCreated,
     handleUserDataRefresh,
     postPages,
+    updateTag,
   } = useAuth();
 
   const [isPageOwnedByUser, setIsPageOwnedByUser] = useState(false);
@@ -254,7 +255,9 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
             }
           );
           if (tagUpdateResponse.ok) {
-            console.log("[Builder.io] Project tag updated");
+            console.log("[Builder.io] Project tag updated in Builder.io");
+            // OPTIMIZATION: Update tag in AuthContext state (no full refetch)
+            updateTag(projectData.projectTag);
           } else {
             console.warn("[Builder.io] Failed to update project tag");
           }
