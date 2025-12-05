@@ -18,9 +18,14 @@ export const GET = async (req: NextRequest) => {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
     // Try to get data from cache first, if not found fetch from API
+    // All caches now use _builder.json suffix for consistency
     let tags = await RedisCacheService.getFromCache("tags_builder.json");
-    let infoPages = await RedisCacheService.getFromCache("infoPages.json");
-    let postPages = await RedisCacheService.getFromCache("postPages.json");
+    let infoPages = await RedisCacheService.getFromCache(
+      "infoPages_builder.json"
+    );
+    let postPages = await RedisCacheService.getFromCache(
+      "postPages_builder.json"
+    );
     let affiliations = await RedisCacheService.getFromCache(
       "affiliations_builder.json"
     );

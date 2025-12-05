@@ -18,22 +18,26 @@ export async function warmCache() {
     );
     console.log(`✓ Cached ${tags.length} tags from Builder.io`);
 
-    // Fetch and cache all info pages
+    // Fetch and cache all info pages from Builder.io
+    console.log("Fetching info pages from Builder.io for cache warming...");
     const infoPagesResponse = await fetch(`${baseUrl}/api/infoPages`);
     const infoPages = await infoPagesResponse.json();
-    await RedisCacheService.saveToCache(
-      "infoPages.json",
-      infoPages,
-      4 * 60 * 60 * 1000
+    // Note: The API route handles caching with key "infoPages_builder.json"
+    console.log(
+      `✓ Cached ${
+        Array.isArray(infoPages) ? infoPages.length : 0
+      } info pages from Builder.io`
     );
 
-    // Fetch and cache all post pages
+    // Fetch and cache all post pages from Builder.io
+    console.log("Fetching post pages from Builder.io for cache warming...");
     const postPagesResponse = await fetch(`${baseUrl}/api/postPages`);
     const postPages = await postPagesResponse.json();
-    await RedisCacheService.saveToCache(
-      "postPages.json",
-      postPages,
-      4 * 60 * 60 * 1000
+    // Note: The API route handles caching with key "postPages_builder.json"
+    console.log(
+      `✓ Cached ${
+        Array.isArray(postPages) ? postPages.length : 0
+      } post pages from Builder.io`
     );
 
     // Fetch affiliations from Builder.io (caches automatically via the API)

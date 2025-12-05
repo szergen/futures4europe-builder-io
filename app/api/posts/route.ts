@@ -1,92 +1,113 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getWixClientData } from "@app/hooks/useWixClientServer";
-import { saveToCache, getFromCache } from "../../utils/cache";
-import { referencedItemOptions } from "@app/wixUtils/server-side";
+import { RedisCacheService } from "@app/services/redisCache";
+import { getAllBuilderContent } from "@app/shared-components/Builder";
+import { transformBuilderPostToWixFormat } from "@app/utils/builderPostUtils";
 
-export const revalidate = 0; // 5 minutes
+export const revalidate = 0; // Disable caching
 
-export const GET = async (req: NextRequest) => {
-  const cacheKey = "posts.json";
-  const cachedData = await getFromCache(cacheKey);
+// Cache key - using _builder.json suffix for consistency with other Builder.io caches
+// Note: This route is similar to /api/postPages but kept for backward compatibility
+const CACHE_KEY = "posts_builder.json";
+const CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours
 
-  if (cachedData) {
-    return NextResponse.json(cachedData, { status: 200 });
+/**
+ * Fetch all posts from Builder.io
+ * Handles pagination to get all posts
+ */
+async function fetchAllPostsFromBuilder(): Promise<any[]> {
+  const allPosts: any[] = [];
+  let offset = 0;
+  const limit = 100; // Builder.io limit per request
+  let hasMore = true;
+
+  console.log("[Builder.io] Fetching all posts...");
+
+  while (hasMore) {
+    const posts = await getAllBuilderContent("post-page", {
+      limit,
+      offset,
+    });
+
+    if (posts && posts.length > 0) {
+      allPosts.push(...posts);
+      offset += posts.length;
+      hasMore = posts.length === limit;
+      console.log(`[Builder.io] Fetched ${allPosts.length} posts so far...`);
+    } else {
+      hasMore = false;
+    }
   }
 
+  console.log(`[Builder.io] Completed fetching ${allPosts.length} posts`);
+  return allPosts;
+}
+
+/**
+ * GET /api/posts
+ * Returns all posts from Builder.io (with caching)
+ */
+export const GET = async (req: NextRequest) => {
   try {
-    const wixClient = await getWixClientData();
+    // Try cache first
+    const cachedData = await RedisCacheService.getFromCache(CACHE_KEY);
+    if (cachedData && Array.isArray(cachedData) && cachedData.length > 0) {
+      console.log(`[Cache] Returning ${cachedData.length} cached posts`);
+      return NextResponse.json(cachedData);
+    }
 
-    let allItems = [] as any[];
-    let skip = 0;
-    const limit = 1000;
-    let totalCount = 0;
+    // Fetch from Builder.io
+    const builderPosts = await fetchAllPostsFromBuilder();
 
-    do {
-      const result = await wixClient.items
-        .queryDataItems({
-          dataCollectionId: "PostPages",
-          referencedItemOptions: referencedItemOptions,
-          returnTotalCount: true,
-        })
-        .skip(skip)
-        .limit(limit)
-        .find();
-      allItems = [...allItems, ...result?._items];
-      totalCount = result?._totalCount;
-      skip = limit + skip;
-    } while (skip < totalCount);
-    // console.log('allItems', allItems);
+    // Transform to Wix format for backward compatibility
+    const transformedPosts = builderPosts
+      .map((post) => transformBuilderPostToWixFormat(post))
+      .filter((post) => post !== null);
 
-    await saveToCache(cacheKey, allItems);
-    return NextResponse.json(allItems, { status: 200 });
+    // Cache the results
+    await RedisCacheService.saveToCache(CACHE_KEY, transformedPosts, CACHE_TTL);
+    console.log(`[Cache] Saved ${transformedPosts.length} posts to cache`);
+
+    return NextResponse.json(transformedPosts);
   } catch (error) {
-    console.error("Error fetching posts:", error);
+    console.error("[Builder.io] Error fetching posts:", error);
     return NextResponse.json(
-      { message: "Error fetching posts" },
+      { message: "Error fetching posts", error: String(error) },
       { status: 500 }
     );
   }
 };
 
+/**
+ * POST /api/posts
+ * Force refresh the posts cache from Builder.io
+ */
 export const POST = async (req: NextRequest) => {
-  const cacheKey = "posts.json";
-
   try {
-    const wixClient = await getWixClientData();
+    console.log("[Builder.io] Force refreshing posts cache...");
 
-    let allItems = [] as any[];
-    let skip = 0;
-    const limit = 1000;
-    let totalCount = 0;
+    // Fetch fresh data from Builder.io
+    const builderPosts = await fetchAllPostsFromBuilder();
 
-    do {
-      const result = await wixClient.items
-        .queryDataItems({
-          dataCollectionId: "PostPages",
-          referencedItemOptions: referencedItemOptions,
-          returnTotalCount: true,
-        })
-        .skip(skip)
-        .limit(limit)
-        .find();
-      allItems = [...allItems, ...result?._items];
-      totalCount = result?._totalCount;
-      skip = limit + skip;
-    } while (skip < totalCount);
-    // console.log('allItems', allItems);
+    // Transform to Wix format for backward compatibility
+    const transformedPosts = builderPosts
+      .map((post) => transformBuilderPostToWixFormat(post))
+      .filter((post) => post !== null);
 
-    await saveToCache(cacheKey, allItems);
+    // Update cache
+    await RedisCacheService.saveToCache(CACHE_KEY, transformedPosts, CACHE_TTL);
+
     return NextResponse.json(
-      { message: "Cache updated successfully." },
+      {
+        message: "Cache updated successfully.",
+        count: transformedPosts.length,
+      },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error updating cache:", error);
+    console.error("[Builder.io] Error updating posts cache:", error);
     return NextResponse.json(
-      { message: "Failed to update cache" },
-      {
-        status: 500,
-      }
+      { message: "Failed to update cache", error: String(error) },
+      { status: 500 }
     );
   }
 };
