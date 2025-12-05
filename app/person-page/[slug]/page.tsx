@@ -95,6 +95,7 @@ export default async function PersonPage({ params }: any) {
   if (tagIdForPersonPage) {
     affiliations = await getBuilderAffiliationsByPersonTag(tagIdForPersonPage);
   }
+  console.log("debug111->affiliations", affiliations);
 
   const infoPageItemWithAffiliations = {
     ...infoPageItem,

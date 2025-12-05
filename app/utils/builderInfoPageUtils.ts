@@ -196,19 +196,35 @@ export function extractSlugFromPath(path: string): string | null {
 }
 
 /**
- * Get affiliations by organisation tag ID
- * This would need to query the affiliations model in Builder.io
+ * Get affiliations by organisation tag ID from Builder.io
+ * Fetches all affiliations and filters by organisationTag or extraOrganisationTag
  */
 export async function getBuilderAffiliationsByOrgTag(
   organisationTagId: string
 ) {
-  // TODO: Implement when affiliations are migrated to Builder.io
-  // For now, return empty array
-  console.log(
-    "[Builder.io] Affiliations query not yet implemented for:",
-    organisationTagId
-  );
-  return [];
+  try {
+    const { fetchAffiliationsFromBuilder } = await import(
+      "@app/utils/builderAffiliationUtils"
+    );
+    const allAffiliations = await fetchAffiliationsFromBuilder();
+
+    // Filter affiliations where organisationTag or extraOrganisationTag matches
+    const filtered = allAffiliations.filter(
+      (affiliation) =>
+        affiliation.data.organisationTag === organisationTagId ||
+        affiliation.data.extraOrganisationTag === organisationTagId
+    );
+
+    // Return just the data portion (matching expected format)
+    return filtered.map((a) => a.data);
+  } catch (error) {
+    console.error(
+      "[Builder.io] Error fetching affiliations for org:",
+      organisationTagId,
+      error
+    );
+    return [];
+  }
 }
 
 /**
@@ -248,17 +264,31 @@ export async function getAllBuilderPersonPages() {
 }
 
 /**
- * Get affiliations by person tag ID
- * This would need to query the affiliations model in Builder.io
+ * Get affiliations by person tag ID from Builder.io
+ * Fetches all affiliations and filters by personTag
  */
 export async function getBuilderAffiliationsByPersonTag(personTagId: string) {
-  // TODO: Implement when affiliations are migrated to Builder.io
-  // For now, return empty array
-  console.log(
-    "[Builder.io] Affiliations query not yet implemented for:",
-    personTagId
-  );
-  return [];
+  try {
+    const { fetchAffiliationsFromBuilder } = await import(
+      "@app/utils/builderAffiliationUtils"
+    );
+    const allAffiliations = await fetchAffiliationsFromBuilder();
+
+    // Filter affiliations where personTag matches
+    const filtered = allAffiliations.filter(
+      (affiliation) => affiliation.data.personTag === personTagId
+    );
+
+    // Return just the data portion (matching expected format)
+    return filtered.map((a) => a.data);
+  } catch (error) {
+    console.error(
+      "[Builder.io] Error fetching affiliations for person:",
+      personTagId,
+      error
+    );
+    return [];
+  }
 }
 
 /**
@@ -298,15 +328,29 @@ export async function getAllBuilderProjectPages() {
 }
 
 /**
- * Get affiliations by project tag ID
- * This would need to query the affiliations model in Builder.io
+ * Get affiliations by project tag ID from Builder.io
+ * Fetches all affiliations and filters by projectTag
  */
 export async function getBuilderAffiliationsByProjectTag(projectTagId: string) {
-  // TODO: Implement when affiliations are migrated to Builder.io
-  // For now, return empty array
-  console.log(
-    "[Builder.io] Affiliations query not yet implemented for:",
-    projectTagId
-  );
-  return [];
+  try {
+    const { fetchAffiliationsFromBuilder } = await import(
+      "@app/utils/builderAffiliationUtils"
+    );
+    const allAffiliations = await fetchAffiliationsFromBuilder();
+
+    // Filter affiliations where projectTag matches
+    const filtered = allAffiliations.filter(
+      (affiliation) => affiliation.data.projectTag === projectTagId
+    );
+
+    // Return just the data portion (matching expected format)
+    return filtered.map((a) => a.data);
+  } catch (error) {
+    console.error(
+      "[Builder.io] Error fetching affiliations for project:",
+      projectTagId,
+      error
+    );
+    return [];
+  }
 }
