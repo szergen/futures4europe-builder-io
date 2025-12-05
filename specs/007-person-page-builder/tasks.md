@@ -105,6 +105,8 @@
   - Add `updateTag()` call after tag update in Builder.io
   - Add `appendAffiliations()` / `removeAffiliations()` calls after affiliation changes
   - Call `invalidatePersonPageCache(personData.slug)` after successful save
+  - Call `handleUserTagRefresh()` after successful save (FR-016)
+  - Add console.log statements to track save operations (FR-017)
 
 ---
 
@@ -126,6 +128,8 @@
   - Call `updateTag()` after tag update
   - Call `appendAffiliations()` after creating affiliations
   - Call `invalidatePersonPageCache(newSlug)` after success
+  - Call `handleUserTagRefresh()` after successful save (FR-016)
+  - Add console.log statements to track save operations (FR-017)
   - Redirect to `/person/{slug}` after success
 
 - [ ] T017 [US1] VERIFY: Tag update logic uses `/api/builder/tag/[id]` route for tagPageLink update in create flow
@@ -255,14 +259,14 @@
 
 ### User Story Mapping
 
-| Story | Primary Tasks        | Verify Tasks    |
-| ----- | -------------------- | --------------- |
-| US1   | T009-T011, T016-T018 | T037            |
-| US2   | T012-T015            | T038            |
-| US3   | -                    | T019-T021, T041 |
-| US4   | -                    | T022-T025, T039 |
-| US5   | -                    | T026-T030       |
-| US6   | -                    | T031            |
+| Story | Primary Tasks        | Verify Tasks    | Notes                                 |
+| ----- | -------------------- | --------------- | ------------------------------------- |
+| US1   | T009-T011, T016-T018 | T037            | Create flow                           |
+| US2   | T012-T015            | T038            | Edit flow                             |
+| US3   | (within T015, T016)  | T019-T021, T041 | Tag+Wix sync embedded in create/edit  |
+| US4   | (within T015, T016)  | T022-T025, T039 | Affiliations embedded in create/edit  |
+| US5   | (within T009)        | T026-T030       | Metadata fields in transform function |
+| US6   | (within T009)        | T031            | Media files in transform function     |
 
 ### Parallel Opportunities
 
