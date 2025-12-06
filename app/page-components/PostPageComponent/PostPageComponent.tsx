@@ -354,7 +354,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       setIsSaveInProgress(false);
 
       // Redirect to the new post page
-      router.push(`/post-page/${slug}`);
+      router.push(`/post/${slug}`);
     } catch (error) {
       console.error("[Builder.io] Error creating post:", error);
       alert("Failed to create post. Please try again.");

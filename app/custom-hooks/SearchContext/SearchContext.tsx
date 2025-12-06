@@ -101,6 +101,8 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
     filteredData: {},
   } as any);
 
+  console.log("debug333->infoPages", infoPages);
+
   // Fetch all data from cached APIs
   useEffect(() => {
     setLoading(true);
@@ -179,11 +181,13 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
     ) {
       // console.log('Data fetched, example of tags:', authTags[0]);
       setTags(authTags.filter((tag: any) => !tag?.masterTag));
-      setInfoPages(authInfoPages.map((page: any) => page.data));
-      setPostPages(authPostPages.map((page: any) => page.data));
-      setAffiliations(
-        authAffiliations.map((affiliation: any) => affiliation.data)
+      setInfoPages(
+        authInfoPages.map((page: any) => ({ ...page.data, _id: page.id }))
       );
+      setPostPages(
+        authPostPages.map((page: any) => ({ ...page.data, _id: page.id }))
+      );
+      setAffiliations(authAffiliations);
       setLoading(false);
     }
   }, [tagsFetched, infoPagesFetched, postPagesFetched, affiliationsFetched]);

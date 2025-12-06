@@ -1,20 +1,31 @@
-import classNames from 'classnames';
-import React from 'react';
+import classNames from "classnames";
+import React from "react";
 // import PostPageComponent from '@app/page-components/PostPageComponent/PostPageComponent';
-import {
-  getCollection,
-  getItemById,
-  // getCollectionItemByTitle,
-  // getCollectionItemBySlug,
-} from '@app/wixUtils/server-side';
-import MiniPagesListComponent from '@app/page-components/shared-page-components/MiniPagesListComponent/MiniPagesListComponent';
-import MiniPagesListItemPost from '@app/page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost';
-import Hero from '@app/shared-components/Hero/Hero';
-import style from './page.module.css';
-import { decidePageTypeItems } from '@app/utils/parse-utils';
-import { containsId } from '@app/utils/tags.utls';
-import Tag from '@app/shared-components/Tag/Tag';
+// import {
+//   getCollection,
+//   getItemById,
+//   // getCollectionItemByTitle,
+//   // getCollectionItemBySlug,
+// } from "@app/wixUtils/server-side";
+import MiniPagesListComponent from "@app/page-components/shared-page-components/MiniPagesListComponent/MiniPagesListComponent";
+import MiniPagesListItemPost from "@app/page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost";
+import Hero from "@app/shared-components/Hero/Hero";
+import style from "./page.module.css";
+import { decidePageTypeItems } from "@app/utils/parse-utils";
+import { containsId } from "@app/utils/tags.utls";
+import Tag from "@app/shared-components/Tag/Tag";
 // import { getCollection } from '@app/wixUtils/client-side';
+import {
+  getAllBuilderPosts,
+  transformBuilderPostToWixFormat,
+} from "@app/utils/builderPostUtils";
+import { getAllBuilderContent } from "@app/shared-components/Builder";
+import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
+import { getAllAffiliations } from "@app/utils/builderAffiliationUtils";
+import {
+  getBuilderTagById,
+  transformBuilderTagToWixFormat,
+} from "@app/utils/builderTagUtils";
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
@@ -28,21 +39,48 @@ export const dynamicParams = true; // or false, to 404 on unknown paths
 export default async function Pages({ params }: any) {
   const tagId = params.slug;
 
-  const postCollection = await getCollection('PostPages');
-  const infoPagesCollection = await getCollection('InfoPages');
-  const affiliationsCollection = await getCollection('Affiliations');
-  const currentTagData = await getItemById('Tags', tagId);
+  // const postCollection = await getCollection("PostPages");
+  // const infoPagesCollection = await getCollection("InfoPages");
+  // const affiliationsCollection = await getCollection("Affiliations");
+  // const currentTagData = await getItemById("Tags", tagId);
 
-  const postPages = postCollection.map((item) => item.data);
-  const infoPages = infoPagesCollection.map((item) => item.data);
+  const [builderPosts, builderInfoPages, affiliations, builderTag] =
+    await Promise.all([
+      getAllBuilderPosts(),
+      getAllBuilderContent("info-page"),
+      getAllAffiliations(),
+      getBuilderTagById(tagId),
+    ]);
 
-  const allAffiliations = affiliationsCollection.map((item) => item.data);
+  const postPages = builderPosts
+    ?.map((item) => {
+      const transformed = transformBuilderPostToWixFormat(item);
+      return transformed ? { ...transformed.data, _id: transformed.id } : null;
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null);
+
+  const infoPages = builderInfoPages
+    ?.map((item) => {
+      const transformed = transformBuilderInfoPageToWixFormat(item);
+      return transformed ? { ...transformed.data, _id: transformed.id } : null;
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null);
+
+  const currentTagData = builderTag
+    ? { data: transformBuilderTagToWixFormat(builderTag) }
+    : null;
+
+  // const postPages = postCollection.map((item) => item.data);
+  // const infoPages = infoPagesCollection.map((item) => item.data);
+
+  // const allAffiliations = affiliationsCollection.map((item) => item.data);
+  const allAffiliations = affiliations; // getAllAffiliations returns already mapped data
 
   const allAffilationMentiones = allAffiliations.filter(
     (affiliation) =>
-      affiliation.personTag === tagId ||
-      affiliation.projectTag === tagId ||
-      affiliation.organisationTag === tagId
+      affiliation.personTag?._id === tagId ||
+      affiliation.projectTag?._id === tagId ||
+      affiliation.organisationTag?._id === tagId
   );
   // console.log('allAffilationMentiones', allAffilationMentiones);
 
@@ -52,17 +90,17 @@ export default async function Pages({ params }: any) {
     return allAffilationMentiones.find((affiliation) => {
       if (
         (affiliation.personTag &&
-          page?.person?.[0]?._id === affiliation.personTag) ||
+          page?.person?.[0]?._id === affiliation.personTag?._id) ||
         (affiliation.organisationTag &&
-          page?.organisation?.[0]?._id === affiliation.organisationTag) ||
+          page?.organisation?.[0]?._id === affiliation.organisationTag?._id) ||
         (affiliation.projectTag &&
-          page?.Project?.[0]?._id === affiliation.projectTag)
+          page?.Project?.[0]?._id === affiliation.projectTag?._id)
       ) {
         return true;
       }
     });
   });
-  console.log('affiliationPages', affiliationPages);
+  console.log("affiliationPages", affiliationPages);
 
   let items = allPages.filter((page: any) => {
     return containsId(page, tagId);
@@ -72,29 +110,29 @@ export default async function Pages({ params }: any) {
   );
 
   items = items?.sort((a, b) => {
-    const dateA = new Date(a._createdDate.$date).getTime();
-    const dateB = new Date(b._createdDate.$date).getTime();
+    const dateA = new Date(a._createdDate?.$date).getTime();
+    const dateB = new Date(b._createdDate?.$date).getTime();
     return dateB - dateA;
   });
-  console.log('items', items);
+  console.log("items", items);
 
   // Get specific Post by slug
   // const postPageItem = await getCollectionItemBySlug('PostPages', params.slug);
   // console.log('postItem Data', postPageItem?.data);
 
-  if (!postCollection || !infoPagesCollection || !currentTagData) {
+  if (!builderPosts || !builderInfoPages || !currentTagData) {
     return <div>Loading...</div>; // You can also add a loading spinner here
   }
 
   return (
-    <div className={classNames('w-full')}>
-      <Hero subtitle={`sorted by publishing date`}>
+    <div className={classNames("w-full")}>
+      <Hero title="" subtitle={`sorted by publishing date`}>
         <div className="flex justify-center items-center">
           <h1
             className={classNames(
-              'text-4xl',
-              'font-bold',
-              'mb-4',
+              "text-4xl",
+              "font-bold",
+              "mb-4",
               style.heroTitle
             )}
           >

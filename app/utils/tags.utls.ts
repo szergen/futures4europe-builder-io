@@ -154,7 +154,8 @@ export function calculatePopularity(
       })
       ?.filter(
         (post: any, index: number, self: any) =>
-          index === self.findIndex((p: any) => p._id === post._id)
+          index ===
+          self.findIndex((p: any) => (p.id || p._id) === (post.id || post._id))
       )?.length;
 
     count += affiliationPages;

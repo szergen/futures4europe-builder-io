@@ -1,10 +1,16 @@
-import classNames from 'classnames';
-import React from 'react';
-import { getCollection } from '@app/wixUtils/server-side';
-import MiniPagesListItemPost from '@app/page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost';
-import Hero from '@app/shared-components/Hero/Hero';
-import style from './page.module.css';
-import { decidePageTypeItems } from '@app/utils/parse-utils';
+import classNames from "classnames";
+import React from "react";
+// import { getCollection } from '@app/wixUtils/server-side';
+import MiniPagesListItemPost from "@app/page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost";
+import Hero from "@app/shared-components/Hero/Hero";
+import style from "./page.module.css";
+import { decidePageTypeItems } from "@app/utils/parse-utils";
+import {
+  getAllBuilderPosts,
+  transformBuilderPostToWixFormat,
+} from "@app/utils/builderPostUtils";
+import { getAllBuilderContent } from "@app/shared-components/Builder";
+import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
@@ -16,12 +22,12 @@ export const revalidate = 0;
 export const dynamicParams = false; // or false, to 404 on unknown paths
 
 const validParams = [
-  { id: 'post' },
-  { id: 'project' },
-  { id: 'person' },
-  { id: 'organisation' },
-  { id: 'event' },
-  { id: 'project-result' },
+  { id: "post" },
+  { id: "project" },
+  { id: "person" },
+  { id: "organisation" },
+  { id: "event" },
+  { id: "project-result" },
 ];
 
 // Function to generate static paths
@@ -36,32 +42,48 @@ export default async function Pages({ params }: any) {
     return <div>Page Type not supported...</div>;
   }
 
-  const postCollection = await getCollection('PostPages');
-  const infoPagesCollection = await getCollection('InfoPages');
+  // const postCollection = await getCollection('PostPages');
+  // const infoPagesCollection = await getCollection('InfoPages');
 
-  const postPages = postCollection?.map((item) => item.data);
-  const infoPages = infoPagesCollection?.map((item) => item.data);
+  const [builderPosts, builderInfoPages] = await Promise.all([
+    getAllBuilderPosts(),
+    getAllBuilderContent("info-page"),
+  ]);
+
+  const postPages = builderPosts
+    ?.map((item) => {
+      const transformed = transformBuilderPostToWixFormat(item);
+      return transformed ? { ...transformed.data, _id: transformed.id } : null;
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null);
+
+  const infoPages = builderInfoPages
+    ?.map((item) => {
+      const transformed = transformBuilderInfoPageToWixFormat(item);
+      return transformed ? { ...transformed.data, _id: transformed.id } : null;
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null);
 
   //Get specific Post by slug
   // const postPageItem = await getCollectionItemBySlug('PostPages', params.slug);
   // console.log('postItem Data', postPageItem?.data);
 
-  if (!postCollection || !infoPagesCollection) {
+  if (!builderPosts || !builderInfoPages) {
     return <div>Loading...</div>; // You can also add a loading spinner here
   }
 
   return (
-    <div className={classNames('w-full')}>
+    <div className={classNames("w-full")}>
       <Hero title={`${pageType.toUpperCase()} Pages`} pageType={pageType} />
       <div className={classNames(style.listContainer)}>
         <MiniPagesListItemPost
           items={decidePageTypeItems(pageType, postPages, infoPages)}
           title={pageType}
           pageTypePath={
-            ['event', 'project-result', 'post'].find(
+            ["event", "project-result", "post"].find(
               (type) => type === pageType
             )
-              ? 'post'
+              ? "post"
               : pageType
           }
           hideTitle
