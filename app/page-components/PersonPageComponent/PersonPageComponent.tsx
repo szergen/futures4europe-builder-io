@@ -74,12 +74,6 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       !!personData.pageOwner?.find(
         (owner: any) => owner?._id === userDetails?.userTag?._id
       );
-    console.log("debug222->permissionCondition", permissionCondition);
-    console.log("debug222->personData.pageOwner", personData.pageOwner);
-    console.log("debug222->userDetails.userTag", userDetails.userTag);
-    console.log("debug222->userDetails.accountId", userDetails.accountId);
-    console.log("debug222->userDetails.contactId", userDetails.contactId);
-    console.log("debug222->userDetails.userName", userDetails.userName);
 
     // console.log('debug1->permissionCondition', permissionCondition);
 
@@ -137,7 +131,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       (projectTag: any, index: number, self: any[]) =>
         index === self.findIndex((pt) => pt.name === projectTag.name)
     );
-  console.log("debug111->currentAfiliations", currentAfiliations);
+  // console.log("debug111->currentAfiliations", currentAfiliations);
 
   const formerAfiliations = person?.affiliationsItems
     ?.filter((item: any) => item?.extraIdentifier === "former")

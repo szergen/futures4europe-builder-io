@@ -28,7 +28,7 @@ export default function ClientBuilderExample() {
           // limit: 1,
           options: { enrich: true },
         });
-        console.log("DEBUG1---RESULT: ", result);
+        // console.log("DEBUG1---RESULT: ", result);
         setContent(result?.[0]);
       } catch (error) {
         console.error("Error fetching content:", error);

@@ -61,7 +61,7 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
           updatePostDataBasedOnKeyValue("mediaFiles", [...files, emptyImage]);
       }
     }
-    console.log("debug5->currentFiles", currentFiles);
+    // console.log("debug5->currentFiles", currentFiles);
   }, [isEditModeOn, currentFiles]);
 
   const handleDeleteFile = async (index: number) => {
