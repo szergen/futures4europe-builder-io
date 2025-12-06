@@ -1,18 +1,18 @@
-import Image from 'next/image';
-import { uploadFileToWix } from '@app/wixUtils/client.utils';
-import { Alert, FileInput, Label, Spinner, Toast } from 'flowbite-react';
-import { useState, useRef, useEffect } from 'react';
-import { getImageUrlForMedia } from '@app/page-components/PageComponents.utils';
-import classNames from 'classnames';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
-import SpriteSvg from '@app/shared-components/SpriteSvg/SpriteSvg';
-import style from './InfoPagesImageFileUploader.module.css';
+import Image from "next/image";
+import { uploadFileToBuilder } from "@app/utils/builderUploadUtils";
+import { Alert, FileInput, Label, Spinner, Toast } from "flowbite-react";
+import { useState, useRef, useEffect } from "react";
+import { getImageUrlForMedia } from "@app/page-components/PageComponents.utils";
+import classNames from "classnames";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
+import SpriteSvg from "@app/shared-components/SpriteSvg/SpriteSvg";
+import style from "./InfoPagesImageFileUploader.module.css";
 import {
   Cropper,
   CircleStencil,
   ImageRestriction,
-} from 'react-advanced-cropper';
-import 'react-advanced-cropper/dist/style.css';
+} from "react-advanced-cropper";
+import "react-advanced-cropper/dist/style.css";
 
 export type FileUploaderProps = {
   currentImage?: string;
@@ -24,7 +24,7 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
   updatePostData,
 }) => {
   const [isValidState, setIsValidState] = useState(true);
-  const [imageURL, setImageURL] = useState(currentImage || '');
+  const [imageURL, setImageURL] = useState(currentImage || "");
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [showCropper, setShowCropper] = useState(false);
   const [cropperImage, setCropperImage] = useState<string | null>(null);
@@ -37,13 +37,13 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
   const { userDetails, updateUserDetails } = useAuth();
 
   const composeFilePath = `/InfoPages_Images/${
-    userDetails?.contactId || 'visitors'
+    userDetails?.contactId || "visitors"
   }/`;
 
   // Reset file input when cropper is closed
   useEffect(() => {
     if (!showCropper && fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
       lastFileRef.current = null;
     }
   }, [showCropper]);
@@ -81,7 +81,7 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
     if (fileIdentifier === lastFileRef.current) {
       // Reset the input and update the lastFileRef
       if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+        fileInputRef.current.value = "";
       }
       lastFileRef.current = null;
       return;
@@ -91,9 +91,9 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
     lastFileRef.current = fileIdentifier;
     if (file.size > 5 * 1024 * 1024) {
       setIsValidState(false);
-      setError('File size exceeds the limit of 5MB.');
+      setError("File size exceeds the limit of 5MB.");
       if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+        fileInputRef.current.value = "";
       }
       lastFileRef.current = null;
       return;
@@ -114,7 +114,7 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
     setShowCropper(false);
     setCropperImage(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
     lastFileRef.current = null;
   };
@@ -129,11 +129,11 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
         canvas.toBlob(async (blob: Blob) => {
           const fileName = `profile-image-${Date.now()}.jpg`;
           const croppedFile = new File([blob], fileName, {
-            type: 'image/jpeg',
+            type: "image/jpeg",
           });
 
           try {
-            const uploadedFileResponse = await uploadFileToWix(
+            const uploadedFileResponse = await uploadFileToBuilder(
               croppedFile,
               composeFilePath
             );
@@ -155,8 +155,8 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
               updateUserDetails(updatedUserDetails);
             }
           } catch (error) {
-            console.error('Error uploading cropped image:', error);
-            setError('Failed to upload the cropped image.');
+            console.error("Error uploading cropped image:", error);
+            setError("Failed to upload the cropped image.");
             setIsValidState(false);
           }
 
@@ -165,7 +165,7 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
           setCropperImage(null);
           setIsCropping(false);
           lastFileRef.current = null;
-        }, 'image/jpeg');
+        }, "image/jpeg");
       }
     }
   };
@@ -181,15 +181,15 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
       >
         <div className="w-full h-full">
           <span className="top-10 relative">
-            {!imageURL || imageURL === ' ' ? '' : ''}
+            {!imageURL || imageURL === " " ? "" : ""}
           </span>
           {!imageURL ? (
             <SpriteSvg.AccountImageThumb
               className="text-site-black mb-6"
               sizeW={42}
               sizeH={42}
-              fill={'var(--color-background-offline)'}
-              viewBox={'0 0 19 19'}
+              fill={"var(--color-background-offline)"}
+              viewBox={"0 0 19 19"}
               strokeWidth={0}
               inline={false}
             />
@@ -198,8 +198,8 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
               className="text-site-black mb-6 text-[var(--color-text-icon-error)]"
               sizeW={42}
               sizeH={42}
-              viewBox={'0 0 24 24'}
-              stroke={'var(--color-text-brand-tag)'}
+              viewBox={"0 0 24 24"}
+              stroke={"var(--color-text-brand-tag)"}
               strokeWidth={2}
               inline={false}
             />
@@ -243,7 +243,7 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
                   movable: true,
                   resizable: true,
                   lines: {
-                    color: 'rgba(255, 255, 255, 0.8)',
+                    color: "rgba(255, 255, 255, 0.8)",
                     width: 1,
                     dashSegments: [5, 5],
                   },
@@ -260,8 +260,8 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
               <button
                 onClick={handleCrop}
                 className={classNames(
-                  'btn btn-save',
-                  isCropping && 'hover:bg-purple-200'
+                  "btn btn-save",
+                  isCropping && "hover:bg-purple-200"
                 )}
                 disabled={isCropping}
               >
@@ -272,31 +272,31 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
         </div>
       )}
 
-      {imageURL && imageURL !== ' ' && (
+      {imageURL && imageURL !== " " && (
         <div
           className={classNames(
             style.AvatarImagine,
-            'relative w-[147px] h-[147px]'
+            "relative w-[147px] h-[147px]"
           )}
         >
           <Image
             src={
               getImageUrlForMedia(imageURL)?.url ||
               getImageUrlForMedia(imageURL) ||
-              ''
+              ""
             }
             width={147}
             height={147}
             className={classNames(
-              'rounded-full block object-cover',
-              isImageLoading && 'opacity-30'
+              "rounded-full block object-cover",
+              isImageLoading && "opacity-30"
             )}
             alt="Post Image"
           />
           {isImageLoading && (
             <div
               className={classNames(
-                'absolute inset-0 flex items-center justify-center bg-opacity-50 rounded-md',
+                "absolute inset-0 flex items-center justify-center bg-opacity-50 rounded-md",
                 style.existingImageSpinner
               )}
             >
@@ -306,7 +306,7 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
         </div>
       )}
 
-      {isImageLoading && (!imageURL || imageURL === ' ') && (
+      {isImageLoading && (!imageURL || imageURL === " ") && (
         <div className="flex items-center justify-center w-full h-32">
           <Spinner size="xl" />
         </div>
@@ -314,7 +314,7 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
 
       {error && (
         <Toast
-          className={classNames('fixed top-4 right-4 z-50', style.fadeInLeft)}
+          className={classNames("fixed top-4 right-4 z-50", style.fadeInLeft)}
         >
           <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500">
             <SpriteSvg.AlertIcon
@@ -322,7 +322,7 @@ const InfoPagesImageFileUploader: React.FC<FileUploaderProps> = ({
               className={classNames(style.website)}
               sizeW={16}
               sizeH={16}
-              fill={'red'}
+              fill={"red"}
               strokeWidth={0}
               inline={false}
             />
