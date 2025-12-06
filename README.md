@@ -122,7 +122,7 @@ futures4europe-builder-io/
 
 ### In Progress
 
-- [ ] **Administration Panel**: Migration from Wix upload APIs to Builder.io
+- [x] **Administration Panel**: Migration from Wix upload APIs to Builder.io
 
   - Current location: `app/dashboard/` and page templates
   - Needs: API endpoint updates for Builder.io
