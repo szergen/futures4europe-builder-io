@@ -224,7 +224,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
                     ?.split(".")?.[0] + "kb"}
                   ){" "}
                   <span className="rounded-lg bg-white text-blue-500 p-1 font-bold">
-                    {post.projectResultMedia?.url
+                    {post.projectResultMedia?.fileName
                       ?.split(".")
                       ?.pop()
                       ?.toUpperCase()}
