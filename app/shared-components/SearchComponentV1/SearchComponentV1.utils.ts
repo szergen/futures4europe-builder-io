@@ -435,9 +435,9 @@ export const updateFilteredDataBasedOnClickedTag = (
 
   const matchedAffiliations = filteredData?.affiliations?.filter(
     (affiliation: any) =>
-      matchingTagIds.includes(affiliation?.personTag) ||
-      matchingTagIds.includes(affiliation?.projectTag) ||
-      matchingTagIds.includes(affiliation?.organisationTag)
+      matchingTagIds.includes(affiliation?.personTag?._id) ||
+      matchingTagIds.includes(affiliation?.projectTag?._id) ||
+      matchingTagIds.includes(affiliation?.organisationTag?._id)
   );
 
   // console.log('deb1111->matchedAffiliations', matchedAffiliations);
@@ -446,12 +446,13 @@ export const updateFilteredDataBasedOnClickedTag = (
     ?.filter((page: any) => {
       return matchedAffiliations?.find((affiliation: any) => {
         if (
-          (affiliation.personTag &&
-            page?.person?.[0]?._id === affiliation.personTag) ||
-          (affiliation.organisationTag &&
-            page?.organisation?.[0]?._id === affiliation.organisationTag) ||
-          (affiliation.projectTag &&
-            page?.Project?.[0]?._id === affiliation.projectTag)
+          (affiliation.personTag?._id &&
+            page?.person?.[0]?._id === affiliation.personTag?._id) ||
+          (affiliation.organisationTag?._id &&
+            page?.organisation?.[0]?._id ===
+              affiliation.organisationTag?._id) ||
+          (affiliation.projectTag?._id &&
+            page?.Project?.[0]?._id === affiliation.projectTag?._id)
         ) {
           return true;
         }

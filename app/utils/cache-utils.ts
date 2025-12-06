@@ -72,7 +72,7 @@ export const invalidatePersonPageCache = async (
 ): Promise<Response[]> => {
   return Promise.all([
     revalidatePath(`/person/${slug}`),
-    revalidatePath(`/person-page/${slug}`),
+    // revalidatePath(`/person-page/${slug}`),
   ]);
 };
 
@@ -103,7 +103,7 @@ export const invalidatePostPageCache = async (
 
   // Revalidate both possible paths to be safe
   return Promise.all([
-    revalidatePath(`/post-page/${cleanSlug}`), // Main post-page route
+    // revalidatePath(`/post-page/${cleanSlug}`), // Main post-page route
     revalidatePath(`/post/${cleanSlug}`), // Legacy/alternate route
   ]);
 };
