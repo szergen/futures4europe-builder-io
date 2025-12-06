@@ -155,7 +155,7 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
                           ?.split(".")?.[0] + "kb"}
                         ){" "}
                         <span className="rounded-lg bg-white text-blue-500 p-1 font-bold">
-                          {media?.url?.split(".")?.pop()?.toUpperCase()}
+                          {media?.fileName?.split(".")?.pop()?.toUpperCase()}
                         </span>
                       </Button>
                     </Link>
