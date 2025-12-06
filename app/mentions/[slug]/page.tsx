@@ -1,19 +1,19 @@
-import classNames from 'classnames';
-import React from 'react';
+import classNames from "classnames";
+import React from "react";
 // import PostPageComponent from '@app/page-components/PostPageComponent/PostPageComponent';
 import {
   getCollection,
   getItemById,
   // getCollectionItemByTitle,
   // getCollectionItemBySlug,
-} from '@app/wixUtils/server-side';
-import MiniPagesListComponent from '@app/page-components/shared-page-components/MiniPagesListComponent/MiniPagesListComponent';
-import MiniPagesListItemPost from '@app/page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost';
-import Hero from '@app/shared-components/Hero/Hero';
-import style from './page.module.css';
-import { decidePageTypeItems } from '@app/utils/parse-utils';
-import { containsId } from '@app/utils/tags.utls';
-import Tag from '@app/shared-components/Tag/Tag';
+} from "@app/wixUtils/server-side";
+import MiniPagesListComponent from "@app/page-components/shared-page-components/MiniPagesListComponent/MiniPagesListComponent";
+import MiniPagesListItemPost from "@app/page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost";
+import Hero from "@app/shared-components/Hero/Hero";
+import style from "./page.module.css";
+import { decidePageTypeItems } from "@app/utils/parse-utils";
+import { containsId } from "@app/utils/tags.utls";
+import Tag from "@app/shared-components/Tag/Tag";
 // import { getCollection } from '@app/wixUtils/client-side';
 
 // Next.js will invalidate the cache when a
@@ -28,10 +28,10 @@ export const dynamicParams = true; // or false, to 404 on unknown paths
 export default async function Pages({ params }: any) {
   const tagId = params.slug;
 
-  const postCollection = await getCollection('PostPages');
-  const infoPagesCollection = await getCollection('InfoPages');
-  const affiliationsCollection = await getCollection('Affiliations');
-  const currentTagData = await getItemById('Tags', tagId);
+  const postCollection = await getCollection("PostPages");
+  const infoPagesCollection = await getCollection("InfoPages");
+  const affiliationsCollection = await getCollection("Affiliations");
+  const currentTagData = await getItemById("Tags", tagId);
 
   const postPages = postCollection.map((item) => item.data);
   const infoPages = infoPagesCollection.map((item) => item.data);
@@ -62,7 +62,7 @@ export default async function Pages({ params }: any) {
       }
     });
   });
-  console.log('affiliationPages', affiliationPages);
+  console.log("affiliationPages", affiliationPages);
 
   let items = allPages.filter((page: any) => {
     return containsId(page, tagId);
@@ -76,7 +76,7 @@ export default async function Pages({ params }: any) {
     const dateB = new Date(b._createdDate.$date).getTime();
     return dateB - dateA;
   });
-  console.log('items', items);
+  console.log("items", items);
 
   // Get specific Post by slug
   // const postPageItem = await getCollectionItemBySlug('PostPages', params.slug);
@@ -87,14 +87,14 @@ export default async function Pages({ params }: any) {
   }
 
   return (
-    <div className={classNames('w-full')}>
+    <div className={classNames("w-full")}>
       <Hero subtitle={`sorted by publishing date`}>
         <div className="flex justify-center items-center">
           <h1
             className={classNames(
-              'text-4xl',
-              'font-bold',
-              'mb-4',
+              "text-4xl",
+              "font-bold",
+              "mb-4",
               style.heroTitle
             )}
           >

@@ -1,46 +1,49 @@
-// 'use client';
-import classNames from 'classnames';
-import React from 'react';
-import OrganisationPageComponent from '@app/page-components/OrganisationPageComponent/OrganisationPageComponent';
+import classNames from "classnames";
+import React from "react";
+import OrganisationPageComponent from "@app/page-components/OrganisationPageComponent/OrganisationPageComponent";
+import { generateOgMetadata } from "@app/shared-components/OgImage";
+import { Metadata } from "next";
 import {
-  getCollectionItemBySlug,
-  getCollection,
-  getAffiliationsCollectionItemsByTag,
-} from '@app/wixUtils/server-side';
-import { generateOgMetadata } from '@app/shared-components/OgImage';
-import { Metadata } from 'next';
-
-// Next.js will invalidate the cache when a
-// request comes in, at most once every 60 seconds.
-export const revalidate = 300;
+  getBuilderInfoPageBySlug,
+  getAllBuilderOrganisationPages,
+  transformBuilderInfoPageToWixFormat,
+  extractSlugFromPath,
+  getBuilderAffiliationsByOrgTag,
+} from "@app/utils/builderInfoPageUtils";
 
 // We'll prerender only the params from `generateStaticParams` at build time.
 // If a request comes in for a path that hasn't been generated,
 // Next.js will server-render the page on-demand.
-export const dynamicParams = true; // or false, to 404 on unknown paths
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const organisationPageItem = await getCollectionItemBySlug(
-    'InfoPages',
-    params.slug
-  );
+  const builderInfoPage = await getBuilderInfoPageBySlug(params.slug);
 
-  if (!organisationPageItem) {
+  if (!builderInfoPage) {
     return generateOgMetadata({});
   }
-  let primaryImage = organisationPageItem.data?.organisation?.[0]?.picture;
-  let secondaryImage =
-    organisationPageItem.data?.contentImages?.[0]?.url !== ' '
-      ? organisationPageItem.data?.contentImages?.[0]?.url
-      : 'https://futures4europe.eu/images/placeholder.webp';
+
+  const infoPageItem = transformBuilderInfoPageToWixFormat(builderInfoPage);
+
+  if (!infoPageItem) {
+    return generateOgMetadata({});
+  }
+
+  console.log("[Builder.io] Generating metadata for:", params.slug);
+
+  const primaryImage = infoPageItem.data?.organisation?.[0]?.picture;
+  const secondaryImage =
+    infoPageItem.data?.contentImages?.[0]?.url !== " "
+      ? infoPageItem.data?.contentImages?.[0]?.url
+      : "https://futures4europe.eu/images/placeholder.webp";
 
   return generateOgMetadata({
-    title: organisationPageItem.data?.title || 'Futures4Europe',
-    description: organisationPageItem.data?.subtitle || '',
+    title: infoPageItem.data?.title || "Futures4Europe",
+    description: infoPageItem.data?.subtitle || "",
     primaryImage: primaryImage,
     secondaryImage: secondaryImage,
     url: `https://futures4europe.eu/organisation/${params.slug}`,
@@ -48,44 +51,64 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const postCollection = await getCollection('InfoPages');
-  const slugs = postCollection
-    ?.filter(
-      (post: any) =>
-        post?.data?.slug !== 'New_Organisation_Page' &&
-        post.data?.organisation[0]
-    )
-    ?.map((post: any) => ({
-      params: { slug: post?.data?.slug },
-    }));
+  const builderInfoPages = await getAllBuilderOrganisationPages();
 
-  // console.log('Generated static slugs for Organisation Info Pages ', slugs);
+  const slugs = builderInfoPages
+    .map((page: any) => {
+      const slug = extractSlugFromPath(page?.data?.slug);
+      // Filter out invalid slugs and test pages
+      if (!slug || slug === "New_Organisation_Page") return null;
+      // Ensure it has an organisation tag
+      if (!page.data?.organisation?.[0]) return null;
+      return { slug };
+    })
+    .filter(Boolean);
+
+  console.log(
+    `[Static Paths] Generated ${slugs.length} organisation slug(s) from Builder.io`
+  );
   return slugs;
 }
 
 export default async function OrganisationPage({ params }: any) {
-  console.log('Organisation Page Params', params.slug);
+  const builderInfoPage = await getBuilderInfoPageBySlug(params.slug);
 
-  // Grab specific Project by slug
-  const infoPageItem = await getCollectionItemBySlug('InfoPages', params.slug);
-  const tagIdForOrganisationPage = infoPageItem?.data?.organisation?.[0]?._id;
-  const affiliations = await getAffiliationsCollectionItemsByTag(
-    tagIdForOrganisationPage,
-    'organisationTag'
-  );
-
-  // console.log('Affiliations', affiliations);
-  const infoPageItemWithAffiliations = {
-    ...infoPageItem,
-    affiliationsItems: affiliations.map((affiliation: any) => affiliation.data),
-  };
-
-  if (!infoPageItem) {
-    return <div>Loading...</div>; // You can also add a loading spinner here
+  if (!builderInfoPage) {
+    console.log("[Builder.io] ❌ Organisation page not found:", params.slug);
+    return (
+      <div className="w-full flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Organisation Not Found</h1>
+          <p className="text-gray-600">
+            The organisation page &quot;{params.slug}&quot; could not be found.
+          </p>
+        </div>
+      </div>
+    );
   }
 
+  const infoPageItem = transformBuilderInfoPageToWixFormat(builderInfoPage);
+  const tagIdForOrganisationPage = infoPageItem?.data?.organisation?.[0]?._id;
+
+  // Get affiliations (currently returns empty array until affiliations are migrated)
+  const affiliations = await getBuilderAffiliationsByOrgTag(
+    tagIdForOrganisationPage
+  );
+
+  const infoPageItemWithAffiliations = {
+    ...infoPageItem,
+    affiliationsItems: affiliations,
+  };
+
+  console.log("[Builder.io] ✅ Rendering organisation page:", params.slug);
+
   return (
-    <div className={classNames('w-full')}>
+    <div className={classNames("w-full")}>
+      {process.env.NODE_ENV === "development" && (
+        <div className="fixed bottom-4 right-4 bg-blue-600 text-white px-3 py-1 rounded text-xs z-50 shadow-lg">
+          🔷 Builder.io
+        </div>
+      )}
       <OrganisationPageComponent
         pageTitle={params.slug}
         organisation={infoPageItemWithAffiliations}
