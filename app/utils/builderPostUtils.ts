@@ -427,10 +427,12 @@ export async function getAllBuilderPosts() {
     // Get all posts (paginated if needed)
     const posts = await builder.getAll("post-page", {
       limit: 100,
-      fields: "data.slug,data.title",
+      // fields: "data.slug,data.title",
       options: {
         noTargeting: true,
+        includeRefs: true,
       },
+      enrich: true,
       cachebust: true,
     });
 
