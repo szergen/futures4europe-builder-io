@@ -101,7 +101,7 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
     filteredData: {},
   } as any);
 
-  console.log("debug333->infoPages", infoPages);
+  // console.log("debug333->infoPages", infoPages);
 
   // Fetch all data from cached APIs
   useEffect(() => {

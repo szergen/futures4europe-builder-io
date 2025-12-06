@@ -15,6 +15,9 @@ import {
 // If a request comes in for a path that hasn't been generated,
 // Next.js will server-render the page on-demand.
 export const dynamicParams = true;
+export const dynamic = "force-dynamic";
+// Disable caching for this route to ensure fresh Builder.io data
+export const revalidate = 0;
 
 export async function generateMetadata({
   params,
@@ -90,7 +93,7 @@ export default async function PersonPage({ params }: any) {
   const infoPageItem = transformBuilderInfoPageToWixFormat(builderInfoPage);
   const tagIdForPersonPage = infoPageItem?.data?.person?.[0]?._id;
 
-  console.log("debug222->infoPageItem", infoPageItem);
+  // console.log("debug222->infoPageItem", infoPageItem);
 
   // Get affiliations (currently returns empty array until affiliations are migrated)
   let affiliations = [] as any[];

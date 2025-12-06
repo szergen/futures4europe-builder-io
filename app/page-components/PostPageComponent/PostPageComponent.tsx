@@ -154,7 +154,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
     pageOwner: post?.data?.pageOwner,
     slug: post?.data?.slug,
   };
-  console.log("debug1-post", post);
+  // console.log("debug1-post", post);
   // set default post data and data for editing
   const [defaultPostData, setDefaultPostData] = useState(post);
   const [postData, setPostData] = useState(post);

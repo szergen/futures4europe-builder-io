@@ -15,6 +15,9 @@ import {
 // If a request comes in for a path that hasn't been generated,
 // Next.js will server-render the page on-demand.
 export const dynamicParams = true;
+export const dynamic = "force-dynamic";
+// Disable caching for this route to ensure fresh Builder.io data
+export const revalidate = 0;
 
 export async function generateMetadata({
   params,
@@ -97,7 +100,7 @@ export default async function ProjectPage({ params }: any) {
     tagIdForProjectPage
   );
 
-  console.log("debug111->affiliations", affiliations);
+  // console.log("debug111->affiliations", affiliations);
 
   const infoPageItemWithAffiliations = {
     ...infoPageItem,

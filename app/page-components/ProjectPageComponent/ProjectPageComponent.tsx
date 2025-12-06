@@ -38,7 +38,7 @@ import {
 
 function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
   project = { ...mockProject(pageTitle), ...project };
-  console.log("debug2->project", project);
+  // console.log("debug2->project", project);
 
   const router = useRouter();
 

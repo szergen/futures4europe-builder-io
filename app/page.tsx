@@ -1,17 +1,16 @@
-'use client';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
+"use client";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
 // import { items } from '@wix/data';
 // import { useWixModules } from '@wix/sdk-react';
 // import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import MiniPagesListItemPost from './page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost';
-import { getCollectionItemByTitle } from './wixUtils/client-side';
-import TagsList from './page-components/shared-page-components/TagList/TagsList';
-import SpriteSvg from '@app/shared-components/SpriteSvg/SpriteSvg';
-import style from './page.module.css';
-import TagsCarousel from './shared-components/Carousel/TagsCarousel';
-import SearchComponentV1 from '@app/shared-components/SearchComponentV1/SearchComponentV1';
-import classNames from 'classnames';
+import { useEffect, useState } from "react";
+import MiniPagesListItemPost from "./page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost";
+import SpriteSvg from "@app/shared-components/SpriteSvg/SpriteSvg";
+import style from "./page.module.css";
+import TagsCarousel from "./shared-components/Carousel/TagsCarousel";
+import SearchComponentV1 from "@app/shared-components/SearchComponentV1/SearchComponentV1";
+import classNames from "classnames";
+import { getAllBuilderContent } from "./shared-components/Builder";
 
 export const Home = () => {
   const [homepageConfig, setHomepageConfig] = useState(null);
@@ -47,21 +46,28 @@ export const Home = () => {
     pages: any,
     featuredKey: string
   ) => {
+    const itemKey = `${featuredKey}Item`;
     const featuredIds = homepageConfig.data?.[featuredKey]?.map(
-      (project: any) => project._id
+      (page: any) => page[itemKey]?.id
     );
-    return pages.filter((page: any) => featuredIds.includes(page.data._id));
+    console.log("debug1->featuredIds", featuredIds);
+
+    const featuredPages = pages.filter((page: any) =>
+      featuredIds?.includes(page.id)
+    );
+    console.log("debug1->pages", pages);
+    console.log("debug1->featuredPages", featuredPages);
+
+    return featuredPages;
   };
 
   useEffect(() => {
     // #region get homepage config
     const fetchHomepageConfig = async () => {
-      const config = await getCollectionItemByTitle(
-        'HomePageConfig',
-        'Homepage Config'
-      );
+      const config = await getAllBuilderContent("homepage-config");
+      console.log("debug1->config", config);
 
-      setHomepageConfig(config);
+      setHomepageConfig((config?.[0] as any) || null);
     };
 
     fetchHomepageConfig();
@@ -80,32 +86,32 @@ export const Home = () => {
         featuredPosts: getFeaturedPages(
           homepageConfig,
           postPages,
-          'featuredPosts'
+          "featuredPosts"
         ),
         featuredProjects: getFeaturedPages(
           homepageConfig,
           infoPages,
-          'featuredProjects'
+          "featuredProjects"
         ),
         featuredProjectResults: getFeaturedPages(
           homepageConfig,
           postPages,
-          'featuredProjectResults'
+          "featuredProjectResults"
         ),
         featuredEvents: getFeaturedPages(
           homepageConfig,
           postPages,
-          'featuredEvents'
+          "featuredEvents"
         ),
         featuredOrganisations: getFeaturedPages(
           homepageConfig,
           infoPages,
-          'featuredOrganisations'
+          "featuredOrganisations"
         ),
         featuredPeople: getFeaturedPages(
           homepageConfig,
           infoPages,
-          'featuredPeople'
+          "featuredPeople"
         ),
       });
     }
@@ -201,17 +207,17 @@ export const Home = () => {
 
   return (
     <>
-      <div className={classNames('', style.homeHeroContainer)}>
-        <div className={classNames('', style.homeHeroWrapper)}>
+      <div className={classNames("", style.homeHeroContainer)}>
+        <div className={classNames("", style.homeHeroWrapper)}>
           <div
             className={classNames(
-              'flex mx-auto justify-center relative sm:px-0 py-5 z-1',
+              "flex mx-auto justify-center relative sm:px-0 py-5 z-1",
               style.homeHero
             )}
           >
             <div
               className={classNames(
-                'flex flex-col mt-10 mr-0 max-w-[520px] flex-wrap items-start z-90 md:mr-10',
+                "flex flex-col mt-10 mr-0 max-w-[520px] flex-wrap items-start z-90 md:mr-10",
                 style.homeHeroTitle
               )}
             >
@@ -222,7 +228,7 @@ export const Home = () => {
                 own work, and participate in upcoming events.
               </p>
               {/* Search */}
-              <div className={classNames('relative')}>
+              <div className={classNames("relative")}>
                 <SearchComponentV1 />
               </div>
             </div>
@@ -286,10 +292,10 @@ export const Home = () => {
           <div className="w-24">
             <SpriteSvg.Bird
               viewBox="0 0 47.5 47.5"
-              className={classNames('flex')}
+              className={classNames("flex")}
               sizeW={68}
               sizeH={68}
-              fill={'#e9e9e9'}
+              fill={"#e9e9e9"}
               strokeWidth={0}
               inline={false}
             />
@@ -300,7 +306,7 @@ export const Home = () => {
               Citizen engagement corner
             </h2>
             <p className="mt-8 text-2xl font-normal text-white">
-              Share your visions on{' '}
+              Share your visions on{" "}
               <span className="underline">#OurFutures </span>
             </p>
             <p className="text-xl text-white">

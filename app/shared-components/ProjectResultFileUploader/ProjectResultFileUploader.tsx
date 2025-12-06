@@ -39,7 +39,7 @@ const ProjectResultFileUploader: React.FC<ProjectResultFileUploaderProps> = ({
   ) => {
     const file = event.target.files?.[0];
     setIsLoadingInProgress(true);
-    console.log("debug2->file", file);
+    // console.log("debug2->file", file);
     if (file && file.type !== "application/pdf") {
       setErrorMessage("File is not a PDF. Please try again.");
       setIsValidState(false);
