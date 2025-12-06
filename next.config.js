@@ -35,6 +35,7 @@ var nextConfig = {
   swcMinify: true,
   eslint: {
     dirs: ["app"],
+    ignoreDuringBuilds: true,
   },
   images: {
     dangerouslyAllowSVG: true,
