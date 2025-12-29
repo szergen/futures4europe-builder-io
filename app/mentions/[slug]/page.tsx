@@ -7,11 +7,11 @@ import React from "react";
 //   // getCollectionItemByTitle,
 //   // getCollectionItemBySlug,
 // } from "@app/wixUtils/server-side";
-import MiniPagesListComponent from "@app/page-components/shared-page-components/MiniPagesListComponent/MiniPagesListComponent";
+// import MiniPagesListComponent from "@app/page-components/shared-page-components/MiniPagesListComponent/MiniPagesListComponent";
 import MiniPagesListItemPost from "@app/page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost";
 import Hero from "@app/shared-components/Hero/Hero";
 import style from "./page.module.css";
-import { decidePageTypeItems } from "@app/utils/parse-utils";
+// import { decidePageTypeItems } from "@app/utils/parse-utils";
 import { containsId } from "@app/utils/tags.utls";
 import Tag from "@app/shared-components/Tag/Tag";
 // import { getCollection } from '@app/wixUtils/client-side';
@@ -19,7 +19,7 @@ import {
   getAllBuilderPosts,
   transformBuilderPostToWixFormat,
 } from "@app/utils/builderPostUtils";
-import { getAllBuilderContent } from "@app/shared-components/Builder";
+import { getAllBuilderInfoPages } from "@app/utils/builderInfoPageUtils";
 import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
 import { getAllAffiliations } from "@app/utils/builderAffiliationUtils";
 import {
@@ -47,25 +47,26 @@ export default async function Pages({ params }: any) {
   const [builderPosts, builderInfoPages, affiliations, builderTag] =
     await Promise.all([
       getAllBuilderPosts(),
-      getAllBuilderContent("info-page"),
+      getAllBuilderInfoPages(),
       getAllAffiliations(),
       getBuilderTagById(tagId),
     ]);
 
   const postPages = builderPosts
-    ?.map((item) => {
+    ?.map((item: any) => {
       const transformed = transformBuilderPostToWixFormat(item);
       return transformed ? { ...transformed.data, _id: transformed.id } : null;
     })
-    .filter((item): item is NonNullable<typeof item> => item !== null);
+    .filter((item: any): item is NonNullable<typeof item> => item !== null);
+  console.log("debug111->postPages", postPages.length);
 
   const infoPages = builderInfoPages
-    ?.map((item) => {
+    ?.map((item: any) => {
       const transformed = transformBuilderInfoPageToWixFormat(item);
       return transformed ? { ...transformed.data, _id: transformed.id } : null;
     })
-    .filter((item): item is NonNullable<typeof item> => item !== null);
-
+    .filter((item: any): item is NonNullable<typeof item> => item !== null);
+  console.log("debug111->infoPages", infoPages.length);
   const currentTagData = builderTag
     ? { data: transformBuilderTagToWixFormat(builderTag) }
     : null;
@@ -100,11 +101,13 @@ export default async function Pages({ params }: any) {
       }
     });
   });
-  console.log("affiliationPages", affiliationPages);
+  // console.log("affiliationPages", affiliationPages);
+  console.log("debug111->allItems before filter", allPages.length);
 
   let items = allPages.filter((page: any) => {
     return containsId(page, tagId);
   });
+  console.log("debug111->items before filter", items.length);
   items = [...affiliationPages, ...items]?.filter(
     (post, index, self) => index === self.findIndex((p) => p._id === post._id)
   );
@@ -114,7 +117,7 @@ export default async function Pages({ params }: any) {
     const dateB = new Date(b._createdDate?.$date).getTime();
     return dateB - dateA;
   });
-  console.log("items", items);
+  console.log("debug111->items", items[0]);
 
   // Get specific Post by slug
   // const postPageItem = await getCollectionItemBySlug('PostPages', params.slug);

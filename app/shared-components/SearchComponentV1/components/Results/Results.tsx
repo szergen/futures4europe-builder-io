@@ -1,9 +1,9 @@
 import { getPropsForMiniPagesListItemPost } from "@app/page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost.utils";
 // import MiniPage from '@app/shared-components/MiniPage/MiniPage';
 import MiniPagePost from "@app/shared-components/MiniPagePost/MiniPagePost";
-import Tag from "@app/shared-components/Tag/Tag";
-import { automaticallyDecidePathPrefixBasedOnPageType } from "@app/utils/parse-utils";
-import classNames from "classnames";
+// import Tag from "@app/shared-components/Tag/Tag";
+// import { automaticallyDecidePathPrefixBasedOnPageType } from "@app/utils/parse-utils";
+// import classNames from "classnames";
 import Link from "next/link";
 import React from "react";
 
@@ -21,7 +21,7 @@ export type ResultsProps = {
 };
 
 const Results: React.FC<ResultsProps> = ({ results, searchedItems }) => {
-  console.log("Results component -> results", results);
+  // console.log("Results component -> results", results);
 
   return (
     <div className="style.suggestions ">

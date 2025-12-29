@@ -102,7 +102,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     .map((item: any) => item?.personTag)
     .filter(
       (projectTag: any, index: number, self: any[]) =>
-        index === self.findIndex((pt) => pt.name === projectTag.name)
+        index === self.findIndex((pt) => pt?.name === projectTag?.name)
     );
 
   const projectsParticipation = project?.affiliationsItems
@@ -110,7 +110,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     .map((item: any) => item?.personTag)
     .filter(
       (projectTag: any, index: number, self: any[]) =>
-        index === self.findIndex((pt) => pt.name === projectTag.name)
+        index === self.findIndex((pt) => pt?.name === projectTag?.name)
     );
   // console.log("debug111->projectsParticipation", projectsParticipation);
 
@@ -126,7 +126,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       (projectTag: any, index: number, self: any[]) =>
         index ===
         self.findIndex(
-          (pt) => pt.name === projectTag.name && pt.arole === projectTag.arole
+          (pt) => pt?.name === projectTag?.name && pt?.role === projectTag?.role
         )
     );
 

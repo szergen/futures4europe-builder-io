@@ -101,10 +101,10 @@ function OrganisationPageComponent({
   // #endregion
 
   // #region Handle affiliations
-  console.log(
-    "debug111->person.affiliationsItems",
-    organisation?.affiliationsItems
-  );
+  // console.log(
+  //   "debug111->person.affiliationsItems",
+  //   organisation?.affiliationsItems
+  // );
 
   const projects = organisation?.affiliationsItems
     ?.filter((item: any) => item?.extraIdentifier === "projectOrganisationRole")
@@ -118,7 +118,7 @@ function OrganisationPageComponent({
       (projectTag: any, index: number, self: any[]) =>
         index ===
         self.findIndex(
-          (pt) => pt.name === projectTag.name && pt.arole === projectTag.arole
+          (pt) => pt?.name === projectTag?.name && pt?.role === projectTag?.role
         )
     );
 
@@ -134,7 +134,7 @@ function OrganisationPageComponent({
       (projectTag: any, index: number, self: any[]) =>
         index ===
         self.findIndex(
-          (pt) => pt.name === projectTag.name && pt.arole === projectTag.arole
+          (pt) => pt?.name === projectTag?.name && pt?.role === projectTag?.role
         )
     );
 

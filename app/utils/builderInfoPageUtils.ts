@@ -3,6 +3,15 @@ import {
   getAllBuilderContent,
 } from "@app/shared-components/Builder";
 import { transformReferencesForBuilderCreate } from "@app/utils/builderPostUtils";
+import { RedisCacheService } from "@app/services/redisCache";
+
+// ============================================================================
+// CACHE CONFIGURATION
+// ============================================================================
+
+const INFO_PAGES_CACHE_KEY = "builder_info_pages_all.json";
+// Cache TTL: 1 day
+const CACHE_TTL = 24 * 60 * 60 * 1000;
 
 // ============================================================================
 // WRITE API CONFIGURATION
@@ -173,17 +182,82 @@ export async function getBuilderInfoPageBySlug(slug: string) {
 }
 
 /**
+ * Get all info-pages from Builder.io (Organisations, People, Projects)
+ * Uses pagination to ensure ALL pages are retrieved
+ * Caches results in Redis
+ */
+export async function getAllBuilderInfoPages(options?: {
+  cachebust?: boolean;
+}) {
+  try {
+    // Check cache first
+    if (!options?.cachebust) {
+      const cached = await RedisCacheService.getFromCache(INFO_PAGES_CACHE_KEY);
+      if (cached && Array.isArray(cached) && cached.length > 0) {
+        console.log(
+          `[Builder.io] Returning ${cached.length} cached info pages`
+        );
+        return cached;
+      }
+    }
+
+    console.log("[Builder.io] Fetching all info pages from API...");
+
+    // Fetch all info pages with pagination
+    const allPages: any[] = [];
+    const limit = 100;
+    let offset = 0;
+    let hasMore = true;
+
+    while (hasMore) {
+      const results = await getAllBuilderContent("info-page", {
+        limit,
+        offset,
+      });
+
+      if (results && results.length > 0) {
+        allPages.push(...results);
+        offset += limit;
+        console.log(
+          `[Builder.io] Fetched ${results.length} info pages (total: ${allPages.length})`
+        );
+
+        if (results.length < limit) {
+          hasMore = false;
+        }
+      } else {
+        hasMore = false;
+      }
+    }
+
+    // Cache the results
+    if (allPages.length > 0) {
+      await RedisCacheService.saveToCache(
+        INFO_PAGES_CACHE_KEY,
+        allPages,
+        CACHE_TTL
+      );
+      console.log(`[Builder.io] Cached ${allPages.length} info pages`);
+    }
+
+    return allPages;
+  } catch (error) {
+    console.error("[Builder.io] Error fetching all info pages:", error);
+    // Fallback to cache
+    const cached = await RedisCacheService.getFromCache(INFO_PAGES_CACHE_KEY);
+    return cached || [];
+  }
+}
+
+/**
  * Get all organisation info-pages from Builder.io
  * Filters for pages that have an organisation tag
  */
 export async function getAllBuilderOrganisationPages() {
-  const content = await getAllBuilderContent("info-page", {
-    query: {
-      "data.slug": { $exists: true },
-      "data.organisation": { $exists: true },
-    },
-  });
-  return content;
+  const allContent = await getAllBuilderInfoPages();
+  return allContent.filter(
+    (item: any) => item.data?.slug && item.data?.organisation
+  );
 }
 
 /**
@@ -253,13 +327,8 @@ export async function getBuilderPersonPageBySlug(slug: string) {
  * Filters for pages that have a person tag
  */
 export async function getAllBuilderPersonPages() {
-  const content = await getAllBuilderContent("info-page", {
-    query: {
-      "data.slug": { $exists: true },
-      "data.person": { $exists: true },
-    },
-  });
-  return content;
+  const allContent = await getAllBuilderInfoPages();
+  return allContent.filter((item: any) => item.data?.slug && item.data?.person);
 }
 
 /**
@@ -309,13 +378,10 @@ export async function getBuilderProjectPageBySlug(slug: string) {
  * Filters for pages that have a project tag
  */
 export async function getAllBuilderProjectPages() {
-  const content = await getAllBuilderContent("info-page", {
-    query: {
-      "data.slug": { $exists: true },
-      "data.project": { $exists: true },
-    },
-  });
-  return content;
+  const allContent = await getAllBuilderInfoPages();
+  return allContent.filter(
+    (item: any) => item.data?.slug && item.data?.project
+  );
 }
 
 /**
