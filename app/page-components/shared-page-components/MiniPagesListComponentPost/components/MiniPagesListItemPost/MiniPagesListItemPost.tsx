@@ -291,7 +291,10 @@ const MiniPagesListItemPost: React.FC<MiniPagesListItemPostProps> = ({
         </Typography>
       )}
       {sortedItems.map((item, index) => (
-        <Link key={`${item?.title}-${item?._id || index}`} href={item.slug}>
+        <Link
+          key={`${item?.title}-${item?._id || index}`}
+          href={item.slug || ""}
+        >
           <MiniPagePost {...getPropsForMiniPagesListItemPost(item)} />
         </Link>
       ))}

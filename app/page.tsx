@@ -50,13 +50,13 @@ export const Home = () => {
     const featuredIds = homepageConfig.data?.[featuredKey]?.map(
       (page: any) => page[itemKey]?.id
     );
-    console.log("debug1->featuredIds", featuredIds);
+    // console.log("debug1->featuredIds", featuredIds);
 
     const featuredPages = pages.filter((page: any) =>
       featuredIds?.includes(page.id)
     );
-    console.log("debug1->pages", pages);
-    console.log("debug1->featuredPages", featuredPages);
+    // console.log("debug1->pages", pages);
+    // console.log("debug1->featuredPages", featuredPages);
 
     return featuredPages;
   };
@@ -65,7 +65,7 @@ export const Home = () => {
     // #region get homepage config
     const fetchHomepageConfig = async () => {
       const config = await getAllBuilderContent("homepage-config");
-      console.log("debug1->config", config);
+      // console.log("debug1->config", config);
 
       setHomepageConfig((config?.[0] as any) || null);
     };
