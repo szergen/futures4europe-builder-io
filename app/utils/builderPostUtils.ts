@@ -6,6 +6,15 @@
  */
 
 import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
+import { RedisCacheService } from "@app/services/redisCache";
+
+// ============================================================================
+// CACHE CONFIGURATION
+// ============================================================================
+
+const POSTS_CACHE_KEY = "builder_posts_all.json";
+// Cache TTL: 1 day (posts don't change that often, and we have revalidation)
+const CACHE_TTL = 24 * 60 * 60 * 1000;
 
 // ============================================================================
 // WRITE API CONFIGURATION
@@ -413,10 +422,21 @@ export async function getBuilderPostBySlug(slug: string) {
 
 /**
  * Fetch all posts from Builder.io for static generation
+ * Uses pagination to ensure ALL posts are retrieved (not just the first 100)
+ * Caches results in Redis
  * @returns Array of Builder.io post entries
  */
-export async function getAllBuilderPosts() {
+export async function getAllBuilderPosts(options?: { cachebust?: boolean }) {
   try {
+    // Check cache first (unless cachebust)
+    if (!options?.cachebust) {
+      const cached = await RedisCacheService.getFromCache(POSTS_CACHE_KEY);
+      if (cached && Array.isArray(cached) && cached.length > 0) {
+        console.log(`[Builder.io] Returning ${cached.length} cached posts`);
+        return cached;
+      }
+    }
+
     const { builder } = await import("@builder.io/sdk");
     const { builderConfig } = await import("../../builder.config");
 
@@ -424,22 +444,53 @@ export async function getAllBuilderPosts() {
       builder.init(builderConfig.apiKey);
     }
 
-    // Get all posts (paginated if needed)
-    const posts = await builder.getAll("post-page", {
-      limit: 100,
-      // fields: "data.slug,data.title",
-      options: {
-        noTargeting: true,
-        includeRefs: true,
-      },
-      enrich: true,
-      cachebust: true,
-    });
+    // Fetch all posts with pagination
+    const allPosts: any[] = [];
+    const limit = 100;
+    let offset = 0;
+    let hasMore = true;
 
-    return posts || [];
+    console.log("[Builder.io] Fetching all posts from API...");
+
+    while (hasMore) {
+      const posts = await builder.getAll("post-page", {
+        limit,
+        offset,
+        options: {
+          noTargeting: true,
+          includeRefs: true,
+        },
+        enrich: true,
+        cachebust: true,
+      });
+
+      if (posts && posts.length > 0) {
+        allPosts.push(...posts);
+        offset += limit;
+        console.log(
+          `[Builder.io] Fetched ${posts.length} posts (total: ${allPosts.length})`
+        );
+
+        if (posts.length < limit) {
+          hasMore = false;
+        }
+      } else {
+        hasMore = false;
+      }
+    }
+
+    // Cache the results if we found any
+    if (allPosts.length > 0) {
+      await RedisCacheService.saveToCache(POSTS_CACHE_KEY, allPosts, CACHE_TTL);
+      console.log(`[Builder.io] Cached ${allPosts.length} posts`);
+    }
+
+    return allPosts;
   } catch (error) {
     console.error("[Builder.io] Error fetching all posts:", error);
-    return [];
+    // Fallback to cache if API fails
+    const cached = await RedisCacheService.getFromCache(POSTS_CACHE_KEY);
+    return cached || [];
   }
 }
 
