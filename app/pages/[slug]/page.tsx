@@ -9,8 +9,10 @@ import {
   getAllBuilderPosts,
   transformBuilderPostToWixFormat,
 } from "@app/utils/builderPostUtils";
-import { getAllBuilderContent } from "@app/shared-components/Builder";
-import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
+import {
+  getAllBuilderInfoPages,
+  transformBuilderInfoPageToWixFormat,
+} from "@app/utils/builderInfoPageUtils";
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
@@ -47,22 +49,22 @@ export default async function Pages({ params }: any) {
 
   const [builderPosts, builderInfoPages] = await Promise.all([
     getAllBuilderPosts(),
-    getAllBuilderContent("info-page"),
+    getAllBuilderInfoPages(),
   ]);
 
   const postPages = builderPosts
-    ?.map((item) => {
+    ?.map((item: any) => {
       const transformed = transformBuilderPostToWixFormat(item);
       return transformed ? { ...transformed.data, _id: transformed.id } : null;
     })
-    .filter((item): item is NonNullable<typeof item> => item !== null);
+    .filter((item: any): item is NonNullable<typeof item> => item !== null);
 
   const infoPages = builderInfoPages
-    ?.map((item) => {
+    ?.map((item: any) => {
       const transformed = transformBuilderInfoPageToWixFormat(item);
       return transformed ? { ...transformed.data, _id: transformed.id } : null;
     })
-    .filter((item): item is NonNullable<typeof item> => item !== null);
+    .filter((item: any): item is NonNullable<typeof item> => item !== null);
 
   //Get specific Post by slug
   // const postPageItem = await getCollectionItemBySlug('PostPages', params.slug);
