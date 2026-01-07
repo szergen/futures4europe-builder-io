@@ -58,7 +58,7 @@ export default async function Pages({ params }: any) {
       return transformed ? { ...transformed.data, _id: transformed.id } : null;
     })
     .filter((item: any): item is NonNullable<typeof item> => item !== null);
-  console.log("debug111->postPages", postPages.length);
+  // console.log("debug111->postPages", postPages.length);
 
   const infoPages = builderInfoPages
     ?.map((item: any) => {
@@ -66,7 +66,7 @@ export default async function Pages({ params }: any) {
       return transformed ? { ...transformed.data, _id: transformed.id } : null;
     })
     .filter((item: any): item is NonNullable<typeof item> => item !== null);
-  console.log("debug111->infoPages", infoPages.length);
+  // console.log("debug111->infoPages", infoPages.length);
   const currentTagData = builderTag
     ? { data: transformBuilderTagToWixFormat(builderTag) }
     : null;
@@ -102,12 +102,12 @@ export default async function Pages({ params }: any) {
     });
   });
   // console.log("affiliationPages", affiliationPages);
-  console.log("debug111->allItems before filter", allPages.length);
+  // console.log("debug111->allItems before filter", allPages.length);
 
   let items = allPages.filter((page: any) => {
     return containsId(page, tagId);
   });
-  console.log("debug111->items before filter", items.length);
+  // console.log("debug111->items before filter", items.length);
   items = [...affiliationPages, ...items]?.filter(
     (post, index, self) => index === self.findIndex((p) => p._id === post._id)
   );
@@ -117,7 +117,7 @@ export default async function Pages({ params }: any) {
     const dateB = new Date(b._createdDate?.$date).getTime();
     return dateB - dateA;
   });
-  console.log("debug111->items", items[0]);
+  // console.log("debug111->items", items[0]);
 
   // Get specific Post by slug
   // const postPageItem = await getCollectionItemBySlug('PostPages', params.slug);

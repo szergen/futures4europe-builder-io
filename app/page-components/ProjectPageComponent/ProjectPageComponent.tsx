@@ -13,12 +13,12 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
 import OgImage from "@app/shared-components/OgImage";
 import {
-  arraysEqual,
+  // arraysEqual,
   deepEqual,
   sanitizeTitleForSlug,
 } from "../PageComponents.utils";
 import {
-  checkIfArrayNeedsUpdateForStrings,
+  // checkIfArrayNeedsUpdateForStrings,
   checkIfArrayNeedsUpdateForTags,
   generateUniqueHash,
 } from "../PostPageComponent/PostPageComponent.utils";
