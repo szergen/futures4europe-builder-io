@@ -1734,6 +1734,41 @@
       "builderId": "843576b81f5c44439724f9be148f96b4",
       "title": "Global Scenarios 2035",
       "slug": "/post/global-scenarios-2035-tco7v"
+    },
+    "46cfa6da-d5cf-4f38-8324-41b1bef9e53b": {
+      "builderId": "c41f6e4c04114b5cbf57c1da760f0d22",
+      "title": "ESPAS Horizon Scanning Issue 9",
+      "slug": "/post/espas-horizon-scanning-issue-9-2tdtk"
+    },
+    "56399913-3885-4320-8447-7ab6523bf4f1": {
+      "builderId": "d56735925b1940458655b4a0ca12df9b",
+      "title": "Call for evidence : 2026 Strategic Foresight Report",
+      "slug": "/post/call-for-evidence-2026-strategic-foresight-report-idmis"
+    },
+    "61b40b2a-cec4-4164-be6f-2c07adbb876c": {
+      "builderId": "941187bb283143928398722d80d60d03",
+      "title": "Futures Barometer",
+      "slug": "/post/futures-barometer-7lkwn"
+    },
+    "a519c5f1-c431-42a4-bd1a-585e0f0dd122": {
+      "builderId": "818318efaeaf46f79cd9bf3f2df6e3ec",
+      "title": "Anticipation 2026 Conference",
+      "slug": "/post/anticipation-2026-conference-8cf54"
+    },
+    "a56be798-f064-4dd0-9243-2606be7ea5a2": {
+      "builderId": "34d5ea5f99d94e0eb6edda76e13529a2",
+      "title": "FARSIGHT podcast",
+      "slug": "/post/farsight-podcast-quw0y"
+    },
+    "dd1271ee-ce2c-4a74-9793-e9269e2f817b": {
+      "builderId": "9c913a62b5f448c6a7db63fcbc8a48f7",
+      "title": "Mapping and analysis of recent foresight studies concerned with livestock",
+      "slug": "/post/mapping-and-analysis-of-recent-foresight-studies-concerned-with-livestock-r1j7d"
+    },
+    "f74cd7a5-b001-4112-b45a-649a28b64792": {
+      "builderId": "747e74fdf92f4d4bbf5e4a190869151e",
+      "title": "Taftie Academy Training “Foresight”",
+      "slug": "/post/taftie-academy-training-foresight-wu0cy"
     }
   },
   "builderToWix": {
@@ -2083,8 +2118,15 @@
     "cd7dde5664564be284b7cbe1c1511c66": "fc676b46-b059-4f94-8edf-5fc44f4cec0d",
     "c40a9f926c4845558dee1a3858f0c059": "fdca3685-ae0e-4dc4-9f62-fd2de2046be1",
     "7811a9fb4a4a4b60b91d9fef17aff536": "fee9f4cb-9811-4fc4-9788-b3b0e73d532f",
-    "843576b81f5c44439724f9be148f96b4": "ffc3eee2-1311-4aad-baef-c4b1fdaef59a"
+    "843576b81f5c44439724f9be148f96b4": "ffc3eee2-1311-4aad-baef-c4b1fdaef59a",
+    "c41f6e4c04114b5cbf57c1da760f0d22": "46cfa6da-d5cf-4f38-8324-41b1bef9e53b",
+    "d56735925b1940458655b4a0ca12df9b": "56399913-3885-4320-8447-7ab6523bf4f1",
+    "941187bb283143928398722d80d60d03": "61b40b2a-cec4-4164-be6f-2c07adbb876c",
+    "818318efaeaf46f79cd9bf3f2df6e3ec": "a519c5f1-c431-42a4-bd1a-585e0f0dd122",
+    "34d5ea5f99d94e0eb6edda76e13529a2": "a56be798-f064-4dd0-9243-2606be7ea5a2",
+    "9c913a62b5f448c6a7db63fcbc8a48f7": "dd1271ee-ce2c-4a74-9793-e9269e2f817b",
+    "747e74fdf92f4d4bbf5e4a190869151e": "f74cd7a5-b001-4112-b45a-649a28b64792"
   },
-  "migratedCount": 342,
-  "lastMigrated": "2025-12-01T15:12:29.561Z"
+  "migratedCount": 7,
+  "lastMigrated": "2026-01-08T13:15:33.024Z"
 }
