@@ -237,7 +237,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
       )}
 
       {/* Add Event File Uploader Logic */}
-      {post.pageType?.[0]?.name?.toLowerCase() === "event" && isEditModeOn && (
+      {/* {post.pageType?.[0]?.name?.toLowerCase() === "event" && isEditModeOn && (
         <div className={style.imageAndButtons}>
           <div>
             <ProjectResultHeaderImage
@@ -339,10 +339,10 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
             />
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Display uploaded file for events when not in edit mode */}
-      {post.pageType?.[0]?.name?.toLowerCase() === "event" &&
+      {/* {post.pageType?.[0]?.name?.toLowerCase() === "event" &&
         !isEditModeOn &&
         post?.projectResultMedia &&
         (post?.projectResultMedia?.thumbnail ||
@@ -384,7 +384,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
               </div>
             )}
           </div>
-        )}
+        )} */}
 
       <div className={style.detailsColumn}>
         {/* Post Info Name */}
