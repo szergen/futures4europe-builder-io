@@ -20,7 +20,7 @@ import {
 } from 'react-icons/hi';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import Tag from '../Tag/Tag';
-import { decidePageTypeItems } from '@app/utils/parse-utils';
+import { decidePageTypesForMiniPages } from '@app/utils/parse-utils';
 import GlowButton from './NavBar/GlowButton';
 import 'vanilla-cookieconsent/dist/cookieconsent.css';
 import * as CookieConsent from 'vanilla-cookieconsent';
@@ -266,37 +266,37 @@ const Header = () => {
       setPageTypeCounts((prev) => ({
         ...prev,
         post:
-          decidePageTypeItems(
+        decidePageTypesForMiniPages(
             'post',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
           )?.length || 0,
         project:
-          decidePageTypeItems(
+          decidePageTypesForMiniPages(
             'project',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
           )?.length || 0,
         person:
-          decidePageTypeItems(
+        decidePageTypesForMiniPages(
             'person',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
           )?.length || 0,
         organisation:
-          decidePageTypeItems(
+        decidePageTypesForMiniPages(
             'organisation',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
           )?.length || 0,
         event:
-          decidePageTypeItems(
+        decidePageTypesForMiniPages(
             'event',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
           )?.length || 0,
         projectResult:
-          decidePageTypeItems(
+        decidePageTypesForMiniPages(
             'project-result',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
@@ -906,3 +906,7 @@ const Header = () => {
 };
 
 export default memo(Header);
+function decidePageTypeItemsForMiniPages(arg0: string, arg1: any[], arg2: any[]) {
+  throw new Error('Function not implemented.');
+}
+
