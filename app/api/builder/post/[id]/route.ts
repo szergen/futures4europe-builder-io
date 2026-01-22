@@ -11,8 +11,9 @@ import { RedisCacheService } from "@app/services/redisCache";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
-const CACHE_KEY = "postPages_builder.json";
-const POSTS_CACHE_KEY = "posts_builder.json";
+const ALL_POSTS_CACHE_KEY = "builder_posts_all.json";
+// Cache TTL: 1 day
+const CACHE_TTL = 24 * 60 * 60 * 1000;
 
 export async function PUT(
   request: NextRequest,
@@ -72,6 +73,30 @@ export async function PUT(
       id: result.id,
       slug: result.data?.slug,
     });
+
+    // Update Redis Cache (All Posts)
+    try {
+      const cached = await RedisCacheService.getFromCache(ALL_POSTS_CACHE_KEY);
+      if (cached && Array.isArray(cached)) {
+        const index = cached.findIndex((p: any) => p.id === postId);
+        if (index !== -1) {
+          cached[index] = result;
+          await RedisCacheService.saveToCache(
+            ALL_POSTS_CACHE_KEY,
+            cached,
+            CACHE_TTL
+          );
+          console.log("[Builder.io API] Updated post in Redis cache");
+        }
+      }
+    } catch (cacheError) {
+      console.warn(
+        "[Builder.io API] Failed to update Redis cache:",
+        cacheError
+      );
+      // Fallback: invalidate if update fails
+      await RedisCacheService.invalidateCache(ALL_POSTS_CACHE_KEY);
+    }
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
@@ -137,8 +162,7 @@ export async function DELETE(
     });
 
     // Invalidate both post caches so the deletion is reflected
-    await RedisCacheService.invalidateCache(CACHE_KEY);
-    await RedisCacheService.invalidateCache(POSTS_CACHE_KEY);
+    await RedisCacheService.invalidateCache(ALL_POSTS_CACHE_KEY);
     console.log("[Builder.io API] Post caches invalidated");
 
     return NextResponse.json(

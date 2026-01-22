@@ -7,9 +7,13 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { RedisCacheService } from "@app/services/redisCache";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
+const INFO_PAGES_CACHE_KEY = "builder_info_pages_all.json";
+// Cache TTL: 1 day
+const CACHE_TTL = 24 * 60 * 60 * 1000;
 
 export async function POST(request: NextRequest) {
   try {
@@ -62,6 +66,27 @@ export async function POST(request: NextRequest) {
       id: result.id,
       slug: result.data?.slug,
     });
+
+    // Update Redis Cache
+    try {
+      const cached = await RedisCacheService.getFromCache(INFO_PAGES_CACHE_KEY);
+      if (cached && Array.isArray(cached)) {
+        cached.push(result);
+        await RedisCacheService.saveToCache(
+          INFO_PAGES_CACHE_KEY,
+          cached,
+          CACHE_TTL
+        );
+        console.log("[Builder.io API] Added new info-page to Redis cache");
+      }
+    } catch (cacheError) {
+      console.warn(
+        "[Builder.io API] Failed to update Redis cache:",
+        cacheError
+      );
+      // Fallback: invalidate cache
+      await RedisCacheService.invalidateCache(INFO_PAGES_CACHE_KEY);
+    }
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {

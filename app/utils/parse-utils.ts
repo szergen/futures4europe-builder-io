@@ -27,8 +27,9 @@ export const decidePageTypeItems = (
     case 'post':
       return postPages.filter(
         (item: any) =>
-          item?.pageTypes?.[0]?.name !== 'event' &&
-          item?.pageTypes?.[0]?.name !== 'project result'
+          // pageTypes[0].pageTypeItem.value.name
+          item?.pageTypes?.[0]?.pageTypeItem?.value?.name !== 'event' &&
+          item?.pageTypes?.[0]?.pageTypeItem?.value?.name !== 'project result'
       );
     case 'event':
       return filterPagesByType('event', postPages);
@@ -62,7 +63,7 @@ export const automaticallyDecidePathPrefixBasedOnPageType = (
 };
 
 export const filterPagesByType = (type: string, pages: any) => {
-  return pages.filter((page: any) => page?.pageTypes?.[0]?.name === type);
+  return pages.filter((page: any) => page?.pageTypes?.[0]?.pageTypeItem?.value?.name === type);
 };
 
 export const filterDuplicateAffiliations = (affiliations: any[]): any[] => {

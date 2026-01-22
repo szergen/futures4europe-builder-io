@@ -259,6 +259,7 @@ const Header = () => {
     event: 0,
     projectResult: 0,
   });
+  console.log('postPages', postPages[0]);
 
   useEffect(() => {
     if (infoPages && postPages) {
