@@ -36,7 +36,7 @@ export async function generateMetadata({
     return generateOgMetadata({});
   }
 
-  console.log("[Builder.io] Generating metadata for project:", params.slug);
+  // console.log("[Builder.io] Generating metadata for project:", params.slug);
 
   const primaryImage = projectPageItem.data?.Project?.[0]?.picture;
   const secondaryImage =

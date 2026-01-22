@@ -42,7 +42,7 @@ export async function generateMetadata({
     return generateOgMetadata({});
   }
 
-  console.log("[Builder.io] Generating metadata for:", params.slug);
+  // console.log("[Builder.io] Generating metadata for:", params.slug);
 
   let primaryImage =
     postPageItem.data?.postImage1?.url !== " "

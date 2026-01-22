@@ -18,11 +18,11 @@ export async function getBuilderContent(
   options: BuilderContentOptions = {}
 ) {
   try {
-    console.log(`[Builder.io] Fetching content for model: "${model}"`);
-    console.log(
-      `[Builder.io] API Key configured: ${builderConfig.apiKey ? "Yes" : "No"}`
-    );
-    console.log(`[Builder.io] Options:`, options);
+    // console.log(`[Builder.io] Fetching content for model: "${model}"`);
+    // console.log(
+    //   `[Builder.io] API Key configured: ${builderConfig.apiKey ? "Yes" : "No"}`
+    // );
+    // console.log(`[Builder.io] Options:`, options);
 
     const content = await builder
       .get(model, {
@@ -38,14 +38,14 @@ export async function getBuilderContent(
       })
       .toPromise();
 
-    console.log(
-      `[Builder.io] Content fetched for "${model}":`,
-      content ? "Found" : "Not found"
-    );
-    if (content) {
-      console.log(`[Builder.io] Content ID:`, content.id);
-      console.log(`[Builder.io] Content name:`, content.name);
-    }
+    // console.log(
+    //   `[Builder.io] Content fetched for "${model}":`,
+    //   content ? "Found" : "Not found"
+    // );
+    // if (content) {
+    //   console.log(`[Builder.io] Content ID:`, content.id);
+    //   console.log(`[Builder.io] Content name:`, content.name);
+    // }
 
     return content;
   } catch (error) {
