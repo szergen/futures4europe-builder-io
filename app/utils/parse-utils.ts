@@ -46,6 +46,34 @@ export const decidePageTypeItems = (
   }
 };
 
+export const decidePageTypesForMiniPages = (
+  type: string,
+  postPages: any,
+  infoPages: any
+) => {
+  switch (type) {
+    case 'post':
+      return postPages.filter(
+        (item: any) =>
+          // pageTypes[0].pageTypeItem.value.name
+          item?.pageTypes?.[0]?.name !== 'event' &&
+          item?.pageTypes?.[0]?.name !== 'project result'
+      );
+    case 'event':
+      return postPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'event');
+    case 'project-result':
+      return postPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'project result');
+    case 'project':
+      return infoPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'project info');
+    case 'person':
+      return infoPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'person info');
+    case 'organisation':
+      return infoPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'organisation info');
+    default:
+      return [];
+  }
+};
+
 export const automaticallyDecidePathPrefixBasedOnPageType = (
   typeName: string = ''
 ) => {

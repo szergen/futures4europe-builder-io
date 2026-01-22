@@ -41,6 +41,10 @@ export default function Pages({ params, searchParams }: any) {
     }));
   }, [results]);
 
+  console.log('debug2->filteredData', filteredData.length);
+  console.log('debug2->filteredData', filteredData[0]);
+  console.log('debug2->filteredData', filteredData[filteredData.length - 1]);
+
   return (
     <div className={classNames('w-full')}>
       {/* <SearchProvider> */}
