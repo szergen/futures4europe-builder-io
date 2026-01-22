@@ -595,6 +595,8 @@ export function transformBuilderPostToWixFormat(builderPost: any) {
       // Both accept millisecond timestamps directly
       _createdDate: { $date: builderPost.createdDate }, // Timestamp for component's postDate
       _updatedDate: { $date: builderPost.lastUpdated }, // Timestamp for component's updatedDate
+      lastUpdated: builderPost.lastUpdated, // Add this for sorting at the root level of the data object
+      createdDate: builderPost.createdDate, // Add this for sorting at the root level of the data object
       postPublicationDate:
         builderPost.createdDate ||
         builderPost.firstPublished ||

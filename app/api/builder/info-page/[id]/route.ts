@@ -11,7 +11,9 @@ import { RedisCacheService } from "@app/services/redisCache";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
-const CACHE_KEY = "infoPages_builder.json";
+const ALL_INFO_PAGES_CACHE_KEY = "builder_info_pages_all.json";
+// Cache TTL: 1 day
+const CACHE_TTL = 24 * 60 * 60 * 1000;
 
 export async function PUT(
   request: NextRequest,
@@ -69,6 +71,32 @@ export async function PUT(
       id: result.id,
       slug: result.data?.slug,
     });
+
+    // Update Redis Cache
+    try {
+      const cached = await RedisCacheService.getFromCache(
+        ALL_INFO_PAGES_CACHE_KEY
+      );
+      if (cached && Array.isArray(cached)) {
+        const index = cached.findIndex((p: any) => p.id === pageId);
+        if (index !== -1) {
+          cached[index] = result;
+          await RedisCacheService.saveToCache(
+            ALL_INFO_PAGES_CACHE_KEY,
+            cached,
+            CACHE_TTL
+          );
+          console.log("[Builder.io API] Updated info-page in Redis cache");
+        }
+      }
+    } catch (cacheError) {
+      console.warn(
+        "[Builder.io API] Failed to update Redis cache:",
+        cacheError
+      );
+      // Fallback: invalidate cache
+      await RedisCacheService.invalidateCache(ALL_INFO_PAGES_CACHE_KEY);
+    }
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
@@ -134,7 +162,7 @@ export async function DELETE(
     });
 
     // Invalidate the info pages cache so the deletion is reflected
-    await RedisCacheService.invalidateCache(CACHE_KEY);
+    await RedisCacheService.invalidateCache(ALL_INFO_PAGES_CACHE_KEY);
     console.log("[Builder.io API] Info pages cache invalidated");
 
     return NextResponse.json(

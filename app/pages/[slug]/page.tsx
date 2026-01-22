@@ -4,7 +4,7 @@ import React from "react";
 import MiniPagesListItemPost from "@app/page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost";
 import Hero from "@app/shared-components/Hero/Hero";
 import style from "./page.module.css";
-import { decidePageTypeItems } from "@app/utils/parse-utils";
+import { decidePageTypeItems, decidePageTypesForMiniPages } from "@app/utils/parse-utils";
 import {
   getAllBuilderPosts,
   transformBuilderPostToWixFormat,
@@ -79,7 +79,7 @@ export default async function Pages({ params }: any) {
       <Hero title={`${pageType.toUpperCase()} Pages`} pageType={pageType} />
       <div className={classNames(style.listContainer)}>
         <MiniPagesListItemPost
-          items={decidePageTypeItems(pageType, postPages, infoPages)}
+          items={decidePageTypesForMiniPages(pageType, postPages, infoPages)}
           title={pageType}
           pageTypePath={
             ["event", "project-result", "post"].find(

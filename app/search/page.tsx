@@ -41,6 +41,7 @@ export default function Pages({ params, searchParams }: any) {
     }));
   }, [results]);
 
+
   return (
     <div className={classNames('w-full')}>
       {/* <SearchProvider> */}

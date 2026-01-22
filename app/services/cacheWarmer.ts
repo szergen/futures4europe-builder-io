@@ -22,7 +22,7 @@ export async function warmCache() {
     console.log("Fetching info pages from Builder.io for cache warming...");
     const infoPagesResponse = await fetch(`${baseUrl}/api/infoPages`);
     const infoPages = await infoPagesResponse.json();
-    // Note: The API route handles caching with key "infoPages_builder.json"
+    // Note: The API route handles caching with key "builder_info_pages_all.json"
     console.log(
       `✓ Cached ${
         Array.isArray(infoPages) ? infoPages.length : 0
@@ -33,7 +33,7 @@ export async function warmCache() {
     console.log("Fetching post pages from Builder.io for cache warming...");
     const postPagesResponse = await fetch(`${baseUrl}/api/postPages`);
     const postPages = await postPagesResponse.json();
-    // Note: The API route handles caching with key "postPages_builder.json"
+    // Note: The API route handles caching with key "builder_posts_all.json"
     console.log(
       `✓ Cached ${
         Array.isArray(postPages) ? postPages.length : 0

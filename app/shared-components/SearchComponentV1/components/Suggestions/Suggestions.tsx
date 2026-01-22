@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import classNames from 'classnames';
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import classNames from "classnames";
 
-import style from './Suggestions.module.css';
-import Link from 'next/link';
+import style from "./Suggestions.module.css";
+import Link from "next/link";
 // import { highlightMatches } from '../../SearchComponentV1.utils';
-import { motion } from 'framer-motion';
-import { automaticallyDecidePathPrefixBasedOnPageType } from '@app/utils/parse-utils';
-import Tag from '@app/shared-components/Tag/Tag';
-import { getImageUrlForMedia } from '@app/page-components/PageComponents.utils';
+import { motion } from "framer-motion";
+import { automaticallyDecidePathPrefixBasedOnPageType } from "@app/utils/parse-utils";
+import Tag from "@app/shared-components/Tag/Tag";
+import { getImageUrlForMedia } from "@app/page-components/PageComponents.utils";
 
 export type SuggestionsProps = {
   fieldSuggestions: any[];
@@ -20,10 +20,10 @@ export type SuggestionsProps = {
   clickedField: string;
   handleSelectedSuggestion: (
     selectedSuggestionTag: any,
-    selectedSuggestionType: 'tag' | 'field' | 'field-tag'
+    selectedSuggestionType: "tag" | "field" | "field-tag"
   ) => void;
   selectedSuggestionIndex: number;
-  activeSelection: 'field' | 'tag' | 'field-tag' | 'sortby' | '';
+  activeSelection: "field" | "tag" | "field-tag" | "sortby" | "";
   searchedItems: any[];
   // sortTags: any[];
   handleSelectedSortTag: (e: any) => void;
@@ -52,12 +52,12 @@ const Suggestions: React.FC<SuggestionsProps> = ({
 }) => {
   const [highlightedIndexWithType, setHighlightedIndexWithType] = useState({
     index: -1,
-    type: '',
+    type: "",
   });
 
   // Conditional styling classes for suggestion container
   const suggestionsContainerClasses = classNames(
-    'relative z-100',
+    "relative z-100",
     style.suggestionsContainerWrap,
     {
       [style.homePageSuggestions]: isHomePage,
@@ -90,7 +90,7 @@ const Suggestions: React.FC<SuggestionsProps> = ({
   useEffect(() => {
     if (searchedItems && searchedItems?.length > 0) {
       searchedItems.forEach((searchedItem: any) => {
-        if (searchedItem.searchItemType === 'tag') {
+        if (searchedItem.searchItemType === "tag") {
           setAvailableSortTags(
             sortTagsSuggestions?.filter(
               (tag: {
@@ -120,7 +120,7 @@ const Suggestions: React.FC<SuggestionsProps> = ({
     ) {
       handleSelectedSuggestion(
         availableSortTags?.[selectedSuggestionIndex]?.item?.name,
-        'sortby'
+        "sortby"
       );
     }
     /* #region start Field Tags */
@@ -140,7 +140,7 @@ const Suggestions: React.FC<SuggestionsProps> = ({
     else if (clickedField) {
       handleSelectedSuggestion(
         tagSuggestions?.[selectedSuggestionIndex]?.item?.name,
-        'tag'
+        "tag"
       );
     } else {
       handleSelectedSuggestion(
@@ -151,7 +151,7 @@ const Suggestions: React.FC<SuggestionsProps> = ({
             // #endregion end Field Tags */
             availableSortTags.length
         ]?.item?.name,
-        'tag'
+        "tag"
       );
     }
     // Switch between field and tag suggestions indexes
@@ -162,9 +162,9 @@ const Suggestions: React.FC<SuggestionsProps> = ({
   // console.log('debg111->searchedItems->', searchedItems);
 
   const getValidImageUrl = (urls: (string | undefined)[]) => {
-    const PLACEHOLDER = 'https://futures4europe.eu/images/placeholder.webp';
+    const PLACEHOLDER = "https://futures4europe.eu/images/placeholder.webp";
     return (
-      urls.find((url) => url && url !== '_' && url.trim().length > 0) ||
+      urls.find((url) => url && url !== "_" && url.trim().length > 0) ||
       PLACEHOLDER
     );
   };
@@ -172,16 +172,16 @@ const Suggestions: React.FC<SuggestionsProps> = ({
   return (
     <motion.div
       className={suggestionsContainerClasses}
-      initial={{ opacity: 0, scaleY: 0, translateY: '-10px' }}
-      animate={{ opacity: 1, scaleY: 1, translateY: '0px' }}
+      initial={{ opacity: 0, scaleY: 0, translateY: "-10px" }}
+      animate={{ opacity: 1, scaleY: 1, translateY: "0px" }}
       transition={{
         duration: 0.5,
-        ease: 'easeIn',
+        ease: "easeIn",
         opacity: { delay: 0.3, duration: 0.5 },
         translateY: { delay: 0.3, duration: 0.4 },
       }}
       style={{
-        transformOrigin: 'top',
+        transformOrigin: "top",
       }}
     >
       <div
@@ -193,7 +193,7 @@ const Suggestions: React.FC<SuggestionsProps> = ({
           <div className={classNames(style.tagSuggestionsLabel)}>
             <span
               className={classNames(
-                'ml-2 pb-4 block text-[14px]',
+                "ml-2 pb-4 block text-[14px]",
                 style.tagSuggestionsLabel
               )}
             >
@@ -204,9 +204,9 @@ const Suggestions: React.FC<SuggestionsProps> = ({
                 <li
                   key={index + sortTag?.item?.name}
                   className={classNames(
-                    'flex items-center',
+                    "flex items-center",
                     index === selectedSuggestionIndex &&
-                      activeSelection === 'sortby' &&
+                      activeSelection === "sortby" &&
                       `bg-gray-100 ${style.selectedSuggestion}`
                   )}
                 >
@@ -321,21 +321,21 @@ const Suggestions: React.FC<SuggestionsProps> = ({
                         tagSuggestion?.item?._id
                       }
                       className={classNames(
-                        'flex items-center',
+                        "flex items-center",
                         actualIndex === highlightedIndexWithType.index &&
-                          highlightedIndexWithType.type === 'tag' &&
-                          'bg-gray-200',
+                          highlightedIndexWithType.type === "tag" &&
+                          "bg-gray-200",
                         actualIndex ===
                           selectedSuggestionIndex -
                             // #region start Field Tags
                             // fieldSuggestions.length -
                             // #endregion end Field Tags
                             availableSortTags.length &&
-                          activeSelection === 'tag' &&
+                          activeSelection === "tag" &&
                           `bg-gray-100 ${style.selectedSuggestion}`
                       )}
                       onMouseOver={() =>
-                        setHighlightedIndexWithType({ index, type: 'tag' })
+                        setHighlightedIndexWithType({ index, type: "tag" })
                       }
                     >
                       <span
@@ -357,7 +357,7 @@ const Suggestions: React.FC<SuggestionsProps> = ({
                           />
                         </div>
                         <p className={style.tagLine}>
-                          {tagSuggestion?.item?.tagLine || ''}
+                          {tagSuggestion?.item?.tagLine || ""}
                         </p>
                       </div>
                     </li>
@@ -366,7 +366,7 @@ const Suggestions: React.FC<SuggestionsProps> = ({
             </ul>
           </div>
         ) : (
-          ''
+          ""
         )}
 
         {/* Pages */}
@@ -374,13 +374,13 @@ const Suggestions: React.FC<SuggestionsProps> = ({
           <div className={style.quickResultsWrapper}>
             <span
               className={classNames(
-                'mt-6 ml-2 pb-4 block text-[14px]',
+                "mt-6 ml-2 pb-4 block text-[14px]",
                 style.tagSuggestionsLabel
               )}
             >
               Quick Results
             </span>
-            <ul className={classNames('py-4', style.lists)}>
+            <ul className={classNames("py-4", style.lists)}>
               {pageSuggestions?.map(
                 (pageSuggestion: any, index: number) =>
                   index < 5 && (
@@ -388,13 +388,13 @@ const Suggestions: React.FC<SuggestionsProps> = ({
                       key={index}
                       className={classNames(
                         index === highlightedIndexWithType.index &&
-                          highlightedIndexWithType.type === 'page' &&
-                          'bg-gray-200 rounded-md',
-                        'flex items-center',
+                          highlightedIndexWithType.type === "page" &&
+                          "bg-gray-200 rounded-md",
+                        "flex items-center",
                         style.quickResults
                       )}
                       onMouseOver={() =>
-                        setHighlightedIndexWithType({ index, type: 'page' })
+                        setHighlightedIndexWithType({ index, type: "page" })
                       }
                       // Prevent exiting the input field on click
                       onMouseDown={(e) => e.preventDefault()}
@@ -402,26 +402,24 @@ const Suggestions: React.FC<SuggestionsProps> = ({
                       <Link
                         className={classNames(
                           index === highlightedIndexWithType.index &&
-                            highlightedIndexWithType.type === 'page' &&
-                            'bg-gray-200 rounded-sm',
-                          'flex items-center w-full'
+                            highlightedIndexWithType.type === "page" &&
+                            "bg-gray-200 rounded-sm",
+                          "flex items-center w-full"
                         )}
-                        href={`${automaticallyDecidePathPrefixBasedOnPageType(
-                          pageSuggestion.item?.pageTypes?.[0]?.name
-                        )}${pageSuggestion.item?.slug}`}
+                        href={`${pageSuggestion.item?.slug}`}
                         target="_self"
                       >
                         <div
                           className={classNames(
                             style.quickResultsItem,
-                            'flex items-start w-full'
+                            "flex items-start w-full"
                           )}
                         >
                           <div className={style.pageImageContainer}>
                             <Image
-                              alt={'Tag Image'}
+                              alt={"Tag Image"}
                               className={
-                                (classNames('inline-block mr-1 ml-4 w-10 h-10'),
+                                (classNames("inline-block mr-1 ml-4 w-10 h-10"),
                                 style.searchTagImage)
                               }
                               src={getValidImageUrl([
@@ -467,7 +465,7 @@ const Suggestions: React.FC<SuggestionsProps> = ({
                             {/* Page Content */}
                             <div
                               className={classNames(
-                                'w-full text-12',
+                                "w-full text-12",
                                 style.quickResultsContent
                               )}
                               // dangerouslySetInnerHTML={{

@@ -27,8 +27,9 @@ export const decidePageTypeItems = (
     case 'post':
       return postPages.filter(
         (item: any) =>
-          item?.pageTypes?.[0]?.name !== 'event' &&
-          item?.pageTypes?.[0]?.name !== 'project result'
+          // pageTypes[0].pageTypeItem.value.name
+          item?.pageTypes?.[0]?.pageTypeItem?.value?.name !== 'event' &&
+          item?.pageTypes?.[0]?.pageTypeItem?.value?.name !== 'project result'
       );
     case 'event':
       return filterPagesByType('event', postPages);
@@ -40,6 +41,34 @@ export const decidePageTypeItems = (
       return filterPagesByType('person info', infoPages);
     case 'organisation':
       return filterPagesByType('organisation info', infoPages);
+    default:
+      return [];
+  }
+};
+
+export const decidePageTypesForMiniPages = (
+  type: string,
+  postPages: any,
+  infoPages: any
+) => {
+  switch (type) {
+    case 'post':
+      return postPages.filter(
+        (item: any) =>
+          // pageTypes[0].pageTypeItem.value.name
+          item?.pageTypes?.[0]?.name !== 'event' &&
+          item?.pageTypes?.[0]?.name !== 'project result'
+      );
+    case 'event':
+      return postPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'event');
+    case 'project-result':
+      return postPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'project result');
+    case 'project':
+      return infoPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'project info');
+    case 'person':
+      return infoPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'person info');
+    case 'organisation':
+      return infoPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'organisation info');
     default:
       return [];
   }
@@ -62,7 +91,7 @@ export const automaticallyDecidePathPrefixBasedOnPageType = (
 };
 
 export const filterPagesByType = (type: string, pages: any) => {
-  return pages.filter((page: any) => page?.pageTypes?.[0]?.name === type);
+  return pages.filter((page: any) => page?.pageTypes?.[0]?.pageTypeItem?.value?.name === type);
 };
 
 export const filterDuplicateAffiliations = (affiliations: any[]): any[] => {

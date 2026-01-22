@@ -21,10 +21,10 @@ export const GET = async (req: NextRequest) => {
     // All caches now use _builder.json suffix for consistency
     let tags = await RedisCacheService.getFromCache("tags_builder.json");
     let infoPages = await RedisCacheService.getFromCache(
-      "infoPages_builder.json"
+      "builder_info_pages_all.json"
     );
     let postPages = await RedisCacheService.getFromCache(
-      "postPages_builder.json"
+      "builder_posts_all.json"
     );
     let affiliations = await RedisCacheService.getFromCache(
       "affiliations_builder.json"

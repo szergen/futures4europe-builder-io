@@ -6,7 +6,7 @@ import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageU
 export const revalidate = 0; // Disable caching
 
 // Cache key - using _builder.json suffix for consistency with other Builder.io caches
-const CACHE_KEY = "infoPages_builder.json";
+const CACHE_KEY = "builder_info_pages_all.json";
 const CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours
 
 /**

@@ -6,7 +6,7 @@ import { transformBuilderPostToWixFormat } from "@app/utils/builderPostUtils";
 export const revalidate = 0; // Disable caching
 
 // Cache key - using _builder.json suffix for consistency with other Builder.io caches
-const CACHE_KEY = "postPages_builder.json";
+const CACHE_KEY = "builder_posts_all.json";
 const CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours
 
 /**
