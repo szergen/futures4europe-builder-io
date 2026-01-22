@@ -20,7 +20,7 @@ import {
 } from 'react-icons/hi';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import Tag from '../Tag/Tag';
-import { decidePageTypesForMiniPages } from '@app/utils/parse-utils';
+import { decidePageTypeItems, decidePageTypesForMiniPages } from '@app/utils/parse-utils';
 import GlowButton from './NavBar/GlowButton';
 import 'vanilla-cookieconsent/dist/cookieconsent.css';
 import * as CookieConsent from 'vanilla-cookieconsent';
@@ -259,7 +259,8 @@ const Header = () => {
     event: 0,
     projectResult: 0,
   });
-  console.log('postPages', postPages[0]);
+  // console.log('postPages', postPages[0]);
+  // console.log('infoPages', infoPages[0]);
 
   useEffect(() => {
     if (infoPages && postPages) {
@@ -272,19 +273,19 @@ const Header = () => {
             infoPages.map((item) => item.data)
           )?.length || 0,
         project:
-          decidePageTypesForMiniPages(
+          decidePageTypeItems(
             'project',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
           )?.length || 0,
         person:
-        decidePageTypesForMiniPages(
+        decidePageTypeItems(
             'person',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
           )?.length || 0,
         organisation:
-        decidePageTypesForMiniPages(
+        decidePageTypeItems(
             'organisation',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
@@ -306,7 +307,7 @@ const Header = () => {
   }, [infoPages, postPages]);
 
   useEffect(() => {
-    console.log('pageTypeCounts', pageTypeCounts);
+    // console.log('pageTypeCounts', pageTypeCounts);
   }, [pageTypeCounts]);
 
   // #region Check if user info page is ready
