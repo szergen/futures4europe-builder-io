@@ -2,6 +2,8 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 
 import { sortTags } from "./SearchContext.utils";
 import { useAuth } from "../AuthContext/AuthContext";
+import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
+import { transformBuilderPostToWixFormat } from "@app/utils/builderPostUtils";
 
 export interface SearchState {
   initialData: any;
@@ -179,13 +181,15 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
       postPagesFetched &&
       affiliationsFetched
     ) {
+      const infoPagesTransformed = authInfoPages.map((page: any) => transformBuilderInfoPageToWixFormat(page));
+      const postPagesTransformed = authPostPages.map((page: any) => transformBuilderPostToWixFormat(page));
       // console.log('Data fetched, example of tags:', authTags[0]);
       setTags(authTags.filter((tag: any) => !tag?.masterTag));
       setInfoPages(
-        authInfoPages.map((page: any) => ({ ...page.data, _id: page.id }))
+        infoPagesTransformed.map((page: any) => ({ ...page.data, _id: page.id }))
       );
       setPostPages(
-        authPostPages.map((page: any) => ({ ...page.data, _id: page.id }))
+        postPagesTransformed.map((page: any) => ({ ...page.data, _id: page.id }))
       );
       setAffiliations(authAffiliations);
       setLoading(false);

@@ -480,47 +480,6 @@ const SearchComponentV1 = () => {
     };
   }, []); // Empty dependency array - only run once on mount
 
-  // Add this for visual debugging if needed
-  useEffect(() => {
-    console.log('hasMultipleRows state changed to:', hasMultipleRows);
-    console.log(
-      'Current height:',
-      currentHeight,
-      'Single row height:',
-      singleRowHeight
-    );
-  }, [hasMultipleRows]);
-
-  // Add this component to your file
-  const HeightDebugger = ({
-    enabled,
-    currentHeight,
-    singleRowHeight,
-    hasMultipleRows,
-  }) => {
-    if (!enabled) return null;
-
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          top: '10px',
-          right: '10px',
-          background: 'rgba(0,0,0,0.8)',
-          color: 'white',
-          padding: '10px',
-          borderRadius: '5px',
-          fontSize: '12px',
-          zIndex: 9999,
-        }}
-      >
-        <div>Current Height: {currentHeight}px</div>
-        <div>Single Row Height: {singleRowHeight}px</div>
-        <div>Multiple Rows: {hasMultipleRows ? 'Yes' : 'No'}</div>
-        <div>Threshold: {singleRowHeight * 1.5}px</div>
-      </div>
-    );
-  };
 
   // Apply classes based on current page and multi-row state
   const searchBoxWrapperClasses = classNames(

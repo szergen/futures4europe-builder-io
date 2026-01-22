@@ -159,7 +159,7 @@ const TagInput: React.FC<TagInputProps> = ({
         // input[input.length - 1] !== '"' && setInput(input + '"');
         setInput('');
       } else {
-        console.log('debug aaa->', searchState.selectedSuggestionIndex);
+        // console.log('debug aaa->', searchState.selectedSuggestionIndex);
         setSearchState((prevState) => ({
           ...prevState,
           showSuggestions: false,
