@@ -267,7 +267,7 @@ const Header = () => {
       setPageTypeCounts((prev) => ({
         ...prev,
         post:
-        decidePageTypesForMiniPages(
+        decidePageTypeItems(
             'post',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
@@ -291,13 +291,13 @@ const Header = () => {
             infoPages.map((item) => item.data)
           )?.length || 0,
         event:
-        decidePageTypesForMiniPages(
+        decidePageTypeItems(
             'event',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
           )?.length || 0,
         projectResult:
-        decidePageTypesForMiniPages(
+        decidePageTypeItems(
             'project-result',
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data)
