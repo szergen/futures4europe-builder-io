@@ -4,10 +4,13 @@
  *
  * This server-side route handles info-page creation using the private API key
  * Used for creating project pages (and later person/organisation pages)
+ *
+ * Note: Always returns enriched references for Redis cache consistency
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import { RedisCacheService } from "@app/services/redisCache";
+import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -22,7 +25,7 @@ export async function POST(request: NextRequest) {
       console.error("[Builder.io API] BUILDER_PRIVATE_API_KEY not configured");
       return NextResponse.json(
         { error: "Builder.io API key not configured" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -57,15 +60,39 @@ export async function POST(request: NextRequest) {
           error: `Failed to create info-page: ${response.status} ${response.statusText}`,
           details: errorText,
         },
-        { status: response.status }
+        { status: response.status },
       );
     }
 
-    const result = await response.json();
+    let result = await response.json();
     console.log("[Builder.io API] Info-page created successfully:", {
       id: result.id,
       slug: result.data?.slug,
     });
+
+    // Always fetch the page again with enriched references before caching
+    if (result.id) {
+      console.log(
+        "[Builder.io API] Fetching enriched version of created page...",
+      );
+      try {
+        const enrichedPage = await getBuilderContent("info-page", {
+          query: { id: result.id },
+        });
+
+        if (enrichedPage) {
+          result = enrichedPage;
+          console.log("[Builder.io API] Successfully enriched page references");
+        } else {
+          console.warn(
+            "[Builder.io API] Could not fetch enriched page, using original",
+          );
+        }
+      } catch (enrichError) {
+        console.warn("[Builder.io API] Error enriching page:", enrichError);
+        // Continue with non-enriched result
+      }
+    }
 
     // Update Redis Cache
     try {
@@ -75,14 +102,14 @@ export async function POST(request: NextRequest) {
         await RedisCacheService.saveToCache(
           INFO_PAGES_CACHE_KEY,
           cached,
-          CACHE_TTL
+          CACHE_TTL,
         );
-        console.log("[Builder.io API] Added new info-page to Redis cache");
+        console.log("[Builder.io API] Added enriched info-page to Redis cache");
       }
     } catch (cacheError) {
       console.warn(
         "[Builder.io API] Failed to update Redis cache:",
-        cacheError
+        cacheError,
       );
       // Fallback: invalidate cache
       await RedisCacheService.invalidateCache(INFO_PAGES_CACHE_KEY);
@@ -93,7 +120,7 @@ export async function POST(request: NextRequest) {
     console.error("[Builder.io API] Error creating info-page:", error);
     return NextResponse.json(
       { error: "Internal server error", details: String(error) },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

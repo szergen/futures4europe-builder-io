@@ -4,10 +4,12 @@
  * DELETE /api/builder/post/[id] - Delete (unpublish) a post
  *
  * This server-side route handles post operations using the private API key
+ * Note: PUT always returns enriched references for Redis cache consistency
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import { RedisCacheService } from "@app/services/redisCache";
+import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -17,7 +19,7 @@ const CACHE_TTL = 24 * 60 * 60 * 1000;
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     // Check if API key is configured
@@ -25,7 +27,7 @@ export async function PUT(
       console.error("[Builder.io API] BUILDER_PRIVATE_API_KEY not configured");
       return NextResponse.json(
         { error: "Builder.io API key not configured" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -64,17 +66,41 @@ export async function PUT(
           error: `Failed to update post: ${response.status} ${response.statusText}`,
           details: errorText,
         },
-        { status: response.status }
+        { status: response.status },
       );
     }
 
-    const result = await response.json();
+    let result = await response.json();
     console.log("[Builder.io API] Post updated successfully:", {
       id: result.id,
       slug: result.data?.slug,
     });
 
-    // Update Redis Cache (All Posts)
+    // Always fetch the page again with enriched references before caching
+    if (result.id) {
+      console.log(
+        "[Builder.io API] Fetching enriched version of updated post...",
+      );
+      try {
+        const enrichedPost = await getBuilderContent("post-page", {
+          query: { id: result.id },
+        });
+
+        if (enrichedPost) {
+          result = enrichedPost;
+          console.log("[Builder.io API] Successfully enriched post references");
+        } else {
+          console.warn(
+            "[Builder.io API] Could not fetch enriched post, using original",
+          );
+        }
+      } catch (enrichError) {
+        console.warn("[Builder.io API] Error enriching post:", enrichError);
+        // Continue with non-enriched result
+      }
+    }
+
+    // Update Redis Cache (All Posts) with enriched result
     try {
       const cached = await RedisCacheService.getFromCache(ALL_POSTS_CACHE_KEY);
       if (cached && Array.isArray(cached)) {
@@ -84,15 +110,15 @@ export async function PUT(
           await RedisCacheService.saveToCache(
             ALL_POSTS_CACHE_KEY,
             cached,
-            CACHE_TTL
+            CACHE_TTL,
           );
-          console.log("[Builder.io API] Updated post in Redis cache");
+          console.log("[Builder.io API] Updated enriched post in Redis cache");
         }
       }
     } catch (cacheError) {
       console.warn(
         "[Builder.io API] Failed to update Redis cache:",
-        cacheError
+        cacheError,
       );
       // Fallback: invalidate if update fails
       await RedisCacheService.invalidateCache(ALL_POSTS_CACHE_KEY);
@@ -103,7 +129,7 @@ export async function PUT(
     console.error("[Builder.io API] Error updating post:", error);
     return NextResponse.json(
       { error: "Internal server error", details: String(error) },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -114,7 +140,7 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     // Check if API key is configured
@@ -122,7 +148,7 @@ export async function DELETE(
       console.error("[Builder.io API] BUILDER_PRIVATE_API_KEY not configured");
       return NextResponse.json(
         { error: "Builder.io API key not configured" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -153,7 +179,7 @@ export async function DELETE(
           error: `Failed to delete post: ${response.status} ${response.statusText}`,
           details: errorText,
         },
-        { status: response.status }
+        { status: response.status },
       );
     }
 
@@ -167,13 +193,13 @@ export async function DELETE(
 
     return NextResponse.json(
       { success: true, deleted: postId },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("[Builder.io API] Error deleting post:", error);
     return NextResponse.json(
       { error: "Internal server error", details: String(error) },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
