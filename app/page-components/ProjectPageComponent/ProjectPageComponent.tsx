@@ -68,7 +68,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       projectData.pageOwner?.length > 0 &&
       !!userDetails?.userTag?.name &&
       !!projectData.pageOwner?.find(
-        (owner: any) => owner?._id === userDetails?.userTag?._id
+        (owner: any) => owner?._id === userDetails?.userTag?._id,
       );
 
     // console.log('debug1->permissionCondition', permissionCondition);
@@ -102,7 +102,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     .map((item: any) => item?.personTag)
     .filter(
       (projectTag: any, index: number, self: any[]) =>
-        index === self.findIndex((pt) => pt?.name === projectTag?.name)
+        index === self.findIndex((pt) => pt?.name === projectTag?.name),
     );
 
   const projectsParticipation = project?.affiliationsItems
@@ -110,7 +110,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     .map((item: any) => item?.personTag)
     .filter(
       (projectTag: any, index: number, self: any[]) =>
-        index === self.findIndex((pt) => pt?.name === projectTag?.name)
+        index === self.findIndex((pt) => pt?.name === projectTag?.name),
     );
   // console.log("debug111->projectsParticipation", projectsParticipation);
 
@@ -126,8 +126,9 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       (projectTag: any, index: number, self: any[]) =>
         index ===
         self.findIndex(
-          (pt) => pt?.name === projectTag?.name && pt?.role === projectTag?.role
-        )
+          (pt) =>
+            pt?.name === projectTag?.name && pt?.role === projectTag?.role,
+        ),
     );
 
   // #endregion
@@ -254,7 +255,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
                 tagLine: projectData.projectTag.tagLine,
                 picture: projectData.projectTag.picture,
               }),
-            }
+            },
           );
           if (tagUpdateResponse.ok) {
             console.log("[Builder.io] Project tag updated in Builder.io");
@@ -273,7 +274,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         project.id,
         projectData,
         projectData.contentText || [],
-        projectData.contentImages || []
+        projectData.contentImages || [],
       );
       console.log("[Builder.io] Project page updated:", result.id);
 
@@ -281,16 +282,16 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       if (
         checkIfArrayNeedsUpdateForTags(
           projectData.organisations,
-          defaultProjectData.organisations
+          defaultProjectData.organisations,
         )
       ) {
         console.log("[Builder.io] Updating organisation affiliations");
         const oldOrgAffiliations = project?.affiliationsItems?.filter(
-          (item: any) => item?.extraIdentifier === "projectOrganisationRole"
+          (item: any) => item?.extraIdentifier === "projectOrganisationRole",
         );
         if (oldOrgAffiliations?.length > 0) {
           const deleteResult = await bulkDeleteAffiliations(
-            oldOrgAffiliations.map((item: any) => item._id)
+            oldOrgAffiliations.map((item: any) => item._id),
           );
           // Update React state
           if (deleteResult.deleted?.length > 0) {
@@ -320,16 +321,16 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       if (
         checkIfArrayNeedsUpdateForTags(
           projectData.coordinators,
-          defaultProjectData.coordinators
+          defaultProjectData.coordinators,
         )
       ) {
         console.log("[Builder.io] Updating coordinator affiliations");
         const oldCoordAffiliations = project?.affiliationsItems?.filter(
-          (item: any) => item?.extraIdentifier === "coordination"
+          (item: any) => item?.extraIdentifier === "coordination",
         );
         if (oldCoordAffiliations?.length > 0) {
           const deleteResult = await bulkDeleteAffiliations(
-            oldCoordAffiliations.map((item: any) => item._id)
+            oldCoordAffiliations.map((item: any) => item._id),
           );
           // Update React state
           if (deleteResult.deleted?.length > 0) {
@@ -346,7 +347,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
             }));
           if (coordAffiliations.length > 0) {
             const createResult = await bulkCreateAffiliations(
-              coordAffiliations
+              coordAffiliations,
             );
             // Update React state
             if (createResult.created?.length > 0) {
@@ -360,16 +361,16 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       if (
         checkIfArrayNeedsUpdateForTags(
           projectData.participants,
-          defaultProjectData.participants
+          defaultProjectData.participants,
         )
       ) {
         console.log("[Builder.io] Updating participant affiliations");
         const oldPartAffiliations = project?.affiliationsItems?.filter(
-          (item: any) => item?.extraIdentifier === "participation"
+          (item: any) => item?.extraIdentifier === "participation",
         );
         if (oldPartAffiliations?.length > 0) {
           const deleteResult = await bulkDeleteAffiliations(
-            oldPartAffiliations.map((item: any) => item._id)
+            oldPartAffiliations.map((item: any) => item._id),
           );
           // Update React state
           if (deleteResult.deleted?.length > 0) {
@@ -413,11 +414,11 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
   const internalLinks = postPages
     ?.filter((page) => {
       return page?.data?.projects?.find(
-        (item: TagProps) => item?.name === projectData?.projectTag?.name
+        (item: TagProps) =>
+          item?.projectsItem?.id === projectData?.projectTag?._id,
       );
     })
     ?.map((link) => link?.data);
-  console.log("internalLinks", internalLinks);
   // #endregion
 
   // #region handle save or create new page
@@ -448,7 +449,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       const result = await createBuilderProjectPage(
         builderProjectData,
         projectData.contentText || [],
-        projectData.contentImages || []
+        projectData.contentImages || [],
       );
 
       console.log("[Builder.io] Project page created:", result.id);
@@ -464,7 +465,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
               body: JSON.stringify({
                 tagPageLink: newSlug,
               }),
-            }
+            },
           );
           if (tagUpdateResponse.ok) {
             console.log("[Builder.io] Project tag updated with tagPageLink");
@@ -488,11 +489,11 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
           }));
         if (coordinatorAffiliations.length > 0) {
           const coordResult = await bulkCreateAffiliations(
-            coordinatorAffiliations
+            coordinatorAffiliations,
           );
           console.log(
             "[Builder.io] Coordinator affiliations created:",
-            coordResult.created.length
+            coordResult.created.length,
           );
           // Update React state
           if (coordResult.created?.length > 0) {
@@ -512,11 +513,11 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
           }));
         if (participantAffiliations.length > 0) {
           const partResult = await bulkCreateAffiliations(
-            participantAffiliations
+            participantAffiliations,
           );
           console.log(
             "[Builder.io] Participant affiliations created:",
-            partResult.created.length
+            partResult.created.length,
           );
           // Update React state
           if (partResult.created?.length > 0) {
@@ -539,7 +540,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
           const orgResult = await bulkCreateAffiliations(orgAffiliations);
           console.log(
             "[Builder.io] Organisation affiliations created:",
-            orgResult.created.length
+            orgResult.created.length,
           );
           // Update React state
           if (orgResult.created?.length > 0) {
@@ -614,7 +615,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
             disabled={isEditModeOn && checkValidationErrors()}
             className={classNames(
               "btn btn-save",
-              isEditModeOn && checkValidationErrors() && "bg-gray-400"
+              isEditModeOn && checkValidationErrors() && "bg-gray-400",
             )}
           >
             {!isEditModeOn
@@ -737,7 +738,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         isEditModeOn={isEditModeOn}
         tags={tags?.filter((tag) => tag?.tagType === "person")}
         selectedValues={projectData.coordinators?.map(
-          (coordinator: any) => coordinator?.name
+          (coordinator: any) => coordinator?.name,
         )}
         updatePostData={(value) =>
           updateProjectDataOnKeyValue("coordinators", value)
@@ -753,7 +754,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
         isEditModeOn={isEditModeOn}
         tags={tags?.filter((tag) => tag?.tagType === "person")}
         selectedValues={projectData.participants?.map(
-          (participant: any) => participant?.name
+          (participant: any) => participant?.name,
         )}
         updatePostData={(value) =>
           updateProjectDataOnKeyValue("participants", value)

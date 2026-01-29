@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // #region Fetch post pages
   const [refreshPostPages, setRefreshPostPages] = useState(false);
   const { postPages, postPagesFetched } = useFetchPostPages(
-    refreshPostPages
+    refreshPostPages,
     // setIsLoadingInProgress
   );
 
@@ -118,7 +118,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // #region Fetch info pages
   const [refreshInfoPages, setRefreshInfoPages] = useState(false);
   const { infoPages, infoPagesFetched } = useFetchInfoPages(
-    refreshInfoPages
+    refreshInfoPages,
     // setIsLoadingInProgress
   );
   // console.log('debug1->infoPages', infoPages);
@@ -134,7 +134,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     affiliations: fetchedAffiliations,
     affiliationsFetched: fetchedAffiliationsFetched,
   } = useFetchAffiliations(
-    refreshAffiliations
+    refreshAffiliations,
     // setIsLoadingInProgress
   );
 
@@ -146,7 +146,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (fetchedAffiliationsFetched && fetchedAffiliations) {
       console.log(
-        `[AuthContext] Syncing ${fetchedAffiliations.length} affiliations to state`
+        `[AuthContext] Syncing ${fetchedAffiliations.length} affiliations to state`,
       );
       setAffiliations(fetchedAffiliations);
       setAffiliationsFetched(true);
@@ -169,7 +169,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return prev;
       }
       console.log(
-        `✓ ${uniqueNew.length} affiliations appended to AuthContext state`
+        `✓ ${uniqueNew.length} affiliations appended to AuthContext state`,
       );
       return [...prev, ...uniqueNew];
     });
@@ -184,7 +184,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const removedCount = prev.length - filtered.length;
       if (removedCount > 0) {
         console.log(
-          `✓ ${removedCount} affiliations removed from AuthContext state`
+          `✓ ${removedCount} affiliations removed from AuthContext state`,
         );
       }
       return filtered;
@@ -247,11 +247,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setTags((prevTags) => {
       // Check if tag already exists to avoid duplicates
       const exists = prevTags.some(
-        (t) => t._id === tag._id || t.name === tag.name
+        (t) => t._id === tag._id || t.name === tag.name,
       );
       if (exists) {
         console.log(
-          `Tag "${tag.name}" already exists in state, skipping append`
+          `Tag "${tag.name}" already exists in state, skipping append`,
         );
         return prevTags;
       }
@@ -372,7 +372,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const checkAuth = async () => {
       const sessionToken = localStorage.getItem("f4e_wix_sessionToken");
       const accessTokenAndRefreshToken = localStorage.getItem(
-        "f4e_wix_accessTokenAndRefreshToken"
+        "f4e_wix_accessTokenAndRefreshToken",
       );
       if (sessionToken && accessTokenAndRefreshToken) {
         // console.log('Auth token found. Logging in...');
@@ -387,7 +387,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           fieldsets: ["FULL" as any],
         });
         const contactData = await getContactsItem(
-          currentMember?.member?.contactId || ""
+          currentMember?.member?.contactId || "",
         );
         // if (contactData) {
         //   console.log('contactData', contactData);
@@ -434,7 +434,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isLoggedIn,
     userDetails,
     refreshUserData,
-    setIsLoadingInProgress
+    setIsLoadingInProgress,
   );
   const handleUserDataRefresh = () => {
     setRefreshUserData((prev) => !prev); // Toggle the refresh state to trigger re-fetch
@@ -463,30 +463,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // console.log('infoPages', infoPage);
       if (
         !!infoPage?.data?.pageOwner?.find(
-          (owner: any) => owner._id === userDetails.userTag?._id
+          (owner: any) => owner.pageOwnerItem?.id === userDetails.userTag?._id,
         )
       ) {
         tempExtraOwnedPages.push(infoPage);
         return false;
       }
     });
+    // console.log("debug1->infoPages", infoPages);
+    console.log("debug1->tempExtraOwnedPages", tempExtraOwnedPages);
     const tempExtraPostPages = postPages?.filter((postPage) => {
       if (
         !!postPage?.data?.pageOwner?.find(
-          (owner: any) => owner._id === userDetails.userTag?._id
+          (owner: any) => owner.pageOwnerItem?.id === userDetails.userTag?._id,
         )
       ) {
         tempExtraOwnedPages.push(postPage);
         return false;
       }
     });
+    // console.log("debug1->userDetails.userTag._id", userDetails);
+    // console.log("debug1->postPages", postPages);
+    console.log("debug1->tempExtraPostPages", tempExtraPostPages);
 
-    // console.log('debug1->tempExtraOwnedPages', tempExtraOwnedPages);
+    console.log("debug1->tempExtraOwnedPages", tempExtraOwnedPages);
 
     const removeDuplicatePosts = (posts: any[]) => {
       const uniquePosts = posts.filter(
         (post, index, self) =>
-          index === self.findIndex((p) => p._id === post._id)
+          index === self.findIndex((p) => p._id === post._id),
       );
       return uniquePosts;
     };
@@ -497,9 +502,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       ...ownedPostPages,
     ];
 
-    const uniquePages = removeDuplicatePosts(allOwnedPages);
+    // const uniquePages = removeDuplicatePosts(allOwnedPages);
     // console.log("uniquePages", uniquePages);
-    setAllOwnedPages(uniquePages);
+    setAllOwnedPages(allOwnedPages);
   }, [infoPages, postPages, userDetails.userTag]);
 
   return (

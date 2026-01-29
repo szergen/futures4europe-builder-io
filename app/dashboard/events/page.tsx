@@ -32,6 +32,9 @@ export default function DashboardProjects() {
     tags,
     allOwnedPages,
   } = useAuth();
+  console.log("debug1->allOwnedPages", allOwnedPages);
+  // console.log("debug1->ownedPostPages", ownedPostPages);
+  // console.log("debug1->ownedInfoPages", ownedInfoPages);
 
   const router = useRouter();
 
@@ -68,7 +71,7 @@ export default function DashboardProjects() {
     // Get the user's tag page link
     if (isLoggedIn && tags) {
       const userTag = tags.find(
-        (tag: any) => tag.name === userDetails.userName && tag.tagPageLink
+        (tag: any) => tag.name === userDetails.userName && tag.tagPageLink,
       );
       // console.log('userTag', userTag);
       if (userTag) {
@@ -103,7 +106,7 @@ export default function DashboardProjects() {
       className={classNames(
         style.UserDashboard,
         style.UserDashboardProjects,
-        "flex flex-col"
+        "flex flex-col",
       )}
     >
       <NavDashboard
@@ -119,7 +122,7 @@ export default function DashboardProjects() {
       <div
         className={classNames(
           style.UserDashboardWrapper,
-          "flex flex-col relative m-auto mt-10 mb-6"
+          "flex flex-col relative m-auto mt-10 mb-6",
         )}
       >
         {/* <h1 className={classNames(style.headingDashboardh1, 'mt-2 mb-4 p-0')}>
@@ -138,7 +141,7 @@ export default function DashboardProjects() {
             "mt-14", // Global utility classes (e.g., Tailwind, or other global CSS)
             "mb-10",
             "p-8",
-            "bg-primary-site"
+            "bg-primary-site",
           )}
         >
           <div className={classNames(style.dashboardBoxAdd, "flex flex-col")}>
@@ -175,7 +178,7 @@ export default function DashboardProjects() {
                   color={"light"}
                   className={classNames(
                     style.buttonAddDashboard,
-                    "block border-0 mr-4 focus:ring-purple-300"
+                    "block border-0 mr-4 focus:ring-purple-300",
                   )}
                   pill
                 >
@@ -198,7 +201,7 @@ export default function DashboardProjects() {
               <h2
                 className={classNames(
                   style.headingDashboardh1,
-                  "mt-0 mb-0 flex flex-row items-center"
+                  "mt-0 mb-0 flex flex-row items-center",
                 )}
               >
                 Events list
@@ -211,7 +214,7 @@ export default function DashboardProjects() {
             <div
               className={classNames(
                 style.listDashboard,
-                "flex flex-col text-base text-[#606b85]"
+                "flex flex-col text-base text-[#606b85]",
               )}
             >
               {allOwnedPages.length || allOwnedPages.length ? (
@@ -220,7 +223,8 @@ export default function DashboardProjects() {
                     allOwnedPages
                       .filter(
                         (postPage) =>
-                          postPage?.data?.pageTypes[0]?.name === "event"
+                          postPage?.data?.pageTypes[0]?.pageTypeItem?.value
+                            ?.name === "event",
                       )
                       .map((postPage, index) => (
                         <div
@@ -254,7 +258,7 @@ export default function DashboardProjects() {
                                 projects={postPage?.data?.projects}
                                 projectResultAuthor={postPage?.data?.projectResultAuthor?.slice(
                                   0,
-                                  3
+                                  3,
                                 )}
                                 text={postPage?.data?.postContentRIch1}
                                 domains={[
@@ -273,7 +277,7 @@ export default function DashboardProjects() {
                                     e.preventDefault();
                                     if (
                                       window.confirm(
-                                        "Are you sure you want to delete this post?"
+                                        "Are you sure you want to delete this post?",
                                       )
                                     ) {
                                       handleDeletePostPage(postPage?.data?._id);
