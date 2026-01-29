@@ -65,7 +65,7 @@ export default function DashboardProjects() {
     // Get the user's tag page link
     if (isLoggedIn && tags) {
       const userTag = tags.find(
-        (tag: any) => tag.name === userDetails.userName && tag.tagPageLink
+        (tag: any) => tag.name === userDetails.userName && tag.tagPageLink,
       );
       // console.log('userTag', userTag);
       if (userTag) {
@@ -99,7 +99,7 @@ export default function DashboardProjects() {
       className={classNames(
         style.UserDashboard,
         style.UserDashboardProjects,
-        "flex flex-col"
+        "flex flex-col",
       )}
     >
       <NavDashboard
@@ -115,7 +115,7 @@ export default function DashboardProjects() {
       <div
         className={classNames(
           style.UserDashboardWrapper,
-          "flex flex-col relative m-auto mt-10 mb-6"
+          "flex flex-col relative m-auto mt-10 mb-6",
         )}
       >
         {/* NOTE: Removed afeter 15.11 discussion */}
@@ -136,7 +136,7 @@ export default function DashboardProjects() {
             "mt-14",
             "mb-10",
             "p-8",
-            "bg-primary-site"
+            "bg-primary-site",
           )}
         >
           <div className={classNames(style.dashboardBoxAdd, "flex flex-col")}>
@@ -173,7 +173,7 @@ export default function DashboardProjects() {
                   color={"light"}
                   className={classNames(
                     style.buttonAddDashboard,
-                    "block border-0 mr-4 focus:ring-purple-300"
+                    "block border-0 mr-4 focus:ring-purple-300",
                   )}
                   pill
                 >
@@ -196,7 +196,7 @@ export default function DashboardProjects() {
               <h2
                 className={classNames(
                   style.headingDashboardh1,
-                  "mt-0 mb-0 flex flex-row items-center"
+                  "mt-0 mb-0 flex flex-row items-center",
                 )}
               >
                 My Posts
@@ -209,7 +209,7 @@ export default function DashboardProjects() {
             <div
               className={classNames(
                 style.listDashboard,
-                "flex flex-col text-base text-[#606b85]"
+                "flex flex-col text-base text-[#606b85]",
               )}
             >
               {allOwnedPages.length || allOwnedPages.length ? (
@@ -218,7 +218,8 @@ export default function DashboardProjects() {
                     allOwnedPages
                       .filter(
                         (postPage) =>
-                          postPage?.data?.pageTypes[0]?.name === "post"
+                          postPage?.data?.pageTypes[0]?.pageTypeItem?.value
+                            ?.name === "post",
                       )
                       .map((postPage, index) => (
                         <div
@@ -230,7 +231,7 @@ export default function DashboardProjects() {
                               href={`/post/${postPage.data.slug}`}
                               className={classNames(
                                 style.miniPostWrapper,
-                                "grow w-full p-4 flex flex-col"
+                                "grow w-full p-4 flex flex-col",
                               )}
                             >
                               <MiniPagePost
@@ -269,7 +270,7 @@ export default function DashboardProjects() {
                                     e.preventDefault();
                                     if (
                                       window.confirm(
-                                        "Are you sure you want to delete this post?"
+                                        "Are you sure you want to delete this post?",
                                       )
                                     ) {
                                       handleDeletePostPage(postPage?.data?._id);

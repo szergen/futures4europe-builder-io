@@ -72,7 +72,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       personData.pageOwner?.length > 0 &&
       !!userDetails?.userTag?.name &&
       !!personData.pageOwner?.find(
-        (owner: any) => owner?._id === userDetails?.userTag?._id
+        (owner: any) => owner?._id === userDetails?.userTag?._id,
       );
 
     // console.log('debug1->permissionCondition', permissionCondition);
@@ -107,7 +107,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     .map((item: any) => item?.projectTag)
     .filter(
       (projectTag: any, index: number, self: any[]) =>
-        index === self.findIndex((pt) => pt?.name === projectTag?.name)
+        index === self.findIndex((pt) => pt?.name === projectTag?.name),
     );
 
   const projectsParticipation = person?.affiliationsItems
@@ -115,7 +115,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     .map((item: any) => item?.projectTag)
     .filter(
       (projectTag: any, index: number, self: any[]) =>
-        index === self.findIndex((pt) => pt?.name === projectTag?.name)
+        index === self.findIndex((pt) => pt?.name === projectTag?.name),
     );
   // console.log('debug111->projectsParticipation', projectsParticipation);
 
@@ -129,7 +129,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     })
     .filter(
       (projectTag: any, index: number, self: any[]) =>
-        index === self.findIndex((pt) => pt?.name === projectTag?.name)
+        index === self.findIndex((pt) => pt?.name === projectTag?.name),
     );
   // console.log("debug111->currentAfiliations", currentAfiliations);
 
@@ -145,8 +145,9 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       (projectTag: any, index: number, self: any[]) =>
         index ===
         self.findIndex(
-          (pt) => pt?.name === projectTag?.name && pt?.role === projectTag?.role
-        )
+          (pt) =>
+            pt?.name === projectTag?.name && pt?.role === projectTag?.role,
+        ),
     );
 
   // #endregion
@@ -259,14 +260,14 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
               tagLine: personData.personTag.tagLine,
               picture: personData.personTag.picture,
             }),
-          }
+          },
         );
 
         if (tagResponse.ok) {
           const tagResult = await tagResponse.json();
           console.log(
             "[Builder.io] Person tag updated successfully:",
-            tagResult
+            tagResult,
           );
           // Update React state with the updated tag
           updateTag(personData.personTag);
@@ -295,7 +296,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
           } catch (wixError) {
             console.warn(
               "[Wix] Failed to update nickname (non-blocking):",
-              wixError
+              wixError,
             );
           }
         }
@@ -318,7 +319,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         person?.id,
         pageDataToSave,
         [], // contentText - not used for person pages
-        [] // contentImages - not used for person pages
+        [], // contentImages - not used for person pages
       );
       console.log("[Builder.io] Person page updated successfully");
       // #endregion
@@ -327,14 +328,14 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       if (
         checkIfArrayNeedsUpdateForTags(
           personData.currentAfiliations,
-          defaultPersonData.currentAfiliations
+          defaultPersonData.currentAfiliations,
         )
       ) {
         console.log("[Builder.io] Updating current affiliations...");
 
         // Delete old affiliations
         const oldCurrentAffiliations = person?.affiliationsItems?.filter(
-          (item: any) => item?.extraIdentifier === "current"
+          (item: any) => item?.extraIdentifier === "current",
         );
         if (oldCurrentAffiliations?.length > 0) {
           const oldIds = oldCurrentAffiliations.map((item: any) => item._id);
@@ -380,14 +381,14 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       if (
         checkIfArrayNeedsUpdateForTags(
           personData.formerAfiliations,
-          defaultPersonData.formerAfiliations
+          defaultPersonData.formerAfiliations,
         )
       ) {
         console.log("[Builder.io] Updating former affiliations...");
 
         // Delete old affiliations
         const oldFormerAffiliations = person?.affiliationsItems?.filter(
-          (item: any) => item?.extraIdentifier === "former"
+          (item: any) => item?.extraIdentifier === "former",
         );
         if (oldFormerAffiliations?.length > 0) {
           const oldIds = oldFormerAffiliations.map((item: any) => item._id);
@@ -433,18 +434,18 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       if (
         checkIfArrayNeedsUpdateForTags(
           personData.projectsCoordindation,
-          defaultPersonData.projectsCoordindation
+          defaultPersonData.projectsCoordindation,
         )
       ) {
         console.log("[Builder.io] Updating coordination affiliations...");
 
         // Delete old affiliations
         const oldCoordinationAffiliations = person?.affiliationsItems?.filter(
-          (item: any) => item?.extraIdentifier === "coordination"
+          (item: any) => item?.extraIdentifier === "coordination",
         );
         if (oldCoordinationAffiliations?.length > 0) {
           const oldIds = oldCoordinationAffiliations.map(
-            (item: any) => item._id
+            (item: any) => item._id,
           );
           await bulkDeleteAffiliations(oldIds);
           affiliationsToRemove.push(...oldIds);
@@ -487,18 +488,18 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       if (
         checkIfArrayNeedsUpdateForTags(
           personData.projectsParticipation,
-          defaultPersonData.projectsParticipation
+          defaultPersonData.projectsParticipation,
         )
       ) {
         console.log("[Builder.io] Updating participation affiliations...");
 
         // Delete old affiliations
         const oldParticipationAffiliations = person?.affiliationsItems?.filter(
-          (item: any) => item?.extraIdentifier === "participation"
+          (item: any) => item?.extraIdentifier === "participation",
         );
         if (oldParticipationAffiliations?.length > 0) {
           const oldIds = oldParticipationAffiliations.map(
-            (item: any) => item._id
+            (item: any) => item._id,
           );
           await bulkDeleteAffiliations(oldIds);
           affiliationsToRemove.push(...oldIds);
@@ -572,10 +573,16 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     ?.filter((page) => {
       return (
         page?.data?.author?.find(
-          (item: TagProps) => item?.name === personData?.personTag?.name
+          (item: TagProps) =>
+            item?.authorItem?.id === personData?.personTag?._id,
         ) ||
         page?.data?.projectResultAuthor?.find(
-          (item: TagProps) => item?.name === personData?.personTag?.name
+          (item: TagProps) =>
+            item?.projectResultAuthorItem?.id === personData?.personTag?._id,
+        ) ||
+        page?.data?.people?.find(
+          (item: TagProps) =>
+            item?.peopleItem?.id === personData?.personTag?._id,
         )
       );
     })
@@ -601,7 +608,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
 
       // Find person tag from tags array
       const personTag = tags.find(
-        (tag) => tag._id === personData?.personTag?._id
+        (tag) => tag._id === personData?.personTag?._id,
       );
       console.log("[Builder.io] Person tag:", personTag);
 
@@ -617,7 +624,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       const newPage = await createBuilderPersonPage(
         pageDataToSave,
         [], // contentText - not used for person pages
-        [] // contentImages - not used for person pages
+        [], // contentImages - not used for person pages
       );
       console.log("[Builder.io] Person page created:", newPage);
       // #endregion
@@ -641,7 +648,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
           const tagResult = await tagResponse.json();
           console.log(
             "[Builder.io] Person tag updated with tagPageLink:",
-            tagResult
+            tagResult,
           );
           // Update React state
           updateTag({
@@ -664,7 +671,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
           } catch (wixError) {
             console.warn(
               "[Wix] Failed to update nickname (non-blocking):",
-              wixError
+              wixError,
             );
           }
         }
@@ -882,7 +889,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
             disabled={isEditModeOn && checkValidationErrors()}
             className={classNames(
               "btn btn-save",
-              isEditModeOn && checkValidationErrors() && "bg-gray-400"
+              isEditModeOn && checkValidationErrors() && "bg-gray-400",
             )}
           >
             {!isEditModeOn
@@ -1008,7 +1015,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         isEditModeOn={isEditModeOn}
         tags={tags?.filter((tag) => tag?.tagType === "project")}
         selectedValues={personData.projectsCoordindation?.map(
-          (project: any) => project?.name
+          (project: any) => project?.name,
         )}
         updatePostData={(value) =>
           updatePersonDataOnKeyValue("projectsCoordindation", value)
@@ -1023,7 +1030,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         isEditModeOn={isEditModeOn}
         tags={tags?.filter((tag) => tag?.tagType === "project")}
         selectedValues={personData.projectsParticipation?.map(
-          (project: any) => project?.name
+          (project: any) => project?.name,
         )}
         updatePostData={(value) =>
           updatePersonDataOnKeyValue("projectsParticipation", value)

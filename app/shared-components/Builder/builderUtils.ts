@@ -15,7 +15,7 @@ export interface BuilderContentOptions {
 
 export async function getBuilderContent(
   model: string,
-  options: BuilderContentOptions = {}
+  options: BuilderContentOptions = {},
 ) {
   try {
     // console.log(`[Builder.io] Fetching content for model: "${model}"`);
@@ -51,7 +51,7 @@ export async function getBuilderContent(
   } catch (error) {
     console.error(
       `[Builder.io] Error fetching content for model "${model}":`,
-      error
+      error,
     );
     return null;
   }
@@ -60,7 +60,7 @@ export async function getBuilderContent(
 export async function getBuilderContentByUrl(
   model: string,
   url: string,
-  options: BuilderContentOptions = {}
+  options: BuilderContentOptions = {},
 ) {
   try {
     const content = await builder
@@ -81,7 +81,7 @@ export async function getBuilderContentByUrl(
 
 export async function getAllBuilderContent(
   model: string,
-  options: BuilderContentOptions = {}
+  options: BuilderContentOptions = {},
 ) {
   try {
     const content = await builder.getAll(model, {
@@ -90,6 +90,7 @@ export async function getAllBuilderContent(
       limit: options.limit || 50,
       offset: options.offset || 0,
       cachebust: true,
+      enrich: true,
       options: {
         includeRefs: true, // Ensure references are enriched
         noTargeting: true, // Disable targeting to get all content regardless of targeting rules
@@ -100,7 +101,7 @@ export async function getAllBuilderContent(
   } catch (error) {
     console.error(
       `Error fetching all Builder.io content for model "${model}":`,
-      error
+      error,
     );
     return [];
   }

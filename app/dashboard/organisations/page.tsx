@@ -66,7 +66,7 @@ export default function DashboardProjects() {
     // Get the user's tag page link
     if (isLoggedIn && tags) {
       const userTag = tags.find(
-        (tag: any) => tag.name === userDetails.userName && tag.tagPageLink
+        (tag: any) => tag.name === userDetails.userName && tag.tagPageLink,
       );
       // console.log('userTag', userTag);
       if (userTag) {
@@ -105,7 +105,7 @@ export default function DashboardProjects() {
       className={classNames(
         style.UserDashboard,
         style.UserDashboardProjects,
-        "flex flex-col"
+        "flex flex-col",
       )}
     >
       <NavDashboard
@@ -121,7 +121,7 @@ export default function DashboardProjects() {
       <div
         className={classNames(
           style.UserDashboardWrapper,
-          "flex flex-col relative m-auto mt-10 mb-6"
+          "flex flex-col relative m-auto mt-10 mb-6",
         )}
       >
         {/* <h1 className={classNames(style.headingDashboardh1, 'mt-2 mb-4 p-0')}>
@@ -140,7 +140,7 @@ export default function DashboardProjects() {
             "mt-14", // Global utility classes (e.g., Tailwind, or other global CSS)
             "mb-10",
             "p-8",
-            "bg-primary-site"
+            "bg-primary-site",
           )}
         >
           <div className={classNames(style.dashboardBoxAdd, "flex flex-col")}>
@@ -177,7 +177,7 @@ export default function DashboardProjects() {
                   color={"light"}
                   className={classNames(
                     style.buttonAddDashboard,
-                    "block border-0 focus:ring-purple-300"
+                    "block border-0 focus:ring-purple-300",
                   )}
                   pill
                 >
@@ -200,7 +200,7 @@ export default function DashboardProjects() {
               <h2
                 className={classNames(
                   style.headingDashboardh1,
-                  "mt-0 mb-0 flex flex-row items-center"
+                  "mt-0 mb-0 flex flex-row items-center",
                 )}
               >
                 Organisations list
@@ -213,7 +213,7 @@ export default function DashboardProjects() {
             <div
               className={classNames(
                 style.listDashboard,
-                "flex flex-col text-base text-[#606b85]"
+                "flex flex-col text-base text-[#606b85]",
               )}
             >
               {allOwnedPages.length ? (
@@ -222,8 +222,8 @@ export default function DashboardProjects() {
                     allOwnedPages
                       .filter(
                         (infoPage) =>
-                          infoPage?.data?.pageTypes[0]?.name ===
-                          "organisation info"
+                          infoPage?.data?.pageTypes[0]?.pageTypeItem?.value
+                            ?.name === "organisation info",
                       )
                       .map((infoPage, index) => (
                         // console.log("Organ", infoPage),
@@ -238,7 +238,7 @@ export default function DashboardProjects() {
                             <Link
                               className="grow"
                               href={`/${extractInfoPageTypeBasedOnTag(
-                                infoPage?.data?.pageTypes[0]
+                                infoPage?.data?.pageTypes[0],
                               )}/${infoPage.data.slug}`}
                             >
                               <MiniPagePost
@@ -262,7 +262,7 @@ export default function DashboardProjects() {
                                 organisationAffiliations={
                                   infoPage?.data?.projectOrganisationRoles?.slice(
                                     0,
-                                    3
+                                    3,
                                   ) ?? []
                                 }
                                 date={infoPage.data._createdDate?.$date}

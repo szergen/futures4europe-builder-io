@@ -39,7 +39,7 @@ const BUILDER_API_ROUTE = "/api/builder/post";
 export function transformReferencesForBuilderCreate(
   tags: any[] | undefined,
   modelName: string = "tag",
-  wrapperKey?: string
+  wrapperKey?: string,
 ): any[] {
   if (!tags || !Array.isArray(tags) || tags.length === 0) {
     return [];
@@ -69,7 +69,7 @@ export function transformReferencesForBuilderCreate(
 export function transformReferencesForBuilderUpdate(
   tags: any[] | undefined,
   modelName: string = "tag",
-  wrapperKey?: string
+  wrapperKey?: string,
 ): any[] {
   if (!tags || !Array.isArray(tags) || tags.length === 0) {
     return [];
@@ -94,7 +94,7 @@ export function transformReferencesForBuilderUpdate(
  */
 export function transformReferencesForBuilder(
   tags: any[] | undefined,
-  modelName: string = "tag"
+  modelName: string = "tag",
 ): any[] {
   return transformReferencesForBuilderCreate(tags, modelName);
 }
@@ -110,7 +110,7 @@ export function transformReferencesForBuilder(
 export function transformPostDataForBuilderCreate(
   postData: any,
   contentText: string[],
-  contentImages: any[]
+  contentImages: any[],
 ): any {
   const data: any = {
     // Basic fields
@@ -146,42 +146,42 @@ export function transformPostDataForBuilderCreate(
     author: transformReferencesForBuilderCreate(
       postData.author,
       "tag",
-      "authorItem"
+      "authorItem",
     ),
     pageOwner: transformReferencesForBuilderCreate(
       postData.pageOwner,
       "tag",
-      "pageOwnerItem"
+      "pageOwnerItem",
     ),
     pageTypes: transformReferencesForBuilderCreate(
       postData.pageTypes,
       "tag",
-      "pageTypeItem"
+      "pageTypeItem",
     ),
     people: transformReferencesForBuilderCreate(
       postData.people,
       "tag",
-      "peopleItem"
+      "peopleItem",
     ),
     methods: transformReferencesForBuilderCreate(
       postData.methods,
       "tag",
-      "methodsItem"
+      "methodsItem",
     ),
     domains: transformReferencesForBuilderCreate(
       postData.domains,
       "tag",
-      "domainsItem"
+      "domainsItem",
     ),
     projects: transformReferencesForBuilderCreate(
       postData.projects,
       "tag",
-      "projectsItem"
+      "projectsItem",
     ),
     organisations: transformReferencesForBuilderCreate(
       postData.organisations,
       "tag",
-      "organisationsItem"
+      "organisationsItem",
     ),
 
     // Single reference field (countryTag)
@@ -198,12 +198,12 @@ export function transformPostDataForBuilderCreate(
     speakers: transformReferencesForBuilderCreate(
       postData.speakers,
       "tag",
-      "speakersItem"
+      "speakersItem",
     ),
     moderators: transformReferencesForBuilderCreate(
       postData.moderators,
       "tag",
-      "moderatorsItem"
+      "moderatorsItem",
     ),
     eventStartDate: postData.eventStartDate || undefined,
     eventEndDate: postData.eventEndDate || undefined,
@@ -213,7 +213,7 @@ export function transformPostDataForBuilderCreate(
     projectResultAuthor: transformReferencesForBuilderCreate(
       postData.projectResultAuthor,
       "tag",
-      "projectResultAuthorItem"
+      "projectResultAuthorItem",
     ),
     projectResultMedia: postData.projectResultMedia || {},
     projectResultPublicationDate:
@@ -224,7 +224,7 @@ export function transformPostDataForBuilderCreate(
     internalLinks: transformReferencesForBuilderCreate(
       postData.internalLinks,
       "post-page",
-      "internalLinksItem"
+      "internalLinksItem",
     ),
     recommendations: postData.recommendations || 0,
   };
@@ -250,13 +250,13 @@ export function transformPostDataForBuilderCreate(
 export function transformPostDataForBuilder(
   postData: any,
   contentText: string[],
-  contentImages: any[]
+  contentImages: any[],
 ): any {
   // Use the same format as CREATE for now - UPDATE flow handles its own format
   return transformPostDataForBuilderCreate(
     postData,
     contentText,
-    contentImages
+    contentImages,
   );
 }
 
@@ -270,14 +270,14 @@ export function transformPostDataForBuilder(
 export async function createBuilderPost(
   postData: any,
   contentText: string[],
-  contentImages: any[]
+  contentImages: any[],
 ): Promise<any> {
   try {
     // Use CREATE-specific transformation (simple references, no wrapper keys)
     const data = transformPostDataForBuilderCreate(
       postData,
       contentText,
-      contentImages
+      contentImages,
     );
 
     const payload = {
@@ -307,7 +307,7 @@ export async function createBuilderPost(
         error: errorData,
       });
       throw new Error(
-        errorData.error || `Failed to create post: ${response.status}`
+        errorData.error || `Failed to create post: ${response.status}`,
       );
     }
 
@@ -336,13 +336,13 @@ export async function updateBuilderPost(
   postId: string,
   postData: any,
   contentText: string[],
-  contentImages: any[]
+  contentImages: any[],
 ): Promise<any> {
   try {
     const data = transformPostDataForBuilder(
       postData,
       contentText,
-      contentImages
+      contentImages,
     );
 
     const payload = {
@@ -374,7 +374,7 @@ export async function updateBuilderPost(
         error: errorData,
       });
       throw new Error(
-        errorData.error || `Failed to update post: ${response.status}`
+        errorData.error || `Failed to update post: ${response.status}`,
       );
     }
 
@@ -468,7 +468,7 @@ export async function getAllBuilderPosts(options?: { cachebust?: boolean }) {
         allPosts.push(...posts);
         offset += limit;
         console.log(
-          `[Builder.io] Fetched ${posts.length} posts (total: ${allPosts.length})`
+          `[Builder.io] Fetched ${posts.length} posts (total: ${allPosts.length})`,
         );
 
         if (posts.length < limit) {
@@ -646,7 +646,7 @@ export function transformBuilderPostToWixFormat(builderPost: any) {
       projects: transformReferenceArray(data.projects, "projectsItem"),
       organisations: transformReferenceArray(
         data.organisations,
-        "organisationsItem"
+        "organisationsItem",
       ),
 
       // Event-specific fields
@@ -659,7 +659,7 @@ export function transformBuilderPostToWixFormat(builderPost: any) {
       // Project result specific
       projectResultAuthor: transformReferenceArray(
         data.projectResultAuthor,
-        "projectResultAuthorItem"
+        "projectResultAuthorItem",
       ),
       projectResultMedia: data.projectResultMedia || {},
       projectResultPublicationDate: data.projectResultPublicationDate,
