@@ -1,31 +1,31 @@
-import './footer.css';
-import { Logo } from '@app/shared-components/Logo/Logo';
-import testIds from '@app/utils/test-ids';
-import classNames from 'classnames';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useState } from 'react';
-import { subscribeToNewsletter } from '@app/wixUtils/client-side';
-import { Tooltip } from 'flowbite-react';
+import "./footer.css";
+import { Logo } from "@app/shared-components/Logo/Logo";
+import testIds from "@app/utils/test-ids";
+import classNames from "classnames";
+import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+import { subscribeToNewsletter } from "@app/wixUtils/client-side";
+import { Tooltip } from "flowbite-react";
 
 const Footer = () => {
-  const [email, setEmail] = useState('');
-  const [submitState, setSubmitState] = useState('idle');
+  const [email, setEmail] = useState("");
+  const [submitState, setSubmitState] = useState("idle");
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const marketingConsent = await subscribeToNewsletter(email);
-      console.log('marketingConsent', marketingConsent);
-      setSubmitState('success');
+      console.log("marketingConsent", marketingConsent);
+      setSubmitState("success");
     } catch (error) {
-      console.error('Error upserting email consent:', error);
-      setSubmitState('error');
+      console.error("Error upserting email consent:", error);
+      setSubmitState("error");
     }
 
     // Add your submission logic here
-    console.log('Submitting email:', email);
+    console.log("Submitting email:", email);
   };
   return (
     <footer className="w-full" data-testid={testIds.LAYOUT.FOOTER}>
@@ -64,10 +64,10 @@ const Footer = () => {
                       title="The email and privacy policy checkbox are required to subscribe"
                       disabled={!isPrivacyChecked}
                       className={classNames(
-                        'btn-save flex-none rounded-full px-3.5 py-2.5 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500',
+                        "btn-save flex-none rounded-full px-3.5 py-2.5 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500",
                         isPrivacyChecked
-                          ? 'hover:bg-action-site/90'
-                          : 'bg-greyShade/50 text-white cursor-not-allowed'
+                          ? "hover:bg-action-site/90"
+                          : "bg-greyShade/50 text-white cursor-not-allowed",
                       )}
                     >
                       Subscribe
@@ -97,7 +97,7 @@ const Footer = () => {
                     <div>
                       <strong className="font-medium text-white relative">
                         I agree that my information will be processed in
-                        accordance with the Future4Europe{' '}
+                        accordance with the Future4Europe{" "}
                         <a
                           href="/static-pages/privacy-policy"
                           target="_blank"
@@ -108,7 +108,7 @@ const Footer = () => {
                         .
                       </strong>
 
-                      {submitState === 'success' && (
+                      {submitState === "success" && (
                         <span className="inline-flex items-center mt-4 justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700 absolute bottom-20">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +132,7 @@ const Footer = () => {
                         </span>
                       )}
 
-                      {submitState === 'error' && (
+                      {submitState === "error" && (
                         <span className="inline-flex items-center justify-center rounded-full bg-red-100 px-2.5 py-0.5 text-red-700 absolute  bottom-32">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -186,6 +186,24 @@ const Footer = () => {
                     <li className="mb-2">
                       <Link
                         target="_blank"
+                        href="https://shoutout.wix.com/so/b9PgxhZAB"
+                        className="text-white/80 hover:text-white underline"
+                      >
+                        December 2025
+                      </Link>
+                    </li>
+                    <li className="mb-2">
+                      <Link
+                        target="_blank"
+                        href="https://shoutout.wix.com/so/dbPc0ZTvy"
+                        className="text-white/80 hover:text-white underline"
+                      >
+                        September 2025
+                      </Link>
+                    </li>
+                    <li className="mb-2">
+                      <Link
+                        target="_blank"
                         href="https://shoutout.wix.com/so/cdPV0tqSW"
                         className="text-white/80 hover:text-white underline"
                       >
@@ -232,7 +250,7 @@ const Footer = () => {
                       <Link
                         target="_blank"
                         href={
-                          'https://shoutout.wix.com/so/86OraMfaB?languageTag=en'
+                          "https://shoutout.wix.com/so/86OraMfaB?languageTag=en"
                         }
                         className="text-white/80 hover:text-white underline"
                       >
@@ -370,12 +388,12 @@ const Footer = () => {
                 className="text-gray-600 hover:text-gray-500 hover:underline"
               >
                 <Image
-                  src={'/images/ERA_logo.jpg'}
+                  src={"/images/ERA_logo.jpg"}
                   height={144}
                   width={735}
                   alt="ERA"
                   className={classNames(
-                    'w-full h-auto object-contain rounded-md'
+                    "w-full h-auto object-contain rounded-md",
                   )}
                 />
               </Link>
@@ -442,13 +460,13 @@ const Footer = () => {
           </div>
         </div>
 
-        <Logo fill={'#fff'} className="mt-4" />
+        <Logo fill={"#fff"} className="mt-4" />
 
         <div className="py-7 border-t border-gray-200">
           <div className="flex items-center justify-center flex-col lg:justify-between lg:flex-row">
             <span className="text-sm text-gray-500 ">
               ©<a href="https://futures4europe.eu">futures4europe</a> 2025, All
-              rights reserved. Designed by{' '}
+              rights reserved. Designed by{" "}
               <a target="_blank" href="https://www.uefiscdi.ro">
                 UEFISCDI
               </a>
