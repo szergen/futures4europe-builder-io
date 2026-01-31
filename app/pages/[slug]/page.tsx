@@ -4,7 +4,10 @@ import React from "react";
 import MiniPagesListItemPost from "@app/page-components/shared-page-components/MiniPagesListComponentPost/components/MiniPagesListItemPost/MiniPagesListItemPost";
 import Hero from "@app/shared-components/Hero/Hero";
 import style from "./page.module.css";
-import { decidePageTypeItems, decidePageTypesForMiniPages } from "@app/utils/parse-utils";
+import {
+  decidePageTypeItems,
+  decidePageTypesForMiniPages,
+} from "@app/utils/parse-utils";
 import {
   getAllBuilderPosts,
   transformBuilderPostToWixFormat,
@@ -61,8 +64,8 @@ export default async function Pages({ params }: any) {
 
   const infoPages = builderInfoPages
     ?.map((item: any) => {
-      const transformed = transformBuilderInfoPageToWixFormat(item);
-      return transformed ? { ...transformed.data, _id: transformed.id } : null;
+      // const transformed = transformBuilderInfoPageToWixFormat(item);
+      return item ? { ...item.data, _id: item.id } : null;
     })
     .filter((item: any): item is NonNullable<typeof item> => item !== null);
 
@@ -73,6 +76,8 @@ export default async function Pages({ params }: any) {
   if (!builderPosts || !builderInfoPages) {
     return <div>Loading...</div>; // You can also add a loading spinner here
   }
+  // console.log("debug111->postPages", postPages[0]);
+  // console.log("debug111->infoPages", infoPages[0]);
 
   return (
     <div className={classNames("w-full")}>
@@ -83,7 +88,7 @@ export default async function Pages({ params }: any) {
           title={pageType}
           pageTypePath={
             ["event", "project-result", "post"].find(
-              (type) => type === pageType
+              (type) => type === pageType,
             )
               ? "post"
               : pageType

@@ -1,31 +1,34 @@
-'use client';
-import { motion, useMotionValue, animate } from 'framer-motion';
-import { usePathname } from 'next/navigation';
-import { Logo } from '@app/shared-components/Logo/Logo';
-import testIds from '@app/utils/test-ids';
-import SearchComponentV1 from '../SearchComponentV1/SearchComponentV1';
-import style from './Header.module.css';
-import Link from 'next/link';
-import classNames from 'classnames';
-import SpriteSvg from '@app/shared-components/SpriteSvg/SpriteSvg';
-import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
-import { useEffect, useState, useMemo, memo, useRef, useCallback } from 'react';
-import { Avatar, Dropdown, Modal } from 'flowbite-react';
-import { useRouter } from 'next/navigation';
+"use client";
+import { motion, useMotionValue, animate } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { Logo } from "@app/shared-components/Logo/Logo";
+import testIds from "@app/utils/test-ids";
+import SearchComponentV1 from "../SearchComponentV1/SearchComponentV1";
+import style from "./Header.module.css";
+import Link from "next/link";
+import classNames from "classnames";
+import SpriteSvg from "@app/shared-components/SpriteSvg/SpriteSvg";
+import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
+import { useEffect, useState, useMemo, memo, useRef, useCallback } from "react";
+import { Avatar, Dropdown, Modal } from "flowbite-react";
+import { useRouter } from "next/navigation";
 import {
   HiUserCircle,
   HiPlusSm,
   HiShieldExclamation,
   HiUser,
-} from 'react-icons/hi';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
-import Tag from '../Tag/Tag';
-import { decidePageTypeItems, decidePageTypesForMiniPages } from '@app/utils/parse-utils';
-import GlowButton from './NavBar/GlowButton';
-import 'vanilla-cookieconsent/dist/cookieconsent.css';
-import * as CookieConsent from 'vanilla-cookieconsent';
-import posthog from 'posthog-js';
-import { debounce } from 'lodash';
+} from "react-icons/hi";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import Tag from "../Tag/Tag";
+import {
+  decidePageTypeItems,
+  decidePageTypesForMiniPages,
+} from "@app/utils/parse-utils";
+import GlowButton from "./NavBar/GlowButton";
+import "vanilla-cookieconsent/dist/cookieconsent.css";
+import * as CookieConsent from "vanilla-cookieconsent";
+import posthog from "posthog-js";
+import { debounce } from "lodash";
 
 const Header = () => {
   const {
@@ -45,7 +48,7 @@ const Header = () => {
   const router = useRouter();
   const handleLogOut = async () => {
     logout();
-    router.push('/login');
+    router.push("/login");
   };
 
   // Add check for admin status
@@ -62,7 +65,7 @@ const Header = () => {
     const pathname = usePathname();
 
     // Directly compute value without state or effects
-    const hideSearchBarPaths = ['/', '/home'];
+    const hideSearchBarPaths = ["/", "/home"];
     const showSearchBar = !hideSearchBarPaths.includes(pathname);
 
     // For debugging
@@ -80,17 +83,17 @@ const Header = () => {
     if (!window.cc) {
       CookieConsent.run({
         cookie: {
-          name: 'cc_cookie',
+          name: "cc_cookie",
         },
         guiOptions: {
           consentModal: {
-            layout: 'cloud inline',
-            position: 'bottom center',
+            layout: "cloud inline",
+            position: "bottom center",
             equalWeightButtons: true,
             flipButtons: false,
           },
           preferencesModal: {
-            layout: 'box',
+            layout: "box",
             equalWeightButtons: true,
             flipButtons: false,
           },
@@ -107,43 +110,43 @@ const Header = () => {
                   name: /^_ga/,
                 },
                 {
-                  name: '_gid',
+                  name: "_gid",
                 },
               ],
             },
             services: {
               ga: {
-                label: 'Google Analytics',
+                label: "Google Analytics",
                 onAccept: () => {
                   // Initialize Google Analytics here if needed
-                  console.log('Google Analytics accepted');
+                  console.log("Google Analytics accepted");
                 },
                 onReject: () => {
                   // Clean up Google Analytics here if needed
-                  console.log('Google Analytics rejected');
+                  console.log("Google Analytics rejected");
                 },
               },
               youtube: {
-                label: 'Youtube Embed',
+                label: "Youtube Embed",
                 onAccept: () => {
-                  console.log('Youtube embeds accepted');
+                  console.log("Youtube embeds accepted");
                 },
                 onReject: () => {
-                  console.log('Youtube embeds rejected');
+                  console.log("Youtube embeds rejected");
                 },
               },
               posthog: {
-                label: 'PostHog Analytics',
+                label: "PostHog Analytics",
                 onAccept: () => {
                   if (posthog?.initialized) {
                     posthog?.opt_in_capturing();
-                    console.log('PostHog tracking enabled');
+                    console.log("PostHog tracking enabled");
                   }
                 },
                 onReject: () => {
                   if (posthog?.initialized) {
                     posthog?.opt_out_capturing();
-                    console.log('PostHog tracking disabled');
+                    console.log("PostHog tracking disabled");
                   }
                 },
               },
@@ -152,44 +155,44 @@ const Header = () => {
           ads: {},
         },
         language: {
-          default: 'en',
+          default: "en",
           translations: {
             en: {
               consentModal: {
-                title: 'We use cookies',
+                title: "We use cookies",
                 description:
-                  'We use cookies and similar technologies to help personalize content, tailor and measure ads, and provide a better experience.',
-                acceptAllBtn: 'Accept all',
-                acceptNecessaryBtn: 'Reject all',
-                showPreferencesBtn: 'Manage preferences',
+                  "We use cookies and similar technologies to help personalize content, tailor and measure ads, and provide a better experience.",
+                acceptAllBtn: "Accept all",
+                acceptNecessaryBtn: "Reject all",
+                showPreferencesBtn: "Manage preferences",
                 footer: `
                     <a href="/static-pages/privacy-policy" target="_blank">Privacy Policy</a>
                     <a href="/static-pages/terms-of-use" target="_blank">Terms of Use</a>
                   `,
               },
               preferencesModal: {
-                title: 'Privacy Preferences',
-                acceptAllBtn: 'Accept all',
-                acceptNecessaryBtn: 'Reject all',
-                savePreferencesBtn: 'Save preferences',
+                title: "Privacy Preferences",
+                acceptAllBtn: "Accept all",
+                acceptNecessaryBtn: "Reject all",
+                savePreferencesBtn: "Save preferences",
                 sections: [
                   {
-                    title: 'Necessary cookies',
+                    title: "Necessary cookies",
                     description:
-                      'These cookies are essential for the proper functioning of the website.',
-                    linkedCategory: 'necessary',
+                      "These cookies are essential for the proper functioning of the website.",
+                    linkedCategory: "necessary",
                   },
                   {
-                    title: 'Analytics cookies',
+                    title: "Analytics cookies",
                     description:
-                      'These cookies help us understand how visitors interact with our website.',
-                    linkedCategory: 'analytics',
+                      "These cookies help us understand how visitors interact with our website.",
+                    linkedCategory: "analytics",
                   },
                   {
-                    title: 'Marketing cookies',
+                    title: "Marketing cookies",
                     description:
-                      'These cookies are used to deliver relevant advertisements.',
-                    linkedCategory: 'ads',
+                      "These cookies are used to deliver relevant advertisements.",
+                    linkedCategory: "ads",
                   },
                 ],
               },
@@ -197,15 +200,15 @@ const Header = () => {
           },
         },
         onFirstConsent: ({ cookie }) => {
-          console.log('First consent:', cookie);
+          console.log("First consent:", cookie);
         },
         onConsent: ({ cookie }) => {
-          console.log('Consent updated:', cookie);
+          console.log("Consent updated:", cookie);
         },
         onChange: ({ changedCategories, changedServices }) => {
-          console.log('Settings changed:', changedCategories, changedServices);
+          console.log("Settings changed:", changedCategories, changedServices);
           // Handle changes to specific categories
-          if (changedCategories.includes('analytics')) {
+          if (changedCategories.includes("analytics")) {
             // Update analytics settings
           }
         },
@@ -239,14 +242,14 @@ const Header = () => {
 
   useEffect(() => {
     if (isDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside, {
+      document.addEventListener("mousedown", handleClickOutside, {
         passive: true,
       });
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     }
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isDropdownOpen]);
 
@@ -267,41 +270,77 @@ const Header = () => {
       setPageTypeCounts((prev) => ({
         ...prev,
         post:
-        decidePageTypeItems(
-            'post',
+          decidePageTypesForMiniPages(
+            "post",
             postPages.map((item) => item.data),
-            infoPages.map((item) => item.data)
-          )?.length || 0,
+            infoPages.map((item) => item.data),
+          )?.length ||
+          decidePageTypeItems(
+            "post",
+            postPages.map((item) => item.data),
+            infoPages.map((item) => item.data),
+          )?.length ||
+          0,
         project:
           decidePageTypeItems(
-            'project',
+            "project",
             postPages.map((item) => item.data),
-            infoPages.map((item) => item.data)
-          )?.length || 0,
+            infoPages.map((item) => item.data),
+          )?.length ||
+          decidePageTypesForMiniPages(
+            "project",
+            postPages.map((item) => item.data),
+            infoPages.map((item) => item.data),
+          )?.length ||
+          0,
         person:
-        decidePageTypeItems(
-            'person',
+          decidePageTypeItems(
+            "person",
             postPages.map((item) => item.data),
-            infoPages.map((item) => item.data)
-          )?.length || 0,
+            infoPages.map((item) => item.data),
+          )?.length ||
+          decidePageTypesForMiniPages(
+            "person",
+            postPages.map((item) => item.data),
+            infoPages.map((item) => item.data),
+          )?.length ||
+          0,
         organisation:
-        decidePageTypeItems(
-            'organisation',
+          decidePageTypeItems(
+            "organisation",
             postPages.map((item) => item.data),
-            infoPages.map((item) => item.data)
-          )?.length || 0,
+            infoPages.map((item) => item.data),
+          )?.length ||
+          decidePageTypesForMiniPages(
+            "person",
+            postPages.map((item) => item.data),
+            infoPages.map((item) => item.data),
+          )?.length ||
+          0,
         event:
-        decidePageTypeItems(
-            'event',
+          decidePageTypeItems(
+            "event",
             postPages.map((item) => item.data),
-            infoPages.map((item) => item.data)
-          )?.length || 0,
+            infoPages.map((item) => item.data),
+          )?.length ||
+          decidePageTypesForMiniPages(
+            "event",
+            postPages.map((item) => item.data),
+            infoPages.map((item) => item.data),
+          )?.length ||
+          0,
         projectResult:
-        decidePageTypeItems(
-            'project-result',
+          decidePageTypeItems(
+            "project-result",
             postPages.map((item) => item.data),
-            infoPages.map((item) => item.data)
-          )?.length || 0,
+            infoPages.map((item) => item.data),
+          )?.length ||
+          decidePageTypesForMiniPages(
+            "project-result",
+            postPages.map((item) => item.data),
+            infoPages.map((item) => item.data),
+          )?.length ||
+          0,
       }));
     }
   }, [infoPages, postPages]);
@@ -312,12 +351,12 @@ const Header = () => {
 
   // #region Check if user info page is ready
   const [isPersonInfoPageReady, setIsPersonInfoPageReady] = useState(false);
-  const [personInfoPageLink, setPersonInfoPageLink] = useState('');
+  const [personInfoPageLink, setPersonInfoPageLink] = useState("");
 
   useEffect(() => {
     if (userDetails?.userTag?.name && !isPersonInfoPageReady) {
       setIsPersonInfoPageReady(true);
-      setPersonInfoPageLink(userDetails?.userTag?.tagPageLink || '');
+      setPersonInfoPageLink(userDetails?.userTag?.tagPageLink || "");
     }
   }, [isLoggedIn, router, userDetails?.userTag?.tagPageLink]);
 
@@ -338,7 +377,7 @@ const Header = () => {
 
       // Calculate new position
       const newPosition =
-        direction === 'right'
+        direction === "right"
           ? currentX - scrollAmount // Scroll right
           : currentX + scrollAmount; // Scroll left
 
@@ -350,7 +389,7 @@ const Header = () => {
 
       // Animate to the new position
       animate(x, constrainedX, {
-        type: 'spring',
+        type: "spring",
         stiffness: 300,
         damping: 30,
         duration: 0.3,
@@ -359,7 +398,7 @@ const Header = () => {
       // Update arrow visibility
       updateArrowVisibility(constrainedX);
     },
-    [x, contentWidth, containerWidth]
+    [x, contentWidth, containerWidth],
   );
 
   // Function to update arrow visibility
@@ -396,13 +435,13 @@ const Header = () => {
     return () => unsubscribe();
   }, [x, contentWidth, containerWidth]);
 
-  if (typeof useMotionValue().jump !== 'function') {
-    Object.defineProperty(MotionValue.prototype, 'jump', {
+  if (typeof useMotionValue().jump !== "function") {
+    Object.defineProperty(MotionValue.prototype, "jump", {
       value: function (to) {
         animate(this, to, {
-          type: 'tween',
+          type: "tween",
           duration: 0.3,
-          ease: 'easeOut',
+          ease: "easeOut",
         });
       },
     });
@@ -411,7 +450,7 @@ const Header = () => {
   const accountSection = useMemo(() => {
     return isLoggedIn ? (
       <div
-        className={classNames('z-90', style.avatarImageHeader)}
+        className={classNames("z-90", style.avatarImageHeader)}
         ref={dropdownRef}
       >
         <Dropdown
@@ -422,10 +461,10 @@ const Header = () => {
               img={
                 userDetails?.userTag?.picture
                   ? userDetails?.userTag?.picture
-                  : 'https://framerusercontent.com/images/NVeaM8VrCezyFEd2iOUwfmMuGCI.svg'
+                  : "https://framerusercontent.com/images/NVeaM8VrCezyFEd2iOUwfmMuGCI.svg"
               }
               rounded
-              className={classNames(style.avatarImage, 'avatarUserHeader', {
+              className={classNames(style.avatarImage, "avatarUserHeader", {
                 active: isDropdownOpen,
               })}
               onClick={toggleDropdown}
@@ -506,7 +545,7 @@ const Header = () => {
     ) : (
       <div className={classNames(style.buttonsContainer)}>
         <div
-          className={classNames(style.topbarLogin, 'flex items-center gap-4')}
+          className={classNames(style.topbarLogin, "flex items-center gap-4")}
         >
           <Link href="/dashboard">
             <p className="font-bold text-white text-base">Login</p>
@@ -537,9 +576,9 @@ const Header = () => {
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     if (scrollContainer) {
-      scrollContainer.style.willChange = 'transform';
+      scrollContainer.style.willChange = "transform";
       return () => {
-        scrollContainer.style.willChange = 'auto';
+        scrollContainer.style.willChange = "auto";
       };
     }
   }, []);
@@ -549,7 +588,7 @@ const Header = () => {
       className={classNames({
         relative: showSearchBar,
         [style.compactHeaderWrapper]: showSearchBar,
-        'min-h-[300px]': showSearchBar, // Increased to 300px to match header height
+        "min-h-[300px]": showSearchBar, // Increased to 300px to match header height
       })}
     >
       {/* Skeleton placeholder - only shows during SSR */}
@@ -557,7 +596,7 @@ const Header = () => {
         <div
           className="absolute top-0 w-full py-6 px-2 flex-col h-[300px]"
           style={{
-            backgroundColor: '#1111C9', // Specific color as requested
+            backgroundColor: "#1111C9", // Specific color as requested
           }}
         >
           <div className="flex justify-between sm:px-6 sm:px-14 h-header sm:items-center">
@@ -588,8 +627,8 @@ const Header = () => {
             className="absolute inset-0 overflow-hidden z-[-1] opacity-30"
             style={{
               background:
-                'linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
-              backgroundSize: '20px 20px',
+                "linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)",
+              backgroundSize: "20px 20px",
             }}
           ></div>
         </div>
@@ -597,29 +636,29 @@ const Header = () => {
 
       <header
         className={classNames(
-          showSearchBar ? 'relative' : 'absolute',
-          'absolute top-0 flex w-full py-6 px-2 flex-col',
+          showSearchBar ? "relative" : "absolute",
+          "absolute top-0 flex w-full py-6 px-2 flex-col",
           style.header,
           {
             [style.homeHeaderWrapper]: !showSearchBar,
-            'opacity-0': !isClientRendered, // Hide until client rendered
-            'opacity-100 transition-opacity duration-300': isClientRendered,
-          }
+            "opacity-0": !isClientRendered, // Hide until client rendered
+            "opacity-100 transition-opacity duration-300": isClientRendered,
+          },
         )}
         data-testid={testIds.LAYOUT.HEADER}
       >
         <div
           className={classNames(
-            'flex justify-between sm:px-6 sm:px-14 h-header sm:items-center sm:gap-4 sm:gap-8',
-            style.headerContainer
+            "flex justify-between sm:px-6 sm:px-14 h-header sm:items-center sm:gap-4 sm:gap-8",
+            style.headerContainer,
           )}
         >
           {/* Logo */}
           <Link
             href="/"
             className={classNames(
-              'flex flex-col sm:flex-row items-center gap-2 sm:gap-6',
-              style.headerLogo
+              "flex flex-col sm:flex-row items-center gap-2 sm:gap-6",
+              style.headerLogo,
             )}
           >
             <Logo />
@@ -627,24 +666,24 @@ const Header = () => {
 
           {/* Page Buttons */}
           <div
-            className={classNames('relative', style.headerTagContainerOuter)}
+            className={classNames("relative", style.headerTagContainerOuter)}
           >
             {/* Right scroll button */}
             {showRightArrow && (
               <button
-                onClick={() => scrollTags('right')}
+                onClick={() => scrollTags("right")}
                 className={classNames(
                   style.scrollButton,
-                  style.scrollButtonRight
+                  style.scrollButtonRight,
                 )}
                 aria-label="Scroll tags right"
               >
                 <SpriteSvg.ArrowIcon
                   sizeH={20}
                   sizeW={20}
-                  viewBox={'0 0 20 20'}
-                  fill={'#fff'}
-                  stroke={'10'}
+                  viewBox={"0 0 20 20"}
+                  fill={"#fff"}
+                  stroke={"10"}
                   inline={false}
                 />
               </button>
@@ -653,21 +692,21 @@ const Header = () => {
             {/* Left scroll button */}
             {showLeftArrow && (
               <button
-                onClick={() => scrollTags('left')}
+                onClick={() => scrollTags("left")}
                 className={classNames(
                   style.scrollButton,
-                  style.scrollButtonLeft
+                  style.scrollButtonLeft,
                 )}
                 aria-label="Scroll tags left"
               >
                 <SpriteSvg.ArrowIcon
                   sizeH={20}
                   sizeW={20}
-                  viewBox={'0 0 20 20'}
-                  fill={'#fff'}
-                  stroke={'10'}
+                  viewBox={"0 0 20 20"}
+                  fill={"#fff"}
+                  stroke={"10"}
                   inline={false}
-                  className={'rotate-180'}
+                  className={"rotate-180"}
                 />
               </button>
             )}
@@ -676,9 +715,9 @@ const Header = () => {
             <div
               ref={scrollContainerRef}
               className={classNames(
-                'flex items-center gap-4',
+                "flex items-center gap-4",
                 style.headerTagContainer,
-                { [style.showTagContainer]: showSearchBar }
+                { [style.showTagContainer]: showSearchBar },
               )}
             >
               <motion.div
@@ -717,8 +756,8 @@ const Header = () => {
                   whileInView={{ opacity: 1 }}
                   viewport={{
                     once: false,
-                    margin: '-40px', // Trigger fade before fully in view
-                    amount: 'some', // Only need some of the element to be visible
+                    margin: "-40px", // Trigger fade before fully in view
+                    amount: "some", // Only need some of the element to be visible
                   }}
                   transition={{ duration: 0.3 }}
                 >
@@ -743,8 +782,8 @@ const Header = () => {
                   whileInView={{ opacity: 1 }}
                   viewport={{
                     once: false,
-                    margin: '-40px',
-                    amount: 'some',
+                    margin: "-40px",
+                    amount: "some",
                   }}
                   transition={{ duration: 0.3 }}
                 >
@@ -769,8 +808,8 @@ const Header = () => {
                   whileInView={{ opacity: 1 }}
                   viewport={{
                     once: false,
-                    margin: '-40px',
-                    amount: 'some',
+                    margin: "-40px",
+                    amount: "some",
                   }}
                   transition={{ duration: 0.3 }}
                 >
@@ -795,8 +834,8 @@ const Header = () => {
                   whileInView={{ opacity: 1 }}
                   viewport={{
                     once: false,
-                    margin: '-40px',
-                    amount: 'some',
+                    margin: "-40px",
+                    amount: "some",
                   }}
                   transition={{ duration: 0.3 }}
                 >
@@ -821,8 +860,8 @@ const Header = () => {
                   whileInView={{ opacity: 1 }}
                   viewport={{
                     once: false,
-                    margin: '-40px',
-                    amount: 'some',
+                    margin: "-40px",
+                    amount: "some",
                   }}
                   transition={{ duration: 0.3 }}
                 >
@@ -847,8 +886,8 @@ const Header = () => {
                   whileInView={{ opacity: 1 }}
                   viewport={{
                     once: false,
-                    margin: '-40px',
-                    amount: 'some',
+                    margin: "-40px",
+                    amount: "some",
                   }}
                   transition={{ duration: 0.3 }}
                 >
@@ -880,7 +919,7 @@ const Header = () => {
         </div>
         {/* Search */}
         <div
-          className={classNames('relative', style.headerWithSearchContainer)}
+          className={classNames("relative", style.headerWithSearchContainer)}
         >
           {/* <SearchProvider> */}
           {showSearchBar && <SearchComponentV1 />}
@@ -907,7 +946,10 @@ const Header = () => {
 };
 
 export default memo(Header);
-function decidePageTypeItemsForMiniPages(arg0: string, arg1: any[], arg2: any[]) {
-  throw new Error('Function not implemented.');
+function decidePageTypeItemsForMiniPages(
+  arg0: string,
+  arg1: any[],
+  arg2: any[],
+) {
+  throw new Error("Function not implemented.");
 }
-
