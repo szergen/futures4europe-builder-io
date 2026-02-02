@@ -7,20 +7,12 @@ import Typography from "@app/shared-components/Typography/Typography";
 import HeaderComponent from "./components/HeaderComponent/HeaderComponent";
 import ContentComponent from "./components/ContentComponent/ContentComponent";
 import TagListComponent from "../shared-page-components/TagListComponent/TagListComponent";
-// import ExternalLinksComponent from '../shared-page-components/ExternalLinksComponent/ExternalLinksComponent';
-// import AuthorComponent from './components/AuthorComponent/AuthorComponent';
 import FilesComponent from "../shared-page-components/FilesComponent/FilesComponent";
 import { mockPost } from "../../mocks/pagesMocks";
 import { useAuth } from "@app/custom-hooks/AuthContext/AuthContext";
 import OgImage from "@app/shared-components/OgImage";
 import TagPicker from "@app/shared-components/TagPicker/TagPicker";
-import {
-  formatDate,
-  checkIfArrayNeedsUpdateForTags,
-  generateUniqueHash,
-  checkIfArrayNeedsUpdateForStrings,
-  areArraysEqualForMediaFiles,
-} from "./PostPageComponent.utils";
+import { formatDate, generateUniqueHash } from "./PostPageComponent.utils";
 import MiniPagesListComponentPost from "../shared-page-components/MiniPagesListComponentPost/MiniPagesListComponentPost";
 import { useRouter } from "next/navigation";
 import { Modal } from "flowbite-react";
@@ -50,14 +42,8 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   // #region useAuth hook for grabbing user details and tags needed for editing
   // state for if the page is owned by the user
   // state for if the edit mode is on
-  const {
-    isLoggedIn,
-    userDetails,
-    tags,
-    tagsFetched,
-    handleTagCreated,
-    handleUserDataRefresh,
-  } = useAuth();
+  const { isLoggedIn, userDetails, tags, tagsFetched, handleUserDataRefresh } =
+    useAuth();
   // console.log('debug1->tags', tags);
   const [isPageOwnedByUser, setIsPageOwnedByUser] = useState(false);
   const [isEditModeOn, setIsEditModeOn] = useState(false);
@@ -72,7 +58,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       postData.pageOwner?.length > 0 &&
       !!userDetails?.userTag?.name &&
       !!postData.pageOwner?.find(
-        (owner: any) => owner?._id === userDetails?.userTag?._id
+        (owner: any) => owner?._id === userDetails?.userTag?._id,
       );
 
     // console.log('debug1->permissionCondition', permissionCondition);
@@ -254,7 +240,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         builderId,
         builderPostData,
         postData.contentText,
-        postData.contentImages
+        postData.contentImages,
       );
 
       console.log("[Builder.io] Post updated successfully:", result);
@@ -281,7 +267,8 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
     try {
       // Get user tag for author and pageOwner
       const userTag = tags.find(
-        (tag) => tag?.tagType === "person" && tag?.name === userDetails.userName
+        (tag) =>
+          tag?.tagType === "person" && tag?.name === userDetails.userName,
       );
 
       // Check if user tag exists - block creation if missing per FR-010
@@ -340,7 +327,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       const result = await createBuilderPost(
         builderPostData,
         postData.contentText,
-        postData.contentImages
+        postData.contentImages,
       );
 
       console.log("[Builder.io] Post created successfully:", result);
@@ -371,7 +358,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           tag?.tagType === "page type" &&
           !tag?.name?.includes("info") &&
           tag?.name !== "event" &&
-          tag?.name !== "post"
+          tag?.name !== "post",
       );
     }
     if (firstTagName === "event") {
@@ -380,7 +367,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           tag?.tagType === "page type" &&
           !tag?.name?.includes("info") &&
           tag?.name !== "project result" &&
-          tag?.name !== "post"
+          tag?.name !== "post",
       );
     }
     if (firstTagName === "post") {
@@ -389,7 +376,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           tag?.tagType === "page type" &&
           !tag?.name?.includes("info") &&
           tag?.name !== "project result" &&
-          tag?.name !== "event"
+          tag?.name !== "event",
       );
     }
     // ...rest of conditions
@@ -420,7 +407,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         updatePostDataBasedOnKeyValue("pageType", [postTag]);
       }
       const defaultAuthorTag = tags.find(
-        (tag) => tag.name === userDetails?.userTag?.name
+        (tag) => tag.name === userDetails?.userTag?.name,
       );
       if (defaultAuthorTag) {
         updatePostDataBasedOnKeyValue("authors", [defaultAuthorTag]);
@@ -480,7 +467,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
             disabled={isEditModeOn && checkValidationErrors()}
             className={classNames(
               "btn btn-save",
-              isEditModeOn && checkValidationErrors() && "bg-gray-400"
+              isEditModeOn && checkValidationErrors() && "bg-gray-400",
             )}
           >
             {!isEditModeOn ? "Edit Page" : "Publish Page"}
@@ -522,11 +509,11 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
                 (tag) =>
                   tag?.tagType === "page type" &&
                   !tag?.name?.includes("info") &&
-                  !tag?.masterTag
+                  !tag?.masterTag,
               )}
               className="relative"
               selectedValues={postData.pageType?.map(
-                (pageType: any) => pageType?.name
+                (pageType: any) => pageType?.name,
               )}
               updatePostData={(value) =>
                 updatePostDataBasedOnKeyValue("pageType", value)
@@ -576,7 +563,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           isEditModeOn={isEditModeOn}
           tags={tags?.filter((tag) => tag?.tagType === "person")}
           selectedValues={postData.projectAuthors?.map(
-            (author: any) => author?.name
+            (author: any) => author?.name,
           )}
           updatePostData={(value) =>
             updatePostDataBasedOnKeyValue("projectAuthors", value)
@@ -619,7 +606,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
             isEditModeOn={isEditModeOn}
             tags={tags?.filter((tag) => tag?.tagType === "person")}
             selectedValues={postData.eventModerators?.map(
-              (speaker: any) => speaker?.name
+              (speaker: any) => speaker?.name,
             )}
             updatePostData={(value) =>
               updatePostDataBasedOnKeyValue("eventModerators", value)
@@ -634,7 +621,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
             isEditModeOn={isEditModeOn}
             tags={tags?.filter((tag) => tag?.tagType === "person")}
             selectedValues={postData.eventSpeakers?.map(
-              (speaker: any) => speaker?.name
+              (speaker: any) => speaker?.name,
             )}
             updatePostData={(value) =>
               updatePostDataBasedOnKeyValue("eventSpeakers", value)
@@ -672,7 +659,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         isEditModeOn={isEditModeOn}
         tags={tags?.filter((tag) => tag?.tagType === "foresight method")}
         selectedValues={postData.foreSightMethods?.map(
-          (method: any) => method?.name
+          (method: any) => method?.name,
         )}
         updatePostData={(value) =>
           updatePostDataBasedOnKeyValue("foreSightMethods", value)
@@ -717,7 +704,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         isEditModeOn={isEditModeOn}
         tags={tags?.filter((tag) => tag?.tagType === "organisation")}
         selectedValues={postData.organisation?.map(
-          (organisation: any) => organisation?.name
+          (organisation: any) => organisation?.name,
         )}
         updatePostData={(value) =>
           updatePostDataBasedOnKeyValue("organisation", value)

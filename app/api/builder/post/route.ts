@@ -9,6 +9,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { RedisCacheService } from "@app/services/redisCache";
 import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
+import { transformBuilderPostToWixFormat } from "@app/utils/builderPostUtils";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -67,6 +68,7 @@ export async function POST(request: NextRequest) {
       id: result.id,
       slug: result.data?.slug,
     });
+    console.log("debug111->result", result.data.pageTypes);
 
     // Always fetch the page again with enriched references before caching
     if (result.id) {
@@ -78,8 +80,16 @@ export async function POST(request: NextRequest) {
           query: { id: result.id },
         });
 
-        if (enrichedPost) {
-          result = enrichedPost;
+        const transformedEnrichedPost =
+          transformBuilderPostToWixFormat(enrichedPost);
+
+        console.log(
+          "debug111->transformedEnrichedPost",
+          transformedEnrichedPost?.data?.pageTypes,
+        );
+
+        if (transformedEnrichedPost) {
+          result = transformedEnrichedPost;
           console.log("[Builder.io API] Successfully enriched post references");
         } else {
           console.warn(

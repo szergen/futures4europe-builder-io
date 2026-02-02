@@ -11,6 +11,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { RedisCacheService } from "@app/services/redisCache";
 import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
+import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -80,8 +81,11 @@ export async function POST(request: NextRequest) {
           query: { id: result.id },
         });
 
-        if (enrichedPage) {
-          result = enrichedPage;
+        const transformedEnrichedPage =
+          transformBuilderInfoPageToWixFormat(enrichedPage);
+
+        if (transformedEnrichedPage) {
+          result = transformedEnrichedPage;
           console.log("[Builder.io API] Successfully enriched page references");
         } else {
           console.warn(
