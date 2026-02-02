@@ -223,8 +223,28 @@ export default function DashboardProjects() {
                       .filter(
                         (infoPage) =>
                           infoPage?.data?.pageTypes[0]?.pageTypeItem?.value
-                            ?.name === "organisation info",
+                            ?.name === "organisation info" ||
+                          infoPage?.data?.pageTypes[0]?.name ===
+                            "organisation info",
                       )
+                      .sort((a, b) => {
+                        // Get createdDate
+                        const getDate = (item: any) => {
+                          const createdDate =
+                            item?.data?.createdDate ||
+                            item?._createdDate?.$date ||
+                            item?._createdDate;
+                          return createdDate
+                            ? new Date(createdDate).getTime()
+                            : 0;
+                        };
+
+                        const aDate = getDate(a);
+                        const bDate = getDate(b);
+
+                        // Sort by date descending (newest first)
+                        return bDate - aDate;
+                      })
                       .map((infoPage, index) => (
                         // console.log("Organ", infoPage),
                         <div

@@ -196,9 +196,44 @@ export default function DashboardProjects() {
                       .filter(
                         (postPage) =>
                           postPage?.data?.pageTypes[0]?.pageTypeItem?.value
-                            ?.name === "project result",
+                            ?.name === "project result" ||
+                          postPage?.data?.pageTypes[0]?.name ===
+                            "project result",
                         "project result",
                       )
+                      .sort((a, b) => {
+                        // Get projectResultPublicationDate or fallback to _createdDate
+                        const getDate = (item: any) => {
+                          const pubDate =
+                            item?.data?.projectResultPublicationDate;
+                          if (pubDate) {
+                            return typeof pubDate === "number"
+                              ? pubDate
+                              : new Date(pubDate).getTime();
+                          }
+                          const createdDate =
+                            item?._createdDate?.$date || item?._createdDate;
+                          return createdDate
+                            ? new Date(createdDate).getTime()
+                            : 0;
+                        };
+
+                        const aDate = getDate(a);
+                        const bDate = getDate(b);
+
+                        // Items with publication dates come first
+                        const aHasPubDate =
+                          !!a?.data?.projectResultPublicationDate;
+                        const bHasPubDate =
+                          !!b?.data?.projectResultPublicationDate;
+
+                        if (aHasPubDate !== bHasPubDate) {
+                          return aHasPubDate ? -1 : 1;
+                        }
+
+                        // Sort by date descending (newest first)
+                        return bDate - aDate;
+                      })
                       .map((postPage, index) => (
                         <div
                           key={postPage?.data?.title + index}

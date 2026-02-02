@@ -463,7 +463,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // console.log('infoPages', infoPage);
       if (
         !!infoPage?.data?.pageOwner?.find(
-          (owner: any) => owner.pageOwnerItem?.id === userDetails.userTag?._id,
+          (owner: any) =>
+            owner.pageOwnerItem?.id === userDetails.userTag?._id ||
+            owner._id === userDetails.userTag?._id,
         )
       ) {
         tempExtraOwnedPages.push(infoPage);
@@ -471,11 +473,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     });
     // console.log("debug1->infoPages", infoPages);
-    console.log("debug1->tempExtraOwnedPages", tempExtraOwnedPages);
+    // console.log("debug1->tempExtraOwnedPages", tempExtraOwnedPages);
     const tempExtraPostPages = postPages?.filter((postPage) => {
       if (
         !!postPage?.data?.pageOwner?.find(
-          (owner: any) => owner.pageOwnerItem?.id === userDetails.userTag?._id,
+          (owner: any) =>
+            owner.pageOwnerItem?.id === userDetails.userTag?._id ||
+            owner._id === userDetails.userTag?._id,
         )
       ) {
         tempExtraOwnedPages.push(postPage);
