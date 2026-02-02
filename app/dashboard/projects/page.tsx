@@ -542,8 +542,39 @@ export default function DashboardProjects() {
                       .filter(
                         (infoPage) =>
                           infoPage?.data?.pageTypes[0]?.pageTypeItem?.value
-                            ?.name === "project info",
+                            ?.name === "project info" ||
+                          infoPage?.data?.pageTypes[0]?.name === "project info",
                       )
+                      .sort((a, b) => {
+                        // Get projectStartDate or fallback to _createdDate
+                        const getDate = (item: any) => {
+                          const projectStartDate = item?.data?.projectStartDate;
+                          if (projectStartDate) {
+                            return typeof projectStartDate === "number"
+                              ? projectStartDate
+                              : new Date(projectStartDate).getTime();
+                          }
+                          const createdDate =
+                            item?._createdDate?.$date || item?._createdDate;
+                          return createdDate
+                            ? new Date(createdDate).getTime()
+                            : 0;
+                        };
+
+                        const aDate = getDate(a);
+                        const bDate = getDate(b);
+
+                        // Items with project start dates come first
+                        const aHasStartDate = !!a?.data?.projectStartDate;
+                        const bHasStartDate = !!b?.data?.projectStartDate;
+
+                        if (aHasStartDate !== bHasStartDate) {
+                          return aHasStartDate ? -1 : 1;
+                        }
+
+                        // Sort by date descending (newest first)
+                        return bDate - aDate;
+                      })
                       .map((infoPage, index) => (
                         <div
                           key={infoPage.data.title + index}

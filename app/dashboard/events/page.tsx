@@ -32,7 +32,7 @@ export default function DashboardProjects() {
     tags,
     allOwnedPages,
   } = useAuth();
-  console.log("debug1->allOwnedPages", allOwnedPages);
+  // console.log("debug1->allOwnedPages", allOwnedPages);
   // console.log("debug1->ownedPostPages", ownedPostPages);
   // console.log("debug1->ownedInfoPages", ownedInfoPages);
 
@@ -100,6 +100,8 @@ export default function DashboardProjects() {
   const subNavItems = [
     { href: "/dashboard/events", text: "All Events", isActive: true },
   ];
+
+  console.log("debug111->allOwnedPages", allOwnedPages);
 
   return (
     <div
@@ -224,8 +226,45 @@ export default function DashboardProjects() {
                       .filter(
                         (postPage) =>
                           postPage?.data?.pageTypes[0]?.pageTypeItem?.value
-                            ?.name === "event",
+                            ?.name === "event" ||
+                          postPage?.data?.pageTypes[0]?.name === "event",
                       )
+                      .sort((a, b) => {
+                        // Get eventStartDate or fallback to _createdDate
+                        const getDate = (item: any) => {
+                          const eventDate = item?.data?.eventStartDate;
+                          if (eventDate) {
+                            return typeof eventDate === "number"
+                              ? eventDate
+                              : new Date(eventDate).getTime();
+                          }
+                          const createdDate =
+                            item?._createdDate?.$date || item?._createdDate;
+                          return createdDate
+                            ? new Date(createdDate).getTime()
+                            : 0;
+                        };
+
+                        const aDate = getDate(a);
+                        const bDate = getDate(b);
+                        const today = new Date().getTime();
+
+                        const aIsCurrentOrFuture = aDate >= today;
+                        const bIsCurrentOrFuture = bDate >= today;
+
+                        // Prioritize current and future events
+                        if (aIsCurrentOrFuture && !bIsCurrentOrFuture)
+                          return -1;
+                        if (!aIsCurrentOrFuture && bIsCurrentOrFuture) return 1;
+
+                        // For current/future events, sort from nearest to furthest
+                        if (aIsCurrentOrFuture && bIsCurrentOrFuture) {
+                          return aDate - bDate;
+                        }
+
+                        // For past events, sort from most recent to oldest
+                        return bDate - aDate;
+                      })
                       .map((postPage, index) => (
                         <div
                           key={postPage?.data?.title + index}

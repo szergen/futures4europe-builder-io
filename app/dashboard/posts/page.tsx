@@ -219,8 +219,33 @@ export default function DashboardProjects() {
                       .filter(
                         (postPage) =>
                           postPage?.data?.pageTypes[0]?.pageTypeItem?.value
-                            ?.name === "post",
+                            ?.name === "post" ||
+                          postPage?.data?.pageTypes[0]?.name === "post",
                       )
+                      .sort((a, b) => {
+                        // Get lastUpdated or fallback to createdDate
+                        const getDate = (item: any) => {
+                          const lastUpdated = item?.data?.lastUpdated;
+                          if (lastUpdated) {
+                            return typeof lastUpdated === "number"
+                              ? lastUpdated
+                              : new Date(lastUpdated).getTime();
+                          }
+                          const createdDate =
+                            item?.data?.createdDate ||
+                            item?._createdDate?.$date ||
+                            item?._createdDate;
+                          return createdDate
+                            ? new Date(createdDate).getTime()
+                            : 0;
+                        };
+
+                        const aDate = getDate(a);
+                        const bDate = getDate(b);
+
+                        // Sort by date descending (newest first)
+                        return bDate - aDate;
+                      })
                       .map((postPage, index) => (
                         <div
                           key={postPage?.data?.title + index}

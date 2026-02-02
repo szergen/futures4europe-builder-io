@@ -312,7 +312,7 @@ const Header = () => {
             infoPages.map((item) => item.data),
           )?.length ||
           decidePageTypesForMiniPages(
-            "person",
+            "organisation",
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data),
           )?.length ||
