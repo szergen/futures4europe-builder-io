@@ -3,15 +3,24 @@ import { NextRequest, NextResponse } from "next/server";
 const BUILDER_UPLOAD_API_URL = "https://builder.io/api/v1/upload";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
 
+// Increase body size limit to handle larger file uploads (e.g., PDFs)
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "30mb", // Allow up to 10MB uploads
+    },
+  },
+};
+
 export const POST = async (req: NextRequest) => {
   try {
     if (!BUILDER_PRIVATE_API_KEY) {
       console.error(
-        "[Builder.io Upload API] BUILDER_PRIVATE_API_KEY not configured"
+        "[Builder.io Upload API] BUILDER_PRIVATE_API_KEY not configured",
       );
       return NextResponse.json(
         { message: "Builder.io API key not configured" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -25,7 +34,7 @@ export const POST = async (req: NextRequest) => {
     if (!file) {
       return NextResponse.json(
         { message: "No file provided" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -71,7 +80,7 @@ export const POST = async (req: NextRequest) => {
       });
       return NextResponse.json(
         { message: `Upload failed: ${response.statusText}`, error: errorText },
-        { status: response.status }
+        { status: response.status },
       );
     }
 
@@ -83,7 +92,7 @@ export const POST = async (req: NextRequest) => {
     console.error("[Builder.io Upload API] Error:", error);
     return NextResponse.json(
       { message: "Internal server error", error: String(error) },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };
@@ -91,6 +100,6 @@ export const POST = async (req: NextRequest) => {
 export const GET = () => {
   return NextResponse.json(
     { message: "Method not allowed for Builder.io upload" },
-    { status: 405 }
+    { status: 405 },
   );
 };
