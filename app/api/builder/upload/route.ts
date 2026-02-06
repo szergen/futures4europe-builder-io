@@ -3,15 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 const BUILDER_UPLOAD_API_URL = "https://builder.io/api/v1/upload";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
 
-// Increase body size limit to handle larger file uploads (e.g., PDFs)
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: "30mb", // Allow up to 10MB uploads
-    },
-  },
-};
-
 export const POST = async (req: NextRequest) => {
   try {
     if (!BUILDER_PRIVATE_API_KEY) {

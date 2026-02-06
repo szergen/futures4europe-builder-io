@@ -1,5 +1,8 @@
 var nextConfig = {
   env: {},
+  experimental: {
+    bodySizeLimit: "40mb", // Increase body size limit for file uploads
+  },
   webpack: (config, { dev }) => {
     // scheduleCronJobs();
 
