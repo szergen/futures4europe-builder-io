@@ -33,21 +33,18 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
-    // Check file size (Vercel has limits depending on plan)
+    // Check file size (Vercel Pro plan supports larger uploads)
     const fileSizeMB = file.size / (1024 * 1024);
     console.log(
       `[Builder.io Upload API] File size: ${fileSizeMB.toFixed(2)}MB`,
     );
 
-    if (fileSizeMB > 4) {
+    if (fileSizeMB > 40) {
       return NextResponse.json(
         {
-          message:
-            "File too large for direct upload. Please use the direct upload method.",
+          message: "File too large. Maximum file size is 40MB.",
           fileSize: fileSizeMB,
-          maxSize: 4,
-          suggestion:
-            "Use the /api/builder/upload-config endpoint for larger files",
+          maxSize: 40,
         },
         { status: 413 },
       );

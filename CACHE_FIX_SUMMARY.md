@@ -76,9 +76,18 @@ After deploying this fix:
 
 ### Also Fixed: File Upload Size Limit
 
-- Updated `vercel.json` to allow 40MB uploads (was 10MB)
-- Added runtime configuration for Node.js environment
+- Removed invalid `api` property from `vercel.json` (was causing build error)
+- Configured `experimental.bodySizeLimit: '40mb'` in `next.config.js` for Pro plan
+- Updated upload route to allow up to 40MB files (was 4MB)
+- Added runtime configuration for Node.js environment with 120s max duration
 - Added file size checking with helpful error messages
+
+**For Vercel Pro Plan:**
+The body size limit is configured in `next.config.js`. If you still experience issues with large files:
+
+1. Go to your Vercel Project Settings
+2. Navigate to Functions → General
+3. Ensure "Maximum Request Body Size" is set appropriately
 
 ## Deployment Notes
 
