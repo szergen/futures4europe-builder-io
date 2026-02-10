@@ -1,7 +1,11 @@
 var nextConfig = {
   env: {},
   experimental: {
-    bodySizeLimit: "40mb", // Increase body size limit for file uploads
+    // Note: For Vercel deployments, you MUST also configure
+    // "Maximum Request Body Size" in Project Settings → Functions
+    serverActions: {
+      bodySizeLimit: "50mb",
+    },
   },
   webpack: (config, { dev }) => {
     // scheduleCronJobs();
