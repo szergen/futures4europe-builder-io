@@ -19,6 +19,10 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
+    console.log(
+      "[Builder.io Upload API] Starting upload request. Note: If running on Vercel, ensure 'Maximum Request Body Size' is configured in Project Settings → Functions (should be 50MB+)",
+    );
+
     // Get the form data from the request
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
