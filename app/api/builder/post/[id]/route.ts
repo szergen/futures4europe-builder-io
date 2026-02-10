@@ -8,6 +8,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { RedisCacheService } from "@app/services/redisCache";
 import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
 
@@ -124,6 +125,17 @@ export async function PUT(
       await RedisCacheService.invalidateCache(ALL_POSTS_CACHE_KEY);
     }
 
+    // Revalidate Next.js cache for the post page
+    if (result.data?.slug) {
+      const cleanSlug = result.data.slug.replace(/^\/post\//, "").replace(/^\/post-page\//, "");
+      console.log(`[Builder.io API] Revalidating post page: /post/${cleanSlug}`);
+      revalidatePath(`/post/${cleanSlug}`);
+      revalidatePath(`/post/${cleanSlug}`, 'page');
+      // Also revalidate the posts list pages
+      revalidatePath('/pages/post');
+      revalidatePath('/dashboard/posts');
+    }
+
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error("[Builder.io API] Error updating post:", error);
@@ -190,6 +202,11 @@ export async function DELETE(
     // Invalidate both post caches so the deletion is reflected
     await RedisCacheService.invalidateCache(ALL_POSTS_CACHE_KEY);
     console.log("[Builder.io API] Post caches invalidated");
+
+    // Revalidate Next.js pages
+    revalidatePath('/pages/post');
+    revalidatePath('/dashboard/posts');
+    console.log("[Builder.io API] Post pages revalidated");
 
     return NextResponse.json(
       { success: true, deleted: postId },
