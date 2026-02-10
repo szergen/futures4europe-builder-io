@@ -8,6 +8,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { RedisCacheService } from "@app/services/redisCache";
 import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
 
@@ -126,6 +127,26 @@ export async function PUT(
       await RedisCacheService.invalidateCache(ALL_INFO_PAGES_CACHE_KEY);
     }
 
+    // Revalidate Next.js cache for info pages
+    if (result.data?.slug) {
+      const cleanSlug = result.data.slug.replace(/^\//, "");
+      console.log(`[Builder.io API] Revalidating info page: /${cleanSlug}`);
+      revalidatePath(`/${cleanSlug}`);
+      revalidatePath(`/${cleanSlug}`, "page");
+
+      // Also revalidate based on page type
+      const pageType = result.data?.pageType;
+      if (pageType === "project") {
+        revalidatePath(`/project/${cleanSlug}`);
+        revalidatePath("/dashboard/projects");
+      } else if (pageType === "person") {
+        revalidatePath(`/person/${cleanSlug}`);
+      } else if (pageType === "organisation") {
+        revalidatePath(`/organisation/${cleanSlug}`);
+        revalidatePath("/dashboard/organisations");
+      }
+    }
+
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error("[Builder.io API] Error updating info-page:", error);
@@ -192,6 +213,11 @@ export async function DELETE(
     // Invalidate the info pages cache so the deletion is reflected
     await RedisCacheService.invalidateCache(ALL_INFO_PAGES_CACHE_KEY);
     console.log("[Builder.io API] Info pages cache invalidated");
+
+    // Revalidate Next.js pages
+    revalidatePath("/dashboard/projects");
+    revalidatePath("/dashboard/organisations");
+    console.log("[Builder.io API] Info pages revalidated");
 
     return NextResponse.json(
       { success: true, deleted: pageId },

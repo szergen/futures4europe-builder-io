@@ -9,6 +9,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { RedisCacheService } from "@app/services/redisCache";
 import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
 import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
@@ -117,6 +118,26 @@ export async function POST(request: NextRequest) {
       );
       // Fallback: invalidate cache
       await RedisCacheService.invalidateCache(INFO_PAGES_CACHE_KEY);
+    }
+
+    // Revalidate Next.js cache for info pages
+    if (result.data?.slug) {
+      const cleanSlug = result.data.slug.replace(/^\//, "");
+      console.log(`[Builder.io API] Revalidating new info page: /${cleanSlug}`);
+      revalidatePath(`/${cleanSlug}`);
+      revalidatePath(`/${cleanSlug}`, "page");
+
+      // Also revalidate based on page type
+      const pageType = result.data?.pageType;
+      if (pageType === "project") {
+        revalidatePath(`/project/${cleanSlug}`);
+        revalidatePath("/dashboard/projects");
+      } else if (pageType === "person") {
+        revalidatePath(`/person/${cleanSlug}`);
+      } else if (pageType === "organisation") {
+        revalidatePath(`/organisation/${cleanSlug}`);
+        revalidatePath("/dashboard/organisations");
+      }
     }
 
     return NextResponse.json(result, { status: 200 });

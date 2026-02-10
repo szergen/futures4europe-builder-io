@@ -3,6 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 const BUILDER_UPLOAD_API_URL = "https://builder.io/api/v1/upload";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
 
+// Configure route segment for larger file uploads
+export const runtime = "nodejs"; // Ensure we use Node.js runtime, not Edge
+export const maxDuration = 120; // Maximum function execution time in seconds
+
 export const POST = async (req: NextRequest) => {
   try {
     if (!BUILDER_PRIVATE_API_KEY) {
@@ -26,6 +30,23 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json(
         { message: "No file provided" },
         { status: 400 },
+      );
+    }
+
+    // Check file size (Vercel Pro plan supports larger uploads)
+    const fileSizeMB = file.size / (1024 * 1024);
+    console.log(
+      `[Builder.io Upload API] File size: ${fileSizeMB.toFixed(2)}MB`,
+    );
+
+    if (fileSizeMB > 40) {
+      return NextResponse.json(
+        {
+          message: "File too large. Maximum file size is 40MB.",
+          fileSize: fileSizeMB,
+          maxSize: 40,
+        },
+        { status: 413 },
       );
     }
 

@@ -7,6 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { RedisCacheService } from "@app/services/redisCache";
 import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
 import { transformBuilderPostToWixFormat } from "@app/utils/builderPostUtils";
@@ -118,6 +119,21 @@ export async function POST(request: NextRequest) {
       // Don't fail the request if cache update fails, just invalidate
       await RedisCacheService.invalidateCache(POSTS_CACHE_KEY);
     }
+
+    // Revalidate Next.js cache for post pages
+    if (result.data?.slug) {
+      const cleanSlug = result.data.slug
+        .replace(/^\/post\//, "")
+        .replace(/^\/post-page\//, "");
+      console.log(
+        `[Builder.io API] Revalidating new post page: /post/${cleanSlug}`,
+      );
+      revalidatePath(`/post/${cleanSlug}`);
+      revalidatePath(`/post/${cleanSlug}`, "page");
+    }
+    // Revalidate list pages
+    revalidatePath("/pages/post");
+    revalidatePath("/dashboard/posts");
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
