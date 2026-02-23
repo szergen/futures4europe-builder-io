@@ -3,7 +3,11 @@ import { Button, Label, Modal, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import Image from "next/image";
 import { FaPlay } from "react-icons/fa";
-import { getYouTubeThumbnail } from "@app/utils/page.utils";
+import {
+  getYouTubeThumbnail,
+  extractPlaylistId,
+  fetchYouTubePlaylistThumbnail,
+} from "@app/utils/page.utils";
 import style from "./ProjectResultVideoImage.module.css";
 
 type ProjectResultVideoImageProps = {
@@ -17,6 +21,7 @@ const ProjectResultVideoImage: React.FC<ProjectResultVideoImageProps> = ({
 }) => {
   const [imageURL, setImageURL] = useState<string | null>(currentImage || "");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isFetchingThumbnail, setIsFetchingThumbnail] = useState(false);
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -30,24 +35,40 @@ const ProjectResultVideoImage: React.FC<ProjectResultVideoImageProps> = ({
     setErrorMessage("");
   };
 
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Do something with the input value
-    console.log(inputValue);
+
     const ytbImage = getYouTubeThumbnail(inputValue);
     if (ytbImage) {
       setImageURL(ytbImage);
-      updatePostDataForVideoImage &&
-        updatePostDataForVideoImage({
-          thumbnail: ytbImage,
+      updatePostDataForVideoImage?.({ thumbnail: ytbImage, url: inputValue });
+      setIsPopupVisible(false);
+      return;
+    }
+
+    const playlistId = extractPlaylistId(inputValue);
+    if (playlistId) {
+      setIsFetchingThumbnail(true);
+      const playlistThumbnail = await fetchYouTubePlaylistThumbnail(playlistId);
+      setIsFetchingThumbnail(false);
+      if (playlistThumbnail) {
+        setImageURL(playlistThumbnail);
+        updatePostDataForVideoImage?.({
+          thumbnail: playlistThumbnail,
           url: inputValue,
         });
-      setIsPopupVisible(false);
-    } else {
-      setErrorMessage(
-        "Invalid YouTube link. Please enter a valid video or playlist URL.",
-      );
+        setIsPopupVisible(false);
+      } else {
+        setErrorMessage(
+          "Could not load playlist thumbnail. Please check the URL and try again.",
+        );
+      }
+      return;
     }
+
+    setErrorMessage(
+      "Invalid YouTube link. Please enter a valid video or playlist URL.",
+    );
   };
 
   return (
@@ -127,7 +148,16 @@ const ProjectResultVideoImage: React.FC<ProjectResultVideoImageProps> = ({
                   <div className="text-red-500 mt-2">{errorMessage}</div>
                 )}
               </div>
-              <Button type="submit">Submit</Button>
+              <Button type="submit" disabled={isFetchingThumbnail}>
+                {isFetchingThumbnail ? (
+                  <>
+                    <Spinner size="sm" className="mr-2" />
+                    Loading thumbnail…
+                  </>
+                ) : (
+                  "Submit"
+                )}
+              </Button>
             </form>
           </Modal.Body>
         </Modal>
