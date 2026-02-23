@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { RedisCacheService } from "@app/services/redisCache";
 import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
+import { transformBuilderPostToWixFormat } from "@app/utils/builderPostUtils";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -87,8 +88,11 @@ export async function PUT(
           query: { id: result.id },
         });
 
-        if (enrichedPost) {
-          result = enrichedPost;
+        const transformedEnrichedPost =
+          transformBuilderPostToWixFormat(enrichedPost);
+
+        if (transformedEnrichedPost) {
+          result = transformedEnrichedPost;
           console.log("[Builder.io API] Successfully enriched post references");
         } else {
           console.warn(
