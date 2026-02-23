@@ -1,10 +1,10 @@
-import classNames from 'classnames';
-import { Button, Label, Modal, Spinner, TextInput } from 'flowbite-react';
-import { useState } from 'react';
-import Image from 'next/image';
-import { FaPlay } from 'react-icons/fa';
-import { getYouTubeThumbnail } from '@app/utils/page.utils';
-import style from './ProjectResultVideoImage.module.css';
+import classNames from "classnames";
+import { Button, Label, Modal, Spinner, TextInput } from "flowbite-react";
+import { useState } from "react";
+import Image from "next/image";
+import { FaPlay } from "react-icons/fa";
+import { getYouTubeThumbnail } from "@app/utils/page.utils";
+import style from "./ProjectResultVideoImage.module.css";
 
 type ProjectResultVideoImageProps = {
   currentImage?: string;
@@ -15,11 +15,11 @@ const ProjectResultVideoImage: React.FC<ProjectResultVideoImageProps> = ({
   currentImage,
   updatePostDataForVideoImage,
 }) => {
-  const [imageURL, setImageURL] = useState<string | null>(currentImage || '');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [imageURL, setImageURL] = useState<string | null>(currentImage || "");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
 
   const handleLabelClick = () => {
     setIsPopupVisible(true);
@@ -27,7 +27,7 @@ const ProjectResultVideoImage: React.FC<ProjectResultVideoImageProps> = ({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
-    setErrorMessage('');
+    setErrorMessage("");
   };
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +44,9 @@ const ProjectResultVideoImage: React.FC<ProjectResultVideoImageProps> = ({
         });
       setIsPopupVisible(false);
     } else {
-      setErrorMessage('Invalid youtube link');
+      setErrorMessage(
+        "Invalid YouTube link. Please enter a valid video or playlist URL.",
+      );
     }
   };
 
@@ -52,25 +54,25 @@ const ProjectResultVideoImage: React.FC<ProjectResultVideoImageProps> = ({
     <div className="flex flex-wrap items-center justify-center w-64">
       <Label
         className={classNames(
-          'relative flex flex-col h-60 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600',
-          imageURL && 'h-12 flex-row'
+          "relative flex flex-col h-60 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600",
+          imageURL && "h-12 flex-row",
         )}
         onClick={handleLabelClick}
       >
         <div
           className={classNames(
-            'flex items-center   border-dashed border-gray-300 dark:border-gray-600',
-            !imageURL && 'border-b-2 mb-4 p-4',
-            imageURL && 'border-r-2 mb-0 mx-1 px-1'
+            "flex items-center   border-dashed border-gray-300 dark:border-gray-600",
+            !imageURL && "border-b-2 mb-4 p-4",
+            imageURL && "border-r-2 mb-0 mx-1 px-1",
           )}
         >
-          {!imageURL || imageURL === ' ' ? 'Add URL' : 'Replace URL'}
+          {!imageURL || imageURL === " " ? "Add URL" : "Replace URL"}
         </div>
         <div
           className={classNames(
-            'text-sm text-gray-500 dark:text-gray-400 flex items-center ',
-            !imageURL && 'flex-col p-4',
-            imageURL && 'flex-row p-0'
+            "text-sm text-gray-500 dark:text-gray-400 flex items-center ",
+            !imageURL && "flex-col p-4",
+            imageURL && "flex-row p-0",
           )}
         >
           <svg
@@ -91,7 +93,7 @@ const ProjectResultVideoImage: React.FC<ProjectResultVideoImageProps> = ({
           <div>Click to add a video url</div>
         </div>
       </Label>
-      {imageURL && imageURL !== '' && imageURL !== ' ' && (
+      {imageURL && imageURL !== "" && imageURL !== " " && (
         <div className="relative">
           <Image
             src={imageURL}
@@ -107,17 +109,19 @@ const ProjectResultVideoImage: React.FC<ProjectResultVideoImageProps> = ({
       )}
       {isPopupVisible && (
         <Modal show={isPopupVisible} onClose={() => setIsPopupVisible(false)}>
-          <Modal.Header>Enter a youtube link</Modal.Header>
+          <Modal.Header>Enter a YouTube link</Modal.Header>
           <Modal.Body>
             <form onSubmit={handleFormSubmit}>
               <div className="mb-4">
-                <Label htmlFor="videoUrl">Youtube URL</Label>
+                <Label htmlFor="videoUrl">
+                  YouTube URL (Video or Playlist)
+                </Label>
                 <TextInput
                   id="videoUrl"
                   value={inputValue}
                   onChange={handleInputChange}
                   required
-                  placeholder="https://www.youtube.com/watch?v=..."
+                  placeholder="https://www.youtube.com/watch?v=... or https://www.youtube.com/playlist?list=..."
                 />
                 {errorMessage && (
                   <div className="text-red-500 mt-2">{errorMessage}</div>
