@@ -11,8 +11,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { RedisCacheService } from "@app/services/redisCache";
-import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
-import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
+import { getAllBuilderContent } from "@app/shared-components/Builder/builderUtils";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -72,62 +71,69 @@ export async function POST(request: NextRequest) {
       slug: result.data?.slug,
     });
 
-    // Always fetch the page again with enriched references before caching
+    // Fetch the page again with enriched references before caching.
+    // getAllBuilderContent uses builder.getAll with noTargeting: true, which
+    // reliably finds the page regardless of publish state or targeting rules.
+    // getBuilderContent (builder.get) was used previously but can return null
+    // for drafts or pages with no matching targeting attributes.
+    let enrichedPage: any = null;
     if (result.id) {
       console.log(
         "[Builder.io API] Fetching enriched version of created page...",
       );
       try {
-        const enrichedPage = await getBuilderContent("info-page", {
+        const enrichedPages = await getAllBuilderContent("info-page", {
           query: { id: result.id },
+          limit: 1,
         });
+        enrichedPage = enrichedPages?.[0] ?? null;
 
-        const transformedEnrichedPage =
-          transformBuilderInfoPageToWixFormat(enrichedPage);
-
-        if (transformedEnrichedPage) {
-          result = transformedEnrichedPage;
+        if (enrichedPage) {
           console.log("[Builder.io API] Successfully enriched page references");
         } else {
           console.warn(
-            "[Builder.io API] Could not fetch enriched page, using original",
+            "[Builder.io API] Could not fetch enriched page, cache will be invalidated",
           );
         }
       } catch (enrichError) {
         console.warn("[Builder.io API] Error enriching page:", enrichError);
-        // Continue with non-enriched result
       }
     }
 
-    // Update Redis Cache
+    // Update Redis Cache with the raw enriched page (consistent format with getAllBuilderInfoPages).
+    // If enrichment failed, invalidate instead of writing un-enriched data.
     try {
-      const cached = await RedisCacheService.getFromCache(INFO_PAGES_CACHE_KEY);
-      if (cached && Array.isArray(cached)) {
-        cached.push(result);
-        await RedisCacheService.saveToCache(
-          INFO_PAGES_CACHE_KEY,
-          cached,
-          CACHE_TTL,
-        );
-        console.log("[Builder.io API] Added enriched info-page to Redis cache");
+      if (enrichedPage) {
+        const cached = await RedisCacheService.getFromCache(INFO_PAGES_CACHE_KEY);
+        if (cached && Array.isArray(cached)) {
+          cached.push(enrichedPage);
+          await RedisCacheService.saveToCache(
+            INFO_PAGES_CACHE_KEY,
+            cached,
+            CACHE_TTL,
+          );
+          console.log("[Builder.io API] Added enriched info-page to Redis cache");
+        }
+      } else {
+        await RedisCacheService.invalidateCache(INFO_PAGES_CACHE_KEY);
+        console.log("[Builder.io API] Invalidated Redis cache (enrichment unavailable)");
       }
     } catch (cacheError) {
       console.warn(
         "[Builder.io API] Failed to update Redis cache:",
         cacheError,
       );
-      // Fallback: invalidate cache
       await RedisCacheService.invalidateCache(INFO_PAGES_CACHE_KEY);
     }
 
-    // Revalidate Next.js cache for info pages
+    // Revalidate Next.js cache for info pages.
+    // pageType is a plain string field so it is present on the Write API response.
     if (result.data?.slug) {
       const cleanSlug = result.data.slug.replace(/^\//, "");
       console.log(`[Builder.io API] Revalidating new info page: /${cleanSlug}`);
       revalidatePath(`/${cleanSlug}`);
       revalidatePath(`/${cleanSlug}`, "page");
 
-      // Also revalidate based on page type
       const pageType = result.data?.pageType;
       if (pageType === "project") {
         revalidatePath(`/project/${cleanSlug}`);
