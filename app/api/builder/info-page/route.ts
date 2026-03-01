@@ -38,6 +38,67 @@ export async function POST(request: NextRequest) {
       title: payload.data?.title,
     });
 
+    // Guard: prevent duplicate person info pages.
+    // Person slugs include a unique hash (e.g. /person/john-doe-abc123) so slug
+    // uniqueness cannot be relied upon. Instead we check by title (the person's
+    // name, which always comes from the tag) using two complementary checks:
+    //   1. A live Builder.io query by title — catches duplicates even when the
+    //      Redis cache is cold or stale.
+    //   2. A Redis cache scan by title — fast secondary check with case-insensitive
+    //      matching in case the live query misses a recently-cached entry.
+    if (payload.data?.slug?.startsWith("/person/") && payload.data?.title) {
+      const incomingTitle = payload.data.title.trim();
+      const incomingTitleLower = incomingTitle.toLowerCase();
+      let duplicate: any = null;
+
+      try {
+        // 1. Live Builder.io query (noTargeting: true via getAllBuilderContent)
+        const existingByTitle = await getAllBuilderContent("info-page", {
+          query: { "data.title": incomingTitle },
+          limit: 1,
+        });
+        duplicate = existingByTitle?.find((p: any) =>
+          p.data?.slug?.startsWith("/person/")
+        ) ?? null;
+
+        // 2. Redis cache scan (case-insensitive fallback)
+        if (!duplicate) {
+          const cached = await RedisCacheService.getFromCache(
+            INFO_PAGES_CACHE_KEY,
+          );
+          if (cached && Array.isArray(cached)) {
+            duplicate =
+              cached.find(
+                (p: any) =>
+                  p.data?.slug?.startsWith("/person/") &&
+                  p.data?.title?.trim().toLowerCase() === incomingTitleLower,
+              ) ?? null;
+          }
+        }
+      } catch (guardError) {
+        // If the duplicate check itself fails, log and proceed rather than
+        // blocking a legitimate create.
+        console.warn(
+          "[Builder.io API] Duplicate person check failed, proceeding:",
+          guardError,
+        );
+      }
+
+      if (duplicate) {
+        console.warn(
+          "[Builder.io API] Duplicate person page blocked:",
+          incomingTitle,
+        );
+        return NextResponse.json(
+          {
+            error: `A person page already exists for "${incomingTitle}". Each person can only have one page.`,
+            duplicateId: duplicate.id,
+          },
+          { status: 409 },
+        );
+      }
+    }
+
     // Make request to Builder.io Write API
     const response = await fetch(`${BUILDER_API_URL}/info-page`, {
       method: "POST",

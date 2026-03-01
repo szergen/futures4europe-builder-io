@@ -234,6 +234,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
 
   // #region handle updating data to server
   const [isSaveInProgress, setIsSaveInProgress] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const updateDataToServer = async () => {
     console.log("[Builder.io] Updating person page:", person?.id);
@@ -593,6 +594,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
   // #region for when the page is newly created
   const createNewPersonPage = async () => {
     console.log("[Builder.io] Creating new person page...");
+    setSaveError(null);
     setIsSaveInProgress(true);
 
     try {
@@ -833,8 +835,9 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
 
       console.log("[Builder.io] Person page creation completed successfully");
       router.push(newSlug);
-    } catch (error) {
+    } catch (error: any) {
       console.error("[Builder.io] Error creating person page:", error);
+      setSaveError(error?.message || "An error occurred while creating the page.");
     }
 
     setIsSaveInProgress(false);
@@ -1054,6 +1057,18 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       {/* <FilesComponent files={person.files} /> */}
       {/* External Links */}
       {/* <ExternalLinksComponent links={person.links} /> */}
+      <Modal
+        show={!!saveError}
+        size="md"
+        popup
+        dismissible
+        onClose={() => setSaveError(null)}
+      >
+        <Modal.Header>Unable to create page</Modal.Header>
+        <Modal.Body>
+          <p className="text-sm text-gray-700">{saveError}</p>
+        </Modal.Body>
+      </Modal>
       <Modal show={isSaveInProgress} size="md" popup dismissible={false}>
         <Modal.Header className="opacity-0" />
         <Modal.Body>
