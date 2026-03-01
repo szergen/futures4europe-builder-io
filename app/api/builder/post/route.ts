@@ -9,8 +9,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { RedisCacheService } from "@app/services/redisCache";
-import { getBuilderContent } from "@app/shared-components/Builder/builderUtils";
-import { transformBuilderPostToWixFormat } from "@app/utils/builderPostUtils";
+import { getAllBuilderContent } from "@app/shared-components/Builder/builderUtils";
+import {
+  transformBuilderPostToWixFormat,
+} from "@app/utils/builderPostUtils";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -69,54 +71,54 @@ export async function POST(request: NextRequest) {
       id: result.id,
       slug: result.data?.slug,
     });
-    console.log("debug111->result", result.data.pageTypes);
-
-    // Always fetch the page again with enriched references before caching
+    // Fetch the post again with enriched references before caching.
+    // getAllBuilderContent uses builder.getAll with noTargeting: true, which
+    // reliably finds the post regardless of publish state or targeting rules.
+    // getBuilderContent (builder.get) was used previously but can return null
+    // for drafts or posts with no matching targeting attributes.
+    let enrichedPost: any = null;
     if (result.id) {
       console.log(
         "[Builder.io API] Fetching enriched version of created post...",
       );
       try {
-        const enrichedPost = await getBuilderContent("post-page", {
+        const enrichedPosts = await getAllBuilderContent("post-page", {
           query: { id: result.id },
+          limit: 1,
         });
+        enrichedPost = enrichedPosts?.[0] ?? null;
 
-        const transformedEnrichedPost =
-          transformBuilderPostToWixFormat(enrichedPost);
-
-        console.log(
-          "debug111->transformedEnrichedPost",
-          transformedEnrichedPost?.data?.pageTypes,
-        );
-
-        if (transformedEnrichedPost) {
-          result = transformedEnrichedPost;
+        if (enrichedPost) {
           console.log("[Builder.io API] Successfully enriched post references");
         } else {
           console.warn(
-            "[Builder.io API] Could not fetch enriched post, using original",
+            "[Builder.io API] Could not fetch enriched post, cache will be invalidated",
           );
         }
       } catch (enrichError) {
         console.warn("[Builder.io API] Error enriching post:", enrichError);
-        // Continue with non-enriched result
       }
     }
 
-    // Update Redis Cache with enriched result
+    // Update Redis Cache with the raw enriched post (consistent format with getAllBuilderPosts).
+    // If enrichment failed, invalidate instead of writing un-enriched data.
     try {
-      const cached = await RedisCacheService.getFromCache(POSTS_CACHE_KEY);
-      if (cached && Array.isArray(cached)) {
-        cached.push(result);
-        await RedisCacheService.saveToCache(POSTS_CACHE_KEY, cached, CACHE_TTL);
-        console.log("[Builder.io API] Added enriched post to Redis cache");
+      if (enrichedPost) {
+        const cached = await RedisCacheService.getFromCache(POSTS_CACHE_KEY);
+        if (cached && Array.isArray(cached)) {
+          cached.push(enrichedPost);
+          await RedisCacheService.saveToCache(POSTS_CACHE_KEY, cached, CACHE_TTL);
+          console.log("[Builder.io API] Added enriched post to Redis cache");
+        }
+      } else {
+        await RedisCacheService.invalidateCache(POSTS_CACHE_KEY);
+        console.log("[Builder.io API] Invalidated Redis cache (enrichment unavailable)");
       }
     } catch (cacheError) {
       console.warn(
         "[Builder.io API] Failed to update Redis cache:",
         cacheError,
       );
-      // Don't fail the request if cache update fails, just invalidate
       await RedisCacheService.invalidateCache(POSTS_CACHE_KEY);
     }
 
@@ -131,9 +133,22 @@ export async function POST(request: NextRequest) {
       revalidatePath(`/post/${cleanSlug}`);
       revalidatePath(`/post/${cleanSlug}`, "page");
     }
-    // Revalidate list pages
-    revalidatePath("/pages/post");
-    revalidatePath("/dashboard/posts");
+    // Revalidate list pages based on pageType.
+    // The Write API response (result) has un-enriched refs so pageType names are absent.
+    // Use the enriched post (which has resolved reference values) to determine the type.
+    const pageTypeName = enrichedPost
+      ? transformBuilderPostToWixFormat(enrichedPost)?.data?.pageTypes?.[0]?.name
+      : undefined;
+    if (pageTypeName === "project result") {
+      revalidatePath("/pages/project-result");
+      revalidatePath("/dashboard/project-results");
+    } else if (pageTypeName === "event") {
+      revalidatePath("/pages/event");
+      revalidatePath("/dashboard/events");
+    } else {
+      revalidatePath("/pages/post");
+      revalidatePath("/dashboard/posts");
+    }
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {

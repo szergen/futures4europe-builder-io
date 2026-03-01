@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
 import Link from "next/link";
-import { extractInfoPageTypeBasedOnTag } from "@app/utils/parse-utils";
 import classNames from "classnames";
 import NavDashboard from "@app/shared-components/Layout/NavDashboard/NavDashboard";
 import SubNavDashboard from "@app/shared-components/Layout/NavDashboard/SubNavDashboard";
@@ -257,9 +256,7 @@ export default function DashboardProjects() {
                           >
                             <Link
                               className="grow"
-                              href={`/${extractInfoPageTypeBasedOnTag(
-                                infoPage?.data?.pageTypes[0],
-                              )}/${infoPage.data.slug}`}
+                              href={`${infoPage.data.slug}`}
                             >
                               <MiniPagePost
                                 key={index}
