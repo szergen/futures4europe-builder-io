@@ -44,11 +44,16 @@ const DashboardSkeleton = () => {
   );
 };
 
+const CACHE_ADMIN_USERS = ["Radu Gheorghiu", "Bianca Dragomir", "Sergiu Ciobanasu"];
+
 export default function Dashboard() {
   const [userInfoPage, setUserInfoPage] = useState("");
   const [isPersonInfoPageReady, setIsPersonInfoPageReady] = useState(false);
   const [personInfoPageLink, setPersonInfoPageLink] = useState("");
   const [isLoadingPersonInfo, setIsLoadingPersonInfo] = useState(true);
+  const [cacheActionState, setCacheActionState] = useState<
+    "idle" | "deleting" | "warming" | "done-delete" | "done-warm" | "error"
+  >("idle");
 
   const { isLoggedIn, loading, userDetails, logout } = useAuth();
 
@@ -102,6 +107,34 @@ export default function Dashboard() {
   const handleLogOut = async () => {
     logout();
     router.push("/login");
+  };
+
+  const isCacheAdmin = CACHE_ADMIN_USERS.includes(userDetails?.userName ?? "");
+
+  const handleDeleteCache = async () => {
+    setCacheActionState("deleting");
+    try {
+      const res = await fetch("/api/invalidate-cache", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: "*" }),
+      });
+      setCacheActionState(res.ok ? "done-delete" : "error");
+    } catch {
+      setCacheActionState("error");
+    }
+    setTimeout(() => setCacheActionState("idle"), 3000);
+  };
+
+  const handleWarmCache = async () => {
+    setCacheActionState("warming");
+    try {
+      const res = await fetch("/api/warm-cache", { method: "POST" });
+      setCacheActionState(res.ok ? "done-warm" : "error");
+    } catch {
+      setCacheActionState("error");
+    }
+    setTimeout(() => setCacheActionState("idle"), 3000);
   };
 
   const subNavItems = [{ href: "/dashboard", text: "Account", isActive: true }];
@@ -224,6 +257,76 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+
+          {isCacheAdmin && (
+            <div
+              className={classNames(
+                style.dashboardBox,
+                style.dashboardBoxAddWrap,
+                "mb-10 p-8 bg-gray-50"
+              )}
+            >
+              <div className={classNames(style.dashboardBoxAlert, "flex flex-col")}>
+                <div className="flex items-center mb-4">
+                  <Typography tag="h2" className={classNames(style.headingDashboardh1)}>
+                    Cache Management
+                  </Typography>
+                </div>
+                <Typography
+                  tag="p"
+                  className={classNames(style.boxTextDashboard, "text-black-site mb-8")}
+                >
+                  Delete all Redis cache entries or warm the cache by pre-fetching all
+                  content from Builder.io.
+                </Typography>
+                <div className={classNames(style.listDashboard, "flex gap-4 flex-wrap")}>
+                  <Button
+                    size="md"
+                    color="failure"
+                    className={classNames(
+                      style.buttonAddDashboard,
+                      "border-0 focus:ring-red-300"
+                    )}
+                    pill
+                    disabled={cacheActionState === "deleting" || cacheActionState === "warming"}
+                    onClick={handleDeleteCache}
+                  >
+                    {cacheActionState === "deleting" ? (
+                      <span className="text-lg">Deleting…</span>
+                    ) : cacheActionState === "done-delete" ? (
+                      <span className="text-lg">Cache deleted ✓</span>
+                    ) : (
+                      <span className="text-lg">Delete Cache</span>
+                    )}
+                  </Button>
+                  <Button
+                    size="md"
+                    color="light"
+                    className={classNames(
+                      style.buttonAddDashboard,
+                      "border-0 hover:bg-gray-300 focus:ring-purple-300"
+                    )}
+                    pill
+                    disabled={cacheActionState === "deleting" || cacheActionState === "warming"}
+                    onClick={handleWarmCache}
+                  >
+                    {cacheActionState === "warming" ? (
+                      <span className="text-lg">Warming…</span>
+                    ) : cacheActionState === "done-warm" ? (
+                      <span className="text-lg">Cache warmed ✓</span>
+                    ) : (
+                      <span className="text-lg">Warm Up Cache</span>
+                    )}
+                  </Button>
+                  {cacheActionState === "error" && (
+                    <p className="text-sm text-red-600 self-center">
+                      Action failed — please try again.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
