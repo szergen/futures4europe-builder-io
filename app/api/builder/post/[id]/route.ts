@@ -135,7 +135,16 @@ export async function PUT(
       console.log(`[Builder.io API] Revalidating post page: /post/${cleanSlug}`);
       revalidatePath(`/post/${cleanSlug}`);
       revalidatePath(`/post/${cleanSlug}`, 'page');
-      // Also revalidate the posts list pages
+    }
+    // Revalidate list pages based on pageType
+    const pageTypeName = result.data?.pageTypes?.[0]?.name;
+    if (pageTypeName === "project result") {
+      revalidatePath('/pages/project-result');
+      revalidatePath('/dashboard/project-results');
+    } else if (pageTypeName === "event") {
+      revalidatePath('/pages/event');
+      revalidatePath('/dashboard/events');
+    } else {
       revalidatePath('/pages/post');
       revalidatePath('/dashboard/posts');
     }
@@ -207,9 +216,13 @@ export async function DELETE(
     await RedisCacheService.invalidateCache(ALL_POSTS_CACHE_KEY);
     console.log("[Builder.io API] Post caches invalidated");
 
-    // Revalidate Next.js pages
+    // Revalidate all post-type list pages (type unknown at deletion time)
     revalidatePath('/pages/post');
     revalidatePath('/dashboard/posts');
+    revalidatePath('/pages/project-result');
+    revalidatePath('/dashboard/project-results');
+    revalidatePath('/pages/event');
+    revalidatePath('/dashboard/events');
     console.log("[Builder.io API] Post pages revalidated");
 
     return NextResponse.json(

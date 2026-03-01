@@ -587,9 +587,7 @@ export default function DashboardProjects() {
                           >
                             <Link
                               className={"w-full grow"}
-                              href={`/${extractInfoPageTypeBasedOnTag(
-                                infoPage?.data?.pageTypes[0],
-                              )}/${infoPage.data.slug}`}
+                              href={`${infoPage.data.slug}`}
                             >
                               <MiniPagePost
                                 pageTypeTag={infoPage.data.pageTypes?.[0]}

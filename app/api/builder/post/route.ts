@@ -131,9 +131,18 @@ export async function POST(request: NextRequest) {
       revalidatePath(`/post/${cleanSlug}`);
       revalidatePath(`/post/${cleanSlug}`, "page");
     }
-    // Revalidate list pages
-    revalidatePath("/pages/post");
-    revalidatePath("/dashboard/posts");
+    // Revalidate list pages based on pageType
+    const pageTypeName = result.data?.pageTypes?.[0]?.name;
+    if (pageTypeName === "project result") {
+      revalidatePath("/pages/project-result");
+      revalidatePath("/dashboard/project-results");
+    } else if (pageTypeName === "event") {
+      revalidatePath("/pages/event");
+      revalidatePath("/dashboard/events");
+    } else {
+      revalidatePath("/pages/post");
+      revalidatePath("/dashboard/posts");
+    }
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {

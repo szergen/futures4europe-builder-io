@@ -253,7 +253,7 @@ export default function DashboardProjects() {
                         >
                           <div className="flex flex-wrap flex-start text-left w-full justify-between">
                             <Link
-                              href={`/post/${postPage.data.slug}`}
+                              href={`${postPage.data.slug}`}
                               className={classNames(
                                 style.miniPostWrapper,
                                 "grow w-full p-4 flex flex-col",

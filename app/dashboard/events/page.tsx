@@ -273,7 +273,7 @@ export default function DashboardProjects() {
                           <div className="flex flex-wrap flex-start text-left w-full justify-between">
                             <Link
                               className="grow"
-                              href={`/post/${postPage.data.slug}`}
+                              href={`${postPage.data.slug}`}
                             >
                               <MiniPagePost
                                 pageTypeTag={postPage.data.pageTypes?.[0]}
