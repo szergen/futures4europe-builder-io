@@ -53,6 +53,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     handleTagCreated,
     postPages,
     handleUserTagRefresh,
+    handleInfoPageCreated,
     updateUserDetails,
     // Builder.io state update functions
     updateTag,
@@ -549,6 +550,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
 
       // After successful update, invalidate caches
       await invalidatePersonPageCache(personData.slug);
+      handleInfoPageCreated();
       handleUserTagRefresh();
 
       console.log("[Builder.io] Person page save completed successfully");
@@ -831,6 +833,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
 
       // Invalidate caches and redirect
       await invalidatePersonPageCache(newSlug.replace("/person/", ""));
+      handleInfoPageCreated();
       handleUserTagRefresh();
 
       console.log("[Builder.io] Person page creation completed successfully");

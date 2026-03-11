@@ -42,7 +42,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   // #region useAuth hook for grabbing user details and tags needed for editing
   // state for if the page is owned by the user
   // state for if the edit mode is on
-  const { isLoggedIn, userDetails, tags, tagsFetched, handleUserDataRefresh } =
+  const { isLoggedIn, userDetails, tags, tagsFetched, handleUserDataRefresh, handlePostPageCreated } =
     useAuth();
   // console.log('debug1->tags', tags);
   const [isPageOwnedByUser, setIsPageOwnedByUser] = useState(false);
@@ -247,6 +247,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
 
       // Invalidate cache for the post page
       await invalidatePostPageCache(postData.slug);
+      handlePostPageCreated();
 
       setIsSaveInProgress(false);
     } catch (error) {
@@ -337,6 +338,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
 
       // Invalidate cache for the new post page
       await invalidatePostPageCache(slug);
+      handlePostPageCreated();
 
       setIsSaveInProgress(false);
 

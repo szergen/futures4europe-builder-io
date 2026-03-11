@@ -50,6 +50,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     tagsFetched,
     handleTagCreated,
     handleUserDataRefresh,
+    handleInfoPageCreated,
     postPages,
     updateTag,
     appendAffiliations,
@@ -399,6 +400,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       const slugWithoutPrefix =
         projectData.slug?.replace("/project/", "") || projectData.slug;
       await invalidateProjectPageCache(slugWithoutPrefix);
+      handleInfoPageCreated();
       console.log("[Builder.io] Project page save complete");
     } catch (error) {
       console.error("[Builder.io] Error updating project page:", error);
@@ -553,6 +555,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       const slugWithoutPrefix = newSlug.replace("/project/", "");
       handleUserDataRefresh();
       await invalidateProjectPageCache(slugWithoutPrefix);
+      handleInfoPageCreated();
 
       // Redirect to new page
       router.push(newSlug);

@@ -107,22 +107,28 @@ export async function PUT(
       }
     }
 
-    // Update Redis Cache with the raw enriched post (consistent format with getAllBuilderPosts).
+    // Transform the enriched post to Wix format (used for both cache and pageType detection).
+    const transformedPost = enrichedPost
+      ? transformBuilderPostToWixFormat(enrichedPost)
+      : null;
+
+    // Update Redis Cache with the transformed post (consistent format with GET /api/postPages).
+    // The cache stores Wix-format objects, so we must transform before writing.
     // If enrichment failed, invalidate instead of writing un-enriched data.
     try {
-      if (enrichedPost) {
+      if (transformedPost) {
         const cached = await RedisCacheService.getFromCache(ALL_POSTS_CACHE_KEY);
         if (cached && Array.isArray(cached)) {
           const index = cached.findIndex((p: any) => p.id === postId);
           if (index !== -1) {
-            cached[index] = enrichedPost;
+            cached[index] = transformedPost;
             await RedisCacheService.saveToCache(ALL_POSTS_CACHE_KEY, cached, CACHE_TTL);
-            console.log("[Builder.io API] Updated enriched post in Redis cache");
+            console.log("[Builder.io API] Updated transformed post in Redis cache");
           }
         }
       } else {
         await RedisCacheService.invalidateCache(ALL_POSTS_CACHE_KEY);
-        console.log("[Builder.io API] Invalidated Redis cache (enrichment unavailable)");
+        console.log("[Builder.io API] Invalidated Redis cache (enrichment/transformation unavailable)");
       }
     } catch (cacheError) {
       console.warn(
@@ -140,11 +146,7 @@ export async function PUT(
       revalidatePath(`/post/${cleanSlug}`, 'page');
     }
     // Revalidate list pages based on pageType.
-    // The Write API response (result) has un-enriched refs so pageType names are absent.
-    // Use the enriched post (which has resolved reference values) to determine the type.
-    const pageTypeName = enrichedPost
-      ? transformBuilderPostToWixFormat(enrichedPost)?.data?.pageTypes?.[0]?.name
-      : undefined;
+    const pageTypeName = transformedPost?.data?.pageTypes?.[0]?.name;
     if (pageTypeName === "project result") {
       revalidatePath('/pages/project-result');
       revalidatePath('/dashboard/project-results');
