@@ -72,31 +72,40 @@ export async function POST(request: NextRequest) {
       slug: result.data?.slug,
     });
     // Fetch the post again with enriched references before caching.
-    // getAllBuilderContent uses builder.getAll with noTargeting: true, which
-    // reliably finds the post regardless of publish state or targeting rules.
-    // getBuilderContent (builder.get) was used previously but can return null
-    // for drafts or posts with no matching targeting attributes.
+    // Builder.io has eventual consistency — the post may not be readable
+    // immediately after a write. Retry with a delay to handle this.
     let enrichedPost: any = null;
     if (result.id) {
-      console.log(
-        "[Builder.io API] Fetching enriched version of created post...",
-      );
-      try {
-        const enrichedPosts = await getAllBuilderContent("post-page", {
-          query: { id: result.id },
-          limit: 1,
-        });
-        enrichedPost = enrichedPosts?.[0] ?? null;
-
-        if (enrichedPost) {
-          console.log("[Builder.io API] Successfully enriched post references");
-        } else {
+      const MAX_RETRIES = 3;
+      const RETRY_DELAY_MS = 2000;
+      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          if (attempt > 1) {
+            console.log(
+              `[Builder.io API] Enrichment retry ${attempt}/${MAX_RETRIES} after ${RETRY_DELAY_MS}ms...`,
+            );
+            await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
+          }
+          const enrichedPosts = await getAllBuilderContent("post-page", {
+            query: { id: result.id },
+            limit: 1,
+          });
+          enrichedPost = enrichedPosts?.[0] ?? null;
+          if (enrichedPost) {
+            console.log("[Builder.io API] Successfully enriched post references");
+            break;
+          }
+        } catch (enrichError) {
           console.warn(
-            "[Builder.io API] Could not fetch enriched post, cache will be invalidated",
+            `[Builder.io API] Enrichment attempt ${attempt} failed:`,
+            enrichError,
           );
         }
-      } catch (enrichError) {
-        console.warn("[Builder.io API] Error enriching post:", enrichError);
+      }
+      if (!enrichedPost) {
+        console.warn(
+          "[Builder.io API] All enrichment attempts failed — cache will be preserved as-is",
+        );
       }
     }
 
@@ -106,8 +115,8 @@ export async function POST(request: NextRequest) {
       : null;
 
     // Update Redis Cache with the transformed post (consistent format with GET /api/postPages).
-    // The cache stores Wix-format objects, so we must transform before writing.
-    // If enrichment failed, invalidate instead of writing un-enriched data.
+    // If enrichment failed, leave the cache intact instead of invalidating it.
+    // The new post will appear on the next full cache refresh (TTL expiry).
     try {
       if (transformedPost) {
         const cached = await RedisCacheService.getFromCache(POSTS_CACHE_KEY);
@@ -117,15 +126,13 @@ export async function POST(request: NextRequest) {
           console.log("[Builder.io API] Added transformed post to Redis cache");
         }
       } else {
-        await RedisCacheService.invalidateCache(POSTS_CACHE_KEY);
-        console.log("[Builder.io API] Invalidated Redis cache (enrichment/transformation unavailable)");
+        console.warn("[Builder.io API] Enrichment/transformation unavailable — leaving cache intact");
       }
     } catch (cacheError) {
       console.warn(
-        "[Builder.io API] Failed to update Redis cache:",
+        "[Builder.io API] Failed to update Redis cache (leaving intact):",
         cacheError,
       );
-      await RedisCacheService.invalidateCache(POSTS_CACHE_KEY);
     }
 
     // Revalidate Next.js cache for post pages

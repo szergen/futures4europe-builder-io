@@ -134,37 +134,46 @@ export async function POST(request: NextRequest) {
     });
 
     // Fetch the page again with enriched references before caching.
-    // getAllBuilderContent uses builder.getAll with noTargeting: true, which
-    // reliably finds the page regardless of publish state or targeting rules.
-    // getBuilderContent (builder.get) was used previously but can return null
-    // for drafts or pages with no matching targeting attributes.
+    // Builder.io has eventual consistency — the page may not be readable
+    // immediately after a write. Retry with a delay to handle this.
     let enrichedPage: any = null;
     if (result.id) {
-      console.log(
-        "[Builder.io API] Fetching enriched version of created page...",
-      );
-      try {
-        const enrichedPages = await getAllBuilderContent("info-page", {
-          query: { id: result.id },
-          limit: 1,
-        });
-        enrichedPage = enrichedPages?.[0] ?? null;
-
-        if (enrichedPage) {
-          console.log("[Builder.io API] Successfully enriched page references");
-        } else {
+      const MAX_RETRIES = 3;
+      const RETRY_DELAY_MS = 2000;
+      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          if (attempt > 1) {
+            console.log(
+              `[Builder.io API] Enrichment retry ${attempt}/${MAX_RETRIES} after ${RETRY_DELAY_MS}ms...`,
+            );
+            await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
+          }
+          const enrichedPages = await getAllBuilderContent("info-page", {
+            query: { id: result.id },
+            limit: 1,
+          });
+          enrichedPage = enrichedPages?.[0] ?? null;
+          if (enrichedPage) {
+            console.log("[Builder.io API] Successfully enriched page references");
+            break;
+          }
+        } catch (enrichError) {
           console.warn(
-            "[Builder.io API] Could not fetch enriched page, cache will be invalidated",
+            `[Builder.io API] Enrichment attempt ${attempt} failed:`,
+            enrichError,
           );
         }
-      } catch (enrichError) {
-        console.warn("[Builder.io API] Error enriching page:", enrichError);
+      }
+      if (!enrichedPage) {
+        console.warn(
+          "[Builder.io API] All enrichment attempts failed — cache will be preserved as-is",
+        );
       }
     }
 
     // Update Redis Cache with the transformed page (consistent format with GET /api/infoPages).
-    // The cache stores Wix-format objects, so we must transform before writing.
-    // If enrichment failed, invalidate instead of writing un-enriched data.
+    // If enrichment failed, leave the cache intact instead of invalidating it.
+    // The new page will appear on the next full cache refresh (TTL expiry).
     try {
       if (enrichedPage) {
         const transformedPage = transformBuilderInfoPageToWixFormat(enrichedPage);
@@ -180,19 +189,14 @@ export async function POST(request: NextRequest) {
             console.log("[Builder.io API] Added transformed info-page to Redis cache");
           }
         } else {
-          await RedisCacheService.invalidateCache(INFO_PAGES_CACHE_KEY);
-          console.log("[Builder.io API] Invalidated Redis cache (transformation returned null)");
+          console.warn("[Builder.io API] Transformation returned null — leaving cache intact");
         }
-      } else {
-        await RedisCacheService.invalidateCache(INFO_PAGES_CACHE_KEY);
-        console.log("[Builder.io API] Invalidated Redis cache (enrichment unavailable)");
       }
     } catch (cacheError) {
       console.warn(
-        "[Builder.io API] Failed to update Redis cache:",
+        "[Builder.io API] Failed to update Redis cache (leaving intact):",
         cacheError,
       );
-      await RedisCacheService.invalidateCache(INFO_PAGES_CACHE_KEY);
     }
 
     // Revalidate Next.js cache for info pages.
