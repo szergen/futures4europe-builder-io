@@ -153,11 +153,14 @@ export async function PUT(
 
       if (slug.startsWith("/project/")) {
         revalidatePath(`/project/${cleanSlug}`);
+        revalidatePath("/pages/project");
         revalidatePath("/dashboard/projects");
       } else if (slug.startsWith("/person/")) {
         revalidatePath(`/person/${cleanSlug}`);
+        revalidatePath("/pages/person");
       } else if (slug.startsWith("/organisation/")) {
         revalidatePath(`/organisation/${cleanSlug}`);
+        revalidatePath("/pages/organisation");
         revalidatePath("/dashboard/organisations");
       }
     }
