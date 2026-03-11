@@ -479,13 +479,17 @@ export async function getAllBuilderPosts(options?: { cachebust?: boolean }) {
       }
     }
 
-    // Cache the results if we found any
-    if (allPosts.length > 0) {
-      await RedisCacheService.saveToCache(POSTS_CACHE_KEY, allPosts, CACHE_TTL);
-      console.log(`[Builder.io] Cached ${allPosts.length} posts`);
+    // Transform to Wix format before caching (consistent with GET /api/postPages)
+    const transformedPosts = allPosts
+      .map((post) => transformBuilderPostToWixFormat(post))
+      .filter((post) => post !== null);
+
+    if (transformedPosts.length > 0) {
+      await RedisCacheService.saveToCache(POSTS_CACHE_KEY, transformedPosts, CACHE_TTL);
+      console.log(`[Builder.io] Cached ${transformedPosts.length} posts (transformed)`);
     }
 
-    return allPosts;
+    return transformedPosts;
   } catch (error) {
     console.error("[Builder.io] Error fetching all posts:", error);
     // Fallback to cache if API fails

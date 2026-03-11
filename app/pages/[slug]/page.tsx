@@ -64,8 +64,8 @@ export default async function Pages({ params }: any) {
 
   const infoPages = builderInfoPages
     ?.map((item: any) => {
-      // const transformed = transformBuilderInfoPageToWixFormat(item);
-      return item ? { ...item.data, _id: item.id } : null;
+      const transformed = transformBuilderInfoPageToWixFormat(item);
+      return transformed ? { ...transformed.data, _id: transformed.id } : null;
     })
     .filter((item: any): item is NonNullable<typeof item> => item !== null);
 

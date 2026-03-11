@@ -206,13 +206,13 @@ export async function POST(request: NextRequest) {
       revalidatePath(`/${cleanSlug}`, "page");
 
       if (slug.startsWith("/project/")) {
-        revalidatePath(`/project/${cleanSlug}`);
         revalidatePath("/dashboard/projects");
+        revalidatePath("/pages/project");
       } else if (slug.startsWith("/person/")) {
-        revalidatePath(`/person/${cleanSlug}`);
+        revalidatePath("/pages/person");
       } else if (slug.startsWith("/organisation/")) {
-        revalidatePath(`/organisation/${cleanSlug}`);
         revalidatePath("/dashboard/organisations");
+        revalidatePath("/pages/organisation");
       }
     }
 

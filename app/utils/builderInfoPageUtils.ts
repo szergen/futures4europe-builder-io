@@ -230,17 +230,21 @@ export async function getAllBuilderInfoPages(options?: {
       }
     }
 
-    // Cache the results
-    if (allPages.length > 0) {
+    // Transform to Wix format before caching (consistent with GET /api/infoPages)
+    const transformedPages = allPages.map((page) =>
+      transformBuilderInfoPageToWixFormat(page)
+    );
+
+    if (transformedPages.length > 0) {
       await RedisCacheService.saveToCache(
         INFO_PAGES_CACHE_KEY,
-        allPages,
+        transformedPages,
         CACHE_TTL
       );
-      console.log(`[Builder.io] Cached ${allPages.length} info pages`);
+      console.log(`[Builder.io] Cached ${transformedPages.length} info pages (transformed)`);
     }
 
-    return allPages;
+    return transformedPages;
   } catch (error) {
     console.error("[Builder.io] Error fetching all info pages:", error);
     // Fallback to cache
