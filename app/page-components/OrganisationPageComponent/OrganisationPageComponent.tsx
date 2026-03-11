@@ -431,8 +431,8 @@ function OrganisationPageComponent({
   const internalLinks = postPages
     ?.filter((page) => {
       return page?.data?.organisations?.find(
-        (item: TagProps) =>
-          item?.organisationsItem?.id ===
+        (item: any) =>
+          (item?._id || item?.organisationsItem?.id) ===
           organisationData?.organisationTag?._id,
       );
     })
