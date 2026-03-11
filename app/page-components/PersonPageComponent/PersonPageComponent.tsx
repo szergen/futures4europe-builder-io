@@ -576,16 +576,16 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     ?.filter((page) => {
       return (
         page?.data?.author?.find(
-          (item: TagProps) =>
-            item?.authorItem?.id === personData?.personTag?._id,
+          (item: any) =>
+            (item?._id || item?.authorItem?.id) === personData?.personTag?._id,
         ) ||
         page?.data?.projectResultAuthor?.find(
-          (item: TagProps) =>
-            item?.projectResultAuthorItem?.id === personData?.personTag?._id,
+          (item: any) =>
+            (item?._id || item?.projectResultAuthorItem?.id) === personData?.personTag?._id,
         ) ||
         page?.data?.people?.find(
-          (item: TagProps) =>
-            item?.peopleItem?.id === personData?.personTag?._id,
+          (item: any) =>
+            (item?._id || item?.peopleItem?.id) === personData?.personTag?._id,
         )
       );
     })

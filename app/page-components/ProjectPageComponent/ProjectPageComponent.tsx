@@ -416,8 +416,8 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
   const internalLinks = postPages
     ?.filter((page) => {
       return page?.data?.projects?.find(
-        (item: TagProps) =>
-          item?.projectsItem?.id === projectData?.projectTag?._id,
+        (item: any) =>
+          (item?._id || item?.projectsItem?.id) === projectData?.projectTag?._id,
       );
     })
     ?.map((link) => link?.data);
