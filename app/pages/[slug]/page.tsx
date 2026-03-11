@@ -12,10 +12,7 @@ import {
   getAllBuilderPosts,
   transformBuilderPostToWixFormat,
 } from "@app/utils/builderPostUtils";
-import {
-  getAllBuilderInfoPages,
-  transformBuilderInfoPageToWixFormat,
-} from "@app/utils/builderInfoPageUtils";
+import { getAllBuilderInfoPages } from "@app/utils/builderInfoPageUtils";
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
@@ -63,10 +60,9 @@ export default async function Pages({ params }: any) {
     .filter((item: any): item is NonNullable<typeof item> => item !== null);
 
   const infoPages = builderInfoPages
-    ?.map((item: any) => {
-      // const transformed = transformBuilderInfoPageToWixFormat(item);
-      return item ? { ...item.data, _id: item.id } : null;
-    })
+    ?.map((item: any) =>
+      item ? { ...item.data, _id: item.id } : null
+    )
     .filter((item: any): item is NonNullable<typeof item> => item !== null);
 
   //Get specific Post by slug
