@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { RedisCacheService } from "@app/services/redisCache";
 import { getAllBuilderContent } from "@app/shared-components/Builder/builderUtils";
+import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -104,22 +105,29 @@ export async function PUT(
       }
     }
 
-    // Update Redis Cache with the raw enriched page (consistent format with getAllBuilderInfoPages).
+    // Update Redis Cache with the transformed page (consistent format with GET /api/infoPages).
+    // The cache stores Wix-format objects, so we must transform before writing.
     // If enrichment failed, invalidate instead of writing un-enriched data.
     try {
       if (enrichedPage) {
-        const cached = await RedisCacheService.getFromCache(ALL_INFO_PAGES_CACHE_KEY);
-        if (cached && Array.isArray(cached)) {
-          const index = cached.findIndex((p: any) => p.id === pageId);
-          if (index !== -1) {
-            cached[index] = enrichedPage;
-            await RedisCacheService.saveToCache(
-              ALL_INFO_PAGES_CACHE_KEY,
-              cached,
-              CACHE_TTL,
-            );
-            console.log("[Builder.io API] Updated enriched info-page in Redis cache");
+        const transformedPage = transformBuilderInfoPageToWixFormat(enrichedPage);
+        if (transformedPage) {
+          const cached = await RedisCacheService.getFromCache(ALL_INFO_PAGES_CACHE_KEY);
+          if (cached && Array.isArray(cached)) {
+            const index = cached.findIndex((p: any) => p.id === pageId);
+            if (index !== -1) {
+              cached[index] = transformedPage;
+              await RedisCacheService.saveToCache(
+                ALL_INFO_PAGES_CACHE_KEY,
+                cached,
+                CACHE_TTL,
+              );
+              console.log("[Builder.io API] Updated transformed info-page in Redis cache");
+            }
           }
+        } else {
+          await RedisCacheService.invalidateCache(ALL_INFO_PAGES_CACHE_KEY);
+          console.log("[Builder.io API] Invalidated Redis cache (transformation returned null)");
         }
       } else {
         await RedisCacheService.invalidateCache(ALL_INFO_PAGES_CACHE_KEY);
@@ -134,20 +142,21 @@ export async function PUT(
     }
 
     // Revalidate Next.js cache for info pages.
-    // pageType is a plain string field so it is present on the Write API response.
+    // Derive pageType from the slug prefix for reliability, since the Write API
+    // response may not always include the pageType field.
     if (result.data?.slug) {
-      const cleanSlug = result.data.slug.replace(/^\//, "");
+      const slug = result.data.slug;
+      const cleanSlug = slug.replace(/^\//, "");
       console.log(`[Builder.io API] Revalidating info page: /${cleanSlug}`);
       revalidatePath(`/${cleanSlug}`);
       revalidatePath(`/${cleanSlug}`, "page");
 
-      const pageType = result.data?.pageType;
-      if (pageType === "project") {
+      if (slug.startsWith("/project/")) {
         revalidatePath(`/project/${cleanSlug}`);
         revalidatePath("/dashboard/projects");
-      } else if (pageType === "person") {
+      } else if (slug.startsWith("/person/")) {
         revalidatePath(`/person/${cleanSlug}`);
-      } else if (pageType === "organisation") {
+      } else if (slug.startsWith("/organisation/")) {
         revalidatePath(`/organisation/${cleanSlug}`);
         revalidatePath("/dashboard/organisations");
       }

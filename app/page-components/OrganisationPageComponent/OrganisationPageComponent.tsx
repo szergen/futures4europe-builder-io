@@ -53,6 +53,7 @@ function OrganisationPageComponent({
     tagsFetched,
     handleTagCreated,
     handleUserDataRefresh,
+    handleInfoPageCreated,
     postPages,
     infoPages,
     updateTag,
@@ -415,6 +416,7 @@ function OrganisationPageComponent({
 
       // Invalidate cache for the organisation page
       await invalidateOrganisationPageCache(organisationData.slug);
+      handleInfoPageCreated();
       console.log("[Builder.io] Organisation page save completed");
     } catch (error) {
       console.error("[Builder.io] Error updating organisation page:", error);
@@ -583,6 +585,7 @@ function OrganisationPageComponent({
       // #region Refresh and redirect
       handleUserDataRefresh();
       await invalidateOrganisationPageCache(newOrganisationInfoSlug);
+      handleInfoPageCreated();
       router.push(`/organisation/${newOrganisationInfoSlug}`);
       // #endregion
 
