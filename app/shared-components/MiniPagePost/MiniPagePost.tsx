@@ -120,7 +120,7 @@ export const MiniPagePost: React.FC<MiniPagePostProps> = (props) => {
 
   const tagName = getCorrectTagName();
   const currentTagPopularity = tagName
-    ? tags.find((item) => item.name === tagName)?.mentions || 1
+    ? tags?.find((item) => item.name === tagName)?.mentions || 1
     : undefined;
 
   // Only show popularity if the tag type is NOT 'post'

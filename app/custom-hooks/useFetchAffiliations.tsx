@@ -10,7 +10,7 @@ const useFetchAffiliations = (refresh: boolean) => {
         const allAffiliationsResponse = await fetch('/api/affiliations');
         const allAffiliations = await allAffiliationsResponse.json();
 
-        setAffiliations(allAffiliations);
+        setAffiliations(Array.isArray(allAffiliations) ? allAffiliations : []);
         setAffiliationsFetched(true);
       } catch (error) {
         console.error('Error fetching affiliations:', error);
