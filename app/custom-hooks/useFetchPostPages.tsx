@@ -10,7 +10,7 @@ const useFetchPostPages = (refresh: boolean) => {
         const allPostPagesResponse = await fetch('/api/postPages');
         const allPostPages = await allPostPagesResponse.json();
 
-        setPostPages(allPostPages);
+        setPostPages(Array.isArray(allPostPages) ? allPostPages : []);
         setPostPagesFetched(true);
       } catch (error) {
         console.error('Error fetching post pages:', error);

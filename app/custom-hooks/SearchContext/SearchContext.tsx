@@ -105,94 +105,25 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
 
   // console.log("debug333->infoPages", infoPages);
 
-  // Fetch all data from cached APIs
+  // Sync data from AuthContext into local state.
+  // Watches both the fetched flags (for initial load) and the actual data
+  // arrays (so that refreshes after page/tag creation are picked up).
   useEffect(() => {
-    setLoading(true);
-    // const fetchAllData = async () => {
-    //   try {
-    //     setLoading(true);
-    //     console.log('SearchContext: Fetching data...');
-
-    //     // Fetch tags with popularity
-    //     const tagsResponse = await fetch('/api/tags-with-popularity');
-    //     if (!tagsResponse.ok) {
-    //       throw new Error(`Failed to fetch tags: ${tagsResponse.status}`);
-    //     }
-    //     const tagsData = await tagsResponse.json();
-    //     console.log(
-    //       `SearchContext: Fetched ${tagsData.length} tags with popularity`
-    //     );
-    //     setTags(tagsData.filter((tag: any) => !tag?.masterTag));
-
-    //     // Fetch info pages
-    //     const infoPagesResponse = await fetch('/api/infoPages');
-    //     if (!infoPagesResponse.ok) {
-    //       throw new Error(
-    //         `Failed to fetch info pages: ${infoPagesResponse.status}`
-    //       );
-    //     }
-    //     const infoPagesData = await infoPagesResponse.json();
-    //     console.log(
-    //       `SearchContext: Fetched ${infoPagesData.length} info pages`
-    //     );
-    //     setInfoPages(infoPagesData.map((page: any) => page.data));
-
-    //     // Fetch post pages
-    //     const postPagesResponse = await fetch('/api/postPages');
-    //     if (!postPagesResponse.ok) {
-    //       throw new Error(
-    //         `Failed to fetch post pages: ${postPagesResponse.status}`
-    //       );
-    //     }
-    //     const postPagesData = await postPagesResponse.json();
-    //     console.log(
-    //       `SearchContext: Fetched ${postPagesData.length} post pages`
-    //     );
-    //     setPostPages(postPagesData.map((page: any) => page.data));
-
-    //     // Fetch affiliations
-    //     const affiliationsResponse = await fetch('/api/affiliations');
-    //     if (!affiliationsResponse.ok) {
-    //       throw new Error(
-    //         `Failed to fetch affiliations: ${affiliationsResponse.status}`
-    //       );
-    //     }
-    //     const affiliationsData = await affiliationsResponse.json();
-    //     console.log(
-    //       `SearchContext: Fetched ${affiliationsData.length} affiliations`
-    //     );
-    //     setAffiliations(
-    //       affiliationsData.map((affiliation: any) => affiliation.data)
-    //     );
-
-    //     console.log('SearchContext: All data fetched successfully');
-    //   } catch (error) {
-    //     console.error('Error fetching data for search context:', error);
-    //     setError(error instanceof Error ? error : new Error(String(error)));
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-
-    // fetchAllData();
     if (
       tagsFetched &&
       infoPagesFetched &&
       postPagesFetched &&
       affiliationsFetched
     ) {
-      const infoPagesTransformed = authInfoPages;
-      const postPagesTransformed = authPostPages;
-      // console.log('Data fetched, example of tags:', authTags[0]);
       setTags(authTags.filter((tag: any) => !tag?.masterTag));
       setInfoPages(
-        infoPagesTransformed.map((page: any) => ({
+        authInfoPages.map((page: any) => ({
           ...page.data,
           _id: page.id,
         })),
       );
       setPostPages(
-        postPagesTransformed.map((page: any) => ({
+        authPostPages.map((page: any) => ({
           ...page.data,
           _id: page.id,
         })),
@@ -200,7 +131,7 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
       setAffiliations(authAffiliations);
       setLoading(false);
     }
-  }, [tagsFetched, infoPagesFetched, postPagesFetched, affiliationsFetched]);
+  }, [tagsFetched, infoPagesFetched, postPagesFetched, affiliationsFetched, authTags, authInfoPages, authPostPages, authAffiliations]);
 
   // Update search state when data is loaded or tags change
   useEffect(() => {

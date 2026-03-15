@@ -10,7 +10,7 @@ const useFetchInfoPages = (refresh: boolean) => {
         const allInfoPagesResponse = await fetch('/api/infoPages');
         const allInfoPages = await allInfoPagesResponse.json();
 
-        setInfoPages(allInfoPages);
+        setInfoPages(Array.isArray(allInfoPages) ? allInfoPages : []);
         setInfoPagesFetched(true);
       } catch (error) {
         console.error('Error fetching info pages:', error);

@@ -4,7 +4,11 @@ const fetchTagsWithPopularity = async () => {
   try {
     const response = await fetch('/api/tags-with-popularity');
     const data = await response.json();
-    tags = data;
+    if (Array.isArray(data)) {
+      tags = data;
+    } else {
+      console.warn('Tags API returned non-array:', typeof data);
+    }
   } catch (error) {
     console.error('Error fetching tags:', error);
   }
