@@ -25,12 +25,10 @@ export const decidePageTypeItems = (
 ) => {
   switch (type) {
     case 'post':
-      return postPages.filter(
-        (item: any) =>
-          // pageTypes[0].pageTypeItem.value.name
-          item?.pageTypes?.[0]?.pageTypeItem?.value?.name !== 'event' &&
-          item?.pageTypes?.[0]?.pageTypeItem?.value?.name !== 'project result'
-      );
+      return postPages.filter((item: any) => {
+        const name = getPageTypeName(item);
+        return name !== 'event' && name !== 'project result';
+      });
     case 'event':
       return filterPagesByType('event', postPages);
     case 'project-result':
@@ -90,8 +88,11 @@ export const automaticallyDecidePathPrefixBasedOnPageType = (
   }
 };
 
+const getPageTypeName = (item: any): string | undefined =>
+  item?.pageTypes?.[0]?.pageTypeItem?.value?.name || item?.pageTypes?.[0]?.name;
+
 export const filterPagesByType = (type: string, pages: any) => {
-  return pages.filter((page: any) => page?.pageTypes?.[0]?.pageTypeItem?.value?.name === type);
+  return pages.filter((page: any) => getPageTypeName(page) === type);
 };
 
 export const filterDuplicateAffiliations = (affiliations: any[]): any[] => {
