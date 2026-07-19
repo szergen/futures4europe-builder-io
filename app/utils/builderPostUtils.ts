@@ -226,7 +226,8 @@ export function transformPostDataForBuilderCreate(
       "post-page",
       "internalLinksItem",
     ),
-    recommendations: postData.recommendations || 0,
+    // Recommendations are currently disabled and are not part of the Builder schema.
+    // recommendations: postData.recommendations || 0,
   };
 
   // Remove undefined fields to keep payload clean
@@ -608,8 +609,8 @@ export function transformBuilderPostToWixFormat(builderPost: any) {
       // Country tag (single item)
       countryTag: data.countryTag ? [transformReference(data.countryTag)] : [],
 
-      // Recommendations
-      recomendations: data.recommendations || 0,
+      // Recommendations are currently disabled and are not part of the Builder schema.
+      // recomendations: data.recommendations || 0,
 
       // Authors and contributors
       author: transformReferenceArray(data.author, "authorItem"),
