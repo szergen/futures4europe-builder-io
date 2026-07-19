@@ -92,9 +92,10 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
     postDate:
       post?.data?.postPublicationDate || post?.data?._createdDate?.["$date"],
     countryTag: post?.data?.countryTag[0],
-    recommendations: {
-      number: post?.data?.recomendations,
-    },
+    // Recommendations are currently disabled and are not part of the Builder schema.
+    // recommendations: {
+    //   number: post?.data?.recomendations,
+    // },
     authors: post?.data?.author,
     contentText: [
       post?.data?.postContentRIch1,
@@ -232,7 +233,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
 
         // Additional fields
         mediaFiles: postData.mediaFiles || [],
-        recommendations: postData.recommendations || 0,
+        // recommendations: postData.recommendations || 0,
       };
 
       // Update post in Builder.io (single API call with all references)
@@ -321,7 +322,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
 
         // Additional fields
         mediaFiles: postData.mediaFiles || [],
-        recommendations: postData.recommendations || 0,
+        // recommendations: postData.recommendations || 0,
       };
 
       // Create post in Builder.io (single API call with all references)
