@@ -134,6 +134,7 @@ const getHighestPriorityConfig = (
 
 interface SortableItem extends Item {
   sortDate: number;
+  lastEditedDate: number;
   sortPriority: number;
   pageType: string;
   hasPrimaryDate: boolean;
@@ -190,6 +191,16 @@ const prepareSortableItems = (items: Item[]): SortableItem[] => {
     // Determine final sort date
     const sortDate = (primaryDate || fallbackDate || new Date(0)).getTime();
 
+    // Used as a tie-breaker when project results share a publication date.
+    const lastEditedValue =
+      item.lastUpdated ??
+      item._updatedDate ??
+      item.data?.lastUpdated ??
+      item.data?._updatedDate;
+    const lastEditedDate =
+      parseDate(lastEditedValue)?.getTime() ||
+      (typeof lastEditedValue === "number" ? lastEditedValue : 0);
+
     // Debug logging for troubleshooting sort issues
     // if (item.title === "test post 222" || item.title === "Meet the NGFP 2026 Fellows") {
     //   console.log("Sort Debug:", {
@@ -207,6 +218,7 @@ const prepareSortableItems = (items: Item[]): SortableItem[] => {
     return {
       ...item,
       sortDate,
+      lastEditedDate,
       sortPriority: config.priority,
       pageType,
       hasPrimaryDate,
@@ -220,6 +232,11 @@ const stableSort = <T,>(array: T[], compare: (a: T, b: T) => number): T[] => {
     .map((item, index) => ({ item, index }))
     .sort((a, b) => compare(a.item, b.item) || a.index - b.index)
     .map(({ item }) => item);
+};
+
+const getMonthSortKey = (timestamp: number): number => {
+  const date = new Date(timestamp);
+  return date.getFullYear() * 12 + date.getMonth();
 };
 
 const sortItemsByPageType = (items: Item[]): Item[] => {
@@ -271,8 +288,11 @@ const sortItemsByPageType = (items: Item[]): Item[] => {
 
         // If both have publication dates or both don't, sort by the respective dates
         if (a.hasPrimaryDate && b.hasPrimaryDate) {
-          // Both have publication dates - sort by publication date
-          return b.sortDate - a.sortDate;
+          // Publication dates are displayed at month precision. Treat dates in
+          // the same displayed month as equal, then put the latest edit first.
+          const publicationMonthDiff =
+            getMonthSortKey(b.sortDate) - getMonthSortKey(a.sortDate);
+          return publicationMonthDiff || b.lastEditedDate - a.lastEditedDate;
         } else {
           // Neither has publication date - sort by created date
           const aCreatedDate = parseDate(a._createdDate)?.getTime() || 0;

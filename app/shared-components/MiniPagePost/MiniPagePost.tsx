@@ -171,7 +171,7 @@ export const MiniPagePost: React.FC<MiniPagePostProps> = (props) => {
             'text-gray-500 text-xs mb-1.5'
           )}
         >
-          Last Edited: {dayjs(date).fromNow()}
+          Last Edited: {dayjs(editDate || date).fromNow()}
         </Typography>
         {/* MiniPage Title */}
         <Typography
