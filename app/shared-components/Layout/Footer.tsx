@@ -186,6 +186,15 @@ const Footer = () => {
                     <li className="mb-2">
                       <Link
                         target="_blank"
+                        href="https://shoutout.wix.com/so/79PyYuM50"
+                        className="text-white/80 hover:text-white underline"
+                      >
+                        July 2026
+                      </Link>
+                    </li>
+                    <li className="mb-2">
+                      <Link
+                        target="_blank"
                         href="https://shoutout.wix.com/so/06PrdjMdL"
                         className="text-white/80 hover:text-white underline"
                       >
