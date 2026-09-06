@@ -1,184 +1,187 @@
+import { members } from "@wix/members";
+import { createClient, OAuthStrategy } from "@wix/sdk";
+
 const updateDataItem = async (
   collectionName: string,
   itemId: string,
-  data: Record<string, any>
+  data: Record<string, any>,
 ) => {
   try {
-    const response = await fetch('/api/updateDataItem', {
-      method: 'POST',
+    const response = await fetch("/api/updateDataItem", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ collectionName, itemId, data }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update data item');
+      throw new Error("Failed to update data item");
     }
 
     const updatedItem = await response.json();
     return updatedItem;
   } catch (error) {
-    console.error('Error updating data item', error);
+    console.error("Error updating data item", error);
   }
 };
 
 const getCollectionItemByTitle = async (
   collectionName: string,
-  itemId: string
+  itemId: string,
 ) => {
   try {
-    const response = await fetch('/api/getCollectionItem', {
-      method: 'POST',
+    const response = await fetch("/api/getCollectionItem", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ collectionName, itemId }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get collection item');
+      throw new Error("Failed to get collection item");
     }
 
     const item = await response.json();
     return item;
   } catch (error) {
-    console.error('Error getting collection item:', error);
+    console.error("Error getting collection item:", error);
   }
 };
 
 const getCollectionItems = async (collectionName: string) => {
   try {
-    const response = await fetch('/api/getCollectionItems', {
-      method: 'POST',
+    const response = await fetch("/api/getCollectionItems", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ collectionName }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get collection items');
+      throw new Error("Failed to get collection items");
     }
 
     const item = await response.json();
     return item;
   } catch (error) {
-    console.error('Error getting collection items:', error);
+    console.error("Error getting collection items:", error);
   }
 };
 
 const subscribeToNewsletter = async (email: string) => {
   try {
-    const response = await fetch('/api/subscribeToNewsletter', {
-      method: 'POST',
+    const response = await fetch("/api/subscribeToNewsletter", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to subscribeToNewsletter');
+      throw new Error("Failed to subscribeToNewsletter");
     }
 
     const item = await response.json();
     return item;
   } catch (error) {
-    console.error('Error getting collection items:', error);
+    console.error("Error getting collection items:", error);
   }
 };
 
 const getCollection = async (collectionName: string) => {
   try {
-    const response = await fetch('/api/getCollection', {
-      method: 'POST',
+    const response = await fetch("/api/getCollection", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ collectionName }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get collection');
+      throw new Error("Failed to get collection");
     }
 
     const items = await response.json();
     return items;
   } catch (error) {
-    console.error('Error getting collection:', error);
+    console.error("Error getting collection:", error);
   }
 };
 
 const bulkInsertItems = async (
   collectionName: string,
-  dataItems: Record<string, any>[]
+  dataItems: Record<string, any>[],
 ) => {
   try {
-    const response = await fetch('/api/bulkInsertItems', {
-      method: 'POST',
+    const response = await fetch("/api/bulkInsertItems", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ collectionName, dataItems }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to insert bulk data items');
+      throw new Error("Failed to insert bulk data items");
     }
 
     const updatedItems = await response.json();
     return updatedItems;
   } catch (error) {
-    console.error('Error inserting bulk items', error);
+    console.error("Error inserting bulk items", error);
   }
 };
 
 const bulkRemoveItems = async (
   collectionName: string,
-  dataItems: Record<string, any>[]
+  dataItems: Record<string, any>[],
 ) => {
   try {
-    const response = await fetch('/api/bulkRemoveItems', {
-      method: 'POST',
+    const response = await fetch("/api/bulkRemoveItems", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ collectionName, dataItems }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to remove bulk data items');
+      throw new Error("Failed to remove bulk data items");
     }
 
     const updatedItems = await response.json();
     return updatedItems;
   } catch (error) {
-    console.error('Error removing bulk items', error);
+    console.error("Error removing bulk items", error);
   }
 };
 
 const bulkInsertDataItemReferences = async (
   collectionName: string,
-  dataItemReferences: Record<string, any>[]
+  dataItemReferences: Record<string, any>[],
 ) => {
   try {
-    const response = await fetch('/api/bulkInsertDataItemReferences', {
-      method: 'POST',
+    const response = await fetch("/api/bulkInsertDataItemReferences", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ collectionName, dataItemReferences }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to insert bulk references');
+      throw new Error("Failed to insert bulk references");
     }
 
     const updatedItems = await response.json();
     return updatedItems;
   } catch (error) {
-    console.error('Error inserting bulk item references', error);
+    console.error("Error inserting bulk item references", error);
   }
 };
 
@@ -186,13 +189,13 @@ const replaceDataItemReferences = async (
   collectionName: string,
   newReferencedItemIds: string[],
   referringItemFieldName: string,
-  referringItemId: string
+  referringItemId: string,
 ) => {
   try {
-    const response = await fetch('/api/replaceDataItemReferences', {
-      method: 'POST',
+    const response = await fetch("/api/replaceDataItemReferences", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         collectionName,
@@ -203,52 +206,52 @@ const replaceDataItemReferences = async (
     });
 
     if (!response.ok) {
-      throw new Error('Failed to insert bulk references');
+      throw new Error("Failed to insert bulk references");
     }
 
     const updatedItems = await response.json();
     return updatedItems;
   } catch (error) {
-    console.error('Error inserting bulk item references', error);
+    console.error("Error inserting bulk item references", error);
   }
 };
 
 const getItemsForCurrentUser = async (
   collectionName: string,
-  ownerId: string
+  ownerId: string,
 ) => {
   try {
-    const response = await fetch('/api/getItemsForCurrentUser', {
-      method: 'POST',
+    const response = await fetch("/api/getItemsForCurrentUser", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ collectionName, ownerId }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get items for current user');
+      throw new Error("Failed to get items for current user");
     }
 
     const items = await response.json();
     return items;
   } catch (error) {
-    console.error('Error getting items for current user:', error);
+    console.error("Error getting items for current user:", error);
   }
 };
 
 const getContactsItem = async (itemId: string) => {
   try {
-    const response = await fetch('/api/getContactsItem', {
-      method: 'POST',
+    const response = await fetch("/api/getContactsItem", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ itemId }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update data item');
+      throw new Error("Failed to update data item");
     }
 
     const updatedItem = await response.json();
@@ -260,16 +263,16 @@ const getContactsItem = async (itemId: string) => {
 
 const getContactsItemByEmail = async (itemId: string) => {
   try {
-    const response = await fetch('/api/getContactsItemByEmail', {
-      method: 'POST',
+    const response = await fetch("/api/getContactsItemByEmail", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ itemId }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update data item');
+      throw new Error("Failed to update data item");
     }
 
     const updatedItem = await response.json();
@@ -279,45 +282,72 @@ const getContactsItemByEmail = async (itemId: string) => {
   }
 };
 
-const updateMember = async (contactId: string, nickname: string) => {
+// const updateMember = async (contactId: string, nickname: string) => {
+//   try {
+//     const response = await fetch('/api/updateMember', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ contactId, nickname }),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error('Failed to update data item');
+//     }
+
+//     const updatedItem = await response.json();
+//     return updatedItem;
+//   } catch (error) {
+//     console.error(
+//       `Error updating contacts item for contactId: ${contactId} and nickname: ${nickname}`,
+//       error
+//     );
+//   }
+// };
+
+const updateMember = async (memberId: string, nickname: string) => {
   try {
-    const response = await fetch('/api/updateMember', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ contactId, nickname }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to update data item');
+    const tokens = JSON.parse(
+      localStorage.getItem("f4e_wix_accessTokenAndRefreshToken") || "null",
+    );
+    if (!tokens) {
+      console.warn("updateMember: not logged in, skipping");
+      return;
     }
-
-    const updatedItem = await response.json();
-    return updatedItem;
+    const wixClient = createClient({
+      modules: { members },
+      auth: OAuthStrategy({
+        clientId: process.env.NEXT_PUBLIC_WIX_CLIENT_ID!,
+        tokens,
+      }),
+    });
+    return await wixClient.members.updateMember(memberId, {
+      profile: { nickname },
+    });
   } catch (error) {
     console.error(
-      `Error updating contacts item for contactId: ${contactId} and nickname: ${nickname}`,
-      error
+      `Failed to update member ${memberId} nickname to "${nickname}":`,
+      error,
     );
   }
 };
 
 const triggerForgotPasswordMail = async (
   email: string,
-  redirectUrl: string
+  redirectUrl: string,
 ) => {
   try {
-    const response = await fetch('/api/forgotPassword', {
-      method: 'POST',
+    const response = await fetch("/api/forgotPassword", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, redirectUrl }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to sendPassword Reset Mail');
+      throw new Error("Failed to sendPassword Reset Mail");
     }
 
     const updatedItem = await response.json();
@@ -329,14 +359,14 @@ const triggerForgotPasswordMail = async (
 
 const generateFileUploadUrl = async (
   mimeType: string,
-  options: Record<string, any>
+  options: Record<string, any>,
   // file: File
 ) => {
   try {
-    const response = await fetch('/api/generateFileUploadUrl', {
-      method: 'POST',
+    const response = await fetch("/api/generateFileUploadUrl", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         mimeType,
@@ -346,22 +376,22 @@ const generateFileUploadUrl = async (
     });
 
     if (!response.ok) {
-      throw new Error('Failed to generate file upload URL');
+      throw new Error("Failed to generate file upload URL");
     }
 
     const updatedItems = await response.json();
     return updatedItems;
   } catch (error) {
-    console.error('Error genering file upload URL', error);
+    console.error("Error genering file upload URL", error);
   }
 };
 
 const revalidateDataItem = async (postSlug: string) => {
   try {
-    const response = await fetch('/api/revalidate', {
-      method: 'POST',
+    const response = await fetch("/api/revalidate", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         postSlug: postSlug,
@@ -370,21 +400,21 @@ const revalidateDataItem = async (postSlug: string) => {
     });
 
     const result = await response.json();
-    console.log('revalidateDataItem result:', result);
+    console.log("revalidateDataItem result:", result);
 
     if (!response.ok) {
-      throw new Error('Failed to revalidate data item');
+      throw new Error("Failed to revalidate data item");
     }
 
     if (!response.ok) {
-      console.error('Revalidation failed:', result);
+      console.error("Revalidation failed:", result);
     } else {
-      console.log('Page successfully revalidated.');
+      console.log("Page successfully revalidated.");
     }
     // const updatedItems = await response.json();
     // return updatedItems;
   } catch (error) {
-    console.error('Error revalidating data item', error);
+    console.error("Error revalidating data item", error);
   }
 };
 
