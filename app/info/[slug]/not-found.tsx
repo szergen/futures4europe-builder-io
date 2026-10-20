@@ -10,8 +10,8 @@ export default function InfoNotFound() {
             Content Not Found
           </h2>
           <p className="text-gray-600 mb-6">
-            The information page you're looking for doesn't exist or hasn't been
-            published yet.
+            The information page you&apos;re looking for doesn&apos;t exist or
+            hasn&apos;t been published yet.
           </p>
         </div>
 
@@ -26,7 +26,7 @@ export default function InfoNotFound() {
           <div className="text-sm text-gray-500">
             <p>Need help? This could mean:</p>
             <ul className="mt-2 space-y-1">
-              <li>• The content hasn't been created in Builder.io yet</li>
+              <li>• The content hasn&apos;t been created in Builder.io yet</li>
               <li>• The URL structure has changed</li>
               <li>• The content is in draft mode</li>
             </ul>

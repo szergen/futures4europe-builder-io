@@ -41,7 +41,7 @@ export default async function TagTestPage() {
 
           <div className="space-y-2 text-sm text-blue-600">
             <p>
-              <strong>✅ Component Name:</strong> "Tag"
+              <strong>✅ Component Name:</strong> &quot;Tag&quot;
             </p>
             <p>
               <strong>✅ Available Fields:</strong> name, tagCategory,
@@ -62,8 +62,8 @@ export default async function TagTestPage() {
             <ol className="list-decimal list-inside space-y-2 text-sm text-gray-700">
               <li>Go to your Builder.io dashboard</li>
               <li>Create or edit a Page/Section</li>
-              <li>In the visual editor, click "+" to add components</li>
-              <li>Look for "Tag" in the custom components section</li>
+              <li>In the visual editor, click &quot;+&quot; to add components</li>
+              <li>Look for &quot;Tag&quot; in the custom components section</li>
               <li>Drag and drop it onto your page</li>
               <li>Configure the properties in the right panel</li>
             </ol>

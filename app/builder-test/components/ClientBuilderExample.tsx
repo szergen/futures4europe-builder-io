@@ -87,7 +87,7 @@ export default function ClientBuilderExample() {
       ) : (
         <div className="bg-yellow-50 border border-yellow-200 rounded p-4">
           <p className="text-yellow-700">
-            No content found for the "{selectedModel}" model. Create some
+            No content found for the &quot;{selectedModel}&quot; model. Create some
             content in your Builder.io dashboard.
           </p>
         </div>
