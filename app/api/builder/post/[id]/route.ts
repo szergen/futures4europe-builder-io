@@ -160,6 +160,9 @@ export async function PUT(
     } else if (pageTypeName === "event") {
       revalidatePath('/pages/event');
       revalidatePath('/dashboard/events');
+    } else if (pageTypeName === "practice") {
+      revalidatePath('/pages/practice');
+      revalidatePath('/dashboard/practices');
     } else {
       revalidatePath('/pages/post');
       revalidatePath('/dashboard/posts');
@@ -239,6 +242,8 @@ export async function DELETE(
     revalidatePath('/dashboard/project-results');
     revalidatePath('/pages/event');
     revalidatePath('/dashboard/events');
+    revalidatePath('/pages/practice');
+    revalidatePath('/dashboard/practices');
     console.log("[Builder.io API] Post pages revalidated");
 
     return NextResponse.json(

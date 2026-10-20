@@ -309,6 +309,24 @@ const SearchComponentV1 = () => {
         showResults: false,
       }));
       setIsOnSearchPage(false);
+    } else if (pathname === '/pages/practice') {
+      setSearchState((prevState) => ({
+        ...prevState,
+        searchedItems: [
+          {
+            searchItem: 'Practice',
+            searchItemType: 'tag',
+          },
+        ],
+        filteredData: {
+          ...initialData,
+          pages: initialData?.pages?.filter(
+            (page: any) => page.pageTypes?.[0]?.name === 'practice'
+          ),
+        },
+        showResults: false,
+      }));
+      setIsOnSearchPage(false);
     } else if (pathname === '/pages/event') {
       setSearchState((prevState) => ({
         ...prevState,

@@ -20,6 +20,10 @@ const Hero = ({ title, subtitle, pageType, children }: HeroProps) => {
         return 'sorted by project start date';
       case 'project-result':
         return 'sorted by result publication date';
+      case 'practice':
+        return 'sorted by practice date';
+      case 'practice':
+        return 'sorted by practice date';
       case 'organisation':
         return 'sorted by published date';
       case 'person':

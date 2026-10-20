@@ -63,6 +63,18 @@ const NAV_ITEMS: NavConfig[] = [
     iconProps: { strokeWidth: 0, fill: 'currentColor' },
   },
   {
+    href: '/dashboard/practices',
+    icon: SpriteSvg.AccountForesightMethod2Icon,
+    text: 'Practices',
+    iconProps: {
+      sizeW: 24,
+      sizeH: 24,
+      viewBox: '0 0 28 28',
+      fill: 'currentColor',
+      strokeWidth: 0,
+    },
+  },
+  {
     href: '/dashboard/organisations',
     icon: SpriteSvg.AccountOrgIcon,
     text: 'Organisations',

@@ -70,6 +70,21 @@ export const getPropsForMiniPagesListItemPost = (item: any) => {
         ),
       };
 
+    case 'practice':
+      return {
+        title: item?.title,
+        pageTypeTag: item.pageTypes[0],
+        subtitle: item?.subtitle,
+        date: item?.postPublicationDate || item?._createdDate?.['$date'],
+        editDate: item?._updatedDate?.$date,
+        image: item?.postImage1?.url || PLACEHOLDER_IMAGE,
+        practiceDate: item?.practiceDate,
+        projectResultAuthor: item?.projectResultAuthor?.slice(0, 3),
+        text:
+          item.postContentRIch1 + item.postContentRIch2 + item.postContentRIch3,
+        domains: item?.methods?.slice(0, 3),
+      };
+
     case 'event':
       return {
         title: item?.title,

@@ -22,12 +22,14 @@ export type FilesComponentProps = {
     thumbnail: string;
   }>;
   updatePostDataBasedOnKeyValue?: (key: string, value: any) => void;
+  title?: string;
 };
 
 const FilesComponent: React.FC<FilesComponentProps> = ({
   isEditModeOn,
   mediaFiles,
   updatePostDataBasedOnKeyValue,
+  title = "Files",
 }) => {
   const [currentFiles, setCurrentFiles] = useState(mediaFiles);
   const [deletingFileIndex, setDeletingFileIndex] = useState<number | null>(
@@ -114,7 +116,7 @@ const FilesComponent: React.FC<FilesComponentProps> = ({
           tag="h2"
           className={classNames("text-gray-800 w-full my-4", style.filesTitle)}
         >
-          Files
+          {title}
         </Typography>
       )}
 

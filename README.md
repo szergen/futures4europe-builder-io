@@ -35,8 +35,10 @@ The platform manages 4 primary content types with specific sub-types:
 
 ### 1. **Post** (`post-page`)
 
-- **Sub-types**: Post, Event, Project Result
+- **Sub-types**: Post, Event, Project Result, Practice
 - **Route**: `/post-page/[slug]`
+- **Listings**: `/pages/post`, `/pages/event`, `/pages/project-result`, `/pages/practice`
+- **Practice**: shares how a foresight practice was applied (title, subtitle, practice date, authors, foresight methods, body, related content, templates). See [`docs/practices/PRACTICE_PAGE_TYPE.md`](docs/practices/PRACTICE_PAGE_TYPE.md)
 - **Status**: ✅ Migrated to Builder.io
 
 ### 2. **Project** (`project-page`)
@@ -218,7 +220,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 The following Builder.io models are configured:
 
-- `post-page`: Blog posts, events, and project results
+- `post-page`: Blog posts, events, project results, and practices (sub-type chosen by the first `pageTypes` tag; practices use the `practiceDate` field)
 - `project-page`: Project information
 - `person-page`: Person profiles
 - `organisation-page`: Organisation profiles
@@ -290,6 +292,10 @@ All documentation is organized in the `docs/` folder:
 - **Tags**: `docs/migration/tags/TAG_MIGRATION_GUIDE.md`, `docs/migration/tags/TAG_MIGRATION_SUMMARY.md`, `docs/migration/tags/MIGRATE_TAGS_QUICK_REF.md`
 - **Info Pages**: `docs/migration/info-pages/INFO_PAGES_MIGRATION_COMPLETE.md`
 
+### Features
+
+- `docs/practices/PRACTICE_PAGE_TYPE.md` - Practice page type (fields, routes, Builder.io setup, test checklist)
+
 ### Other Documentation
 
 - `docs/integration-guide.md` - Integration documentation
@@ -304,6 +310,17 @@ All documentation is organized in the `docs/` folder:
 4. Implement page components in `app/[content-type]-page/`
 5. Add migration script if needed
 6. Update documentation
+
+### Adding a New Post Sub-type
+
+Post sub-types (post, event, project result, practice) share the `post-page` model and the `/post/[slug]` route. Practice is the most recent example; see `docs/practices/PRACTICE_PAGE_TYPE.md`.
+
+1. Create a `tag` entry with `tagType: "page type"` in Builder.io, and add any new fields to `post-page`
+2. Map new fields in `app/utils/builderPostUtils.ts` (create payload + `transformBuilderPostToWixFormat`)
+3. Add the type to `decidePageTypeItems` / `decidePageTypesForMiniPages` in `app/utils/parse-utils.ts` and exclude it from `post`
+4. Fork fields in `PostPageComponent` / `HeaderComponent` and update `extraFilterTags`
+5. Add the listing slug to `validParams` in `app/pages/[slug]/page.tsx`, plus sort config and card props
+6. Add the header tag (`headerPageTypeTags` in `Header.tsx`), dashboard page, search pre-filter, and API revalidation paths
 
 ### Code Organization
 

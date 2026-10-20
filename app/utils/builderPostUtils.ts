@@ -219,6 +219,9 @@ export function transformPostDataForBuilderCreate(
     projectResultPublicationDate:
       postData.projectResultPublicationDate || undefined,
 
+    // Practice-specific fields
+    practiceDate: postData.practiceDate || undefined,
+
     // Additional fields
     mediaFiles: postData.mediaFiles || [],
     internalLinks: transformReferencesForBuilderCreate(
@@ -567,6 +570,25 @@ function transformReferenceArray(arr: any[], itemKey?: string): any[] {
 }
 
 /**
+ * Flatten enriched internal link references ({ internalLinksItem: Reference })
+ * into post data objects so they can be rendered as mini pages and saved back
+ * (the save path keeps only items with an `_id`).
+ */
+function transformInternalLinks(links: any[]): any[] {
+  if (!links || !Array.isArray(links)) return [];
+
+  return links
+    .map((link) => {
+      const ref = link?.internalLinksItem ?? link;
+      if (ref?.["@type"] !== "@builder.io/core:Reference") return link;
+      if (!ref.value) return null;
+      const linkedPost = transformBuilderPostToWixFormat(ref.value);
+      return linkedPost ? { ...linkedPost.data, _id: ref.id } : null;
+    })
+    .filter(Boolean);
+}
+
+/**
  * Transform Builder.io post data to match Wix PostPageComponent structure
  * @param builderPost - Raw Builder.io post data
  * @returns Transformed post object matching Wix structure
@@ -665,8 +687,11 @@ export function transformBuilderPostToWixFormat(builderPost: any) {
       projectResultMedia: data.projectResultMedia || {},
       projectResultPublicationDate: data.projectResultPublicationDate,
 
+      // Practice specific
+      practiceDate: data.practiceDate,
+
       // Additional fields
-      internalLinks: data.internalLinks || [],
+      internalLinks: transformInternalLinks(data.internalLinks),
       mediaFiles: data.mediaFiles || [],
 
       // Owner metadata

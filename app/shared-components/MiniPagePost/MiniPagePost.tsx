@@ -25,6 +25,7 @@ export type MiniPagePostProps = {
   eventStartDate?: string;
   eventEndDate?: string;
   projectResultPublicationDate?: string;
+  practiceDate?: string;
   organisationAffiliations?: Array<{ organisation: string; role: string }>;
   organisationEstablishedDate?: string;
   date?: string;
@@ -62,6 +63,7 @@ export const MiniPagePost: React.FC<MiniPagePostProps> = (props) => {
     eventStartDate,
     eventEndDate,
     projectResultPublicationDate,
+    practiceDate,
     organisationAffiliations,
     organisationEstablishedDate,
     date,
@@ -132,7 +134,8 @@ export const MiniPagePost: React.FC<MiniPagePostProps> = (props) => {
   const shouldShowPopularity =
     pageTypeTag?.name !== 'post' &&
     pageTypeTag?.name !== 'event' &&
-    pageTypeTag?.name !== 'project result';
+    pageTypeTag?.name !== 'project result' &&
+    pageTypeTag?.name !== 'practice';
 
   //Debugging
   // useEffect(() => {
@@ -211,6 +214,11 @@ export const MiniPagePost: React.FC<MiniPagePostProps> = (props) => {
           {projectResultPublicationDate && (
             <span className={classNames(style.projectDates)}>
               {dayjs(projectResultPublicationDate).format('MMMM YYYY')}
+            </span>
+          )}
+          {practiceDate && (
+            <span className={classNames(style.projectDates)}>
+              {dayjs(practiceDate).format('DD MMMM YYYY')}
             </span>
           )}
         </Typography>

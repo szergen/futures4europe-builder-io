@@ -154,6 +154,9 @@ export async function POST(request: NextRequest) {
     } else if (pageTypeName === "event") {
       revalidatePath("/pages/event");
       revalidatePath("/dashboard/events");
+    } else if (pageTypeName === "practice") {
+      revalidatePath("/pages/practice");
+      revalidatePath("/dashboard/practices");
     } else {
       revalidatePath("/pages/post");
       revalidatePath("/dashboard/posts");

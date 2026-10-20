@@ -6,6 +6,7 @@ export const allPagetypes = [
   'post',
   'project result',
   'event',
+  'practice',
   'foresight method',
 ];
 
@@ -45,7 +46,7 @@ export const fieldExcludePageTypes = {
 };
 export const fieldIncludePageTypes = {
   // field: [list of included pagetypes]
-  author: ['project result', 'foresight method'], // add new post tags as necessary
+  author: ['project result', 'practice', 'foresight method'], // add new post tags as necessary
   people: ['organisation info', 'foresight method'], // add new post tags as necessary
   participant: ['project info', 'event'],
   speaker: ['event'],

@@ -12,6 +12,8 @@ const decidePageType = (pageType: string) => {
       return "event";
     case "projectResult":
       return "project result";
+    case "practice":
+      return "practice";
     default:
       return "post";
   }

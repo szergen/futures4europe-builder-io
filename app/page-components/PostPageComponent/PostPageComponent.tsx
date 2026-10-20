@@ -138,6 +138,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
     projectResultMedia: post?.data?.projectResultMedia,
     mediaFiles: post?.data?.mediaFiles,
     projectResultPublicationDate: post?.data?.projectResultPublicationDate,
+    practiceDate: post?.data?.practiceDate,
     pageOwner: post?.data?.pageOwner,
     slug: post?.data?.slug,
   };
@@ -231,6 +232,9 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         projectResultMedia: postData.projectResultMedia,
         projectResultPublicationDate: postData.projectResultPublicationDate,
 
+        // Practice-specific fields
+        practiceDate: postData.practiceDate,
+
         // Additional fields
         mediaFiles: postData.mediaFiles || [],
         // recommendations: postData.recommendations || 0,
@@ -320,6 +324,9 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         projectResultMedia: postData.projectResultMedia,
         projectResultPublicationDate: postData.projectResultPublicationDate,
 
+        // Practice-specific fields
+        practiceDate: postData.practiceDate,
+
         // Additional fields
         mediaFiles: postData.mediaFiles || [],
         // recommendations: postData.recommendations || 0,
@@ -361,7 +368,8 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           tag?.tagType === "page type" &&
           !tag?.name?.includes("info") &&
           tag?.name !== "event" &&
-          tag?.name !== "post",
+          tag?.name !== "post" &&
+          tag?.name !== "practice",
       );
     }
     if (firstTagName === "event") {
@@ -370,7 +378,8 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           tag?.tagType === "page type" &&
           !tag?.name?.includes("info") &&
           tag?.name !== "project result" &&
-          tag?.name !== "post",
+          tag?.name !== "post" &&
+          tag?.name !== "practice",
       );
     }
     if (firstTagName === "post") {
@@ -379,7 +388,18 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
           tag?.tagType === "page type" &&
           !tag?.name?.includes("info") &&
           tag?.name !== "project result" &&
-          tag?.name !== "event",
+          tag?.name !== "event" &&
+          tag?.name !== "practice",
+      );
+    }
+    if (firstTagName === "practice") {
+      return tags?.filter(
+        (tag) =>
+          tag?.tagType === "page type" &&
+          !tag?.name?.includes("info") &&
+          tag?.name !== "project result" &&
+          tag?.name !== "event" &&
+          tag?.name !== "post",
       );
     }
     // ...rest of conditions
@@ -432,6 +452,25 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
   const saveOrCreateHandler = isNewPost ? createNewPost : updateDataToServer;
   console.log("postdatadata", postData);
 
+  const isPractice = postData?.pageType?.[0]?.name?.toLowerCase() === "practice";
+
+  const foresightMethodsList = (
+    <TagListComponent
+      tagList={postData.foreSightMethods}
+      tagListTitle="Foresight Methods"
+      placeholder="Add one or more foresight method tags relevant to your post"
+      isEditModeOn={isEditModeOn}
+      tags={tags?.filter((tag) => tag?.tagType === "foresight method")}
+      selectedValues={postData.foreSightMethods?.map(
+        (method: any) => method?.name,
+      )}
+      updatePostData={(value) =>
+        updatePostDataBasedOnKeyValue("foreSightMethods", value)
+      }
+      tagType="foresight method"
+    />
+  );
+
   return (
     <div className={classNames("m-auto mb-20", style.postContainer)}>
       {/* Add OG Image component for client-side fallback */}
@@ -480,7 +519,10 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
               onClick={() => {
                 setPostData(defaultPostData);
                 setIsEditModeOn(!isEditModeOn);
-                isNewPost && router.push(`/dashboard/posts`);
+                isNewPost &&
+                  router.push(
+                    isPractice ? `/dashboard/practices` : `/dashboard/posts`,
+                  );
               }}
               className="btn btn-edit"
             >
@@ -577,6 +619,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         ""
       )}
       {/* )} */}
+      {isPractice && foresightMethodsList}
       {/* Post Content */}
       <ContentComponent
         contentText={postData.contentText}
@@ -634,7 +677,8 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         </>
       )}
       {/* Post People */}
-      {postData?.pageType?.[0]?.name?.toLowerCase() !== "post" ? (
+      {postData?.pageType?.[0]?.name?.toLowerCase() !== "post" &&
+      !isPractice ? (
         <TagListComponent
           tagList={postData.people}
           tagListTitle={
@@ -654,66 +698,61 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
       ) : (
         ""
       )}
-      {/* Foresight Methods */}
-      <TagListComponent
-        tagList={postData.foreSightMethods}
-        tagListTitle="Foresight Methods"
-        placeholder="Add one or more foresight method tags relevant to your post"
-        isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === "foresight method")}
-        selectedValues={postData.foreSightMethods?.map(
-          (method: any) => method?.name,
-        )}
-        updatePostData={(value) =>
-          updatePostDataBasedOnKeyValue("foreSightMethods", value)
-        }
-        tagType="foresight method"
-      />
-      {/* Domains */}
-      <TagListComponent
-        tagList={postData.domains}
-        tagListTitle="Domains"
-        placeholder="Add one or more domain tags relevant to your post"
-        isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === "domain")}
-        selectedValues={postData.domains?.map((domain: any) => domain?.name)}
-        updatePostData={(value) =>
-          updatePostDataBasedOnKeyValue("domains", value)
-        }
-        tagType="domain"
-      />
-      {/* Project */}
-      <TagListComponent
-        tagList={postData.project}
-        tagListTitle="Project"
-        placeholder="Add one or more project tags relevant to your post"
-        isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === "project")}
-        selectedValues={postData.project?.map((project: any) => project?.name)}
-        updatePostData={(value) =>
-          updatePostDataBasedOnKeyValue("project", value)
-        }
-        tagType="project"
-      />
-      {/* Organisation */}
-      <TagListComponent
-        tagList={postData.organisation}
-        tagListTitle={
-          postData?.pageType?.[0]?.name?.toLowerCase() !== "event"
-            ? "Organisation"
-            : "Host Organisations"
-        }
-        placeholder="Add one or more organisation tags relevant to your post"
-        isEditModeOn={isEditModeOn}
-        tags={tags?.filter((tag) => tag?.tagType === "organisation")}
-        selectedValues={postData.organisation?.map(
-          (organisation: any) => organisation?.name,
-        )}
-        updatePostData={(value) =>
-          updatePostDataBasedOnKeyValue("organisation", value)
-        }
-        tagType="organisation"
-      />
+      {!isPractice && (
+        <>
+          {/* Foresight Methods */}
+          {foresightMethodsList}
+          {/* Domains */}
+          <TagListComponent
+            tagList={postData.domains}
+            tagListTitle="Domains"
+            placeholder="Add one or more domain tags relevant to your post"
+            isEditModeOn={isEditModeOn}
+            tags={tags?.filter((tag) => tag?.tagType === "domain")}
+            selectedValues={postData.domains?.map(
+              (domain: any) => domain?.name,
+            )}
+            updatePostData={(value) =>
+              updatePostDataBasedOnKeyValue("domains", value)
+            }
+            tagType="domain"
+          />
+          {/* Project */}
+          <TagListComponent
+            tagList={postData.project}
+            tagListTitle="Project"
+            placeholder="Add one or more project tags relevant to your post"
+            isEditModeOn={isEditModeOn}
+            tags={tags?.filter((tag) => tag?.tagType === "project")}
+            selectedValues={postData.project?.map(
+              (project: any) => project?.name,
+            )}
+            updatePostData={(value) =>
+              updatePostDataBasedOnKeyValue("project", value)
+            }
+            tagType="project"
+          />
+          {/* Organisation */}
+          <TagListComponent
+            tagList={postData.organisation}
+            tagListTitle={
+              postData?.pageType?.[0]?.name?.toLowerCase() !== "event"
+                ? "Organisation"
+                : "Host Organisations"
+            }
+            placeholder="Add one or more organisation tags relevant to your post"
+            isEditModeOn={isEditModeOn}
+            tags={tags?.filter((tag) => tag?.tagType === "organisation")}
+            selectedValues={postData.organisation?.map(
+              (organisation: any) => organisation?.name,
+            )}
+            updatePostData={(value) =>
+              updatePostDataBasedOnKeyValue("organisation", value)
+            }
+            tagType="organisation"
+          />
+        </>
+      )}
       {/* Content related to this Info Page */}
       <MiniPagesListComponentPost
         isEditModeOn={isEditModeOn}
@@ -721,7 +760,11 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         handleUpdatePostData={(value) =>
           updatePostDataBasedOnKeyValue("internalLinks", value)
         }
-        title="Content related to this Page"
+        title={
+          isPractice
+            ? "Content related to this practice"
+            : "Content related to this Page"
+        }
       />
       {/* Files */}
       {/* {postData?.pageType?.[0]?.name?.toLowerCase() !== 'project result' && ( */}
@@ -730,6 +773,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
         isEditModeOn={isEditModeOn}
         mediaFiles={postData.mediaFiles}
         updatePostDataBasedOnKeyValue={updatePostDataBasedOnKeyValue}
+        title={isPractice ? "Templates for applying this Practice" : "Files"}
       />
       {/* )} */}
       {/* External Links */}
