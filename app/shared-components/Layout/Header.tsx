@@ -677,7 +677,7 @@ const Header = () => {
             backgroundColor: "#1111C9", // Specific color as requested
           }}
         >
-          <div className="flex justify-between sm:px-6 sm:px-14 h-header sm:items-center">
+          <div className="flex justify-between sm:px-14 h-header sm:items-center">
             {/* Logo placeholder */}
             <div className="w-32 h-10 bg-white/20 rounded animate-pulse"></div>
 
@@ -727,7 +727,7 @@ const Header = () => {
       >
         <div
           className={classNames(
-            "flex justify-between sm:px-6 sm:px-14 h-header sm:items-center sm:gap-4 sm:gap-8",
+            "flex justify-between sm:px-14 h-header sm:items-center sm:gap-8",
             style.headerContainer,
           )}
         >
