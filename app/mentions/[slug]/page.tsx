@@ -36,6 +36,33 @@ export const revalidate = 300; // Revalidate every 5 minutes
 // Next.js will server-render the page on-demand.
 export const dynamicParams = true; // or false, to 404 on unknown paths
 
+// Info pages are cached already flattened (Project, person, organisation).
+// Posts are usually still raw Builder entries. Running the info-page
+// transform on a flattened page looks for data.project and wipes the tags,
+// so projects, people and organisations never match a mention.
+function toMentionItem(item: any, transform: (entry: any) => any) {
+  if (!item?.data) return null;
+
+  const pageTypes = item.data.pageTypes;
+  const alreadyFlat =
+    !item.modelId &&
+    !pageTypes?.[0]?.pageTypeItem &&
+    (pageTypes?.[0]?._id ||
+      pageTypes?.[0]?.name ||
+      item.data.Project ||
+      item.data.person ||
+      item.data.organisation);
+
+  if (alreadyFlat) {
+    return { ...item.data, _id: item.id || item.data._id };
+  }
+
+  const transformed = transform(item);
+  return transformed?.data
+    ? { ...transformed.data, _id: transformed.id }
+    : null;
+}
+
 export default async function Pages({ params }: any) {
   const tagId = params.slug;
 
@@ -53,18 +80,14 @@ export default async function Pages({ params }: any) {
     ]);
 
   const postPages = builderPosts
-    ?.map((item: any) => {
-      const transformed = transformBuilderPostToWixFormat(item);
-      return transformed ? { ...transformed.data, _id: transformed.id } : null;
-    })
+    ?.map((item: any) => toMentionItem(item, transformBuilderPostToWixFormat))
     .filter((item: any): item is NonNullable<typeof item> => item !== null);
   // console.log("debug111->postPages", postPages.length);
 
   const infoPages = builderInfoPages
-    ?.map((item: any) => {
-      const transformed = transformBuilderInfoPageToWixFormat(item);
-      return transformed ? { ...transformed.data, _id: transformed.id } : null;
-    })
+    ?.map((item: any) =>
+      toMentionItem(item, transformBuilderInfoPageToWixFormat)
+    )
     .filter((item: any): item is NonNullable<typeof item> => item !== null);
   // console.log("debug111->infoPages", infoPages.length);
   const currentTagData = builderTag
