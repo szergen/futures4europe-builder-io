@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import style from './MiniPagePost.module.css';
 import Image from 'next/image';
+import Link from 'next/link';
 import Typography from '../Typography/Typography';
 import Tag, { TagProps } from '../Tag/Tag';
 import dayjs from 'dayjs';
@@ -40,6 +41,9 @@ export type MiniPagePostProps = {
   };
   pageTypeTag?: TagProps;
   primaryTags?: Array<TagProps>;
+  // Card destination. Rendered as a stretched link on the title so tags
+  // inside the card stay real links and are not nested inside another <a>.
+  href?: string;
 };
 
 export const MiniPagePost: React.FC<MiniPagePostProps> = (props) => {
@@ -71,6 +75,7 @@ export const MiniPagePost: React.FC<MiniPagePostProps> = (props) => {
     pageTypeTag,
     primaryTags,
     methods,
+    href,
   } = props;
 
   // console.log({
@@ -178,7 +183,13 @@ export const MiniPagePost: React.FC<MiniPagePostProps> = (props) => {
           tag="h3"
           className={classNames(style.MiniPagePostTitle, '')}
         >
-          {title}
+          {href ? (
+            <Link href={href} className={style.cardLink}>
+              {title}
+            </Link>
+          ) : (
+            title
+          )}
           {shouldShowPopularity && (
             <span className={classNames(style.popularity)}>
               {/* Popularity */}

@@ -67,6 +67,17 @@
   /* text-decoration: underline; */
   cursor: pointer;
 }
+/* Covers the card without wrapping inner tag links in a second <a>. */
+.cardLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.postItem a:not(.cardLink),
+.postItem button {
+  position: relative;
+  z-index: 1;
+}
 .postItem {
   margin: var(--w-space-s);
   padding: var(--w-space-l);
