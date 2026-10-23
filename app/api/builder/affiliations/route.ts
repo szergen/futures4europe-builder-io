@@ -7,6 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { appendToAffiliationsCache } from "@app/utils/builderAffiliationUtils";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -86,6 +87,12 @@ export async function POST(request: NextRequest) {
     console.log(
       `[Builder.io API] Affiliations created: ${created.length}, failed: ${failed.length}`
     );
+
+    // Redis credentials only exist on the server, so the cache that info
+    // pages read from has to be updated here rather than in the browser.
+    if (created.length > 0) {
+      await appendToAffiliationsCache(created);
+    }
 
     return NextResponse.json(
       {
