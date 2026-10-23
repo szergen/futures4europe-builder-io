@@ -109,6 +109,14 @@ export class DuplicateError extends Error {
 }
 
 /**
+ * Comparison key for tag and page names: "  Sibilla   STUDIO " and
+ * "Sibilla Studio" are the same name.
+ */
+export function normaliseName(name?: string | null): string {
+  return (name || "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+/**
  * Tag not found error
  */
 export class NotFoundError extends Error {
@@ -535,9 +543,12 @@ export async function createBuilderTag(
     throw new ValidationError("Tag type is required", "tagType");
   }
 
+  tagData = { ...tagData, name: tagData.name.trim().replace(/\s+/g, " ") };
+  const normalisedName = normaliseName(tagData.name);
+
   try {
-    // Check for duplicate name (case-insensitive)
-    // OPTIMIZATION: Use provided tags if available, otherwise use cache (not re-fetch!)
+    // Check for duplicate name, ignoring case and repeated whitespace.
+    // The caller's list can be stale, so the server cache is always checked too.
     let duplicate: any = null;
 
     if (existingTags && existingTags.length > 0) {
@@ -546,11 +557,12 @@ export async function createBuilderTag(
         `Checking for duplicate tag: "${tagData.name}" using ${existingTags.length} pre-loaded tags`
       );
       duplicate = existingTags.find(
-        (tag) =>
-          tag?.name && tag.name.toLowerCase() === tagData.name.toLowerCase()
+        (tag) => tag?.name && normaliseName(tag.name) === normalisedName
       );
-    } else {
-      // Fallback: Use cache (skipCache: false to avoid re-fetching everything)
+    }
+
+    if (!duplicate) {
+      // Use cache (skipCache: false to avoid re-fetching everything)
       const cachedTags = await RedisCacheService.getFromCache(
         "tags_builder.json"
       );
@@ -559,8 +571,7 @@ export async function createBuilderTag(
           `Checking for duplicate tag: "${tagData.name}" using ${cachedTags.length} cached tags`
         );
         duplicate = cachedTags.find(
-          (tag: any) =>
-            tag?.name && tag.name.toLowerCase() === tagData.name.toLowerCase()
+          (tag: any) => tag?.name && normaliseName(tag.name) === normalisedName
         );
       } else {
         // Last resort: Only fetch if no cache exists
@@ -570,18 +581,19 @@ export async function createBuilderTag(
         const allTags = await getAllBuilderTags({ skipCache: false });
         duplicate = allTags.find((tag) => {
           if (!tag?.data?.name) return false;
-          return tag.data.name.toLowerCase() === tagData.name.toLowerCase();
+          return normaliseName(tag.data.name) === normalisedName;
         });
       }
     }
 
     if (duplicate) {
+      const duplicateId = duplicate.id || duplicate._id;
       console.log(
-        `Tag "${tagData.name}" already exists with ID ${duplicate.id}`
+        `Tag "${tagData.name}" already exists with ID ${duplicateId}`
       );
       throw new DuplicateError(
         `Tag with name "${tagData.name}" already exists`,
-        duplicate.id
+        duplicateId
       );
     }
 
@@ -742,6 +754,27 @@ export async function updateBuilderTag(
       // TODO: Add deeper circular reference check if needed
     }
 
+    if (updates.name) {
+      updates = { ...updates, name: updates.name.trim().replace(/\s+/g, " ") };
+    }
+    const newName = normaliseName(updates.name);
+    if (newName && newName !== normaliseName(currentTag.data?.name)) {
+      const cachedTags = await RedisCacheService.getFromCache(
+        "tags_builder.json"
+      );
+      const clash = Array.isArray(cachedTags)
+        ? cachedTags.find(
+            (tag: any) => tag?._id !== id && normaliseName(tag?.name) === newName
+          )
+        : null;
+      if (clash) {
+        throw new DuplicateError(
+          `Tag with name "${updates.name}" already exists`,
+          clash._id
+        );
+      }
+    }
+
     // Merge updates
     const updatedData: any = { ...currentTag.data };
     if (updates.name) updatedData.name = updates.name;
@@ -862,7 +895,11 @@ export async function updateBuilderTag(
 
     return updatedTag;
   } catch (error: any) {
-    if (error instanceof NotFoundError || error instanceof ValidationError) {
+    if (
+      error instanceof NotFoundError ||
+      error instanceof ValidationError ||
+      error instanceof DuplicateError
+    ) {
       throw error;
     }
 

@@ -13,12 +13,63 @@ import { revalidatePath } from "next/cache";
 import { RedisCacheService } from "@app/services/redisCache";
 import { getAllBuilderContent } from "@app/shared-components/Builder/builderUtils";
 import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
+import { normaliseName } from "@app/utils/builderTagUtils";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
 const INFO_PAGES_CACHE_KEY = "builder_info_pages_all.json";
 // Cache TTL: 1 day
 const CACHE_TTL = 24 * 60 * 60 * 1000;
+
+const INFO_PAGE_TYPES = ["person", "organisation", "project"] as const;
+type InfoPageType = (typeof INFO_PAGE_TYPES)[number];
+
+const escapeRegex = (value: string) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+async function findExistingInfoPage(
+  pageType: InfoPageType,
+  tagId: string | undefined,
+  normalisedTitle: string,
+): Promise<any> {
+  // 1. Live Builder.io queries, so a cold or stale Redis cache can't hide a page.
+  if (tagId) {
+    const byTag = await getAllBuilderContent("info-page", {
+      query: { [`data.${pageType}.${pageType}Item.id`]: tagId },
+      limit: 1,
+    });
+    if (byTag?.[0]) return byTag[0];
+  }
+
+  if (normalisedTitle) {
+    const titlePattern = normalisedTitle
+      .split(" ")
+      .map(escapeRegex)
+      .join("\\s+");
+    const byTitle = await getAllBuilderContent("info-page", {
+      query: {
+        "data.slug": { $regex: `^/${pageType}/` },
+        "data.title": { $regex: `^\\s*${titlePattern}\\s*$`, $options: "i" },
+      },
+      limit: 1,
+    });
+    if (byTitle?.[0]) return byTitle[0];
+  }
+
+  // 2. Redis cache, which may already hold a page Builder hasn't indexed yet.
+  const cached = await RedisCacheService.getFromCache(INFO_PAGES_CACHE_KEY);
+  if (!Array.isArray(cached)) return null;
+  const tagKey = pageType === "project" ? "Project" : pageType;
+  return (
+    cached.find(
+      (page: any) =>
+        page?.data?.slug?.startsWith(`/${pageType}/`) &&
+        ((tagId && page.data?.[tagKey]?.[0]?._id === tagId) ||
+          (normalisedTitle &&
+            normaliseName(page.data?.title) === normalisedTitle)),
+    ) ?? null
+  );
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,61 +90,40 @@ export async function POST(request: NextRequest) {
       title: payload.data?.title,
     });
 
-    // Guard: prevent duplicate person info pages.
-    // Person slugs include a unique hash (e.g. /person/john-doe-abc123) so slug
-    // uniqueness cannot be relied upon. Instead we check by title (the person's
-    // name, which always comes from the tag) using two complementary checks:
-    //   1. A live Builder.io query by title — catches duplicates even when the
-    //      Redis cache is cold or stale.
-    //   2. A Redis cache scan by title — fast secondary check with case-insensitive
-    //      matching in case the live query misses a recently-cached entry.
-    if (payload.data?.slug?.startsWith("/person/") && payload.data?.title) {
-      const incomingTitle = payload.data.title.trim();
-      const incomingTitleLower = incomingTitle.toLowerCase();
+    // Guard: one info page per person, organisation or project.
+    // Slugs include a unique hash, so they can't be used. Instead check for an
+    // existing page of the same type that uses the same tag, or has the same
+    // title ignoring case and repeated whitespace.
+    const pageType = INFO_PAGE_TYPES.find((type) =>
+      payload.data?.slug?.startsWith(`/${type}/`),
+    );
+    if (pageType) {
+      const incomingTitle = normaliseName(payload.data?.title);
+      const tagId = payload.data?.[pageType]?.[0]?.[`${pageType}Item`]?.id;
       let duplicate: any = null;
 
       try {
-        // 1. Live Builder.io query (noTargeting: true via getAllBuilderContent)
-        const existingByTitle = await getAllBuilderContent("info-page", {
-          query: { "data.title": incomingTitle },
-          limit: 1,
-        });
-        duplicate = existingByTitle?.find((p: any) =>
-          p.data?.slug?.startsWith("/person/")
-        ) ?? null;
-
-        // 2. Redis cache scan (case-insensitive fallback)
-        if (!duplicate) {
-          const cached = await RedisCacheService.getFromCache(
-            INFO_PAGES_CACHE_KEY,
-          );
-          if (cached && Array.isArray(cached)) {
-            duplicate =
-              cached.find(
-                (p: any) =>
-                  p.data?.slug?.startsWith("/person/") &&
-                  p.data?.title?.trim().toLowerCase() === incomingTitleLower,
-              ) ?? null;
-          }
-        }
+        duplicate = await findExistingInfoPage(pageType, tagId, incomingTitle);
       } catch (guardError) {
         // If the duplicate check itself fails, log and proceed rather than
         // blocking a legitimate create.
         console.warn(
-          "[Builder.io API] Duplicate person check failed, proceeding:",
+          "[Builder.io API] Duplicate info page check failed, proceeding:",
           guardError,
         );
       }
 
       if (duplicate) {
         console.warn(
-          "[Builder.io API] Duplicate person page blocked:",
-          incomingTitle,
+          `[Builder.io API] Duplicate ${pageType} page blocked:`,
+          payload.data?.title,
+          duplicate.data?.slug,
         );
         return NextResponse.json(
           {
-            error: `A person page already exists for "${incomingTitle}". Each person can only have one page.`,
+            error: `${pageType === "organisation" ? "An" : "A"} ${pageType} page already exists for "${payload.data?.title}" (${duplicate.data?.slug}). Each ${pageType} can only have one page.`,
             duplicateId: duplicate.id,
+            duplicateSlug: duplicate.data?.slug,
           },
           { status: 409 },
         );
