@@ -4,7 +4,6 @@ import MiniPagePost from "@app/shared-components/MiniPagePost/MiniPagePost";
 // import Tag from "@app/shared-components/Tag/Tag";
 // import { automaticallyDecidePathPrefixBasedOnPageType } from "@app/utils/parse-utils";
 // import classNames from "classnames";
-import Link from "next/link";
 import React from "react";
 
 // export const PageTypes = [
@@ -75,14 +74,11 @@ const Results: React.FC<ResultsProps> = ({ results, searchedItems }) => {
                 return allFoundInItems.map((item) => item);
               })} */}
               {/* #endregion FOUND IN items */}
-              <Link
+              <MiniPagePost
                 key={`${resultItem?.title}-${resultItem?._id || index}`}
-                href={resultItem.slug}
-              >
-                <MiniPagePost
-                  {...getPropsForMiniPagesListItemPost(resultItem)}
-                />
-              </Link>
+                {...getPropsForMiniPagesListItemPost(resultItem)}
+                href={resultItem.slug || undefined}
+              />
               {/* <MiniPage pageItem={resultItem} key={resultItem.title} /> */}
             </>
           ))}

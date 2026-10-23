@@ -4,7 +4,6 @@ import style from "./MiniPagesListItemPost.module.css";
 import classNames from "classnames";
 import Typography from "@app/shared-components/Typography/Typography";
 import MiniPagePost from "@app/shared-components/MiniPagePost/MiniPagePost";
-import Link from "next/link";
 import { getPropsForMiniPagesListItemPost } from "./MiniPagesListItemPost.utils";
 
 enum PageType {
@@ -368,12 +367,11 @@ const MiniPagesListItemPost: React.FC<MiniPagesListItemPostProps> = ({
         </Typography>
       )}
       {sortedItems.map((item, index) => (
-        <Link
+        <MiniPagePost
           key={`${item?.title}-${item?._id || index}`}
-          href={item.slug || ""}
-        >
-          <MiniPagePost {...getPropsForMiniPagesListItemPost(item)} />
-        </Link>
+          {...getPropsForMiniPagesListItemPost(item)}
+          href={item.slug || undefined}
+        />
       ))}
     </section>
   );

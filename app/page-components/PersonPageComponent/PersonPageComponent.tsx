@@ -237,6 +237,24 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
   const [isSaveInProgress, setIsSaveInProgress] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
+  const personTagForAffiliation = () => ({
+    _id: personData.personTag?._id,
+    name: personData.personTag?.name,
+  });
+
+  const toOrganisationAffiliation = (item: any, extraIdentifier: string) => ({
+    personTag: personTagForAffiliation(),
+    organisationTag: { _id: item._id, name: item.name },
+    role: item.arole || "",
+    extraIdentifier,
+  });
+
+  const toProjectAffiliation = (item: any, extraIdentifier: string) => ({
+    projectTag: { _id: item._id, name: item.name },
+    personTag: personTagForAffiliation(),
+    extraIdentifier,
+  });
+
   const updateDataToServer = async () => {
     console.log("[Builder.io] Updating person page:", person?.id);
     setIsSaveInProgress(true);
@@ -349,25 +367,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         if (personData.currentAfiliations?.length > 0) {
           const newAffiliations = personData.currentAfiliations
             .filter((item: any) => item?.name)
-            .map((item: any) => ({
-              name: `${personData.personTag?.name} -to- ${item.name}`,
-              data: {
-                title: `${personData.personTag?.name} -to- ${item.name}`,
-                personTag: {
-                  "@type": "@builder.io/core:Reference",
-                  model: "tag",
-                  id: personData.personTag?._id,
-                },
-                organisationTag: {
-                  "@type": "@builder.io/core:Reference",
-                  model: "tag",
-                  id: item._id,
-                },
-                role: item.arole || "",
-                extraIdentifier: "current",
-              },
-              published: "published",
-            }));
+            .map((item: any) => toOrganisationAffiliation(item, "current"));
 
           if (newAffiliations.length > 0) {
             const result = await bulkCreateAffiliations(newAffiliations);
@@ -402,25 +402,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         if (personData.formerAfiliations?.length > 0) {
           const newAffiliations = personData.formerAfiliations
             .filter((item: any) => item?.name)
-            .map((item: any) => ({
-              name: `${personData.personTag?.name} -to- ${item.name}`,
-              data: {
-                title: `${personData.personTag?.name} -to- ${item.name}`,
-                personTag: {
-                  "@type": "@builder.io/core:Reference",
-                  model: "tag",
-                  id: personData.personTag?._id,
-                },
-                organisationTag: {
-                  "@type": "@builder.io/core:Reference",
-                  model: "tag",
-                  id: item._id,
-                },
-                role: item.arole || "",
-                extraIdentifier: "former",
-              },
-              published: "published",
-            }));
+            .map((item: any) => toOrganisationAffiliation(item, "former"));
 
           if (newAffiliations.length > 0) {
             const result = await bulkCreateAffiliations(newAffiliations);
@@ -457,24 +439,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         if (personData.projectsCoordindation?.length > 0) {
           const newAffiliations = personData.projectsCoordindation
             .filter((item: any) => item?.name)
-            .map((item: any) => ({
-              name: `${personData.personTag?.name} -to- ${item.name}`,
-              data: {
-                title: `${personData.personTag?.name} -to- ${item.name}`,
-                personTag: {
-                  "@type": "@builder.io/core:Reference",
-                  model: "tag",
-                  id: personData.personTag?._id,
-                },
-                projectTag: {
-                  "@type": "@builder.io/core:Reference",
-                  model: "tag",
-                  id: item._id,
-                },
-                extraIdentifier: "coordination",
-              },
-              published: "published",
-            }));
+            .map((item: any) => toProjectAffiliation(item, "coordination"));
 
           if (newAffiliations.length > 0) {
             const result = await bulkCreateAffiliations(newAffiliations);
@@ -511,24 +476,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         if (personData.projectsParticipation?.length > 0) {
           const newAffiliations = personData.projectsParticipation
             .filter((item: any) => item?.name)
-            .map((item: any) => ({
-              name: `${personData.personTag?.name} -to- ${item.name}`,
-              data: {
-                title: `${personData.personTag?.name} -to- ${item.name}`,
-                personTag: {
-                  "@type": "@builder.io/core:Reference",
-                  model: "tag",
-                  id: personData.personTag?._id,
-                },
-                projectTag: {
-                  "@type": "@builder.io/core:Reference",
-                  model: "tag",
-                  id: item._id,
-                },
-                extraIdentifier: "participation",
-              },
-              published: "published",
-            }));
+            .map((item: any) => toProjectAffiliation(item, "participation"));
 
           if (newAffiliations.length > 0) {
             const result = await bulkCreateAffiliations(newAffiliations);
@@ -687,25 +635,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         console.log("[Builder.io] Creating current affiliations...");
         const newAffiliations = personData.currentAfiliations
           .filter((item: any) => item?.name)
-          .map((item: any) => ({
-            name: `${personData.personTag?.name} -to- ${item.name}`,
-            data: {
-              title: `${personData.personTag?.name} -to- ${item.name}`,
-              personTag: {
-                "@type": "@builder.io/core:Reference",
-                model: "tag",
-                id: personData.personTag?._id,
-              },
-              organisationTag: {
-                "@type": "@builder.io/core:Reference",
-                model: "tag",
-                id: item._id,
-              },
-              role: item.arole || "",
-              extraIdentifier: "current",
-            },
-            published: "published",
-          }));
+          .map((item: any) => toOrganisationAffiliation(item, "current"));
 
         if (newAffiliations.length > 0) {
           const result = await bulkCreateAffiliations(newAffiliations);
@@ -721,25 +651,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         console.log("[Builder.io] Creating former affiliations...");
         const newAffiliations = personData.formerAfiliations
           .filter((item: any) => item?.name)
-          .map((item: any) => ({
-            name: `${personData.personTag?.name} -to- ${item.name}`,
-            data: {
-              title: `${personData.personTag?.name} -to- ${item.name}`,
-              personTag: {
-                "@type": "@builder.io/core:Reference",
-                model: "tag",
-                id: personData.personTag?._id,
-              },
-              organisationTag: {
-                "@type": "@builder.io/core:Reference",
-                model: "tag",
-                id: item._id,
-              },
-              role: item.arole || "",
-              extraIdentifier: "former",
-            },
-            published: "published",
-          }));
+          .map((item: any) => toOrganisationAffiliation(item, "former"));
 
         if (newAffiliations.length > 0) {
           const result = await bulkCreateAffiliations(newAffiliations);
@@ -755,24 +667,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         console.log("[Builder.io] Creating coordination affiliations...");
         const newAffiliations = personData.projectsCoordindation
           .filter((item: any) => item?.name)
-          .map((item: any) => ({
-            name: `${personData.personTag?.name} -to- ${item.name}`,
-            data: {
-              title: `${personData.personTag?.name} -to- ${item.name}`,
-              personTag: {
-                "@type": "@builder.io/core:Reference",
-                model: "tag",
-                id: personData.personTag?._id,
-              },
-              projectTag: {
-                "@type": "@builder.io/core:Reference",
-                model: "tag",
-                id: item._id,
-              },
-              extraIdentifier: "coordination",
-            },
-            published: "published",
-          }));
+          .map((item: any) => toProjectAffiliation(item, "coordination"));
 
         if (newAffiliations.length > 0) {
           const result = await bulkCreateAffiliations(newAffiliations);
@@ -788,24 +683,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
         console.log("[Builder.io] Creating participation affiliations...");
         const newAffiliations = personData.projectsParticipation
           .filter((item: any) => item?.name)
-          .map((item: any) => ({
-            name: `${personData.personTag?.name} -to- ${item.name}`,
-            data: {
-              title: `${personData.personTag?.name} -to- ${item.name}`,
-              personTag: {
-                "@type": "@builder.io/core:Reference",
-                model: "tag",
-                id: personData.personTag?._id,
-              },
-              projectTag: {
-                "@type": "@builder.io/core:Reference",
-                model: "tag",
-                id: item._id,
-              },
-              extraIdentifier: "participation",
-            },
-            published: "published",
-          }));
+          .map((item: any) => toProjectAffiliation(item, "participation"));
 
         if (newAffiliations.length > 0) {
           const result = await bulkCreateAffiliations(newAffiliations);

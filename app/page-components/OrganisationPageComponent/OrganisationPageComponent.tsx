@@ -148,6 +148,9 @@ function OrganisationPageComponent({
     title: organisation?.data?.title, // done
     pageType: organisation?.data?.pageTypes[0],
     registrationDate: organisation?.data?._createdDate["$date"], //done - system field
+    updatedDate:
+      organisation?.data?._updatedDate?.["$date"] ||
+      organisation?.data?._createdDate?.["$date"],
     organisationTag: organisation?.data?.organisation[0], //done
     organisationEstablishedDate:
       organisation?.data?.organisationEstablishedDate, //done
@@ -242,6 +245,7 @@ function OrganisationPageComponent({
 
   // #region handle updating data to server
   const [isSaveInProgress, setIsSaveInProgress] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const updateDataToServer = async () => {
     console.log("[Builder.io] Updating Organisation Page:", organisation.id);
@@ -261,15 +265,11 @@ function OrganisationPageComponent({
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
+            // The API reads fields at the top level, not nested under `data`.
             body: JSON.stringify({
               name: organisationData.organisationTag.name,
-              data: {
-                name: organisationData.organisationTag.name,
-                tagType: organisationData.organisationTag.tagType,
-                picture: organisationData.organisationTag.picture,
-                tagLine: organisationData.organisationTag.tagLine,
-                tagPageLink: organisationData.organisationTag.tagPageLink,
-              },
+              tagLine: organisationData.organisationTag.tagLine,
+              picture: organisationData.organisationTag.picture,
             }),
           },
         );
@@ -292,6 +292,7 @@ function OrganisationPageComponent({
         organisationData.contentImages,
       );
       console.log("[Builder.io] Organisation page updated successfully");
+      updateOrganisationDataOnKeyValue("updatedDate", Date.now());
       // #endregion
 
       // #region Update project affiliations in Builder.io
@@ -489,13 +490,9 @@ function OrganisationPageComponent({
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               name: organisationData.organisationTag.name,
-              data: {
-                name: organisationData.organisationTag.name,
-                tagType: organisationData.organisationTag.tagType,
-                picture: organisationData.organisationTag.picture,
-                tagLine: organisationData.organisationTag.tagLine,
-                tagPageLink: "/organisation/" + newOrganisationInfoSlug,
-              },
+              tagLine: organisationData.organisationTag.tagLine,
+              picture: organisationData.organisationTag.picture,
+              tagPageLink: "/organisation/" + newOrganisationInfoSlug,
             }),
           },
         );
@@ -590,8 +587,11 @@ function OrganisationPageComponent({
       // #endregion
 
       console.log("[Builder.io] Organisation page creation completed");
-    } catch (error) {
+    } catch (error: any) {
       console.error("[Builder.io] Error creating organisation page:", error);
+      setSaveError(
+        error?.message || "An error occurred while creating the page.",
+      );
     }
 
     setIsSaveInProgress(false);
@@ -705,7 +705,7 @@ function OrganisationPageComponent({
         {/* Timestamp */}
         <section className="post-meta">
           <Typography tag="p" className="text-sm text-gray-400">
-            {new Date(organisationData.registrationDate).toLocaleString()}
+            {new Date(organisationData.updatedDate).toLocaleString()}
           </Typography>
           {/* Additional meta content */}
         </section>
@@ -857,6 +857,18 @@ function OrganisationPageComponent({
         mediaFiles={organisationData.mediaFiles}
         updatePostDataBasedOnKeyValue={updateOrganisationDataOnKeyValue}
       />
+      <Modal
+        show={!!saveError}
+        size="md"
+        popup
+        dismissible
+        onClose={() => setSaveError(null)}
+      >
+        <Modal.Header>Unable to create page</Modal.Header>
+        <Modal.Body>
+          <p className="text-sm text-gray-700">{saveError}</p>
+        </Modal.Body>
+      </Modal>
       <Modal show={isSaveInProgress} size="md" popup dismissible={false}>
         <Modal.Header className="opacity-0" />
         <Modal.Body>

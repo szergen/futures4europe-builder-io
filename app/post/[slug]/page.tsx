@@ -98,7 +98,7 @@ export default async function PostPage({ params }: any) {
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Post Not Found</h1>
           <p className="text-gray-600 mb-4">
-            The post you're looking for doesn't exist in Builder.io.
+            The post you&apos;re looking for doesn&apos;t exist in Builder.io.
           </p>
           <p className="text-sm text-gray-500">
             Make sure the post is published and the slug matches: /post/

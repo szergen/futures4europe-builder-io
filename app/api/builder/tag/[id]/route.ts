@@ -4,6 +4,7 @@ import {
   updateBuilderTag,
   NotFoundError,
   ValidationError,
+  DuplicateError,
   BuilderApiError,
 } from "@app/utils/builderTagUtils";
 
@@ -105,6 +106,18 @@ export const PUT = async (
           details: error.message,
         },
         { status: 400 }
+      );
+    }
+
+    if (error instanceof DuplicateError) {
+      return NextResponse.json(
+        {
+          error: error.message,
+          action: "Please choose a different name",
+          code: "TAG_DUPLICATE",
+          existingId: error.existingId,
+        },
+        { status: 409 }
       );
     }
 

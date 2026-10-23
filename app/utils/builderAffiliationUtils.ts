@@ -212,11 +212,30 @@ const AFFILIATIONS_API_ROUTE = "/api/builder/affiliations";
  * @param affiliations - Array of affiliation data objects
  * @returns Object with created and failed arrays
  */
+type AffiliationTagInput = { _id: string; name?: string };
+
+function getAffiliationTitle(aff: {
+  projectTag?: AffiliationTagInput;
+  personTag?: AffiliationTagInput;
+  organisationTag?: AffiliationTagInput;
+}): string {
+  // Person <-> organisation affiliations have no project tag and are titled
+  // "Person -to- Organisation"; everything else is "Project -to- Target".
+  if (!aff.projectTag) {
+    return `${aff.personTag?.name || "Person"} -to- ${
+      aff.organisationTag?.name || "Organisation"
+    }`;
+  }
+  const targetName =
+    aff.personTag?.name || aff.organisationTag?.name || "Entity";
+  return `${aff.projectTag.name || "Project"} -to- ${targetName}`;
+}
+
 export async function bulkCreateAffiliations(
   affiliations: Array<{
-    projectTag: { _id: string; name?: string };
-    personTag?: { _id: string; name?: string };
-    organisationTag?: { _id: string; name?: string };
+    projectTag?: AffiliationTagInput;
+    personTag?: AffiliationTagInput;
+    organisationTag?: AffiliationTagInput;
     role?: string;
     extraIdentifier: string;
   }>
@@ -227,19 +246,19 @@ export async function bulkCreateAffiliations(
 
   // Transform affiliations to Builder.io API format
   const payload = affiliations.map((aff) => {
-    const targetName =
-      aff.personTag?.name || aff.organisationTag?.name || "Entity";
-    const title = `${aff.projectTag.name || "Project"} -to- ${targetName}`;
+    const title = getAffiliationTitle(aff);
 
     return {
       name: title,
       data: {
         title,
-        projectTag: {
-          "@type": "@builder.io/core:Reference",
-          id: aff.projectTag._id,
-          model: "tag",
-        },
+        ...(aff.projectTag && {
+          projectTag: {
+            "@type": "@builder.io/core:Reference",
+            id: aff.projectTag._id,
+            model: "tag",
+          },
+        }),
         ...(aff.personTag && {
           personTag: {
             "@type": "@builder.io/core:Reference",
@@ -274,11 +293,6 @@ export async function bulkCreateAffiliations(
 
     const result = await response.json();
 
-    // Update cache with created affiliations
-    if (result.created?.length > 0) {
-      await appendToAffiliationsCache(result.created);
-    }
-
     console.log(
       `[Builder.io] Affiliations created: ${
         result.created?.length || 0
@@ -294,9 +308,7 @@ export async function bulkCreateAffiliations(
     return {
       created: [],
       failed: affiliations.map((aff) => ({
-        name: `${aff.projectTag.name} -to- ${
-          aff.personTag?.name || aff.organisationTag?.name
-        }`,
+        name: getAffiliationTitle(aff),
         error: String(error),
       })),
     };
@@ -328,11 +340,6 @@ export async function bulkDeleteAffiliations(
     });
 
     const result = await response.json();
-
-    // Update cache by removing deleted affiliations
-    if (result.deleted?.length > 0) {
-      await removeFromAffiliationsCache(result.deleted);
-    }
 
     console.log(
       `[Builder.io] Affiliations deleted: ${

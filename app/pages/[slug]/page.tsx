@@ -13,6 +13,37 @@ import {
   transformBuilderPostToWixFormat,
 } from "@app/utils/builderPostUtils";
 import { getAllBuilderInfoPages } from "@app/utils/builderInfoPageUtils";
+import { generateOgMetadata } from "@app/shared-components/OgImage";
+import { Metadata } from "next";
+
+const listingTitles: Record<string, string> = {
+  practice: "Practices",
+  event: "Events",
+  post: "Posts",
+  project: "Projects",
+  person: "People",
+  organisation: "Organisations",
+  "project-result": "Results",
+};
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const label = listingTitles[params.slug] || "Pages";
+  const placeholder = "https://futures4europe.eu/images/placeholder.webp";
+  return generateOgMetadata({
+    title: `${label} | Futures4Europe`,
+    description: `List of ${label} pages on Futures4Europe`,
+    primaryImage: placeholder,
+    // Match the post page, which always emits a second Open Graph image.
+    // Dropping that tag on navigation makes Next 13.5 unmount a hoisted
+    // <meta> whose node is already gone and crashes the page.
+    secondaryImage: placeholder,
+    url: `https://futures4europe.eu/pages/${params.slug}`,
+  });
+}
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.

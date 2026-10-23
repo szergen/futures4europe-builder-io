@@ -51,8 +51,6 @@ export const Tag: React.FC<TagProps> = ({
   disableUnderline,
   masterTag,
 }) => {
-  if (!name) return null;
-
   const { tags, tagsFetched } = useAuth();
   const [masterTagState, setMasterTagState] = useState<TagProps | undefined>({
     name,
@@ -93,6 +91,8 @@ export const Tag: React.FC<TagProps> = ({
     }
     // console.log(`tag ${tag} has been referenced ${popularity} times`);
   }, [tags, tagsFetched]);
+
+  if (!name) return null;
 
   return (
     <>

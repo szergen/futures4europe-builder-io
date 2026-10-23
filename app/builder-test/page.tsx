@@ -39,7 +39,7 @@ export default async function BuilderTestPage() {
             Builder.io content.
           </p>
           <div className="bg-white/10 p-4 rounded">
-            <h3 className="font-semibold mb-2">What you're seeing:</h3>
+            <h3 className="font-semibold mb-2">What you&apos;re seeing:</h3>
             <ul className="list-disc list-inside space-y-1">
               <li>This header is a fixed React component</li>
               <li>The content below is fetched from Builder.io</li>
@@ -88,7 +88,7 @@ export default async function BuilderTestPage() {
                   .env.local
                 </li>
                 <li>Go to your Builder.io dashboard</li>
-                <li>Create a new "Section" content model</li>
+                <li>Create a new &quot;Section&quot; content model</li>
                 <li>Add some content to it</li>
                 <li>Refresh this page</li>
               </ol>

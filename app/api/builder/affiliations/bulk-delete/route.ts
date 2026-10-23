@@ -7,6 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { removeFromAffiliationsCache } from "@app/utils/builderAffiliationUtils";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -75,6 +76,10 @@ export async function POST(request: NextRequest) {
     console.log(
       `[Builder.io API] Affiliations deleted: ${deleted.length}, failed: ${failed.length}`
     );
+
+    if (deleted.length > 0) {
+      await removeFromAffiliationsCache(deleted);
+    }
 
     return NextResponse.json(
       {
