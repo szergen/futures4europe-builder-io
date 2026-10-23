@@ -10,6 +10,7 @@ enum PageType {
   ProjectInfo = "project info",
   Event = "event",
   ProjectResult = "project result",
+  Practice = "practice",
   OrganisationInfo = "organisation info",
   PersonInfo = "person info",
   Post = "post",
@@ -77,6 +78,11 @@ const PAGE_TYPE_SORT_CONFIG: Record<SortConfigKey, PageTypeSortConfig> = {
   },
   [PageType.ProjectResult]: {
     sortField: "projectResultPublicationDate",
+    fallbackField: "_createdDate",
+    priority: 3,
+  },
+  [PageType.Practice]: {
+    sortField: "practiceDate",
     fallbackField: "_createdDate",
     priority: 3,
   },

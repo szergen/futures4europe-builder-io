@@ -27,12 +27,16 @@ export const decidePageTypeItems = (
     case 'post':
       return postPages.filter((item: any) => {
         const name = getPageTypeName(item);
-        return name !== 'event' && name !== 'project result';
+        return (
+          name !== 'event' && name !== 'project result' && name !== 'practice'
+        );
       });
     case 'event':
       return filterPagesByType('event', postPages);
     case 'project-result':
       return filterPagesByType('project result', postPages);
+    case 'practice':
+      return filterPagesByType('practice', postPages);
     case 'project':
       return filterPagesByType('project info', infoPages);
     case 'person':
@@ -55,12 +59,15 @@ export const decidePageTypesForMiniPages = (
         (item: any) =>
           // pageTypes[0].pageTypeItem.value.name
           item?.pageTypes?.[0]?.name !== 'event' &&
-          item?.pageTypes?.[0]?.name !== 'project result'
+          item?.pageTypes?.[0]?.name !== 'project result' &&
+          item?.pageTypes?.[0]?.name !== 'practice'
       );
     case 'event':
       return postPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'event');
     case 'project-result':
       return postPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'project result');
+    case 'practice':
+      return postPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'practice');
     case 'project':
       return infoPages.filter((item: any) => item?.pageTypes?.[0]?.name === 'project info');
     case 'person':

@@ -30,6 +30,66 @@ import * as CookieConsent from "vanilla-cookieconsent";
 import posthog from "posthog-js";
 import { debounce } from "lodash";
 
+type PageTypeCountKey =
+  | "post"
+  | "project"
+  | "person"
+  | "organisation"
+  | "event"
+  | "projectResult"
+  | "practice";
+
+// Display order of the page-type tags in the header
+const headerPageTypeTags: Array<{
+  name: string;
+  countKey: PageTypeCountKey;
+  tagLine: string;
+  tagPageLink: string;
+}> = [
+  {
+    name: "Projects",
+    countKey: "project",
+    tagLine: "List of Project Info Pages",
+    tagPageLink: "/pages/project",
+  },
+  {
+    name: "Results",
+    countKey: "projectResult",
+    tagLine: "List of Project Result Pages",
+    tagPageLink: "/pages/project-result",
+  },
+  {
+    name: "Events",
+    countKey: "event",
+    tagLine: "List of Event Pages",
+    tagPageLink: "/pages/event",
+  },
+  {
+    name: "Practices",
+    countKey: "practice",
+    tagLine: "List of Practice Pages",
+    tagPageLink: "/pages/practice",
+  },
+  {
+    name: "Posts",
+    countKey: "post",
+    tagLine: "List of Post Pages",
+    tagPageLink: "/pages/post",
+  },
+  {
+    name: "Organisations",
+    countKey: "organisation",
+    tagLine: "List of Organisation Info Pages",
+    tagPageLink: "/pages/organisation",
+  },
+  {
+    name: "People",
+    countKey: "person",
+    tagLine: "List of Person Info Pages",
+    tagPageLink: "/pages/person",
+  },
+];
+
 const Header = () => {
   const {
     isLoggedIn,
@@ -254,13 +314,16 @@ const Header = () => {
   }, [isDropdownOpen]);
 
   // #region pageTypeCounts
-  const [pageTypeCounts, setPageTypeCounts] = useState({
+  const [pageTypeCounts, setPageTypeCounts] = useState<
+    Record<PageTypeCountKey, number>
+  >({
     post: 0,
     project: 0,
     person: 0,
     organisation: 0,
     event: 0,
     projectResult: 0,
+    practice: 0,
   });
   // console.log('postPages', postPages[0]);
   // console.log('infoPages', infoPages[0]);
@@ -336,6 +399,18 @@ const Header = () => {
           )?.length ||
           decidePageTypesForMiniPages(
             "project-result",
+            postPages.map((item) => item.data),
+            infoPages.map((item) => item.data),
+          )?.length ||
+          0,
+        practice:
+          decidePageTypeItems(
+            "practice",
+            postPages.map((item) => item.data),
+            infoPages.map((item) => item.data),
+          )?.length ||
+          decidePageTypesForMiniPages(
+            "practice",
             postPages.map((item) => item.data),
             infoPages.map((item) => item.data),
           )?.length ||
@@ -513,6 +588,10 @@ const Header = () => {
             <Dropdown.Item icon={HiPlusSm}>Add Event</Dropdown.Item>
           </Link>
 
+          <Link href="/post/New_Post?pageType=practice">
+            <Dropdown.Item icon={HiPlusSm}>Add Practice</Dropdown.Item>
+          </Link>
+
           {/* Admin Delete Button */}
           {isWixAdmin && (
             <Link href="/static-pages/admin">
@@ -598,7 +677,7 @@ const Header = () => {
             backgroundColor: "#1111C9", // Specific color as requested
           }}
         >
-          <div className="flex justify-between sm:px-6 sm:px-14 h-header sm:items-center">
+          <div className="flex justify-between sm:px-14 h-header sm:items-center">
             {/* Logo placeholder */}
             <div className="w-32 h-10 bg-white/20 rounded animate-pulse"></div>
 
@@ -648,7 +727,7 @@ const Header = () => {
       >
         <div
           className={classNames(
-            "flex justify-between sm:px-6 sm:px-14 h-header sm:items-center sm:gap-4 sm:gap-8",
+            "flex justify-between sm:px-14 h-header sm:items-center sm:gap-8",
             style.headerContainer,
           )}
         >
@@ -749,161 +828,33 @@ const Header = () => {
                   updateArrowVisibility(x.get());
                 }}
               >
-                {/* Posts Tag with fade effect */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{
-                    once: false,
-                    margin: "-40px", // Trigger fade before fully in view
-                    amount: "some", // Only need some of the element to be visible
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Tag
-                    name="Posts"
-                    hardcodedMentions={
-                      pageTypeCounts.post !== 0
-                        ? pageTypeCounts.post
-                        : undefined
-                    }
-                    tagLine="List of Post Pages"
-                    tagPageLink="/pages/post"
-                    disableTooltip
-                    disableUnderline
-                    className={classNames(style.headerTag)}
-                  />
-                </motion.div>
-
-                {/* Projects Tag with fade effect */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{
-                    once: false,
-                    margin: "-40px",
-                    amount: "some",
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Tag
-                    name="Projects"
-                    hardcodedMentions={
-                      pageTypeCounts.project !== 0
-                        ? pageTypeCounts.project
-                        : undefined
-                    }
-                    tagLine="List of Project Info Pages"
-                    tagPageLink="/pages/project"
-                    disableTooltip
-                    disableUnderline
-                    className={classNames(style.headerTag)}
-                  />
-                </motion.div>
-
-                {/* Project Results Tag with fade effect */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{
-                    once: false,
-                    margin: "-40px",
-                    amount: "some",
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Tag
-                    name="Project Results"
-                    hardcodedMentions={
-                      pageTypeCounts.projectResult !== 0
-                        ? pageTypeCounts.projectResult
-                        : undefined
-                    }
-                    tagLine="List of Project Result Pages"
-                    tagPageLink="/pages/project-result"
-                    disableTooltip
-                    disableUnderline
-                    className={classNames(style.headerTag)}
-                  />
-                </motion.div>
-
-                {/* Events Tag with fade effect */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{
-                    once: false,
-                    margin: "-40px",
-                    amount: "some",
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Tag
-                    name="Events"
-                    hardcodedMentions={
-                      pageTypeCounts.event !== 0
-                        ? pageTypeCounts.event
-                        : undefined
-                    }
-                    tagLine="List of Event Pages"
-                    tagPageLink="/pages/event"
-                    disableTooltip
-                    disableUnderline
-                    className={classNames(style.headerTag)}
-                  />
-                </motion.div>
-
-                {/* Organisations Tag with fade effect */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{
-                    once: false,
-                    margin: "-40px",
-                    amount: "some",
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Tag
-                    name="Organisations"
-                    hardcodedMentions={
-                      pageTypeCounts.organisation !== 0
-                        ? pageTypeCounts.organisation
-                        : undefined
-                    }
-                    tagLine="List of Organisation Info Pages"
-                    tagPageLink="/pages/organisation"
-                    disableTooltip
-                    disableUnderline
-                    className={classNames(style.headerTag)}
-                  />
-                </motion.div>
-
-                {/* People Tag with fade effect */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{
-                    once: false,
-                    margin: "-40px",
-                    amount: "some",
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Tag
-                    name="People"
-                    hardcodedMentions={
-                      pageTypeCounts.person !== 0
-                        ? pageTypeCounts.person
-                        : undefined
-                    }
-                    tagLine="List of Person Info Pages"
-                    tagPageLink="/pages/person"
-                    disableTooltip
-                    disableUnderline
-                    className={classNames(style.headerTag)}
-                  />
-                </motion.div>
+                {headerPageTypeTags.map((headerTag) => (
+                  <motion.div
+                    key={headerTag.tagPageLink}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{
+                      once: false,
+                      margin: "-40px", // Trigger fade before fully in view
+                      amount: "some", // Only need some of the element to be visible
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Tag
+                      name={headerTag.name}
+                      hardcodedMentions={
+                        pageTypeCounts[headerTag.countKey] !== 0
+                          ? pageTypeCounts[headerTag.countKey]
+                          : undefined
+                      }
+                      tagLine={headerTag.tagLine}
+                      tagPageLink={headerTag.tagPageLink}
+                      disableTooltip
+                      disableUnderline
+                      className={classNames(style.headerTag)}
+                    />
+                  </motion.div>
+                ))}
               </motion.div>
             </div>
           </div>

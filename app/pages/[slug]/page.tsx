@@ -61,6 +61,7 @@ const validParams = [
   { id: "organisation" },
   { id: "event" },
   { id: "project-result" },
+  { id: "practice" },
 ];
 
 // Function to generate static paths
@@ -114,7 +115,7 @@ export default async function Pages({ params }: any) {
           items={decidePageTypesForMiniPages(pageType, postPages, infoPages)}
           title={pageType}
           pageTypePath={
-            ["event", "project-result", "post"].find(
+            ["event", "project-result", "post", "practice"].find(
               (type) => type === pageType,
             )
               ? "post"

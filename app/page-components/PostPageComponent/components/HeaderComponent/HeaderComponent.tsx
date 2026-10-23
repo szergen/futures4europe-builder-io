@@ -39,6 +39,7 @@ export type HeaderComponentProps = {
       thumbnail: string;
     };
     projectResultPublicationDate?: string;
+    practiceDate?: string;
     eventRegistration?: string;
   };
   isEditModeOn: boolean;
@@ -103,6 +104,11 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
       e.preventDefault();
     }
   };
+
+  const pageTypeName = post.pageType?.[0]?.name?.toLowerCase();
+  const isPractice = pageTypeName === "practice";
+  const titleNoun =
+    pageTypeName === "event" ? "event" : isPractice ? "practice" : "post";
 
   return (
     <div className={classNames(style.postHeader)}>
@@ -400,11 +406,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
               validationFunctionForTitle(post?.title) && style.InputRequired
             )}
             // label=""
-            placeholder={
-              post?.pageType?.[0]?.name !== "event"
-                ? "Enter the post title"
-                : "Enter the event title"
-            }
+            placeholder={`Enter the ${titleNoun} title`}
             value={post?.title}
             onChange={(e) => updatePostData({ ...post, title: e.target.value })}
             validate={validationFunctionForTitle}
@@ -425,11 +427,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
         ) : (
           <InputText
             label=""
-            placeholder={
-              post?.pageType?.[0]?.name !== "event"
-                ? "Enter the post subtitle"
-                : "Enter the event subtitle"
-            }
+            placeholder={`Enter the ${titleNoun} subtitle`}
             value={post?.subtitle || ""}
             onChange={(e) =>
               updatePostData({ ...post, subtitle: e.target.value })
@@ -528,6 +526,35 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
             )}
           </div>
         )}
+        {/* Practice Date */}
+        {isPractice && (
+          <div>
+            {!isEditModeOn ? (
+              post?.practiceDate && (
+                <Typography
+                  tag="p"
+                  className="text-gray-500 text-sm font-bold mt-3"
+                >
+                  {dayjs(post.practiceDate).format("DD MMMM YYYY")}
+                </Typography>
+              )
+            ) : (
+              <div className="flex items-center mt-4">
+                <DatePickerComponent
+                  placeholder="Practice Date"
+                  dateFormate="YYYY-MM-DD"
+                  date={post?.practiceDate ? new Date(post.practiceDate) : null}
+                  onChange={(value) =>
+                    updatePostDataBasedOnKeyValue(
+                      "practiceDate",
+                      dayjs(value).format("YYYY-MM-DD")
+                    )
+                  }
+                />
+              </div>
+            )}
+          </div>
+        )}
         {/* Registration Link */}
         {post.pageType?.[0]?.name?.toLowerCase() === "event" && (
           <>
@@ -565,7 +592,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
           </>
         )}
         {/* Post Country */}
-        {
+        {!isPractice && (
           <div className="mt-1">
             {" "}
             {/*//REVIEW REMOVED FLEX */}
@@ -600,7 +627,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
               />
             )}
           </div>
-        }
+        )}
         {/* Recommandations */}
         {/* <div className={classNames(style.recommandations)}>
           <Typography tag="p" className="text-xs text-gray-400">

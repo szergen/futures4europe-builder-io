@@ -112,6 +112,7 @@
 .event_TypeTagImage img,
 .post_TypeTagImage img,
 .projectresult_TypeTagImage img, 
+.practice_TypeTagImage img,
 .personinfo_TypeTagImage img {
   object-fit: cover;
 }
