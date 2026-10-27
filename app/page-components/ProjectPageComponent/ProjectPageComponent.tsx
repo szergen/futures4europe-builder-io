@@ -27,6 +27,7 @@ import { Modal } from "flowbite-react";
 import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
 import ContentComponent from "../PostPageComponent/components/ContentComponent/ContentComponent";
 import { invalidateProjectPageCache } from "@app/utils/cache-utils";
+import { normaliseInternalLinks } from "@app/utils/internal-links-utils";
 import {
   createBuilderProjectPage,
   updateBuilderProjectPage,
@@ -191,6 +192,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
     //   }; //done
     // }), //done
     organisations: organisations,
+    internalLinks: normaliseInternalLinks(project?.data?.internalLinks),
     registrationDate: project?.data?._createdDate["$date"], //done-system field
     mediaFiles: project?.data?.mediaFiles, //done
     linkedinLink: project?.data?.linkedinLink,
@@ -413,7 +415,7 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
 
   // #region handleProjectInternalLinks
   // console.log('postPages', postPages);
-  const internalLinks = postPages
+  const relatedPosts = postPages
     ?.filter((page) => {
       return page?.data?.projects?.find(
         (item: any) =>
@@ -782,7 +784,8 @@ function ProjectPageComponent({ pageTitle, project, isNewPage }: any) {
       {/* Content related to this Info Page */}
       <MiniPagesListComponentPost
         isEditModeOn={isEditModeOn}
-        internalLinks={internalLinks}
+        internalLinks={projectData.internalLinks}
+        relatedLinks={relatedPosts}
         handleUpdatePostData={(value) =>
           updateProjectDataOnKeyValue("internalLinks", value)
         }

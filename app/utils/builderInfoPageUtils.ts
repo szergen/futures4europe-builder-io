@@ -2,7 +2,10 @@ import {
   getBuilderContent,
   getAllBuilderContent,
 } from "@app/shared-components/Builder";
-import { transformReferencesForBuilderCreate } from "@app/utils/builderPostUtils";
+import {
+  isTransformedBuilderEntry,
+  transformReferencesForBuilderCreate,
+} from "@app/utils/builderPostUtils";
 import { RedisCacheService } from "@app/services/redisCache";
 
 // ============================================================================
@@ -58,6 +61,10 @@ function transformReferenceArray(refs: any[], itemKey: string = "item"): any[] {
  * Transform Builder.io info-page data to the format expected by OrganisationPageComponent
  */
 export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
+  // The info pages cache stores transformed pages; a second pass would wipe
+  // every tag list because it looks for the raw keys (project, pageTypeItem...).
+  if (isTransformedBuilderEntry(builderInfoPage)) return builderInfoPage;
+
   const data = builderInfoPage.data;
 
   return {
@@ -128,6 +135,7 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
         "organisationHasMemberItem"
       ),
       mediaFiles: data.mediaFiles || [],
+      internalLinks: data.internalLinks || [],
       organisationPeopleRoles: data.organisationPeopleRoles || [],
       organisationProjectRoles: data.organisationProjectRoles || [],
       description: data.description || "",
@@ -462,6 +470,11 @@ export function transformProjectDataForBuilder(
     linkedinLink: projectData.linkedinLink || "",
     websiteLink: projectData.websiteLink || "",
     mediaFiles: projectData.mediaFiles || [],
+    internalLinks: transformReferencesForBuilderCreate(
+      projectData.internalLinks,
+      "post-page",
+      "internalLinksItem"
+    ),
 
     // Reference fields - WRAPPED format for Builder.io list fields
     project: transformReferencesForBuilderCreate(
@@ -704,6 +717,11 @@ export function transformOrganisationDataForBuilder(
     linkedinLink: organisationData.linkedinLink || "",
     websiteLink: organisationData.websiteLink || "",
     mediaFiles: organisationData.mediaFiles || [],
+    internalLinks: transformReferencesForBuilderCreate(
+      organisationData.internalLinks,
+      "post-page",
+      "internalLinksItem"
+    ),
 
     // Reference fields - WRAPPED format for Builder.io list fields
     // Main organisation tag reference
@@ -982,6 +1000,11 @@ export function transformPersonDataForBuilder(
     researchGateLink: personData.researchGateLink || "",
     orcidLink: personData.orcidLink || "",
     mediaFiles: personData.mediaFiles || [],
+    internalLinks: transformReferencesForBuilderCreate(
+      personData.internalLinks,
+      "post-page",
+      "internalLinksItem"
+    ),
 
     // Reference fields - WRAPPED format for Builder.io list fields
     // Main person tag reference

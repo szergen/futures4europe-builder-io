@@ -7,6 +7,7 @@
 
 import { getAllBuilderContent } from "@app/shared-components/Builder";
 import { RedisCacheService } from "@app/services/redisCache";
+import { enrichTagReferences } from "@app/utils/builderReferenceEnrichment";
 
 // Cache key for affiliations with full ref data
 const AFFILIATIONS_CACHE_KEY = "affiliations_builder.json";
@@ -376,8 +377,9 @@ export async function appendToAffiliationsCache(
   try {
     const cached = await RedisCacheService.getFromCache(AFFILIATIONS_CACHE_KEY);
 
-    // Transform new affiliations to match cache format
-    const transformed = newAffiliations.map(transformAffiliationForInfoPage);
+    // Write API responses only hold tag ids; pages need the tag names.
+    const enriched = await enrichTagReferences(newAffiliations);
+    const transformed = enriched.map(transformAffiliationForInfoPage);
 
     if (cached && Array.isArray(cached)) {
       cached.push(...transformed);

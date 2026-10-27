@@ -27,6 +27,7 @@ import {
 import { Modal } from "flowbite-react";
 import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
 import { invalidatePersonPageCache } from "@app/utils/cache-utils";
+import { normaliseInternalLinks } from "@app/utils/internal-links-utils";
 import OgImage from "@app/shared-components/OgImage";
 // Builder.io imports for person page create/update
 import {
@@ -193,6 +194,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
     // projectsParticipation: person?.data?.personProjectParticipation, // done
     projectsParticipation: projectsParticipation, // done
     mediaFiles: person?.data?.mediaFiles, // done
+    internalLinks: normaliseInternalLinks(person?.data?.internalLinks),
     linkedinLink: person?.data?.linkedinLink,
     websiteLink: person?.data?.websiteLink,
     researchGateLink: person?.data?.researchGateLink,
@@ -520,7 +522,7 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
 
   // #region handlePersonInternalLinks
   // console.log('postPages', postPages);
-  const internalLinks = postPages
+  const relatedPosts = postPages
     ?.filter((page) => {
       return (
         page?.data?.author?.find(
@@ -923,7 +925,12 @@ function PersonPageComponent({ pageTitle, person, isNewPage }: any) {
       />
       {/* Content related to this Info Page */}
       <MiniPagesListComponentPost
-        internalLinks={internalLinks}
+        isEditModeOn={isEditModeOn}
+        internalLinks={personData.internalLinks}
+        relatedLinks={relatedPosts}
+        handleUpdatePostData={(value) =>
+          updatePersonDataOnKeyValue("internalLinks", value)
+        }
         title="Content related to this Person"
         // projectResults={projectResults}
         // events={events}

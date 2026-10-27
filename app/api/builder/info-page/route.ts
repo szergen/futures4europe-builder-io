@@ -14,6 +14,10 @@ import { RedisCacheService } from "@app/services/redisCache";
 import { getAllBuilderContent } from "@app/shared-components/Builder/builderUtils";
 import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
 import { normaliseName } from "@app/utils/builderTagUtils";
+import {
+  getEntryForCacheAfterWrite,
+  upsertCachedEntry,
+} from "@app/utils/builderReferenceEnrichment";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -163,63 +167,16 @@ export async function POST(request: NextRequest) {
       slug: result.data?.slug,
     });
 
-    // Fetch the page again with enriched references before caching.
-    // Builder.io has eventual consistency — the page may not be readable
-    // immediately after a write. Retry with a delay to handle this.
-    let enrichedPage: any = null;
-    if (result.id) {
-      const MAX_RETRIES = 3;
-      const RETRY_DELAY_MS = 2000;
-      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-        try {
-          if (attempt > 1) {
-            console.log(
-              `[Builder.io API] Enrichment retry ${attempt}/${MAX_RETRIES} after ${RETRY_DELAY_MS}ms...`,
-            );
-            await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
-          }
-          const enrichedPages = await getAllBuilderContent("info-page", {
-            query: { id: result.id },
-            limit: 1,
-          });
-          enrichedPage = enrichedPages?.[0] ?? null;
-          if (enrichedPage) {
-            console.log("[Builder.io API] Successfully enriched page references");
-            break;
-          }
-        } catch (enrichError) {
-          console.warn(
-            `[Builder.io API] Enrichment attempt ${attempt} failed:`,
-            enrichError,
-          );
-        }
-      }
-      if (!enrichedPage) {
-        console.warn(
-          "[Builder.io API] All enrichment attempts failed — cache will be preserved as-is",
-        );
-      }
-    }
-
-    // Update Redis Cache with the transformed page (consistent format with GET /api/infoPages).
-    // If enrichment failed, leave the cache intact instead of invalidating it.
-    // The new page will appear on the next full cache refresh (TTL expiry).
+    // Redis entries never expire, so a page missing here stays out of every
+    // listing and search until someone clears the cache by hand.
     try {
-      if (enrichedPage) {
-        const transformedPage = transformBuilderInfoPageToWixFormat(enrichedPage);
+      if (result.id) {
+        const transformedPage = transformBuilderInfoPageToWixFormat(
+          await getEntryForCacheAfterWrite("info-page", result),
+        );
         if (transformedPage) {
-          const cached = await RedisCacheService.getFromCache(INFO_PAGES_CACHE_KEY);
-          if (cached && Array.isArray(cached)) {
-            cached.push(transformedPage);
-            await RedisCacheService.saveToCache(
-              INFO_PAGES_CACHE_KEY,
-              cached,
-              CACHE_TTL,
-            );
-            console.log("[Builder.io API] Added transformed info-page to Redis cache");
-          }
-        } else {
-          console.warn("[Builder.io API] Transformation returned null — leaving cache intact");
+          await upsertCachedEntry(INFO_PAGES_CACHE_KEY, transformedPage, CACHE_TTL);
+          console.log("[Builder.io API] Added transformed info-page to Redis cache");
         }
       }
     } catch (cacheError) {

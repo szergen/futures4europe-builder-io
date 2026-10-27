@@ -480,13 +480,22 @@ export async function getAllBuilderPosts(options?: { cachebust?: boolean }) {
       }
     }
 
-    // Cache the results if we found any
-    if (allPosts.length > 0) {
-      await RedisCacheService.saveToCache(POSTS_CACHE_KEY, allPosts, CACHE_TTL);
-      console.log(`[Builder.io] Cached ${allPosts.length} posts`);
+    // Store the same transformed shape as GET /api/postPages and the post write
+    // routes; the browser reads this key as-is and expects transformed posts.
+    const transformedPosts = allPosts
+      .map((post) => transformBuilderPostToWixFormat(post))
+      .filter(Boolean);
+
+    if (transformedPosts.length > 0) {
+      await RedisCacheService.saveToCache(
+        POSTS_CACHE_KEY,
+        transformedPosts,
+        CACHE_TTL,
+      );
+      console.log(`[Builder.io] Cached ${transformedPosts.length} posts`);
     }
 
-    return allPosts;
+    return transformedPosts;
   } catch (error) {
     console.error("[Builder.io] Error fetching all posts:", error);
     // Fallback to cache if API fails
@@ -567,12 +576,24 @@ function transformReferenceArray(arr: any[], itemKey?: string): any[] {
 }
 
 /**
+ * Raw Builder.io entries always carry `modelId`; the Wix-format output of the
+ * transforms never does, and is the only shape with `data._createdDate`.
+ */
+export function isTransformedBuilderEntry(entry: any): boolean {
+  return !!entry && !entry.modelId && !!entry.data?._createdDate;
+}
+
+/**
  * Transform Builder.io post data to match Wix PostPageComponent structure
  * @param builderPost - Raw Builder.io post data
  * @returns Transformed post object matching Wix structure
  */
 export function transformBuilderPostToWixFormat(builderPost: any) {
   if (!builderPost) return null;
+
+  // The posts cache can hold already transformed posts; running them through
+  // again nests countryTag in a second array and drops _owner.
+  if (isTransformedBuilderEntry(builderPost)) return builderPost;
 
   const data = builderPost.data || {};
 
