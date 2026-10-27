@@ -2,7 +2,10 @@ import {
   getBuilderContent,
   getAllBuilderContent,
 } from "@app/shared-components/Builder";
-import { transformReferencesForBuilderCreate } from "@app/utils/builderPostUtils";
+import {
+  isTransformedBuilderEntry,
+  transformReferencesForBuilderCreate,
+} from "@app/utils/builderPostUtils";
 import { RedisCacheService } from "@app/services/redisCache";
 
 // ============================================================================
@@ -58,6 +61,10 @@ function transformReferenceArray(refs: any[], itemKey: string = "item"): any[] {
  * Transform Builder.io info-page data to the format expected by OrganisationPageComponent
  */
 export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
+  // The info pages cache stores transformed pages; a second pass would wipe
+  // every tag list because it looks for the raw keys (project, pageTypeItem...).
+  if (isTransformedBuilderEntry(builderInfoPage)) return builderInfoPage;
+
   const data = builderInfoPage.data;
 
   return {

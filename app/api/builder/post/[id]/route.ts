@@ -10,8 +10,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { RedisCacheService } from "@app/services/redisCache";
-import { getAllBuilderContent } from "@app/shared-components/Builder/builderUtils";
 import { transformBuilderPostToWixFormat } from "@app/utils/builderPostUtils";
+import {
+  getEntryForCacheAfterWrite,
+  upsertCachedEntry,
+} from "@app/utils/builderReferenceEnrichment";
 
 const BUILDER_API_URL = "https://builder.io/api/v1/write";
 const BUILDER_PRIVATE_API_KEY = process.env.BUILDER_PRIVATE_API_KEY || "";
@@ -78,65 +81,18 @@ export async function PUT(
       slug: result.data?.slug,
     });
 
-    // Fetch the post again with enriched references before caching.
-    // Builder.io has eventual consistency — the updated data may not be
-    // readable immediately after a write. Retry with a delay to handle this.
-    let enrichedPost: any = null;
-    if (result.id) {
-      const MAX_RETRIES = 3;
-      const RETRY_DELAY_MS = 2000;
-      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-        try {
-          if (attempt > 1) {
-            console.log(
-              `[Builder.io API] Enrichment retry ${attempt}/${MAX_RETRIES} after ${RETRY_DELAY_MS}ms...`,
-            );
-            await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
-          }
-          const enrichedPosts = await getAllBuilderContent("post-page", {
-            query: { id: result.id },
-            limit: 1,
-          });
-          enrichedPost = enrichedPosts?.[0] ?? null;
-          if (enrichedPost) {
-            console.log("[Builder.io API] Successfully enriched post references");
-            break;
-          }
-        } catch (enrichError) {
-          console.warn(
-            `[Builder.io API] Enrichment attempt ${attempt} failed:`,
-            enrichError,
-          );
-        }
-      }
-      if (!enrichedPost) {
-        console.warn(
-          "[Builder.io API] All enrichment attempts failed — cache will be preserved as-is",
-        );
-      }
-    }
-
-    // Transform the enriched post to Wix format (used for both cache and pageType detection).
-    const transformedPost = enrichedPost
-      ? transformBuilderPostToWixFormat(enrichedPost)
+    // Transformed to Wix format, used for both the cache and pageType detection.
+    const transformedPost = result.id
+      ? transformBuilderPostToWixFormat(
+          await getEntryForCacheAfterWrite("post-page", result),
+        )
       : null;
 
-    // Update Redis Cache with the transformed post (consistent format with GET /api/postPages).
-    // If enrichment failed, leave the cache intact instead of invalidating it.
-    // The update will be reflected on the next full cache refresh (TTL expiry).
+    // Also adds the post if an earlier save never made it into the cache.
     try {
       if (transformedPost) {
-        const cached = await RedisCacheService.getFromCache(ALL_POSTS_CACHE_KEY);
-        if (cached && Array.isArray(cached)) {
-          const index = cached.findIndex((p: any) => p.id === postId);
-          if (index !== -1) {
-            cached[index] = transformedPost;
-            await RedisCacheService.saveToCache(ALL_POSTS_CACHE_KEY, cached, CACHE_TTL);
-            console.log("[Builder.io API] Updated transformed post in Redis cache");
-          }
-        }
-      } else {
-        console.warn("[Builder.io API] Enrichment/transformation unavailable — leaving cache intact");
+        await upsertCachedEntry(ALL_POSTS_CACHE_KEY, transformedPost, CACHE_TTL);
+        console.log("[Builder.io API] Updated transformed post in Redis cache");
       }
     } catch (cacheError) {
       console.warn(
