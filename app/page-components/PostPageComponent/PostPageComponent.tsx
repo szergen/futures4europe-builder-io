@@ -19,6 +19,7 @@ import { Modal } from "flowbite-react";
 import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
 import { sanitizeTitleForSlug } from "../PageComponents.utils";
 import { invalidatePostPageCache } from "@app/utils/cache-utils";
+import { normaliseInternalLinks } from "@app/utils/internal-links-utils";
 import {
   createBuilderPost,
   updateBuilderPost,
@@ -134,7 +135,7 @@ function PostPageComponent({ pageTitle, post, isNewPost, pageType }: any) {
     eventRegistration: post?.data?.eventRegistration,
     eventStartDate: post?.data?.eventStartDate,
     eventEndDate: post?.data?.eventEndDate,
-    internalLinks: post?.data?.internalLinks,
+    internalLinks: normaliseInternalLinks(post?.data?.internalLinks),
     projectResultMedia: post?.data?.projectResultMedia,
     mediaFiles: post?.data?.mediaFiles,
     projectResultPublicationDate: post?.data?.projectResultPublicationDate,

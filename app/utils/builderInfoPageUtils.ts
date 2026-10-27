@@ -135,6 +135,7 @@ export function transformBuilderInfoPageToWixFormat(builderInfoPage: any) {
         "organisationHasMemberItem"
       ),
       mediaFiles: data.mediaFiles || [],
+      internalLinks: data.internalLinks || [],
       organisationPeopleRoles: data.organisationPeopleRoles || [],
       organisationProjectRoles: data.organisationProjectRoles || [],
       description: data.description || "",
@@ -469,6 +470,11 @@ export function transformProjectDataForBuilder(
     linkedinLink: projectData.linkedinLink || "",
     websiteLink: projectData.websiteLink || "",
     mediaFiles: projectData.mediaFiles || [],
+    internalLinks: transformReferencesForBuilderCreate(
+      projectData.internalLinks,
+      "post-page",
+      "internalLinksItem"
+    ),
 
     // Reference fields - WRAPPED format for Builder.io list fields
     project: transformReferencesForBuilderCreate(
@@ -711,6 +717,11 @@ export function transformOrganisationDataForBuilder(
     linkedinLink: organisationData.linkedinLink || "",
     websiteLink: organisationData.websiteLink || "",
     mediaFiles: organisationData.mediaFiles || [],
+    internalLinks: transformReferencesForBuilderCreate(
+      organisationData.internalLinks,
+      "post-page",
+      "internalLinksItem"
+    ),
 
     // Reference fields - WRAPPED format for Builder.io list fields
     // Main organisation tag reference
@@ -989,6 +1000,11 @@ export function transformPersonDataForBuilder(
     researchGateLink: personData.researchGateLink || "",
     orcidLink: personData.orcidLink || "",
     mediaFiles: personData.mediaFiles || [],
+    internalLinks: transformReferencesForBuilderCreate(
+      personData.internalLinks,
+      "post-page",
+      "internalLinksItem"
+    ),
 
     // Reference fields - WRAPPED format for Builder.io list fields
     // Main person tag reference

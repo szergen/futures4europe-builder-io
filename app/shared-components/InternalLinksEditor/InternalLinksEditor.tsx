@@ -1,7 +1,13 @@
-import { Label, TextInput, Tooltip } from 'flowbite-react';
-import { useEffect, useState } from 'react';
-import InputText from '../InputText/InputText';
+import { Tooltip } from 'flowbite-react';
+import { useState } from 'react';
 import { useAuth } from '@app/custom-hooks/AuthContext/AuthContext';
+import {
+  INTERNAL_LINK_ERRORS,
+  findPostByPath,
+  normaliseInternalLinks,
+  parseInternalLinkInput,
+  resolveInternalLinks,
+} from '@app/utils/internal-links-utils';
 import Typography from '../Typography/Typography';
 import classNames from 'classnames';
 import style from './InternalLinksEditor.module.css';
@@ -19,43 +25,17 @@ export const InternalLinksEditor: React.FC<InternalLinksEditorProps> = ({
   handleUpdatePostData,
   title,
 }) => {
-  const [internalLinks, setInternalLinks] = useState(
-    initialInternalLinks || []
+  const [internalLinks, setInternalLinks] = useState(() =>
+    normaliseInternalLinks(initialInternalLinks)
   );
 
-  //   #region get all pages from Wix
   const { postPages, postPagesFetched } = useAuth();
-  //   console.log('postPages', postPages);
-  //   console.log('internalLinks', internalLinks);
-  const findInternalLinksInPostPages = (internalLinks: any[]) => {
-    return internalLinks
-      ?.map((link) =>
-        postPages?.find(
-          (postPage) =>
-            postPage?.data?.slug === link?.slug &&
-            postPage?.data?.title === link?.title
-        )
-      )
-      ?.map((link) => link?.data);
+  const resolvedLinks = resolveInternalLinks(internalLinks, postPages);
+
+  const updateLinks = (links: any[]) => {
+    setInternalLinks(links);
+    handleUpdatePostData && handleUpdatePostData(links);
   };
-
-  useEffect(() => {
-    if (postPagesFetched && postPages) {
-      const fullInternalLinks = findInternalLinksInPostPages(internalLinks);
-      console.log('fullInternalLinks', fullInternalLinks);
-      fullInternalLinks && setInternalLinks(fullInternalLinks);
-    }
-  }, [postPagesFetched]);
-
-  //   #endregion
-  // #region extractedValidPaths
-  //   const getURLFromName = (name: string) => name.replace(/ /g, '_');
-
-  const extractedValidPaths = postPages?.map(
-    (link) => '/post/' + link.data.slug
-  );
-  // console.log('extractedValidPaths', extractedValidPaths);
-  //   #endregion
 
   //   #region add new link
   const [newLink, setNewLink] = useState('');
@@ -64,23 +44,28 @@ export const InternalLinksEditor: React.FC<InternalLinksEditorProps> = ({
   const handleAddLink = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (newLink.trim()) {
-      if (extractedValidPaths.includes(newLink)) {
-        const pageFound = postPages.find(
-          (postPage) => '/post/' + postPage?.data?.slug === newLink
-        )?.data;
-        console.log('pageFound', pageFound);
-        setInternalLinks([...internalLinks, pageFound]);
-        handleUpdatePostData &&
-          handleUpdatePostData([...internalLinks, pageFound]);
-        setNewLink('');
-        setError('');
-      } else {
-        setError('The link does not exist');
-      }
-    } else {
-      setError('The link cannot be empty.');
+    const parsed = parseInternalLinkInput(
+      newLink,
+      typeof window !== 'undefined' ? window.location.hostname : undefined
+    );
+    if (parsed.error !== undefined) {
+      setError(parsed.error);
+      return;
     }
+
+    const pageFound = findPostByPath(postPages, parsed.path);
+    if (!pageFound) {
+      setError(INTERNAL_LINK_ERRORS.notFound);
+      return;
+    }
+    if (internalLinks.some((link) => link._id === pageFound._id)) {
+      setError(INTERNAL_LINK_ERRORS.duplicate);
+      return;
+    }
+
+    updateLinks([...internalLinks, pageFound]);
+    setNewLink('');
+    setError('');
   };
   //   #endregion
 
@@ -99,7 +84,7 @@ export const InternalLinksEditor: React.FC<InternalLinksEditorProps> = ({
           )}
         >
           <span>{title}</span>
-          <Tooltip content="Enter a relative path to a related post on this site. Ex: /post/My_Article_Page">
+          <Tooltip content="Paste the link of a post on futures4europe.eu, e.g. https://www.futures4europe.eu/post/my-article or /post/my-article">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -123,7 +108,7 @@ export const InternalLinksEditor: React.FC<InternalLinksEditorProps> = ({
           type="text"
           value={newLink}
           onChange={(e) => setNewLink(e.target.value)}
-          placeholder="Paste a link to a related post on this site"
+          placeholder="Paste the link of a related post on futures4europe.eu"
           className={classNames(
             'text-gray-400 w-full',
             style.InternalLinksEditor_input
@@ -141,15 +126,15 @@ export const InternalLinksEditor: React.FC<InternalLinksEditorProps> = ({
 
       {/* List of internal links */}
       <div>
-        {internalLinks?.map((link, index) => (
-          <div className="relative" key={link.title}>
-            <MiniPagePost
-              key={index}
-              {...getPropsForMiniPagesListItemPost(link)}
-            />
+        {resolvedLinks.map((link) => (
+          <div className="relative" key={link._id}>
+            <MiniPagePost {...getPropsForMiniPagesListItemPost(link)} />
             <button
+              type="button"
               onClick={() =>
-                setInternalLinks(internalLinks.filter((_, i) => i !== index))
+                updateLinks(
+                  internalLinks.filter((item) => item._id !== link._id)
+                )
               }
               className="bg-red-500 text-white p-2 absolute -right-32 top-0"
             >

@@ -27,6 +27,7 @@ import { Modal } from "flowbite-react";
 import LoadingSpinner from "@app/shared-components/LoadingSpinner/LoadingSpinner";
 import ContentComponent from "../PostPageComponent/components/ContentComponent/ContentComponent";
 import { invalidateOrganisationPageCache } from "@app/utils/cache-utils";
+import { normaliseInternalLinks } from "@app/utils/internal-links-utils";
 // Builder.io imports
 import {
   createBuilderOrganisationPage,
@@ -205,6 +206,7 @@ function OrganisationPageComponent({
     memberOrganisations: organisation?.data?.organisationHasMember,
     memberOfOrganisations: organisation?.data?.organisationMemberOf,
     mediaFiles: organisation?.data?.mediaFiles,
+    internalLinks: normaliseInternalLinks(organisation?.data?.internalLinks),
     linkedinLink: organisation?.data?.linkedinLink,
     websiteLink: organisation?.data?.websiteLink,
     slug: organisation?.data?.slug,
@@ -429,7 +431,7 @@ function OrganisationPageComponent({
 
   // #region handleProjectInternalLinks
   // console.log('postPages', postPages);
-  const internalLinks = postPages
+  const relatedPosts = postPages
     ?.filter((page) => {
       return page?.data?.organisations?.find(
         (item: any) =>
@@ -844,7 +846,8 @@ function OrganisationPageComponent({
       />
       {/* Content related to this Info Page */}
       <MiniPagesListComponentPost
-        internalLinks={internalLinks}
+        internalLinks={organisationData.internalLinks}
+        relatedLinks={relatedPosts}
         isEditModeOn={isEditModeOn}
         title="Content related to this Organisation"
         handleUpdatePostData={(value) =>
