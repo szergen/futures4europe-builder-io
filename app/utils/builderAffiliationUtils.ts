@@ -5,7 +5,7 @@
  * tag references, for use by info pages (person, organisation, project).
  */
 
-import { getAllBuilderContent } from "@app/shared-components/Builder";
+import { getEveryBuilderEntry } from "@app/shared-components/Builder";
 import { RedisCacheService } from "@app/services/redisCache";
 import { enrichTagReferences } from "@app/utils/builderReferenceEnrichment";
 
@@ -94,29 +94,7 @@ export async function fetchAffiliationsWithRefs(options?: {
     }
   }
 
-  // Fetch all affiliations using getAllBuilderContent (which has includeRefs: true)
-  const allAffiliations: any[] = [];
-  const limit = 100;
-  let offset = 0;
-  let hasMore = true;
-
-  while (hasMore) {
-    const results = await getAllBuilderContent("affiliations", {
-      limit,
-      offset,
-    });
-
-    if (results && results.length > 0) {
-      allAffiliations.push(...results);
-      offset += limit;
-
-      if (results.length < limit) {
-        hasMore = false;
-      }
-    } else {
-      hasMore = false;
-    }
-  }
+  const allAffiliations = await getEveryBuilderEntry("affiliations");
 
   // Transform to format with full tag objects
   const transformed = allAffiliations.map(transformAffiliationForInfoPage);

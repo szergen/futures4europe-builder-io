@@ -438,47 +438,12 @@ export async function getAllBuilderPosts(options?: { cachebust?: boolean }) {
       }
     }
 
-    const { builder } = await import("@builder.io/sdk");
-    const { builderConfig } = await import("../../builder.config");
-
-    if (builderConfig.apiKey) {
-      builder.init(builderConfig.apiKey);
-    }
-
-    // Fetch all posts with pagination
-    const allPosts: any[] = [];
-    const limit = 100;
-    let offset = 0;
-    let hasMore = true;
+    const { getEveryBuilderEntry } = await import(
+      "@app/shared-components/Builder/builderUtils"
+    );
 
     console.log("[Builder.io] Fetching all posts from API...");
-
-    while (hasMore) {
-      const posts = await builder.getAll("post-page", {
-        limit,
-        offset,
-        options: {
-          noTargeting: true,
-          includeRefs: true,
-        },
-        enrich: true,
-        cachebust: true,
-      });
-
-      if (posts && posts.length > 0) {
-        allPosts.push(...posts);
-        offset += limit;
-        console.log(
-          `[Builder.io] Fetched ${posts.length} posts (total: ${allPosts.length})`,
-        );
-
-        if (posts.length < limit) {
-          hasMore = false;
-        }
-      } else {
-        hasMore = false;
-      }
-    }
+    const allPosts = await getEveryBuilderEntry("post-page");
 
     // Store the same transformed shape as GET /api/postPages and the post write
     // routes; the browser reads this key as-is and expects transformed posts.

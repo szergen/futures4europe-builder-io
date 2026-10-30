@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { RedisCacheService } from "@app/services/redisCache";
-import { getAllBuilderContent } from "@app/shared-components/Builder";
+import { getEveryBuilderEntry } from "@app/shared-components/Builder";
 import { transformBuilderInfoPageToWixFormat } from "@app/utils/builderInfoPageUtils";
 
 export const revalidate = 0; // Disable caching
@@ -14,31 +14,8 @@ const CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours
  * Handles pagination to get all pages
  */
 async function fetchAllInfoPagesFromBuilder(): Promise<any[]> {
-  const allPages: any[] = [];
-  let offset = 0;
-  const limit = 100; // Builder.io limit per request
-  let hasMore = true;
-
   console.log("[Builder.io] Fetching all info pages...");
-
-  while (hasMore) {
-    const pages = await getAllBuilderContent("info-page", {
-      limit,
-      offset,
-    });
-
-    if (pages && pages.length > 0) {
-      allPages.push(...pages);
-      offset += pages.length;
-      hasMore = pages.length === limit; // If we got a full page, there might be more
-      console.log(
-        `[Builder.io] Fetched ${allPages.length} info pages so far...`
-      );
-    } else {
-      hasMore = false;
-    }
-  }
-
+  const allPages = await getEveryBuilderEntry("info-page");
   console.log(`[Builder.io] Completed fetching ${allPages.length} info pages`);
   return allPages;
 }
@@ -53,7 +30,9 @@ export const GET = async (req: NextRequest) => {
     const cachedData = await RedisCacheService.getFromCache(CACHE_KEY);
     if (cachedData && Array.isArray(cachedData) && cachedData.length > 0) {
       console.log(`[Cache] Returning ${cachedData.length} cached info pages`);
-      return NextResponse.json(cachedData);
+      return NextResponse.json(
+        cachedData.map(transformBuilderInfoPageToWixFormat)
+      );
     }
 
     // Fetch from Builder.io
@@ -106,7 +85,13 @@ export const POST = async (req: NextRequest) => {
       transformBuilderInfoPageToWixFormat(page)
     );
 
-    // Update cache
+    if (transformedPages.length === 0) {
+      return NextResponse.json(
+        { message: "Builder.io returned no info pages, cache left unchanged" },
+        { status: 502 }
+      );
+    }
+
     await RedisCacheService.saveToCache(CACHE_KEY, transformedPages, CACHE_TTL);
 
     return NextResponse.json(
