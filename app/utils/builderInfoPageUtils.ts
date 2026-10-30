@@ -1,6 +1,6 @@
 import {
   getBuilderContent,
-  getAllBuilderContent,
+  getEveryBuilderEntry,
 } from "@app/shared-components/Builder";
 import {
   isTransformedBuilderEntry,
@@ -211,32 +211,7 @@ export async function getAllBuilderInfoPages(options?: {
 
     console.log("[Builder.io] Fetching all info pages from API...");
 
-    // Fetch all info pages with pagination
-    const allPages: any[] = [];
-    const limit = 100;
-    let offset = 0;
-    let hasMore = true;
-
-    while (hasMore) {
-      const results = await getAllBuilderContent("info-page", {
-        limit,
-        offset,
-      });
-
-      if (results && results.length > 0) {
-        allPages.push(...results);
-        offset += limit;
-        console.log(
-          `[Builder.io] Fetched ${results.length} info pages (total: ${allPages.length})`
-        );
-
-        if (results.length < limit) {
-          hasMore = false;
-        }
-      } else {
-        hasMore = false;
-      }
-    }
+    const allPages = await getEveryBuilderEntry("info-page");
 
     // Transform to Wix format before caching (consistent with GET /api/infoPages)
     const transformedPages = allPages.map((page) =>

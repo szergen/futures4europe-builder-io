@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { RedisCacheService } from "@app/services/redisCache";
-import { getAllBuilderContent } from "@app/shared-components/Builder";
+import { getEveryBuilderEntry } from "@app/shared-components/Builder";
 import { transformBuilderPostToWixFormat } from "@app/utils/builderPostUtils";
 
 export const revalidate = 0; // Disable caching
@@ -14,31 +14,8 @@ const CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours
  * Handles pagination to get all posts
  */
 async function fetchAllPostPagesFromBuilder(): Promise<any[]> {
-  const allPosts: any[] = [];
-  let offset = 0;
-  const limit = 100; // Builder.io limit per request
-  let hasMore = true;
-
   console.log("[Builder.io] Fetching all post pages...");
-
-  while (hasMore) {
-    const posts = await getAllBuilderContent("post-page", {
-      limit,
-      offset,
-    });
-
-    if (posts && posts.length > 0) {
-      allPosts.push(...posts);
-      offset += posts.length;
-      hasMore = posts.length === limit; // If we got a full page, there might be more
-      console.log(
-        `[Builder.io] Fetched ${allPosts.length} post pages so far...`
-      );
-    } else {
-      hasMore = false;
-    }
-  }
-
+  const allPosts = await getEveryBuilderEntry("post-page");
   console.log(`[Builder.io] Completed fetching ${allPosts.length} post pages`);
   return allPosts;
 }
@@ -53,7 +30,11 @@ export const GET = async (req: NextRequest) => {
     const cachedData = await RedisCacheService.getFromCache(CACHE_KEY);
     if (cachedData && Array.isArray(cachedData) && cachedData.length > 0) {
       console.log(`[Cache] Returning ${cachedData.length} cached post pages`);
-      return NextResponse.json(cachedData);
+      // Search matches tags by `_id`, which only transformed posts have; the
+      // cache can still hold raw entries written by older code.
+      return NextResponse.json(
+        cachedData.map(transformBuilderPostToWixFormat).filter(Boolean)
+      );
     }
 
     // Fetch from Builder.io
@@ -106,7 +87,13 @@ export const POST = async (req: NextRequest) => {
       .map((post) => transformBuilderPostToWixFormat(post))
       .filter((post) => post !== null);
 
-    // Update cache
+    if (transformedPosts.length === 0) {
+      return NextResponse.json(
+        { message: "Builder.io returned no post pages, cache left unchanged" },
+        { status: 502 }
+      );
+    }
+
     await RedisCacheService.saveToCache(CACHE_KEY, transformedPosts, CACHE_TTL);
 
     return NextResponse.json(
