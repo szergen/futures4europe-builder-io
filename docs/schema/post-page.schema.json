@@ -1,0 +1,306 @@
+{
+  "id": "28136524d8144db48218fa049145ca48",
+  "name": "post-page",
+  "displayName": "Post Page",
+  "kind": "data",
+  "helperText": "Post Page category (posts, project-result, event, practice)",
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "friendlyName": "Title"
+    },
+    {
+      "name": "pageTypes",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "pageTypesItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ],
+      "friendlyName": "Page Types"
+    },
+    {
+      "name": "slug",
+      "type": "text",
+      "friendlyName": "Slug"
+    },
+    {
+      "name": "pageOwner",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "pageOwnerItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "author",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "authorItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "countryTag",
+      "type": "reference",
+      "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+      "model": "tag",
+      "friendlyName": "countryTag"
+    },
+    {
+      "name": "methods",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "methodsItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "domains",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "domainsItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "people",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "peopleItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "projects",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "projectsItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "organisations",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "organisationsItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "projectResultPublicationDate",
+      "type": "text",
+      "friendlyName": "Project Result Publication Date"
+    },
+    {
+      "name": "projectResultAuthor",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "projectResultAuthorItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "practiceDate",
+      "type": "text",
+      "friendlyName": "Practice Date",
+      "helperText": "Practice date (ISO 8601). Used by the practice page type."
+    },
+    {
+      "name": "eventRegistration",
+      "type": "text",
+      "friendlyName": "Event Registration",
+      "helperText": "Event Registration Link"
+    },
+    {
+      "name": "eventStartDate",
+      "type": "text",
+      "friendlyName": "Event Start Date"
+    },
+    {
+      "name": "eventEndDate",
+      "type": "text",
+      "friendlyName": "Event End Date"
+    },
+    {
+      "name": "speakers",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "speakersItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "postContentRIch1",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch2",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch3",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch4",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch5",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch6",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch7",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch8",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch9",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch10",
+      "type": "html"
+    },
+    {
+      "name": "postImage1",
+      "type": "json"
+    },
+    {
+      "name": "postImage2",
+      "type": "json"
+    },
+    {
+      "name": "postImage3",
+      "type": "json"
+    },
+    {
+      "name": "postImage4",
+      "type": "json"
+    },
+    {
+      "name": "postImage5",
+      "type": "json"
+    },
+    {
+      "name": "postImage6",
+      "type": "json"
+    },
+    {
+      "name": "postImage7",
+      "type": "json"
+    },
+    {
+      "name": "postImage8",
+      "type": "json"
+    },
+    {
+      "name": "postImage9",
+      "type": "json"
+    },
+    {
+      "name": "postImage10",
+      "type": "json"
+    },
+    {
+      "name": "internalLinks",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "internalLinksItem",
+          "type": "reference",
+          "modelId": "28136524d8144db48218fa049145ca48",
+          "model": "post-page"
+        }
+      ]
+    },
+    {
+      "name": "moderators",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "moderatorsItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "projectResultMedia",
+      "type": "json"
+    },
+    {
+      "name": "mediaFiles",
+      "type": "json"
+    },
+    {
+      "name": "wixUpdatedDate",
+      "type": "text"
+    },
+    {
+      "name": "wixCreatedDate",
+      "type": "text"
+    },
+    {
+      "name": "wixId",
+      "type": "text",
+      "friendlyName": "wixId"
+    },
+    {
+      "name": "subtitle",
+      "type": "text",
+      "friendlyName": "subtitle"
+    }
+  ],
+  "exportedAt": "2026-11-14T09:56:09.342Z",
+  "source": "Builder.io model schema"
+}

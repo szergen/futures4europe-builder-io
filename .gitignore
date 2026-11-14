@@ -98,3 +98,7 @@ next-env.d.ts
 
 # Migration mapping files (generated)
 # data/mappings/*.json
+
+# Private dataset backup (Builder.io content, Wix contacts, Wix site members).
+# Not part of the public software release.
+/data/data-set/

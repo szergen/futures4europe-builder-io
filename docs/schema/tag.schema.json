@@ -1,0 +1,63 @@
+{
+  "id": "a275c515afdb401b8b06f9fafe9bcbce",
+  "name": "tag",
+  "displayName": "Tag",
+  "kind": "data",
+  "helperText": "Hypertags",
+  "fields": [
+    {
+      "name": "name",
+      "type": "text",
+      "friendlyName": "Name"
+    },
+    {
+      "name": "tagType",
+      "type": "select",
+      "enum": [
+        "page type",
+        "project result",
+        "post",
+        "event",
+        "project info",
+        "organisation info",
+        "person info",
+        "person",
+        "project",
+        "organisation",
+        "foresight method",
+        "domain",
+        "activity",
+        "country",
+        "person type"
+      ]
+    },
+    {
+      "name": "tagLine",
+      "type": "text",
+      "friendlyName": "Tag Line"
+    },
+    {
+      "name": "picture",
+      "type": "file"
+    },
+    {
+      "name": "tagPageLink",
+      "type": "text",
+      "friendlyName": "Tag Page Link"
+    },
+    {
+      "name": "masterTag",
+      "type": "reference",
+      "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+      "model": "tag",
+      "friendlyName": "Master Tag",
+      "helperText": "For redirecting tags to other tags. Master Tag is the one to point at"
+    },
+    {
+      "name": "wixId",
+      "type": "text"
+    }
+  ],
+  "exportedAt": "2026-11-14T09:56:09.342Z",
+  "source": "Builder.io model schema"
+}

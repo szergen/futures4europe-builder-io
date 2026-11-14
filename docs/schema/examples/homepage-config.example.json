@@ -1,0 +1,36 @@
+{
+  "note": "Fictive example for documentation. This is not a record from the live platform.",
+  "model": "homepage-config",
+  "name": "Amber Coast Foresight",
+  "data": {
+    "name": "Amber Coast Foresight",
+    "featuredPosts": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "post-page",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "featuredProjects": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "info-page",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "featuredProjectResults": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "post-page",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "featuredEvents": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "post-page",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ]
+  }
+}

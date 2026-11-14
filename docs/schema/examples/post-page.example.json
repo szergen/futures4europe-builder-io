@@ -1,0 +1,163 @@
+{
+  "note": "Fictive example for documentation. This is not a record from the live platform.",
+  "model": "post-page",
+  "name": "Signals from the Amber Coast",
+  "data": {
+    "title": "Signals from the Amber Coast",
+    "pageTypes": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "tag",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "slug": "signals-from-the-amber-coast",
+    "pageOwner": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "tag",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "author": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "tag",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "countryTag": {
+      "@type": "@builder.io/core:Reference",
+      "model": "tag",
+      "id": "f1c71ve0000000000000000000000001"
+    },
+    "methods": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "tag",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "domains": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "tag",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "people": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "tag",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "projects": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "tag",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "organisations": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "tag",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "projectResultPublicationDate": "2026-03-12",
+    "projectResultAuthor": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "tag",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "practiceDate": "2026-04-02",
+    "eventRegistration": "https://example.com/register",
+    "eventStartDate": "2026-06-01T09:00:00.000Z",
+    "eventEndDate": "2026-06-03T17:00:00.000Z",
+    "speakers": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "tag",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "postContentRIch1": "<p>Fictive paragraph for this HTML field. It is not platform content.</p>",
+    "postContentRIch2": "<p>Fictive paragraph for this HTML field. It is not platform content.</p>",
+    "postContentRIch3": "<p>Fictive paragraph for this HTML field. It is not platform content.</p>",
+    "postContentRIch4": "<p>Fictive paragraph for this HTML field. It is not platform content.</p>",
+    "postContentRIch5": "<p>Fictive paragraph for this HTML field. It is not platform content.</p>",
+    "postContentRIch6": "<p>Fictive paragraph for this HTML field. It is not platform content.</p>",
+    "postContentRIch7": "<p>Fictive paragraph for this HTML field. It is not platform content.</p>",
+    "postContentRIch8": "<p>Fictive paragraph for this HTML field. It is not platform content.</p>",
+    "postContentRIch9": "<p>Fictive paragraph for this HTML field. It is not platform content.</p>",
+    "postContentRIch10": "<p>Fictive paragraph for this HTML field. It is not platform content.</p>",
+    "postImage1": {
+      "url": "https://example.com/fictive-image.png",
+      "alt": "Fictive coastline"
+    },
+    "postImage2": {
+      "url": "https://example.com/fictive-image.png",
+      "alt": "Fictive coastline"
+    },
+    "postImage3": {
+      "url": "https://example.com/fictive-image.png",
+      "alt": "Fictive coastline"
+    },
+    "postImage4": {
+      "url": "https://example.com/fictive-image.png",
+      "alt": "Fictive coastline"
+    },
+    "postImage5": {
+      "url": "https://example.com/fictive-image.png",
+      "alt": "Fictive coastline"
+    },
+    "postImage6": {
+      "url": "https://example.com/fictive-image.png",
+      "alt": "Fictive coastline"
+    },
+    "postImage7": {
+      "url": "https://example.com/fictive-image.png",
+      "alt": "Fictive coastline"
+    },
+    "postImage8": {
+      "url": "https://example.com/fictive-image.png",
+      "alt": "Fictive coastline"
+    },
+    "postImage9": {
+      "url": "https://example.com/fictive-image.png",
+      "alt": "Fictive coastline"
+    },
+    "postImage10": {
+      "url": "https://example.com/fictive-image.png",
+      "alt": "Fictive coastline"
+    },
+    "internalLinks": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "post-page",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "moderators": [
+      {
+        "@type": "@builder.io/core:Reference",
+        "model": "tag",
+        "id": "f1c71ve0000000000000000000000001"
+      }
+    ],
+    "projectResultMedia": {
+      "note": "Fictive structured value"
+    },
+    "mediaFiles": {
+      "note": "Fictive structured value"
+    },
+    "wixUpdatedDate": "2026-01-15T10:00:00.000Z",
+    "wixCreatedDate": "2025-11-02T10:00:00.000Z",
+    "wixId": "fictive-wix-id-0001",
+    "subtitle": "A fictive briefing on coastal futures"
+  }
+}

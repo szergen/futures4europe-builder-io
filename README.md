@@ -1,423 +1,136 @@
-# Futures4Europe - Builder.io Migration Project
+# Futures4Europe
 
-A Next.js 13+ application migrating from Wix Headless CMS to Builder.io as the primary content management system for the Futures4Europe platform.
+Futures4Europe is an online platform for the European research and innovation (R&I) foresight community. Further developed through the EU-funded Eye of Europe – The Research and Innovation Foresight Community project (Horizon Europe, Grant Agreement No. 101131738), it connects foresight practitioners, researchers, policymakers and wider audiences, supporting the exchange of projects, methods, resources and opportunities for collaboration.
 
-## 🎯 Project Overview
+This repository makes the platform’s source code available to support transparent development, maintenance and reuse. It is intended for developers and technical teams working on foresight platforms or research infrastructures, open-source and open-science communities, and institutions or projects interested in adapting the code for similar digital environments.
 
-This project is undergoing a comprehensive migration from **Wix** as a Headless CMS to **Builder.io** as the primary CMS for all content management. The migration is designed to improve content management capabilities while maintaining the existing user experience.
+In line with the project’s Data Management Plan, GitHub supports ongoing development and version control, while software releases are intended for archiving in Zenodo for long-term preservation and citation. The software is the output designated for reuse; user profiles and other user-generated platform content are outside the scope of that software release.
 
-### Key Points
+## What this repository is
 
-- **From**: Wix Headless CMS
-- **To**: Builder.io Headless CMS
-- **Framework**: Next.js 13+ with App Router
-- **Authentication**: Wix (maintained for user login)
-- **Caching**: Redis (Upstash)
-- **Status**: Partial migration completed, ongoing development
+A [Next.js](https://nextjs.org/) application (App Router) that serves the Futures4Europe website. Editorial content is stored in [Builder.io](https://www.builder.io/). Sign-in stays with [Wix](https://www.wix.com/). Pages are cached with Redis ([Upstash](https://upstash.com/)) and with Next.js incremental static regeneration.
 
-## 📋 Tech Stack
+## Tech stack
 
-- **Frontend Framework**: Next.js 13+ (App Router)
-- **CMS**: Builder.io (primary), Wix (authentication only)
-- **Caching**: Redis via @upstash/redis
+- **Framework**: Next.js 13+ (App Router), React 18
+- **Content**: Builder.io
+- **Authentication**: Wix
+- **Cache**: Redis via `@upstash/redis`
 - **Styling**: Tailwind CSS, Flowbite, CSS Modules
-- **UI Libraries**: Material-UI, Emotion
+- **UI**: Material UI, Emotion
 - **Animation**: Framer Motion, GSAP, React Spring
-- **Forms**: React Hook Form, Draft.js, React Draft WYSIWYG
-- **Analytics**: Vercel Analytics, PostHog
-- **Error Tracking**: Sentry
-- **Testing**: Playwright (E2E)
-- **Package Manager**: Yarn 3.3.0
+- **Editing**: React Hook Form, Draft.js
+- **Analytics and errors**: Vercel Analytics, PostHog, Sentry
+- **Tests**: Playwright
+- **Package manager**: Yarn 3.3.0
 
-## 🗂️ Content Types
+## Content types
 
-The platform manages 4 primary content types with specific sub-types:
+| Model | What it holds | Public route |
+| --- | --- | --- |
+| `post-page` | Posts, events, and project results | `/post-page/[slug]` |
+| `info-page` | Projects, people, and organisations | `/project-page/[slug]`, `/person-page/[slug]`, `/organisation-page/[slug]` |
+| `tag` | Topics, methods, domains, countries, and related labels | Used across content |
+| `affiliations` | Links between people, organisations, and projects | Used across content |
+| `homepage-config` | Featured items on the home page | `/` |
+| `page` | Builder-managed pages | As configured in Builder.io |
+| `admin-section` | Reusable admin sections | Dashboard |
 
-### 1. **Post** (`post-page`)
+Field definitions exported from Builder.io, plus fictive examples, are in [`docs/schema/`](docs/schema/).
 
-- **Sub-types**: Post, Event, Project Result
-- **Route**: `/post-page/[slug]`
-- **Status**: ✅ Migrated to Builder.io
-
-### 2. **Project** (`project-page`)
-
-- **Route**: `/project-page/[slug]`
-- **Status**: ✅ Migrated to Builder.io
-
-### 3. **Person** (`person-page`)
-
-- **Route**: `/person-page/[slug]`
-- **Status**: ✅ Migrated to Builder.io
-
-### 4. **Organisation** (`organisation-page`)
-
-- **Route**: `/organisation-page/[slug]`
-- **Status**: ✅ Migrated to Builder.io
-
-## 📁 Project Structure
-
-```
-futures4europe-builder-io/
-├── app/
-│   ├── post-page/           # Post content pages (migrated)
-│   ├── project-page/        # Project content pages (migrated)
-│   ├── person-page/         # Person profile pages (migrated)
-│   ├── organisation-page/   # Organisation pages (migrated)
-│   ├── page-components/     # Page-specific components
-│   ├── shared-components/   # Reusable UI components
-│   ├── utils/               # Utility functions
-│   │   └── builderPostUtils.ts    # Builder.io transformation utilities
-│   ├── services/            # Service layer (caching, etc.)
-│   ├── api/                 # API routes
-│   ├── custom-hooks/        # React hooks
-│   └── dashboard/           # Admin dashboard
-├── scripts/
-│   ├── migrations/          # Migration scripts
-│   │   └── migrate-tags.js           # Tag migration (completed)
-│   └── utilities/           # Utility scripts
-│       ├── list-builder-models.js    # List Builder.io models
-│       ├── verify-builder.js         # Verify Builder.io setup
-│       ├── mentions.js               # Mentions processing
-│       └── cron.js                   # Cron jobs
-├── data/
-│   ├── examples/            # Reference/example data
-│   │   ├── example_post_page.json
-│   │   ├── example_info_page.json
-│   │   └── example_tag.json
-│   ├── exports/             # Wix data exports
-│   │   └── Tags_wix.csv
-│   └── mappings/            # Migration ID mappings (gitignored)
-│       └── tag-migration-mapping.json
-├── cache/                   # JSON cache files
-├── docs/                    # Documentation
-│   ├── builder-io/          # Builder.io setup guides
-│   └── migration/           # Migration documentation
-├── builder.config.ts        # Builder.io configuration
-└── ...                      # Config files (package.json, tsconfig, etc.)
-```
-
-## ✅ Migration Status
-
-### Completed
-
-- [x] **Display Components**: All 4 content types (post, project, person, organisation)
-- [x] **Schema Definition**: Builder.io models created and configured
-- [x] **Data Transformations**: Wix → Builder.io transform functions implemented
-- [x] **Tag Migration**: **✅ COMPLETE** - All tag operations migrated to Builder.io
-  - [x] Data migration: 3,077 tags migrated
-  - [x] Tag fetching: All GET operations use Builder.io
-  - [x] Tag creation: UI components create in Builder.io
-  - [x] CRUD API: Full RESTful API for tags (GET/POST/PUT/DELETE)
-  - [x] Cache system: Redis caching with `_builder` suffix for isolation
-  - [x] Mentions calculation: Popularity with Wix affiliation translation
-  - [x] Zero Wix dependencies for tag operations
-  - [x] Cache isolation: Builder.io caches separate from production with `_builder` suffix
-  - [x] Cache optimizations:
-    - Append-to-cache for tag creation (vs. invalidate+refetch)
-    - Update-in-cache for tag updates (vs. invalidate+refetch)
-    - Removed unnecessary cache invalidation on New_Post page load
-    - 100x performance improvement for tag operations
-- [x] **Caching Layer**: Redis integration for performance
-- [x] **Static Site Generation**: ISR (Incremental Static Regeneration) setup
-
-### In Progress
-
-- [x] **Administration Panel**: Migration from Wix upload APIs to Builder.io
-
-  - Current location: `app/dashboard/` and page templates
-  - Needs: API endpoint updates for Builder.io
-
-- [ ] **Editing Functionality**: Migrate content editing from Wix to Builder.io
-
-  - [ ] Post editing (currently uses Wix)
-  - [ ] Project editing (currently uses Wix)
-  - [ ] Person editing (currently uses Wix)
-  - [ ] Organisation editing (currently uses Wix)
-  - Update to use Builder.io Write API or Visual Editor
-
-- [ ] **Data Migration Scripts**:
-
-  - [ ] Posts migration
-  - [ ] InfoPages migration
-  - [ ] Affiliations migration
-  - [x] Tags migration (completed)
-
-- [ ] **Homepage Configuration**: Migrate homepage content to Builder.io
-
-### Remaining
-
-- [ ] **Wix Authentication Improvements**: Identify and fix missing items
-- [ ] **Complete Documentation**: Ensure all features are documented
-- [ ] **Route Migration**: Switch from Wix routes to Builder.io routes after validation
-
-## 🚀 Getting Started
+## Getting started
 
 ### Prerequisites
 
 - Node.js 18+
 - Yarn 3.3.0
-- Redis instance (or Upstash account)
-- Builder.io account and API key
-- Wix account (for authentication)
+- A Redis instance (or an Upstash account)
+- A Builder.io public API key
+- A Wix client ID (authentication)
 
-### Installation
+### Install and run
 
 ```bash
-# Install dependencies
 yarn install
-
-# Set up environment variables (see Configuration section)
-cp .env.example .env.local
-
-# Run development server
 yarn dev
-
-# Build for production
-yarn build
-
-# Start production server
-yarn start
 ```
 
-### Available Scripts
+The development server runs at [http://localhost:3000](http://localhost:3000).
 
 ```bash
-yarn dev              # Start development server
-yarn debug            # Start with Node.js inspector on port 3005
-yarn build            # Build for production
-yarn start            # Start production server
-yarn lint             # Run ESLint with auto-fix
-yarn test             # Run E2E tests with Playwright
-yarn storybook        # Start Storybook on port 6006
-yarn clean:cache      # Clear cache directory
+yarn build    # production build
+yarn start    # serve the production build
+yarn lint     # ESLint
+yarn test     # Playwright end-to-end tests
+yarn storybook
 ```
 
-## ⚙️ Configuration
+### Environment variables
 
-### Environment Variables
-
-Create a `.env.local` file in the root directory:
+Create `.env.local` in the repository root before `yarn dev`. Do not commit it.
 
 ```env
 # Builder.io
 NEXT_PUBLIC_BUILDER_API_KEY=your_builder_api_key
+BUILDER_PRIVATE_API_KEY=your_builder_private_key
 
-# Redis/Upstash
+# Redis / Upstash
 UPSTASH_REDIS_REST_URL=your_redis_url
 UPSTASH_REDIS_REST_TOKEN=your_redis_token
 
-# Wix (Authentication)
-WIX_CLIENT_ID=your_wix_client_id
-WIX_CLIENT_SECRET=your_wix_client_secret
+# Wix authentication
+NEXT_PUBLIC_WIX_CLIENT_ID=your_wix_client_id
+NEXT_PUBLIC_WIX_SITE_ID=your_wix_site_id
+NEXT_PUBLIC_WIX_API_KEY=your_wix_api_key
+NEXT_PUBLIC_WIX_ACCOUNT_ID=your_wix_account_id
 
-# Other
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-### Builder.io Models
+## Project structure
 
-The following Builder.io models are configured:
-
-- `post-page`: Blog posts, events, and project results
-- `project-page`: Project information
-- `person-page`: Person profiles
-- `organisation-page`: Organisation profiles
-- `tag`: Tags for categorization (migrated from Wix)
-
-## 📚 Key Features
-
-### 1. **Builder.io Integration**
-
-All content is fetched from Builder.io using the SDK:
-
-```typescript
-// Example: Fetching a post by slug
-import { getBuilderPostBySlug } from "@app/utils/builderPostUtils";
-
-const post = await getBuilderPostBySlug("my-post-slug");
+```
+app/                  # Next.js routes, components, and API handlers
+docs/schema/          # Builder.io model schemas and fictive examples
+docs/builder-io/      # Builder.io setup notes
+scripts/              # Maintenance and data scripts
+builder.config.ts     # Builder.io component registration
 ```
 
-### 2. **Data Transformation Layer**
+`data/data-set/` is a local backup of the Builder.io content and of the Wix contacts and site-member lists. It is listed in `.gitignore` and is not part of the public repository. User profiles and other user-generated content stay out of the software release.
 
-Wix-to-Builder.io transformation utilities ensure backward compatibility:
-
-```typescript
-// Transform Builder.io data to Wix format for existing components
-import { transformBuilderPostToWixFormat } from "@app/utils/builderPostUtils";
-
-const transformedPost = transformBuilderPostToWixFormat(builderPost);
-```
-
-### 3. **Caching Strategy**
-
-Redis caching layer for improved performance:
-
-- **JSON Cache**: Local file-based cache (`cache/`)
-- **Redis Cache**: Distributed cache via Upstash
-- **ISR**: Next.js Incremental Static Regeneration
-
-### 4. **Wix Authentication**
-
-User authentication remains with Wix:
-
-- Login/Register flows maintained
-- User profiles and permissions
-- Future improvements planned
-
-## 📖 Documentation
-
-All documentation is organized in the `docs/` folder:
-
-### Builder.io Setup & Configuration
-
-- `docs/builder-io/BUILDER_IO_SETUP.md` - Complete setup guide
-- `docs/builder-io/BUILDER_IO_TROUBLESHOOTING.md` - Common issues and solutions
-- `docs/builder-io/BUILDER_IO_ONLY_UPDATE.md` - Builder.io-only updates
-- `docs/builder-io/QUICK_FIX_BUILDER.md` - Quick fixes and tips
-- `docs/builder-io/GET_PRIVATE_API_KEY.md` - API key setup
-
-### Migration Guides
-
-- `docs/migration/MIGRATION_SUMMARY.md` - Overall migration summary and status
-- `docs/migration/MIGRATION_SCRIPT_UPDATE.md` - Migration script updates
-
-#### Content Type Migrations
-
-- **Posts**: `docs/migration/posts/BUILDER_POST_MIGRATION_GUIDE.md`, `docs/migration/posts/QUICK_START_BUILDER_POSTS.md`
-- **Projects**: `docs/migration/projects/PROJECT_PAGE_MIGRATION_SUMMARY.md`
-- **Persons**: `docs/migration/persons/PERSON_PAGE_MIGRATION.md`, `docs/migration/persons/PERSON_PAGE_SUMMARY.md`
-- **Organisations**: `docs/migration/organisations/ORGANISATION_PAGE_MIGRATION.md`, `docs/migration/organisations/ORGANISATION_MIGRATION_SUMMARY.md`, `docs/migration/organisations/ORGANISATION_PAGE_QUICK_START.md`
-- **Tags**: `docs/migration/tags/TAG_MIGRATION_GUIDE.md`, `docs/migration/tags/TAG_MIGRATION_SUMMARY.md`, `docs/migration/tags/MIGRATE_TAGS_QUICK_REF.md`
-- **Info Pages**: `docs/migration/info-pages/INFO_PAGES_MIGRATION_COMPLETE.md`
-
-### Other Documentation
-
-- `docs/integration-guide.md` - Integration documentation
-
-## 🛠️ Development Guidelines
-
-### Adding New Content Types
-
-1. Create Builder.io model in the Builder.io dashboard
-2. Define schema and fields
-3. Create transformation utilities in `app/utils/`
-4. Implement page components in `app/[content-type]-page/`
-5. Add migration script if needed
-6. Update documentation
-
-### Code Organization
-
-- **Page Components**: `app/page-components/[ComponentName]/`
-- **Shared Components**: `app/shared-components/[ComponentName]/`
-- **Utilities**: `app/utils/`
-- **Services**: `app/services/`
-- **API Routes**: `app/api/`
-- **Hooks**: `app/custom-hooks/`
-
-### Styling Conventions
-
-- Use CSS Modules for component-specific styles
-- Use Tailwind utility classes for common patterns
-- Global styles in `app/globals.css` and `app/variables.css`
-
-## 🧪 Testing
-
-### E2E Testing with Playwright
+## Testing
 
 ```bash
-# Run all tests
 yarn test
-
-# Run specific test suite
 yarn playwright test tests/e2e/home.spec.ts
-
-# Run tests in UI mode
 yarn playwright test --ui
 ```
 
-Test coverage includes:
+## License
 
-- Home page navigation and highlights
-- News page and detail pages
-- Projects page and detail pages
-- Team page
+The source code is released under the MIT License. The same text is in [`LICENSE`](LICENSE).
 
-## 📊 Performance & Monitoring
+```
+The MIT License (MIT)
 
-- **Analytics**: Vercel Analytics, PostHog
-- **Error Tracking**: Sentry
-- **Speed Insights**: Vercel Speed Insights
-- **Caching**: Redis + ISR for optimal performance
+Copyright (c) 2015 Wix.com
 
-### Cache Optimizations
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-The platform implements intelligent cache management for Builder.io data:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-- **Append-to-Cache**: New tags are appended to existing cache instead of full invalidation
-- **Update-in-Cache**: Tag updates modify cached entries in-place
-- **Selective Invalidation**: Only affected caches are updated, not all data
-- **Performance Impact**:
-  - New_Post page load: ~10-15s → <100ms (100x faster)
-  - Tag creation: Instant availability (no cache rebuild wait)
-  - Tag updates: Instant reflection (preserves mentions count)
-
-Cache keys use `_builder` suffix to isolate Builder.io data from production Wix caches during migration.
-
-## 🔄 Migration Process
-
-### Phase 1: Display Layer (✅ Completed)
-
-- Migrated all page displays
-- Created transformation utilities
-- Implemented caching
-
-### Phase 2: Content Migration (🚧 In Progress)
-
-- Migrate posts, info pages, and affiliations
-- Validate data integrity
-- Switch routes to Builder.io sources
-
-### Phase 3: Administration (🚧 In Progress)
-
-- Migrate admin dashboard to use Builder.io APIs
-- Migrate content creation/editing flows for all page types:
-  - Post editing interface
-  - Project editing interface
-  - Person editing interface
-  - Organisation editing interface
-- Implement Builder.io Write API integration or Visual Editor
-- Test and validate admin functionality
-
-### Phase 4: Cleanup & Optimization (📋 Planned)
-
-- Remove deprecated Wix CMS dependencies
-- Clean up legacy Wix API routes and utilities
-- Remove old transformation layers once fully migrated
-- Archive or remove backup scripts and migration files
-- Optimize Builder.io queries and caching strategies
-- Improve authentication flow
-- Code cleanup and refactoring
-- Complete documentation
-- Final testing and validation
-
-## 🤝 Contributing
-
-This is a private project for Futures4Europe. For team members:
-
-1. Create a feature branch from `main`
-2. Make your changes
-3. Test thoroughly (including E2E tests)
-4. Submit a pull request with clear description
-5. Ensure all checks pass
-
-## 📝 License
-
-[Add license information]
-
-## 📞 Support
-
-For issues, questions, or contributions, please contact the development team.
-
----
-
-**Note**: This project is under active development. Routes and APIs may change as the migration progresses. Until migration and validation are complete, legacy Wix routes will remain active alongside new Builder.io routes.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```

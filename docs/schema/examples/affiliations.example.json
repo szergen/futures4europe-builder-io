@@ -1,0 +1,30 @@
+{
+  "note": "Fictive example for documentation. This is not a record from the live platform.",
+  "model": "affiliations",
+  "name": "Signals from the Amber Coast",
+  "data": {
+    "title": "Signals from the Amber Coast",
+    "projectTag": {
+      "@type": "@builder.io/core:Reference",
+      "model": "tag",
+      "id": "f1c71ve0000000000000000000000001"
+    },
+    "organisationTag": {
+      "@type": "@builder.io/core:Reference",
+      "model": "tag",
+      "id": "f1c71ve0000000000000000000000001"
+    },
+    "extraOrganisationTag": {
+      "@type": "@builder.io/core:Reference",
+      "model": "tag",
+      "id": "f1c71ve0000000000000000000000001"
+    },
+    "personTag": {
+      "@type": "@builder.io/core:Reference",
+      "model": "tag",
+      "id": "f1c71ve0000000000000000000000001"
+    },
+    "role": "Contributor",
+    "extraIdentifier": "fictive-affiliation-001"
+  }
+}
