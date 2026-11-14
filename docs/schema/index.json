@@ -1,0 +1,43 @@
+{
+  "exportedAt": "2026-11-14T09:56:09.342Z",
+  "source": "Builder.io",
+  "models": [
+    {
+      "name": "tag",
+      "kind": "data",
+      "fields": 7
+    },
+    {
+      "name": "post-page",
+      "kind": "data",
+      "fields": 46
+    },
+    {
+      "name": "info-page",
+      "kind": "data",
+      "fields": 63
+    },
+    {
+      "name": "affiliations",
+      "kind": "data",
+      "fields": 7
+    },
+    {
+      "name": "homepage-config",
+      "kind": "data",
+      "fields": 5
+    },
+    {
+      "name": "page",
+      "kind": "page",
+      "fields": 3
+    },
+    {
+      "name": "admin-section",
+      "kind": "component",
+      "fields": 3
+    }
+  ],
+  "examples": "examples/",
+  "note": "Examples use invented values. They are not records from the live platform."
+}

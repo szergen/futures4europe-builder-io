@@ -1,0 +1,459 @@
+{
+  "id": "0381e7a039ee4e25af1b383ae849892c",
+  "name": "info-page",
+  "displayName": "Info Page",
+  "kind": "data",
+  "helperText": "Info Page category (project info, organisation info, person info)",
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "friendlyName": "Title"
+    },
+    {
+      "name": "pageTypes",
+      "type": "list",
+      "friendlyName": "Page Types",
+      "subFields": [
+        {
+          "name": "pageTypeItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "slug",
+      "type": "text",
+      "friendlyName": "Slug"
+    },
+    {
+      "name": "pageOwner",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "pageOwnerItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "author",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "authorItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "methods",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "methodsItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "domains",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "domainsItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "person",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "personItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "project",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "projectItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "organisation",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "organisationItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "friendlyName": "Description"
+    },
+    {
+      "name": "countryTag",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "countryTagItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "activity",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "activityItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "postContentRIch1",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch2",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch3",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch4",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch5",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch6",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch7",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch8",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch9",
+      "type": "html"
+    },
+    {
+      "name": "postContentRIch10",
+      "type": "html"
+    },
+    {
+      "name": "postImage1",
+      "type": "json"
+    },
+    {
+      "name": "postImage2",
+      "type": "json"
+    },
+    {
+      "name": "postImage3",
+      "type": "json"
+    },
+    {
+      "name": "postImage4",
+      "type": "json"
+    },
+    {
+      "name": "postImage5",
+      "type": "json"
+    },
+    {
+      "name": "postImage6",
+      "type": "json"
+    },
+    {
+      "name": "postImage7",
+      "type": "json"
+    },
+    {
+      "name": "postImage8",
+      "type": "json"
+    },
+    {
+      "name": "postImage9",
+      "type": "json"
+    },
+    {
+      "name": "postImage10",
+      "type": "json"
+    },
+    {
+      "name": "personProjectCoordonation",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "personProjectCoordonationItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "personProjectParticipation",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "personProjectParticipationItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "wixUpdatedDate",
+      "type": "text"
+    },
+    {
+      "name": "wixCreatedDate",
+      "type": "text"
+    },
+    {
+      "name": "wixId",
+      "type": "text"
+    },
+    {
+      "name": "personOrganisation",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "personOrganisationItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "personOrganisationRoles",
+      "type": "json"
+    },
+    {
+      "name": "personOrganisationFormer",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "personOrganisationFormerItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "personOrganisationRolesFormer",
+      "type": "json"
+    },
+    {
+      "name": "organisationType",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "organisationTypeItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "organisationProject",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "organisationProjectItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "organisationProjectRoles",
+      "type": "json"
+    },
+    {
+      "name": "organisationPeople",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "organisationPeopleItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "organisationPeopleRoles",
+      "type": "json"
+    },
+    {
+      "name": "organisationHasMember",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "organisationHasMemberItem",
+          "type": "reference"
+        }
+      ]
+    },
+    {
+      "name": "organisationMemberOf",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "organisationMemberOfItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "organisationEstablishedDate",
+      "type": "text"
+    },
+    {
+      "name": "projectFunded",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "projectFundedItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "projectCoordinator",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "projectCoordinatorItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "projectParticipantTeam",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "projectParticipantTeamItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "projectOrganisation",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "projectOrganisationItem",
+          "type": "reference",
+          "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+          "model": "tag"
+        }
+      ]
+    },
+    {
+      "name": "projectOrganisationRoles",
+      "type": "json"
+    },
+    {
+      "name": "projectStartDate",
+      "type": "text"
+    },
+    {
+      "name": "projectEndDate",
+      "type": "text"
+    },
+    {
+      "name": "mediaFiles",
+      "type": "json"
+    },
+    {
+      "name": "linkedinLink",
+      "type": "text"
+    },
+    {
+      "name": "websiteLink",
+      "type": "text"
+    },
+    {
+      "name": "researchGateLink",
+      "type": "text"
+    },
+    {
+      "name": "orcidLink",
+      "type": "text"
+    },
+    {
+      "name": "internalLinks",
+      "type": "list",
+      "friendlyName": "Content related to this page",
+      "helperText": "Posts linked manually from the page editor. Posts tagging this page are added automatically.",
+      "subFields": [
+        {
+          "name": "internalLinksItem",
+          "type": "reference",
+          "modelId": "28136524d8144db48218fa049145ca48",
+          "model": "post-page"
+        }
+      ]
+    }
+  ],
+  "exportedAt": "2026-11-14T09:56:09.342Z",
+  "source": "Builder.io model schema"
+}

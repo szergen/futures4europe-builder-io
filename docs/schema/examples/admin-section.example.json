@@ -1,0 +1,10 @@
+{
+  "note": "Fictive example for documentation. This is not a record from the live platform.",
+  "model": "admin-section",
+  "name": "Signals from the Amber Coast",
+  "data": {
+    "blocks": [],
+    "title": "Signals from the Amber Coast",
+    "eyebrowText": "<p>Fictive paragraph for this HTML field. It is not platform content.</p>"
+  }
+}

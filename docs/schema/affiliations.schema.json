@@ -1,0 +1,47 @@
+{
+  "id": "cda5281bf4f9491490eca792af06b25b",
+  "name": "affiliations",
+  "displayName": "Affiliations",
+  "kind": "data",
+  "helperText": "Affiliations collection between info pages",
+  "fields": [
+    {
+      "name": "title",
+      "type": "text"
+    },
+    {
+      "name": "projectTag",
+      "type": "reference",
+      "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+      "model": "tag"
+    },
+    {
+      "name": "organisationTag",
+      "type": "reference",
+      "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+      "model": "tag"
+    },
+    {
+      "name": "extraOrganisationTag",
+      "type": "reference",
+      "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+      "model": "tag"
+    },
+    {
+      "name": "personTag",
+      "type": "reference",
+      "modelId": "a275c515afdb401b8b06f9fafe9bcbce",
+      "model": "tag"
+    },
+    {
+      "name": "role",
+      "type": "text"
+    },
+    {
+      "name": "extraIdentifier",
+      "type": "text"
+    }
+  ],
+  "exportedAt": "2026-11-14T09:56:09.342Z",
+  "source": "Builder.io model schema"
+}

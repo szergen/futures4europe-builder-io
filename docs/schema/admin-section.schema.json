@@ -1,0 +1,25 @@
+{
+  "id": "6e52c0bead0648508455b3c41c77a9e5",
+  "name": "admin-section",
+  "displayName": "admin-section",
+  "kind": "component",
+  "helperText": "Admin Section",
+  "fields": [
+    {
+      "name": "blocks",
+      "type": "uiBlocks",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "text",
+      "friendlyName": "Title"
+    },
+    {
+      "name": "eyebrowText",
+      "type": "html"
+    }
+  ],
+  "exportedAt": "2026-11-14T09:56:09.342Z",
+  "source": "Builder.io model schema"
+}

@@ -1,0 +1,63 @@
+{
+  "id": "03ee8fa2ae414b47a76da3e64e765699",
+  "name": "homepage-config",
+  "displayName": "homepage-config",
+  "kind": "data",
+  "helperText": "Homepage configuration of featured items",
+  "fields": [
+    {
+      "name": "name",
+      "type": "text"
+    },
+    {
+      "name": "featuredPosts",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "featuredPostsItem",
+          "type": "reference",
+          "modelId": "28136524d8144db48218fa049145ca48",
+          "model": "post-page"
+        }
+      ]
+    },
+    {
+      "name": "featuredProjects",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "featuredProjectsItem",
+          "type": "reference",
+          "modelId": "0381e7a039ee4e25af1b383ae849892c",
+          "model": "info-page"
+        }
+      ]
+    },
+    {
+      "name": "featuredProjectResults",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "featuredProjectResultsItem",
+          "type": "reference",
+          "modelId": "28136524d8144db48218fa049145ca48",
+          "model": "post-page"
+        }
+      ]
+    },
+    {
+      "name": "featuredEvents",
+      "type": "list",
+      "subFields": [
+        {
+          "name": "featuredEventsItem",
+          "type": "reference",
+          "modelId": "28136524d8144db48218fa049145ca48",
+          "model": "post-page"
+        }
+      ]
+    }
+  ],
+  "exportedAt": "2026-11-14T09:56:09.342Z",
+  "source": "Builder.io model schema"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "072a589a610f43b1910f0639498948d2",
+  "name": "page",
+  "displayName": "page",
+  "kind": "page",
+  "helperText": "Default model for creating pages",
+  "fields": [
+    {
+      "name": "blocks",
+      "type": "uiBlocks",
+      "helperText": "Visual blocks edited in Builder.io"
+    },
+    {
+      "name": "title",
+      "type": "text",
+      "helperText": "SEO page title"
+    },
+    {
+      "name": "description",
+      "type": "longText",
+      "helperText": "SEO page description"
+    }
+  ],
+  "exportedAt": "2026-11-14T09:56:09.342Z",
+  "source": "Builder.io model schema"
+}

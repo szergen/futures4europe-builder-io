@@ -1,0 +1,18 @@
+{
+  "note": "Fictive example for documentation. This is not a record from the live platform.",
+  "model": "tag",
+  "name": "Amber Coast Foresight",
+  "data": {
+    "name": "Amber Coast Foresight",
+    "tagType": "project",
+    "tagLine": "A fictive tagline for schema documentation",
+    "picture": "https://example.com/fictive-picture.png",
+    "tagPageLink": "/tags/amber-coast",
+    "masterTag": {
+      "@type": "@builder.io/core:Reference",
+      "model": "tag",
+      "id": "f1c71ve0000000000000000000000001"
+    },
+    "wixId": "fictive-wix-id-0001"
+  }
+}
